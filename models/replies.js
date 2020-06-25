@@ -2,15 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ReplySchema = new Schema({
-  reply: {
-    type: String,
-    required: true,
-  },
-  numOfReplies: {
-    type: Number,
-    default: 0,
-  },
-  email: {
+  reply_body: {
     type: String,
     required: true,
   },

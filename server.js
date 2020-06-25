@@ -4,13 +4,14 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const commentRoutes = require('./routes/comments');
+const repliesRoutes = require('./routes/replies');
 
 const app = express();
 
 //connect to mongodb
 mongoose
   .connect(
-    'mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/fg-expense-tracker?retryWrites=true&w=majority',
+    'mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority',
     {
       useNewUrlParser: true, // for connection warning
       useUnifiedTopology: true,
@@ -34,17 +35,13 @@ app.use(cookieParser());
 app.use(cors());
 
 //setup app routes
-// app.get('/documentation', doc);
+app.get('/', home);
 app.use('/comments', commentRoutes);
+app.use('/comments/replies', repliesRoutes);
 
-/*
-    |||  I'll use route method to handle request and response circle  |||
-*/
-// catch 404 and forward to error handler
-/* app.use((req, res, next) => {
-  next(createError(404));
-});
-*/
+function home(req, res, next){
+  res.status(200).json({status: Success, message: "Welcome", data: "This is the comments service api"})
+}
 
 // error handler
 app.use((err, req, res, next) => {
