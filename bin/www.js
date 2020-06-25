@@ -15,7 +15,7 @@ require("dotenv").config();
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || "4000");
+var port = normalizePort(process.env.PORT);
 app.set("port", port);
 
 /**
@@ -29,10 +29,8 @@ var server = http.createServer(app);
  */
 
 server.listen(port, () => {
-
-  console.log(`\n \t server listening on ${port}`);
+  console.log(`\n \t Server listening on ${port}`);
   console.log("\n \t Server Time: " + Date());
-
 });
 server.on("error", onError);
 server.on("listening", onListening);
