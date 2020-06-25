@@ -36,16 +36,17 @@ app.use(cors());
 
 //setup app routes
 app.get("/", home);
-app.use("/comments", commentRoutes);
-app.use("/comments/replies", repliesRoutes);
+app.use("/report/comments", commentRoutes);
+app.use("/reports/comments/replies", repliesRoutes);
 
-function home(req, res) {
-  res.status(200).json({
-    status: "success",
-    message: "Welcome",
-    data: "This is the comments service api",
-  });
+function home(req, res, next) {
+  res.json({
+      status: "Success",
+      message: 'Welcome',
+      data: 'This is the comments service api',
+    });
 }
+
 
 // error handler
 app.use((err, req, res) => {
@@ -57,5 +58,6 @@ app.use((err, req, res) => {
   res.sendStatus(err.status || 500);
   res.send("error");
 });
+
 
 module.exports = app;
