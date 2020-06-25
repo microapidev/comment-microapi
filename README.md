@@ -29,7 +29,7 @@ You will first need to setup your local environment and ensure that all configur
 3. Checkout to the Develop branch
 4. In your terminal, run `npm install`.
 5. In your terminal, run `cp .env.example .env`.
-
+6. In your terminal, run `npm start`.
 ```
 BASE_URL=
 ```
