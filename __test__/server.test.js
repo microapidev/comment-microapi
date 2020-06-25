@@ -3,7 +3,7 @@ const request = require("supertest");
 const mongoose = require("mongoose");
 
 describe("Dummy Test", () => {
-  jest.setTimeout(10000);
+  jest.setTimeout(15000);
   it("it should pass", async () => {
     expect(true).toBe(true);
   });
@@ -13,7 +13,7 @@ describe("Dummy Test", () => {
   });
 
   afterAll(async () => {
-    await new Promise((r) => setTimeout(r, 6000));
+    await new Promise((r) => setTimeout(r, 8000));
     await mongoose.disconnect();
   });
 });
