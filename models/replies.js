@@ -16,6 +16,7 @@ const ReplySchema = new Schema({
     default: 0,
   },
   isFlagged: Boolean,
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
 });
 
 const Reply = mongoose.model('Reply', ReplySchema);

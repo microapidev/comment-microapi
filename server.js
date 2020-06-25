@@ -39,10 +39,6 @@ app.get('/', home);
 app.use('/comments', commentRoutes);
 app.use('/comments/replies', repliesRoutes);
 
-function home(req, res, next){
-  res.status(200).json({status: Success, message: "Welcome", data: "This is the comments service api"})
-}
-
 // error handler
 app.use((err, req, res, next) => {
   // set locals, only providing error in development
@@ -54,4 +50,11 @@ app.use((err, req, res, next) => {
   res.send('error');
 });
 
+function home(req, res, next) {
+  res.json({
+      status: "Success",
+      message: 'Welcome',
+      data: 'This is the comments service api',
+    });
+}
 module.exports = app;

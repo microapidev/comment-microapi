@@ -29,7 +29,7 @@ var server = http.createServer(app);
  */
 
 server.listen(port, () => {
-  console.log(`\n \t server listening on ${port}`);
+  console.log(`\n \t Server listening on ${port}`);
   console.log('\n \t Server Time: ' + Date());
 });
 server.on('error', onError);
