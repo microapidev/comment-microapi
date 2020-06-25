@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ReplySchema = new Schema({
@@ -6,7 +6,7 @@ const ReplySchema = new Schema({
     type: String,
     required: true,
   },
-  comment_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Comments' },
+  comment_id: { type: mongoose.Schema.Types.ObjectId, ref: "Comments" },
   upVotes: {
     type: Number,
     default: 0,
@@ -19,5 +19,5 @@ const ReplySchema = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
 });
 
-const Reply = mongoose.model('Reply', ReplySchema);
+const Reply = mongoose.model("Reply", ReplySchema);
 module.exports = Reply;
