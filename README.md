@@ -21,6 +21,7 @@ You will first need to setup your local environment and ensure that all configur
 1. Clone the repo.
 2. In your terminal, run `npm install`.
 3. In your terminal, run `cp .env.example .env`.
+4. Run 'npm start'
 
 ```
 BASE_URL=
