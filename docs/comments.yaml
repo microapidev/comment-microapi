@@ -1,0 +1,146 @@
+paths:
+  # Endpoint create a new comment
+  /comment/create:
+    # POST operation
+    post:
+      tags:
+        - comments
+
+      summary: Creates a new comment
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/CommentResponse"
+        "400":
+          description: Invalid body supplied
+          schema:
+            $ref: "#/definitions/BadRequestResponse"
+
+definitions:
+  # Comment schema
+  Comment:
+    type: object
+    required:
+      - refId
+      - commentBody
+      - commentOrigin
+    properties:
+      refId:
+        type: number
+      commentBody:
+        type: string
+      commentOwnerName:
+        type: string
+      commentOwnerEmail:
+        type: string
+        format: email
+      commentOrigin:
+        type: string
+
+  # Reply schema
+  Reply:
+    type: object
+    required:
+      - replyId
+      - commentId
+      - replyBody
+      - replyOwnerName
+      - replyOwnerEmail
+      - upvotes
+      - downvotes
+    properties:
+      replyId:
+        type: string
+      commentId:
+        type: string
+      replyBody:
+        type: string
+      replyOwnerName:
+        type: string
+      replyOwnerEmail:
+        type: string
+      upvotes:
+        type: number
+      downvotes:
+        type: number
+
+  # Comment Response schema
+  CommentResponse:
+    type: object
+    required:
+      - message
+      - response
+      - data
+    properties:
+      message:
+        type: string
+      response:
+        type: string
+      data:
+        type: array
+        items:
+          type: object
+          required:
+            - _id
+            - refId
+            - commentBody
+            - commentOwnerName
+            - commentOwnerEmail
+            - commentOrigin
+            - totalVotes
+            - upvotes
+            - downvotes
+            - replies
+            - repliesCount
+          properties:
+            _id:
+              type: string
+            refId:
+              type: number
+            commentBody:
+              type: string
+            commentOwnerName:
+              type: string
+            commentOwnerEmail:
+              type: string
+              format: email
+            commentOrigin:
+              type: string
+            totalVotes:
+              type: number
+            upvotes:
+              type: number
+            downvotes:
+              type: number
+            replies:
+              type: array
+              items:
+                $ref: "#/definitions/Reply"
+            repliesCount:
+              type: number
+
+  # OKResponse model
+  OKResponse:
+    type: object
+    required:
+      - status
+      - data
+    properties:
+      status:
+        type: string
+      data:
+        type: string
+
+  # BadRequestResponse model
+  BadRequestResponse:
+    type: object
+    required:
+      - status
+      - data
+    properties:
+      status:
+        type: string
+      data:
+        type: string

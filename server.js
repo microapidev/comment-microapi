@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -8,29 +7,29 @@ const commentRoutes = require("./routes/comments");
 const repliesRoutes = require("./routes/replies");
 const swaggerSpec = require("./utils/swaggerSpec");
 
-require('dotenv').config();
+require("dotenv").config();
 const swaggerUi = require("swagger-ui-express");
 const app = express();
 
 //connect to mongodb
-mongoose
-  .connect(
-    "mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority",
-    process.env.DB_URL,
-    {
-      useNewUrlParser: true, // for connection warning
-      useUnifiedTopology: true,
-    },
-    () => {
-      console.log(
-        "\n \t Database connection has been established successfully"
-      );
-    }
-  )
-  .catch((err) => {
-    console.error("App starting error:", err.stack);
-    process.exit(1);
-  });
+// mongoose
+//   .connect(
+//     "mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority",
+//     process.env.DB_URL,
+//     {
+//       useNewUrlParser: true, // for connection warning
+//       useUnifiedTopology: true,
+//     },
+//     () => {
+//       console.log(
+//         "\n \t Database connection has been established successfully"
+//       );
+//     }
+//   )
+//   .catch((err) => {
+//     console.error("App starting error:", err.stack);
+//     process.exit(1);
+//   });
 
 // setup middleware
 app.use(logger("dev"));
@@ -40,8 +39,8 @@ app.use(cookieParser());
 app.use(cors());
 
 //setup app routes
-app.use('/report/comments', commentRoutes);
-app.use('/reports/comments/replies', repliesRoutes);
+app.use("/report/comments", commentRoutes);
+app.use("/reports/comments/replies", repliesRoutes);
 
 // use swagger-ui-express for your app documentation endpoint
 const swaggerRouter = express.Router();
