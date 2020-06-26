@@ -48,6 +48,13 @@ swaggerRouter.get("/", swaggerUi.setup(swaggerSpec));
 swaggerRouter.get("/documentation", swaggerUi.setup(swaggerSpec));
 app.use(["/", "/documentation"], swaggerRouter);
 
+// Invalid route error handler 
+app.use("*",(req, res) => {
+  res.status(404).send({
+    message: `Oops. The route ${req.method} ${req.originalUrl} is not recognised.`
+  });
+});
+
 // error handler
 app.use((err, req, res, next) => {
   // set locals, only providing error in development
@@ -57,12 +64,6 @@ app.use((err, req, res, next) => {
   // render the error page
   res.sendStatus(err.status || 500);
   res.send("error");
-});
-
-app.use("*",(req, res) => {
-  res.status(404).send({
-    message: `Oops. The route ${req.method} ${req.originalUrl} is not recognised.`
-  });
 });
 
 module.exports = app;
