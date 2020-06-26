@@ -13,7 +13,7 @@ const CommentSchema = new Schema(
       type: Number,
       default: 0,
     },
-    replies: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+    replies: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
     upVotes: [
       {
         type: Schema.Types.ObjectId,
@@ -28,9 +28,7 @@ const CommentSchema = new Schema(
         ref: "Users",
       },
     ],
-    user: [{ type: Schema.Types.ObjectId, ref: 'Users' }],
-
-    
+    user: [{ type: Schema.Types.ObjectId, ref: "Users" }],
   },
   { timestamps: true }
 );
