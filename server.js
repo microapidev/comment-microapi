@@ -37,8 +37,8 @@ app.use(cors());
 
 //setup app routes
 app.get('/', home);
-app.use('/report/comments', commentRoutes);
-app.use('/reports/comments/replies', repliesRoutes);
+app.use('/comment', commentRoutes);
+app.use('/comment/replies', repliesRoutes);
 
 function home(req, res) {
   res.json({
