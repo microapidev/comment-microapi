@@ -12,7 +12,8 @@ This endpoint will be used to save new comment coming from a particular report o
     "commentBody": string,
     "commentOwnerName": string,
     "commentOwnerEmail": string,
-    "commentOrigin": string
+    "commentOrigin": string,
+    "applicationId": string
 }
 ```
 
@@ -37,7 +38,8 @@ This endpoint will be used to save new comment coming from a particular report o
 
 > Example Error Responses
 
-> Validation Error 
+> Validation Error
+
 > StatusCode `422`
 
 ```
@@ -49,6 +51,7 @@ This endpoint will be used to save new comment coming from a particular report o
 ```
 
 > Authentication Error
+
 > StatusCode `401`
 
 ```
@@ -95,14 +98,16 @@ This endpoint returns all comments on a particular from a reference() on the web
                     "downvotes": number,
                 }
             ],
-            "repliesCount": number
+            "repliesCount": number,
+            "applicationId": string
         }]
 }
 ```
 
 > Example Error Responses
 
-> Validation Error 
+> Validation Error
+
 > StatusCode 422
 
 ```
@@ -114,6 +119,7 @@ This endpoint returns all comments on a particular from a reference() on the web
 ```
 
 > Authentication Error
+
 > StatusCode 401
 
 ```
@@ -125,6 +131,7 @@ This endpoint returns all comments on a particular from a reference() on the web
 ```
 
 > Invalid RefId Error
+
 > StatusCode 404
 
 ```
@@ -137,7 +144,7 @@ This endpoint returns all comments on a particular from a reference() on the web
 
 
 
-### PATCH: `comment/edit/{commentId}`
+### PATCH: `comments/{commentId}`
 
 This endpoint allows edit of a comment
 
@@ -183,6 +190,7 @@ This endpoint allows edit of a comment
 ```
 
 > Authentication Error
+
 > StatusCode 401
 
 ```
@@ -193,7 +201,8 @@ This endpoint allows edit of a comment
 }
 ```
 
-> Invalid RefId Error
+> Invalid CommentId Error
+
 > StatusCode 404
 
 ```
@@ -204,7 +213,7 @@ This endpoint allows edit of a comment
 }
 ```
 
-### DELETE: `comment/delete/{commentId}`
+### DELETE: `comments/{commentId}`
 
 This endpoint deletes a comment.
 Request Body must contain email address of user and Comment ID as request parameter
@@ -217,7 +226,7 @@ Request Body must contain email address of user and Comment ID as request parame
 ```
 
 > Param 
-
+`commentId: string #required`
 
 > Status Code `200`
 
@@ -234,7 +243,8 @@ Request Body must contain email address of user and Comment ID as request parame
 
 > Example Error Responses
 
-> Validation Error 
+> Validation Error
+
 > StatusCode 422
 
 ```
@@ -246,6 +256,7 @@ Request Body must contain email address of user and Comment ID as request parame
 ```
 
 > Authentication Error
+
 > StatusCode 401
 
 ```
@@ -256,7 +267,8 @@ Request Body must contain email address of user and Comment ID as request parame
 }
 ```
 
-> Invalid RefId Error
+> Invalid CommentId Error
+
 > StatusCode 404
 
 ```
@@ -267,7 +279,7 @@ Request Body must contain email address of user and Comment ID as request parame
 }
 ```
 
-### PATCH: `comment/vote/{commentId}`
+### PATCH: `comments/{commentId}/votes`
 
 This endpoint modifies votes of a comment.
 Request Body must contain the type of vote `upvote` or `downvote` and Comment ID as request parameter
@@ -301,7 +313,46 @@ Request Body must contain the type of vote `upvote` or `downvote` and Comment ID
 }
 ```
 
-### PATCH: `comment/flag/{commentId}`
+> Example Error Responses
+
+> Validation Error 
+> StatusCode 422
+
+```
+{
+  "status": "failed",
+  "data": [],
+  "message": "Return validation errors from middleware""
+}
+```
+
+> Authentication Error
+
+> StatusCode 401
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Invalid token or not authorized to access resource"
+}
+```
+
+> Invalid CommentId Error
+
+> StatusCode 404
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Comment not found"
+}
+```
+
+
+
+### PATCH: `comments/{commentId}/flag`
 
 This endpoint flags a comment.
 
@@ -334,7 +385,44 @@ This endpoint flags a comment.
 }
 ```
 
-### POST: `comment/{commentId}/reply/create`
+> Example Error Responses
+
+> Validation Error 
+> StatusCode 422
+
+```
+{
+  "status": "failed",
+  "data": [],
+  "message": "Return validation errors from middleware""
+}
+```
+
+> Authentication Error
+
+> StatusCode 401
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Invalid token or not authorized to access resource"
+}
+```
+
+> Invalid CommentId Error
+
+> StatusCode 404
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Comment not found"
+}
+```
+
+### POST: `comments/{commentId}/replies`
 
 This endpoint creates a comment reply.
 
@@ -345,7 +433,8 @@ This endpoint creates a comment reply.
     "commentId": string,
     "replyBody": string,
     "replyOwnerName": string,
-    "replyOwnerEmail": string
+    "replyOwnerEmail": string,
+    "applicationId": string
 }
 ```
 
@@ -363,7 +452,46 @@ This endpoint creates a comment reply.
 
 ```
 
-### GET: `comment/{commentId}/reply/all`
+> Example Error Responses
+
+> Validation Error 
+> StatusCode 422
+
+```
+{
+  "status": "failed",
+  "data": [],
+  "message": "Return validation errors from middleware""
+}
+```
+
+> Authentication Error
+
+> StatusCode 401
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Invalid token or not authorized to access resource"
+}
+```
+
+> Invalid CommentId Error
+
+> StatusCode 404
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Comment not found"
+}
+```
+
+
+
+### GET: `comments/{commentId}/replies`
 
 This endpoint gets all comment reply.
 
@@ -394,14 +522,52 @@ This endpoint gets all comment reply.
                     "upvotes": number,
                     "downvotes": number,
                     "repliesCount": number
-                    "flagsCount": number
+                    "flagsCount": number,
+                    "applicationId": string
                 }
             ]
 }
 
 ```
 
-### PATCH: `comment/reply/edit/{replyId}`
+> Example Error Responses
+
+> Validation Error 
+> StatusCode 422
+
+```
+{
+  "status": "failed",
+  "data": [],
+  "message": "Return validation errors from middleware""
+}
+```
+
+> Authentication Error
+
+> StatusCode 401
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Invalid token or not authorized to access resource"
+}
+```
+
+> Invalid CommentId Error
+
+> StatusCode 404
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Comment not found"
+}
+```
+
+### PATCH: `comments/replies/{replyId}`
 
 This endpoint allows edit of a comment reply
 
@@ -427,7 +593,46 @@ This endpoint allows edit of a comment reply
 }
 ```
 
-### DELETE: `comment/reply/delete/{replyId}`
+> Example Error Responses
+
+> Validation Error 
+> StatusCode 422
+
+```
+{
+  "status": "failed",
+  "data": [],
+  "message": "Return validation errors from middleware""
+}
+```
+
+> Authentication Error
+
+> StatusCode 401
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Invalid token or not authorized to access resource"
+}
+```
+
+> Invalid ReplyId Error
+
+> StatusCode 404
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Reply not found"
+}
+```
+
+
+
+### DELETE: `comments/replies/{replyId}`
 
 This endpoint allows delete of a comment reply
 
@@ -452,7 +657,46 @@ This endpoint allows delete of a comment reply
 }
 ```
 
-### PATCH: `comment/reply/vote/{replyId}`
+> Example Error Responses
+
+> Validation Error 
+> StatusCode 422
+
+```
+{
+  "status": "failed",
+  "data": [],
+  "message": "Return validation errors from middleware""
+}
+```
+
+> Authentication Error
+
+> StatusCode 401
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Invalid token or not authorized to access resource"
+}
+```
+
+> Invalid ReplyId Error
+
+> StatusCode 404
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Reply not found"
+}
+```
+
+
+
+### PATCH: `comments/replies/{replyId}/vote`
 
 This endpoint allows voting (upvote or downvote) of a comment reply
 
@@ -485,7 +729,46 @@ This endpoint allows voting (upvote or downvote) of a comment reply
 }
 ```
 
-### PATCH: `comment/reply/flag/{replyId}`
+> Example Error Responses
+
+> Validation Error 
+> StatusCode 422
+
+```
+{
+  "status": "failed",
+  "data": [],
+  "message": "Return validation errors from middleware""
+}
+```
+
+> Authentication Error
+
+> StatusCode 401
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Invalid token or not authorized to access resource"
+}
+```
+
+> Invalid ReplyId Error
+
+> StatusCode 404
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Reply not found"
+}
+```
+
+
+
+### PATCH: `comments/replies/{replyId}/vote`
 
 This endpoint allows flagging of a comment reply
 
@@ -515,3 +798,42 @@ This endpoint allows flagging of a comment reply
     ]
 }
 ```
+
+> Example Error Responses
+
+> Validation Error 
+> StatusCode 422
+
+```
+{
+  "status": "failed",
+  "data": [],
+  "message": "Return validation errors from middleware""
+}
+```
+
+> Authentication Error
+
+> StatusCode 401
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Invalid token or not authorized to access resource"
+}
+```
+
+> Invalid ReplyId Error
+
+> StatusCode 404
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Reply not found"
+}
+```
+
+
