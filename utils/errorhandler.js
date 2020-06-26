@@ -20,7 +20,9 @@ const errorHandler = (err, req, res) => {
       error: "Internal server error",
       data: [], // no data to return
     });
+
+    // console.log(err.message);
   }
 };
 
-module.exports = errorHandler;
+export default errorHandler;

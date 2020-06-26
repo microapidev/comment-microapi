@@ -22,19 +22,6 @@ app.use("/comments", commentRoutes);
 app.use(["/", "/documentation"], documentationRoutes);
 
 // Invalid route error handler
-<<<<<<< HEAD
-app.use("*", (req, res, next) => {
-  const error = new CustomError(
-    404,
-    `Oops. The route ${req.method} ${req.originalUrl} is not recognised.`
-  );
-  next(error);
-});
-
-// error handler
-app.use((err, req, res, next) => {
-  errorHandler(err, req, res, next);
-=======
 app.use("*", (req, res) => {
   res.status(404).send({
     message: `Oops. The route ${req.method} ${req.originalUrl} is not recognised.`,
@@ -50,7 +37,6 @@ app.use((err, req, res) => {
   // render the error page
   res.sendStatus(err.status || 500);
   res.send("error");
->>>>>>> ft: add success responseHandler
 });
 
 module.exports = app;
