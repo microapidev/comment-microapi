@@ -1,6 +1,6 @@
 ## ENDPOINTS AND RESPONSE FORMAT
 
-### POST: `report/comment/create`
+### POST: `/comment/create`
 
 This endpoint will be used to save new comment coming from a particular report on the web
 
@@ -8,11 +8,11 @@ This endpoint will be used to save new comment coming from a particular report o
 
 ```
 {
-    "report_id": number,
-    "comment_body": string,
-    "comment_owner_name": string,
-    "comment_owner_email": string,
-    "comment_origin": string
+    "refId": number,
+    "commentBody": string,
+    "commentOwnerName": string,
+    "commentOwnerEmail": string,
+    "commentOrigin": string
 }
 ```
 
@@ -26,25 +26,25 @@ This endpoint will be used to save new comment coming from a particular report o
     "response": "Ok",
     "data": [{
             "_id": "514eac214dca41",
-            "report_id": number,
-            "comment_body": string,
-            "comment_owner_name": string,
-            "comment_owner_email": string,
-            "comment_origin": string, #e.g Expenditure Report
-            "total_votes": number, #(upvotes + downvotes)
+            "refId": number,
+            "commentBody": string,
+            "commentOwnerName": string,
+            "commentOwnerEmail": string,
+            "commentOrigin": string, #e.g Expenditure Report
+            "totalVotes": number, #(upvotes + downvotes)
             "upvotes": number,
             "downvotes": number,
             "replies": [],
-            "replies_count": number,
-            "flags_count": number
+            "repliesCount": number,
+            "flagsCount": number
 
         }]
 }
 ```
 
-### GET: `report/comments/{report_id}`
+### GET: `comments/{refId}`
 
-This endpoint returns all comments on a particular report on the web
+This endpoint returns all comments on a particular from a reference() on the web
 
 > Status Code `200`
 
@@ -56,31 +56,31 @@ This endpoint returns all comments on a particular report on the web
     "response": "Ok",
     "data": [{
             "_id": "514eac214dca41",
-            "report_id": number,
-            "comment_body": string,
-            "comment_owner_name": string,
-            "comment_owner_email": string,
-            "comment_origin": string, #e.g Expenditure Report
-            "total_votes": number, #(upvotes + downvotes)
+            "refId": number,
+            "commentBody": string,
+            "commentOwnerName": string,
+            "commentOwnerEmail": string,
+            "commentOrigin": string, #e.g Expenditure Report
+            "totalVotes": number, #(upvotes + downvotes)
             "upvotes": number,
             "downvotes": number,
             "replies": [
                 {
-                    "reply_id": "551eacf45241edd4",
-                    "comment_id": string
-                    "reply_body": string,
-                    "reply_owner_name": string,
-                    "reply_owner_email": string,
+                    "replyId": "551eacf45241edd4",
+                    "commentId": string
+                    "replyBody": string,
+                    "replyOownerName": string,
+                    "replyOwnerEmail": string,
                     "upvotes": number,
                     "downvotes": number,
                 }
             ],
-            "replies_count": number
+            "repliesCount": number
         }]
 }
 ```
 
-### PATCH: `report/comment/edit/{comment_id}`
+### PATCH: `comment/edit/{commentId}`
 
 This endpoint allows edit of a comment
 
@@ -88,8 +88,8 @@ This endpoint allows edit of a comment
 
 ```
 {
-    "comment_body": string,
-    "comment_owner_email": string
+    "commentBody": string,
+    "commentOwnerEmail": string
 }
 ```
 
@@ -105,7 +105,7 @@ This endpoint allows edit of a comment
 }
 ```
 
-### DELETE: `report/comment/delete/{comment_id}`
+### DELETE: `comment/delete/{commentId}`
 
 This endpoint deletes a comment.
 Request Body must contain email address of user and Comment ID as request parameter
@@ -130,7 +130,7 @@ Request Body must contain email address of user and Comment ID as request parame
 }
 ```
 
-### PATCH: `report/comment/vote/{comment_id}`
+### PATCH: `comment/vote/{commentId}`
 
 This endpoint modifies votes of a comment.
 Request Body must contain the type of vote `upvote` or `downvote` and Comment ID as request parameter
@@ -161,7 +161,7 @@ Request Body must contain the type of vote `upvote` or `downvote` and Comment ID
 }
 ```
 
-### PATCH: `report/comment/flag/{comment_id}`
+### PATCH: `comment/flag/{commentId}`
 
 This endpoint flags a comment.
 
@@ -183,14 +183,14 @@ This endpoint flags a comment.
     "response": "Ok",
     "data": [
         {
-            "comment_id": string,
+            "commentId": string,
             "isFlagged": boolean,
         }
     ]
 }
 ```
 
-### POST: `report/comment/{comment_id}/reply/create`
+### POST: `comment/{commentId}/reply/create`
 
 This endpoint creates a comment reply.
 
@@ -198,10 +198,10 @@ This endpoint creates a comment reply.
 
 ```
 {
-    "comment_id": string,
-    "reply_body": string,
-    "reply_owner_name": string,
-    "reply_owner_email": string
+    "commentId": string,
+    "replyBody": string,
+    "replyOwnerName": string,
+    "replyOwnerEmail": string
 }
 ```
 
@@ -219,7 +219,7 @@ This endpoint creates a comment reply.
 
 ```
 
-### GET: `report/comment/{comment_id}/reply/all`
+### GET: `comment/{commentId}/reply/all`
 
 This endpoint gets all comment reply.
 
@@ -227,7 +227,7 @@ This endpoint gets all comment reply.
 
 ```
 {
-    "comment_id": string,
+    "commentId": string,
 }
 ```
 
@@ -242,21 +242,22 @@ This endpoint gets all comment reply.
     "response": "Ok",
     "data": [
                 {
-                    "reply_id": "551eacf45241edd4",
-                    "comment_id": string
-                    "reply_body": string,
-                    "reply_owner_name": string,
-                    "reply_owner_email": string,
+                    "replyId": "551eacf45241edd4",
+                    "commentId": string
+                    "replyBody": string,
+                    "replyOwnerName": string,
+                    "replyOwnerEmail": string,
                     "upvotes": number,
                     "downvotes": number,
-                    "replies_count": number
+                    "repliesCount": number
+                    "flagsCount": number
                 }
             ]
 }
 
 ```
 
-### PATCH: `report/comment/reply/edit/{reply_id}`
+### PATCH: `comment/reply/edit/{replyId}`
 
 This endpoint allows edit of a comment reply
 
@@ -264,8 +265,8 @@ This endpoint allows edit of a comment reply
 
 ```
 {
-    "comment_id": string,
-    "reply_body": string,
+    "commentId": string,
+    "replyBody": string,
     "email": string
 }
 ```
@@ -282,7 +283,7 @@ This endpoint allows edit of a comment reply
 }
 ```
 
-### DELETE: `report/comment/reply/delete/{reply_id}`
+### DELETE: `comment/reply/delete/{replyId}`
 
 This endpoint allows delete of a comment reply
 
@@ -290,8 +291,8 @@ This endpoint allows delete of a comment reply
 
 ```
 {
-    "comment_id": string,
-    "reply_owner_email": string
+    "commentId": string,
+    "replyOwnerEmail": string
 }
 ```
 
@@ -307,7 +308,7 @@ This endpoint allows delete of a comment reply
 }
 ```
 
-### PATCH: `report/comment/reply/vote/{reply_id}`
+### PATCH: `comment/reply/vote/{replyId}`
 
 This endpoint allows voting (upvote or downvote) of a comment reply
 
@@ -315,8 +316,8 @@ This endpoint allows voting (upvote or downvote) of a comment reply
 
 ```
 {
-    "comment_id": string,
-    "vote_type": string #(upvote or downvote)
+    "commentId": string,
+    "voteType": string #(upvote or downvote)
 }
 ```
 
@@ -330,9 +331,9 @@ This endpoint allows voting (upvote or downvote) of a comment reply
     "response": "Ok",
     "data": [
                 {
-                    "reply_id": string,
-                    "comment_id": string,
-                    "total_votes": number,
+                    "replyId": string,
+                    "commentId": string,
+                    "totalVotes": number,
                     "upvotes": number,
                     "downvotes": number,
                 }
@@ -340,7 +341,7 @@ This endpoint allows voting (upvote or downvote) of a comment reply
 }
 ```
 
-### PATCH: `report/comment/reply/flag/{reply_id}`
+### PATCH: `comment/reply/flag/{replyId}`
 
 This endpoint allows flagging of a comment reply
 
@@ -348,7 +349,7 @@ This endpoint allows flagging of a comment reply
 
 ```
 {
-    "comment_id": string,
+    "commentId": string,
     "isFlagged": boolean
 }
 ```
@@ -363,8 +364,8 @@ This endpoint allows flagging of a comment reply
     "response": "Ok",
     "data": [
                 {
-            "comment_id": string,
-            "reply_id": string,
+            "commentId": string,
+            "replyId": string,
             "isFlagged": boolean,
         }
     ]
