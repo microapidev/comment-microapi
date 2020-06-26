@@ -14,7 +14,6 @@ const app = express();
 //connect to mongodb
 mongoose
   .connect(
-    "mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority",
     process.env.DB_URL,
     {
       useNewUrlParser: true, // for connection warning
@@ -50,7 +49,7 @@ swaggerRouter.get("/documentation", swaggerUi.setup(swaggerSpec));
 app.use(["/", "/documentation"], swaggerRouter);
 
 // error handler
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
@@ -59,9 +58,12 @@ app.use((err, req, res) => {
   res.sendStatus(err.status || 500);
   res.send("error");
 });
+
+// Invalid route handler
 app.use("*", (req, res) => {
-  res.send({
+  res.status(404).send({
     message: `Oops. The route ${req.method} ${req.originalUrl} is not recognised`,
   });
 });
+
 module.exports = app;
