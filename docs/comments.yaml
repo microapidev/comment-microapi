@@ -125,10 +125,13 @@ definitions:
   OKResponse:
     type: object
     required:
-      - status
+      - message
+      - response
       - data
     properties:
-      status:
+      message:
+        type: string
+      response:
         type: string
       data:
         type: string
@@ -137,10 +140,13 @@ definitions:
   BadRequestResponse:
     type: object
     required:
-      - status
+      - message
+      - response
       - data
     properties:
-      status:
+      message:
+        type: string
+      response:
         type: string
       data:
         type: string
