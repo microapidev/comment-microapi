@@ -27,7 +27,7 @@ You will first need to setup your local environment and ensure that all configur
 2. Clone your forked repo to you local environment.
 3. In your terminal, run `npm install`.
 4. In your terminal, run `cp .env.example .env`.
-5. In your terminal, run `npm start`.
+5. In your terminal, run `npm run startDev`.
 
 ## <a name="linting-your-code"></a> Linting Your Code
 
@@ -38,7 +38,7 @@ You will first need to setup your local environment and ensure that all configur
 
 ## <a name="linting-your-code"></a> Testing Your Code
 
-1. Run `npm run test:ci` to ensure your code passes all tests
+1. Run `npm run test` to ensure your code passes all tests
 
 ## <a name="contributing-your-code"></a> Contributing Your Code
 
