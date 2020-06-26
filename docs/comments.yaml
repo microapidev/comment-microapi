@@ -1,0 +1,921 @@
+paths:
+  # Endpoint to create a comment
+  /comments:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets all comments
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Comment"
+
+        "422":
+          description: Validation error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    # POST operation
+    post:
+      tags:
+        - comments
+
+      summary: Creates a new comment
+
+      parameters:
+        - in: body
+          name: body
+          description: A JSON object containing the comment information
+          required: true
+          schema:
+            $ref: "#/definitions/CreateComment"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Comment"
+
+        "422":
+          description: Validation error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  # Endpoint to get all comments for a particular reference ID
+  /comments/refs/{refId}:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets all comments for a particular reference ID
+
+      parameters:
+        - in: path
+          name: refId
+          description: String ID of the reference
+          required: true
+          schema:
+            type: string
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Comment"
+
+  # Endpoint to update or delete a comment
+  /comments/{commentId}:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates a comment
+
+      parameters:
+        - in: path
+          name: commentId
+          description: String ID of the comment
+          required: true
+          schema:
+            type: string
+
+        - in: body
+          name: body
+          description: A JSON object containing the comment information to update
+          required: true
+          schema:
+            $ref: "#/definitions/UpdateComment"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                $ref: "#/definitions/UpdateComment"
+
+        "422":
+          description: Validation error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: Invalid ID error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    # DELETE operation
+    delete:
+      tags:
+        - comments
+
+      summary: Deletes a comment
+
+      parameters:
+        - in: path
+          name: commentId
+          description: String ID of the comment
+          required: true
+          schema:
+            type: string
+
+        - in: body
+          name: body
+          description: A JSON object containing the email of the comment
+          required: true
+          schema:
+            $ref: "#/definitions/DeleteComment"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Comment"
+
+        "422":
+          description: Validation error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: Invalid ID error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  # Endpoint to update votes on a comment
+  /comments/{commentId}/votes:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the upvotes or downvotes of a comment
+
+      parameters:
+        - in: path
+          name: commentId
+          description: String ID of the comment
+          required: true
+          schema:
+            type: string
+
+        - in: body
+          name: body
+          description: A JSON object containing the enum vote type "upvote" or "downvote"
+          required: true
+          schema:
+            $ref: "#/definitions/Vote"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/VotedComment"
+
+        "422":
+          description: Validation error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: Invalid ID error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  # Endpoint to update the flag status o a comment
+  /comments/{commentId}/flag:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the flag status of a comment
+
+      parameters:
+        - in: path
+          name: commentId
+          description: String ID of the comment
+          required: true
+          schema:
+            type: string
+
+        - in: body
+          name: body
+          description: A JSON object containing the flag status and email of the comment
+          required: true
+          schema:
+            $ref: "#/definitions/Flag"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/FlaggedComment"
+
+        "422":
+          description: Validation error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: Invalid ID error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  # Endpoint to create a reply to a comment
+  /comments/{commentId}/replies:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets all replies of a comment
+
+      parameters:
+        - in: path
+          name: commentId
+          description: String ID of the comment
+          required: true
+          schema:
+            type: string
+
+        - in: body
+          name: body
+          description: A JSON object containing an array of the reply information
+          required: true
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Reply"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Reply"
+
+    # POST operation
+    post:
+      tags:
+        - comments
+
+      summary: Creates a new reply to a comment
+
+      parameters:
+        - in: path
+          name: commentId
+          description: String ID of the comment
+          required: true
+          schema:
+            type: string
+
+        - in: body
+          name: body
+          description: A JSON object containing the reply information
+          required: true
+          schema:
+            $ref: "#/definitions/CreateReply"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Reply"
+
+        "422":
+          description: Validation error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  # Endpoint to update a reply of a comment
+  /comments/{commentId}/replies/{replyId}:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates a reply of a comment
+
+      parameters:
+        - in: path
+          name: commentId
+          description: String ID of the comment
+          required: true
+          schema:
+            type: string
+
+        - in: path
+          name: replyId
+          description: String ID of the reply
+          required: true
+          schema:
+            type: string
+
+        - in: body
+          name: body
+          description: A JSON object containing the reply information
+          required: true
+          schema:
+            $ref: "#/definitions/UpdateReply"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/UpdateReply"
+
+    # DELETE operation
+    delete:
+      tags:
+        - comments
+
+      summary: Deletes a reply of a comment
+
+      parameters:
+        - in: path
+          name: commentId
+          description: String ID of the comment
+          required: true
+          schema:
+            type: string
+
+        - in: path
+          name: replyId
+          description: String ID of the reply
+          required: true
+          schema:
+            type: string
+
+        - in: body
+          name: body
+          description: A JSON object containing the email of the comment
+          required: true
+          schema:
+            $ref: "#/definitions/DeleteReply"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Reply"
+
+        "422":
+          description: Validation error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: Invalid ID error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  # Endpoint to update votes on a comment
+  /comments/{commentId}/replies/{replyId}/votes:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the upvotes or downvotes of a comment
+
+      parameters:
+        - in: path
+          name: commentId
+          description: String ID of the comment
+          required: true
+          schema:
+            type: string
+
+        - in: path
+          name: replyId
+          description: String ID of the reply
+          required: true
+          schema:
+            type: string
+
+        - in: body
+          name: body
+          description: A JSON object containing the enum vote type "upvote" or "downvote"
+          required: true
+          schema:
+            $ref: "#/definitions/Vote"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/VotedReply"
+
+        "422":
+          description: Validation error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: Invalid ID error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  # Endpoint to update the flag status of a reply of a comment
+  /comments/{commentId}/replies/{replyId}/flag:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the flag status of the reply of comment
+
+      parameters:
+        - in: path
+          name: commentId
+          description: String ID of the comment
+          required: true
+          schema:
+            type: string
+
+        - in: path
+          name: replyId
+          description: String ID of the reply
+          required: true
+          schema:
+            type: string
+
+        - in: body
+          name: body
+          description: A JSON object containing the flag status of the reply of a comment
+          required: true
+          schema:
+            $ref: "#/definitions/Flag"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/FlaggedReply"
+
+        "422":
+          description: Validation error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Authentication error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: Invalid ID error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+definitions:
+  # Comment schema
+  Comment:
+    type: object
+    required:
+      - _id
+      - refId
+      - commentBody
+      - commentOwnerName
+      - commentOwnerEmail
+      - commentOrigin
+      - totalVotes
+      - upvotes
+      - downvotes
+      - replies
+      - repliesCount
+    properties:
+      _id:
+        type: string
+      refId:
+        type: string
+      commentBody:
+        type: string
+      commentOwnerName:
+        type: string
+      commentOwnerEmail:
+        type: string
+        format: email
+      commentOrigin:
+        type: string
+      totalVotes:
+        type: number
+      upvotes:
+        type: number
+      downvotes:
+        type: number
+      replies:
+        type: array
+        items:
+          $ref: "#/definitions/Reply"
+      repliesCount:
+        type: number
+
+  # CreateComment schema
+  CreateComment:
+    type: object
+    required:
+      - refId
+      - commentBody
+      - commentOwnerName
+      - commentOwnerEmail
+      - commentOrigin
+    properties:
+      _id:
+        type: string
+      refId:
+        type: string
+      commentBody:
+        type: string
+      commentOwnerName:
+        type: string
+      commentOwnerEmail:
+        type: string
+        format: email
+      commentOrigin:
+        type: string
+
+  # UpdateComment schema
+  UpdateComment:
+    type: object
+    properties:
+      commentBody:
+        type: string
+      commentOwnerEmail:
+        type: string
+        format: email
+
+  # DeleteComment schema
+  DeleteComment:
+    type: object
+    required:
+      - commentOwnerEmail
+    properties:
+      commentOwnerEmail:
+        type: string
+        format: email
+
+  # Vote schema
+  Vote:
+    type: object
+    required:
+      - voteType
+    properties:
+      voteType:
+        type: string
+        example: "upvote"
+
+  # Flag schema
+  Flag:
+    type: object
+    required:
+      - isFlagged
+    properties:
+      isFlagged:
+        type: boolean
+
+  # VotedComment schema
+  VotedComment:
+    type: object
+    properties:
+      commentId:
+        type: string
+      totalVotes:
+        type: integer
+      upvotes:
+        type: integer
+      downvotes:
+        type: integer
+
+  # FlaggedComment schema
+  FlaggedComment:
+    type: object
+    properties:
+      commentId:
+        type: string
+      isFlagged:
+        type: boolean
+
+  # Reply schema
+  Reply:
+    type: object
+    required:
+      - replyId
+      - commentId
+      - replyBody
+      - replyOwnerName
+      - replyOwnerEmail
+      - upvotes
+      - downvotes
+    properties:
+      replyId:
+        type: string
+      commentId:
+        type: string
+      replyBody:
+        type: string
+      replyOwnerName:
+        type: string
+      replyOwnerEmail:
+        type: string
+        format: email
+      upvotes:
+        type: number
+      downvotes:
+        type: number
+
+  # CreateReply schema
+  CreateReply:
+    type: object
+    required:
+      - commentId
+      - replyBody
+      - replyOwnerName
+      - replyOwnerEmail
+      - upvotes
+      - downvotes
+    properties:
+      commentId:
+        type: string
+      replyBody:
+        type: string
+      replyOwnerName:
+        type: string
+      replyOwnerEmail:
+        type: string
+        format: email
+
+  # UpdateReply schema
+  UpdateReply:
+    type: object
+    properties:
+      replyBody:
+        type: string
+      replyOwnerEmail:
+        type: string
+        format: email
+
+  # DeleteReply schema
+  DeleteReply:
+    type: object
+    required:
+      - replyOwnerEmail
+    properties:
+      replyOwnerEmail:
+        type: string
+        format: email
+
+  # VotedReply schema
+  VotedReply:
+    type: object
+    properties:
+      replyId:
+        type: string
+      commentId:
+        type: string
+      totalVotes:
+        type: integer
+      upvotes:
+        type: integer
+      downvotes:
+        type: integer
+
+  # FlaggedReply schema
+  FlaggedReply:
+    type: object
+    properties:
+      commentId:
+        type: string
+      replyId:
+        type: string
+      isFlagged:
+        type: boolean
+
+  # ErrorResponse model
+  ErrorResponse:
+    type: object
+    required:
+      - status
+      - message
+      - data
+    properties:
+      status:
+        type: string
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          type: string
+        example: []
