@@ -41,15 +41,15 @@ app.use("/report/comments", commentRoutes);
 app.use("/reports/comments/replies", repliesRoutes);
 app.use(["/", "/documentation"], documentationRoutes);
 
-// Invalid route error handler 
-app.use("*",(req, res) => {
+// Invalid route error handler
+app.use("*", (req, res) => {
   res.status(404).send({
-    message: `Oops. The route ${req.method} ${req.originalUrl} is not recognised.`
+    message: `Oops. The route ${req.method} ${req.originalUrl} is not recognised.`,
   });
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
