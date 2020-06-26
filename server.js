@@ -5,17 +5,17 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const commentRoutes = require("./routes/comments");
 const repliesRoutes = require("./routes/replies");
-const swaggerSpec = require("./utils/swaggerSpec");
+const documentationRoutes = require("./routes/documentation");
+const CustomError = require("./utils/customError");
+const errorHandler = require("./utils/errorhandler");
 
 require("dotenv").config();
-const swaggerUi = require("swagger-ui-express");
 const app = express();
 
 //connect to mongodb
 mongoose
   .connect(
     "mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority",
-    process.env.DB_URL,
     {
       useNewUrlParser: true, // for connection warning
       useUnifiedTopology: true,
@@ -41,23 +41,20 @@ app.use(cors());
 //setup app routes
 app.use("/report/comments", commentRoutes);
 app.use("/reports/comments/replies", repliesRoutes);
+app.use(["/", "/documentation"], documentationRoutes);
 
-// use swagger-ui-express for your app documentation endpoint
-const swaggerRouter = express.Router();
-swaggerRouter.use("/", swaggerUi.serve);
-swaggerRouter.get("/", swaggerUi.setup(swaggerSpec));
-swaggerRouter.get("/documentation", swaggerUi.setup(swaggerSpec));
-app.use(["/", "/documentation"], swaggerRouter);
+// Invalid route error handler
+app.use("*", (req, res, next) => {
+  const error = new CustomError(
+    404,
+    `Oops. The route ${req.method} ${req.originalUrl} is not recognised.`
+  );
+  next(error);
+});
 
 // error handler
-app.use((err, req, res) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.sendStatus(err.status || 500);
-  res.send("error");
+app.use((err, req, res, next) => {
+  errorHandler(err, req, res, next);
 });
 
 module.exports = app;
