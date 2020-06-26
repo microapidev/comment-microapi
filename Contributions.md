@@ -1,6 +1,6 @@
 ## ENDPOINTS AND RESPONSE FORMAT
 
-### POST: `/comment/create`
+### POST: `/comments`
 
 This endpoint will be used to save new comment coming from a particular report on the web
 
@@ -8,7 +8,7 @@ This endpoint will be used to save new comment coming from a particular report o
 
 ```
 {
-    "refId": number,
+    "refId": string,
     "commentBody": string,
     "commentOwnerName": string,
     "commentOwnerEmail": string,
@@ -26,25 +26,45 @@ This endpoint will be used to save new comment coming from a particular report o
     "response": "Ok",
     "data": [{
             "_id": "514eac214dca41",
-            "refId": number,
+            "refId": string, #e.g the reportId value
             "commentBody": string,
             "commentOwnerName": string,
             "commentOwnerEmail": string,
             "commentOrigin": string, #e.g Expenditure Report
-            "totalVotes": number, #(upvotes + downvotes)
-            "upvotes": number,
-            "downvotes": number,
-            "replies": [],
-            "repliesCount": number,
-            "flagsCount": number
-
         }]
 }
 ```
 
-### GET: `comments/{refId}`
+> Example Error Responses
+
+> Validation Error 
+> StatusCode `422`
+
+```
+{
+  "status": "failed",
+  "data": [],
+  "message": "Return validation errors from middleware""
+}
+```
+
+> Authentication Error
+> StatusCode `401`
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Invalid token or not authorized to access resource"
+}
+```
+
+### GET: `comments/refs/{refId}`
 
 This endpoint returns all comments on a particular from a reference() on the web
+
+> Param
+`"refId": string #required`
 
 > Status Code `200`
 
@@ -80,16 +100,56 @@ This endpoint returns all comments on a particular from a reference() on the web
 }
 ```
 
+> Example Error Responses
+
+> Validation Error 
+> StatusCode 422
+
+```
+{
+  "status": "failed",
+  "data": [],
+  "message": "Return validation errors from middleware""
+}
+```
+
+> Authentication Error
+> StatusCode 401
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Invalid token or not authorized to access resource"
+}
+```
+
+> Invalid RefId Error
+> StatusCode 404
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Comment not found"
+}
+```
+
+
+
 ### PATCH: `comment/edit/{commentId}`
 
 This endpoint allows edit of a comment
+
+> Param
+`"commentId": string #required`
 
 > Body
 
 ```
 {
-    "commentBody": string,
-    "commentOwnerEmail": string
+    "commentBody": string, #optional
+    "commentOwnerEmail": string #optional
 }
 ```
 
@@ -101,7 +161,46 @@ This endpoint allows edit of a comment
 {
     "message": "Comment Editted Successfully",
     "response": "Ok",
-    "data": [#return the updated record]
+    "data": {
+        "commentBody": string,
+        "commentOwnerEmail": string
+    }
+}
+```
+
+
+> Example Error Responses
+
+> Validation Error 
+> StatusCode 422
+
+```
+{
+  "status": "failed",
+  "data": [],
+  "message": "Return validation errors from middleware""
+}
+```
+
+> Authentication Error
+> StatusCode 401
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Invalid token or not authorized to access resource"
+}
+```
+
+> Invalid RefId Error
+> StatusCode 404
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Comment not found"
 }
 ```
 
@@ -111,12 +210,14 @@ This endpoint deletes a comment.
 Request Body must contain email address of user and Comment ID as request parameter
 
 > Body
-
 ```
 {
-    "email": string
+    "email": string #required
 }
 ```
+
+> Param 
+
 
 > Status Code `200`
 
@@ -126,7 +227,43 @@ Request Body must contain email address of user and Comment ID as request parame
 {
     "message": "Comment Deleted Successfully",
     "response": "Ok",
-    "data": [#return the updated record]
+    "data": []
+}
+```
+
+
+> Example Error Responses
+
+> Validation Error 
+> StatusCode 422
+
+```
+{
+  "status": "failed",
+  "data": [],
+  "message": "Return validation errors from middleware""
+}
+```
+
+> Authentication Error
+> StatusCode 401
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Invalid token or not authorized to access resource"
+}
+```
+
+> Invalid RefId Error
+> StatusCode 404
+
+```
+{
+  "status"": "failed",
+  "data": [],
+  "message": "Comment not found"
 }
 ```
 
@@ -134,6 +271,9 @@ Request Body must contain email address of user and Comment ID as request parame
 
 This endpoint modifies votes of a comment.
 Request Body must contain the type of vote `upvote` or `downvote` and Comment ID as request parameter
+
+> Param
+`commentId: string #required`
 
 > Body
 
@@ -167,9 +307,13 @@ This endpoint flags a comment.
 
 > Body
 
+> Param
+`commentId: string #required`
+
 ```
 {
-    "isFlagged": boolean
+    "isFlagged": boolean,
+    "email": string #required
 }
 ```
 
