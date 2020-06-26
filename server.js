@@ -1,57 +1,61 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const commentRoutes = require('./routes/comments');
-const repliesRoutes = require('./routes/replies');
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const commentRoutes = require("./routes/comments");
+const repliesRoutes = require("./routes/replies");
+const swaggerSpec = require("./utils/swaggerSpec");
 
+const swaggerUi = require("swagger-ui-express");
 const app = express();
 
 //connect to mongodb
 mongoose
   .connect(
-    'mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority',
+    "mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority",
     {
       useNewUrlParser: true, // for connection warning
       useUnifiedTopology: true,
     },
     () => {
       console.log(
-        '\n \t Database connection has been established successfully'
+        "\n \t Database connection has been established successfully"
       );
     }
   )
   .catch((err) => {
-    console.error('App starting error:', err.stack);
+    console.error("App starting error:", err.stack);
     process.exit(1);
   });
 
 // setup middleware
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 
-//setup app routes
-app.get('/', home);
-app.use('/comments', commentRoutes);
-app.use('/comments/replies', repliesRoutes);
+// setup app routes
+app.use("/comments", commentRoutes);
+app.use("/comments/replies", repliesRoutes);
 
-function home(req, res, next){
-  res.status(200).json({status: Success, message: "Welcome", data: "This is the comments service api"})
-}
+// use swagger-ui-express for your app documentation endpoint
+const swaggerRouter = express.Router();
+swaggerRouter.use("/", swaggerUi.serve);
+swaggerRouter.get("/", swaggerUi.setup(swaggerSpec));
+swaggerRouter.get("/documentation", swaggerUi.setup(swaggerSpec));
+app.use(["/", "/documentation"], swaggerRouter);
 
 // error handler
 app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
   res.sendStatus(err.status || 500);
-  res.send('error');
+  res.send("error");
 });
 
 module.exports = app;
