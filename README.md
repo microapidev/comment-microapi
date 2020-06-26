@@ -8,6 +8,7 @@ For quick navigation:
 - [Linting Your Code](#linting-your-code)
 - [Testing Your Code](#testing-your-code)
 - [Contributing Your Code](#contributing-your-code)
+- [Endpoints Documentation](#endpoints-documentation)
 - [Schema Design Explanation](#schema-design-explanation)
 
 ## <a name="getting-started"></a> Getting Started
@@ -42,6 +43,10 @@ You will first need to setup your local environment and ensure that all configur
 ## <a name="contributing-your-code"></a> Contributing Your Code
 
 Ensure that your lint and test your code before submitting a pull request (PR). For more information on cotributing guidelines and tips on certain implementation details, please see the [contributing documentation](https://github.com/microapi/comment-microapi/tree/master/CONTRIBUTING.md).
+
+## <a name="endpoints-documentation"></a> Endpoints Documentation
+
+After setting up your local environment (see above), please find the Swagger documentation for all endpoints in the `localhost:4000` or `localhost:4000/documentation` routes.
 
 ## <a name="schema-design-explanation"></a> Schema Design Explanation
 
