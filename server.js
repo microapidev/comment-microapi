@@ -12,24 +12,24 @@ const swaggerUi = require("swagger-ui-express");
 const app = express();
 
 //connect to mongodb
-// mongoose
-//   .connect(
-//     "mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority",
-//     process.env.DB_URL,
-//     {
-//       useNewUrlParser: true, // for connection warning
-//       useUnifiedTopology: true,
-//     },
-//     () => {
-//       console.log(
-//         "\n \t Database connection has been established successfully"
-//       );
-//     }
-//   )
-//   .catch((err) => {
-//     console.error("App starting error:", err.stack);
-//     process.exit(1);
-//   });
+mongoose
+  .connect(
+    "mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority",
+    process.env.DB_URL,
+    {
+      useNewUrlParser: true, // for connection warning
+      useUnifiedTopology: true,
+    },
+    () => {
+      console.log(
+        "\n \t Database connection has been established successfully"
+      );
+    }
+  )
+  .catch((err) => {
+    console.error("App starting error:", err.stack);
+    process.exit(1);
+  });
 
 // setup middleware
 app.use(logger("dev"));

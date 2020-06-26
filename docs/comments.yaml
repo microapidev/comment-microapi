@@ -121,21 +121,6 @@ definitions:
             repliesCount:
               type: number
 
-  # OKResponse model
-  OKResponse:
-    type: object
-    required:
-      - message
-      - response
-      - data
-    properties:
-      message:
-        type: string
-      response:
-        type: string
-      data:
-        type: string
-
   # BadRequestResponse model
   BadRequestResponse:
     type: object
@@ -149,4 +134,6 @@ definitions:
       response:
         type: string
       data:
-        type: string
+        type: array
+        items:
+          type: string
