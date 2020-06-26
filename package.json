@@ -4,7 +4,15 @@
   "description": "This is microservice that allows user to create, edit, delete, get, and flag comments and replies",
   "main": "server.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "startDev": "nodemon ./bin/www",
+    "test": "cross-env NODE_ENV=test jest",
+    "test:debug": "cross-env NODE_ENV=test jest --detectOpenHandles",
+    "test:watch": "cross-env NODE_ENV=test jest --watch",
+    "test:cover": "cross-env NODE_ENV=test jest --coverage",
+    "test:ci": "cross-env NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | coveralls",
+    "lint": "eslint \"./**/*.js\"",
+    "lint:fix": "eslint --fix \"./**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -28,10 +36,23 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "jest": "^26.1.0",
     "mongoose": "^5.9.20",
     "morgan": "^1.10.0",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.3",
+    "@babel/core": "^7.10.3",
+    "@babel/node": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "babel-jest": "^26.1.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.1.0",
+    "prettier": "^2.0.5",
+    "supertest": "^4.0.2"
   }
 }
