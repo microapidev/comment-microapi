@@ -6,17 +6,21 @@ const ReplySchema = new Schema({
     type: String,
     required: true,
   },
-  comment_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Comments' },
-  upVotes: [{
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: "Users"
-  }],
-  downVotes: [{
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: "Users",
-  }],
+  comment_id: { type: mongoose.Schema.Types.ObjectId, ref: "Comments" },
+  upVotes: [
+    {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Users",
+    },
+  ],
+  downVotes: [
+    {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Users",
+    },
+  ],
   isFlagged: Boolean,
   user: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
 });

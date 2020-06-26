@@ -15,7 +15,6 @@ const app = express();
 mongoose
   .connect(
     "mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority",
-    process.env.DB_URL,
     {
       useNewUrlParser: true, // for connection warning
       useUnifiedTopology: true,
