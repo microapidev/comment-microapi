@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -8,7 +7,7 @@ const commentRoutes = require("./routes/comments");
 const repliesRoutes = require("./routes/replies");
 const swaggerSpec = require("./utils/swaggerSpec");
 
-require('dotenv').config();
+require("dotenv").config();
 const swaggerUi = require("swagger-ui-express");
 const app = express();
 
@@ -40,8 +39,8 @@ app.use(cookieParser());
 app.use(cors());
 
 //setup app routes
-app.use('/report/comments', commentRoutes);
-app.use('/reports/comments/replies', repliesRoutes);
+app.use("/report/comments", commentRoutes);
+app.use("/reports/comments/replies", repliesRoutes);
 
 // use swagger-ui-express for your app documentation endpoint
 const swaggerRouter = express.Router();
