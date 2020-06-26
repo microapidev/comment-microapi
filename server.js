@@ -59,5 +59,9 @@ app.use((err, req, res) => {
   res.sendStatus(err.status || 500);
   res.send("error");
 });
-
+app.use("*", (req, res) => {
+  res.send({
+    message: `Oops. The route ${req.method} ${req.originalUrl} is not recognised`,
+  });
+});
 module.exports = app;
