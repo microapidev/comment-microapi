@@ -37,27 +37,27 @@ app.use(cookieParser());
 app.use(cors());
 
 //setup app routes
-app.get('/', home);
-app.use('/comment', commentRoutes);
-app.use('/comment/replies', repliesRoutes);
+app.get("/", home);
+app.use("/comment", commentRoutes);
+app.use("/comment/replies", repliesRoutes);
 app.use(["/", "/documentation"], documentationRoutes);
 
-// Invalid route error handler 
-app.use("*",(req, res) => {
-  res.status(404).send({
-    message: `Oops. The route ${req.method} ${req.originalUrl} is not recognised.`
+// Invalid route error handler
+app.use("*", (req, res) => {
+  res.status(404).json({
+    message: `Oops. The route ${req.method} ${req.originalUrl} is not recognised.`,
   });
-
+});
 function home(req, res) {
   res.json({
-    status: 'Success',
-    message: 'Welcome',
-    data: 'This is the comments service api',
-
-});
+    status: "Success",
+    message: "Welcome",
+    data: "This is the comments service api",
+  });
+}
 
 // error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
