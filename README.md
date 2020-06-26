@@ -46,7 +46,19 @@ Ensure that your lint and test your code before submitting a pull request (PR). 
 
 ## <a name="endpoints-documentation"></a> Endpoints Documentation
 
-After setting up your local environment (see above), please find the Swagger documentation for all endpoints in the `localhost:4000` or `localhost:4000/documentation` routes.
+There are two options that you can choose from when you would like to view the endpoints' Swagger documentation.
+
+The first option is online and should be your first go to as this will be the live server with the most trustworthy documentation.
+
+The second option is local and should be used as a last resort when the online option is unavailable.
+
+### Online
+
+Visit the [online server](https://comments-microservice.herokuapp.com/) to see the live Swagger documentation.
+
+### Locally
+
+After setting up your local environment (see above), please visit the `localhost:4000` or `localhost:4000/documentation` route to see the local Swagger documentation.
 
 ## <a name="schema-design-explanation"></a> Schema Design Explanation
 
