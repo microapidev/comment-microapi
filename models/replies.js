@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ReplySchema = new Schema({
@@ -18,7 +18,8 @@ const ReplySchema = new Schema({
     ref: "Users",
   }],
   isFlagged: Boolean,
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
 });
 
-const Reply = mongoose.model('Reply', ReplySchema);
+const Reply = mongoose.model("Reply", ReplySchema);
 module.exports = Reply;

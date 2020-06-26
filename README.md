@@ -33,6 +33,12 @@ You will first need to setup your local environment and ensure that all configur
 ```
 BASE_URL=
 ```
+### Before making a pull request/submitting your PR for review:
+
+- Run `npm run lint` to find errors in code syntax/format
+- and Run `npm run lint:fix` to fix all fixable errors in source code and format with prettier
+- Ensure you fix any linting errors displayed after running any of the above commands
+- Run `npm run test:ci` to ensure your code matches the test
 
 ## Schema Design Explanation
 
