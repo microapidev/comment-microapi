@@ -58,7 +58,7 @@ Visit the [online server](https://comments-microservice.herokuapp.com/) to see t
 
 ### Locally
 
-After setting up your local environment (see above), please visit the `localhost:4000` or `localhost:4000/documentation` route to see the local Swagger documentation.
+After setting up your local environment (see above), please visit the `localhost:4000` or the `localhost:4000/documentation` route to see the local Swagger documentation.
 
 ## <a name="schema-design-explanation"></a> Schema Design Explanation
 
