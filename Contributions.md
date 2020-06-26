@@ -1,4 +1,4 @@
-## ENDPOINTS
+## ENDPOINTS AND RESPONSE FORMAT
 
 ### POST: `report/comment/create`
 
