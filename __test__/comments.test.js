@@ -15,7 +15,8 @@ describe('Comments Endpoints', () => {
   it('posts a new comment to the db', async (done) => {
     const res = await request
       .post('/comments')
-      .set('Accept', 'application/json');
+      .set('Accept', 'application/json')
+      .send(req.body);
     expect(res.status).toBe(200);
     expect(res.body.status).toBe('success');
     done();
