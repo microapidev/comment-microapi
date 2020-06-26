@@ -5,10 +5,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const commentRoutes = require("./routes/comments");
 const repliesRoutes = require("./routes/replies");
-const swaggerSpec = require("./utils/swaggerSpec");
+const documentationRoutes = require("./routes/documentation");
 
 require("dotenv").config();
-const swaggerUi = require("swagger-ui-express");
 const app = express();
 
 //connect to mongodb
@@ -40,13 +39,7 @@ app.use(cors());
 //setup app routes
 app.use("/report/comments", commentRoutes);
 app.use("/reports/comments/replies", repliesRoutes);
-
-// use swagger-ui-express for your app documentation endpoint
-const swaggerRouter = express.Router();
-swaggerRouter.use("/", swaggerUi.serve);
-swaggerRouter.get("/", swaggerUi.setup(swaggerSpec));
-swaggerRouter.get("/documentation", swaggerUi.setup(swaggerSpec));
-app.use(["/", "/documentation"], swaggerRouter);
+app.use(["/", "/documentation"], documentationRoutes);
 
 // Invalid route error handler 
 app.use("*",(req, res) => {
