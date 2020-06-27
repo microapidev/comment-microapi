@@ -4,6 +4,7 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const commentRoutes = require("./routes/comments");
+const repliesRoutes = require("./routes/replies");
 const documentationRoutes = require("./routes/documentation");
 const CustomError = require("./utils/customError");
 const errorHandler = require("./utils/errorhandler");
