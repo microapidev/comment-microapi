@@ -1,4 +1,5 @@
 // UNCOMMENT EACH MODEL HERE AS NEEDED
+const { ObjectId } = require("mongoose").Types;
 
 const Replies = require("../models/replies");
 const Comments = require("../models/comments");
@@ -8,7 +9,10 @@ import responseHandler from "../utils/responseHandler";
 
 const getCommentReplies = async (req, res, next) => {
   const { commentId } = req.params;
-  console.log(commentId);
+
+  if (!ObjectId.isValid(commentId)) {
+    return next(new CustomError(400, " Invalid comment Id "));
+  }
   try {
     //check if such comment exists
     const comment = await Comments.findById(commentId);
