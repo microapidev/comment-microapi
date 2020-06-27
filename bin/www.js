@@ -5,11 +5,31 @@
 var app = require("../server");
 var debug = require("debug")("fblog:server");
 var http = require("http");
-
+const mongoose = require("mongoose");
 /**
  * Module to allow usage of process.env
  */
 require("dotenv").config();
+
+//connect to mongodb
+console.log("\n \t Attempting to connect to database...");
+mongoose
+  .connect(
+    process.env.DB_URL,
+    {
+      useNewUrlParser: true, // for connection warning
+      useUnifiedTopology: true,
+    },
+    () => {
+      console.log(
+        "\n \t Database connection has been established successfully"
+      );
+    }
+  )
+  .catch((err) => {
+    console.error("App starting error:", err.stack);
+    process.exit(1);
+  });
 
 /**
  * Get port from environment and store in Express.
