@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 module.exports = async () => {
   console.log("\n Attempting to connect to database...");
   try {
+    console.log(process.env.DB_URL);
     await mongoose.connect(
       process.env.DB_URL,
       {
