@@ -1,16 +1,13 @@
 // connect to mongoDB and prolly seed here
 
-console.log(process.env.DB_URL);
-
 require("dotenv").config();
 const mongoose = require("mongoose");
 
 module.exports = async () => {
   console.log("\n Attempting to connect to database...");
   try {
-    console.log(process.env.DB_URL);
     await mongoose.connect(
-      process.env.DB_URL,
+      "mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority",
       {
         useNewUrlParser: true, // for connection warning
         useUnifiedTopology: true,
