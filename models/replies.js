@@ -25,5 +25,5 @@ const ReplySchema = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
 });
 
-const Reply = mongoose.model("Reply", ReplySchema);
+const Reply = mongoose.model("Replies", ReplySchema);
 module.exports = Reply;
