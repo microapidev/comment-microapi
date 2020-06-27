@@ -1,3 +1,4 @@
+const repliesRoutes = require("./replies");
 const router = require("express").Router();
 const commentController = require("../controller/commentsController");
 
@@ -10,5 +11,7 @@ router.get("/", (req, res) => {
 });
 
 router.patch("/:commentId/votes", commentController.voteComment);
+
+router.use("/comments/replies", repliesRoutes);
 
 module.exports = router;
