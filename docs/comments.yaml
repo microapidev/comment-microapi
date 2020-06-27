@@ -242,11 +242,21 @@ paths:
 
         - in: body
           name: body
-          description: A JSON object containing the enum vote type "upvote" or "downvote"
+          description: A JSON object containing the enum vote type "upvote" or "downvote" and email of user
           required: true
           schema:
-            $ref: "#/definitions/Vote"
-
+            type: object
+            required:
+              - voteType
+              - email
+            properties:
+              voteType:
+                type: string
+              email:
+                type: string
+                items:
+                  $ref: "#/definitions/Vote"
+            
       responses:
         "200":
           description: Successful operation
