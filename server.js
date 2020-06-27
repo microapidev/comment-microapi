@@ -4,7 +4,6 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const commentRoutes = require("./routes/comments");
-const repliesRoutes = require("./routes/replies");
 const documentationRoutes = require("./routes/documentation");
 const CustomError = require("./utils/customError");
 const errorHandler = require("./utils/errorhandler");
@@ -39,8 +38,7 @@ app.use(cookieParser());
 app.use(cors());
 
 //setup app routes
-app.use("/report/comments", commentRoutes);
-app.use("/reports/comments/replies", repliesRoutes);
+app.use("/comments", commentRoutes);
 app.use(["/", "/documentation"], documentationRoutes);
 
 // Invalid route error handler
