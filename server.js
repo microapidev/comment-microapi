@@ -49,13 +49,6 @@ app.use("*", (req, res, next) => {
   );
   next(error);
 });
-function home(req, res) {
-  res.json({
-    status: "Success",
-    message: "Welcome",
-    data: "This is the comments service api",
-  });
-}
 
 // error handler
 app.use((err, req, res, next) => {
