@@ -1,6 +1,6 @@
-import repliesRoutes from "./replies";
+const repliesRoutes = require("./replies");
 const router = require("express").Router();
 
 router.use("/comments/replies", repliesRoutes);
 
-export default router;
+module.exports = router;
