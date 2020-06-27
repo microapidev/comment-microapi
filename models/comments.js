@@ -3,32 +3,31 @@ const Schema = mongoose.Schema;
 
 const CommentSchema = new Schema(
   {
-    comment_body: {
+    refId: Number,
+    commentBody: {
       type: String,
       required: true,
     },
-    comment_origin: String,
+    commentOrigin: String,
     isFlagged: { type: Boolean, default: false },
     numOfFlags: {
       type: Number,
       default: 0,
     },
-    replies: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+    replies: [{ type: Schema.Types.ObjectId, ref: "Replies" }],
     upVotes: [
       {
         type: Schema.Types.ObjectId,
-        required: true,
         ref: "Users",
       },
     ],
     downVotes: [
       {
         type: Schema.Types.ObjectId,
-        required: true,
         ref: "Users",
       },
     ],
-    user: [{ type: Schema.Types.ObjectId, ref: "Users" }],
+    commentOwner: { type: Schema.Types.ObjectId, required: true, ref: "Users" },
   },
   { timestamps: true }
 );
