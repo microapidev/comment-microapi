@@ -1,5 +1,4 @@
 const app = require("../../server");
-const mongoose = require("mongoose");
 const supertest = require("supertest");
 const request = supertest(app);
 
@@ -9,11 +8,6 @@ describe("GET /", () => {
     expect(res.status).toBe(200);
     expect(res.text).toMatchSnapshot();
     done();
-  });
-
-  afterAll(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-    await mongoose.disconnect();
   });
 });
 

@@ -12,23 +12,8 @@ require("dotenv").config();
 const app = express();
 
 //connect to mongodb
-mongoose
-  .connect(
-    "mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true, // for connection warning
-      useUnifiedTopology: true,
-    },
-    () => {
-      console.log(
-        "\n \t Database connection has been established successfully"
-      );
-    }
-  )
-  .catch((err) => {
-    console.error("App starting error:", err.stack);
-    process.exit(1);
-  });
+const database = require("./db/database");
+database.connect();
 
 // setup middleware
 app.use(logger("dev"));

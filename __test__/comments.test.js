@@ -2,7 +2,6 @@ const app = require("../server");
 // const Comments = require("../models/comments");
 const supertest = require("supertest");
 const request = supertest(app);
-const mongoose = require("mongoose");
 
 describe("GET Comments Endpoints", () => {
   it("gets all comments from the db", async (done) => {
@@ -31,10 +30,5 @@ describe("GET Comments Endpoints", () => {
     expect(res.body.status).toBe("success");
     expect(res.body.data.commentId).toBe(commentId);
     done();
-  });
-
-  afterAll(async () => {
-    await new Promise((r) => setTimeout(r, 6000));
-    await mongoose.disconnect();
   });
 });
