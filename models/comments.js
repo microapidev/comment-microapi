@@ -14,9 +14,7 @@ const CommentSchema = new Schema(
       type: Number,
       default: 0,
     },
-
     replies: [{ type: Schema.Types.ObjectId, ref: "Replies" }],
-
     upVotes: [
       {
         type: Schema.Types.ObjectId,
