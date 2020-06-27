@@ -14,6 +14,13 @@ const CommentSchema = new Schema(
       default: 0,
     },
     replies: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+    voteType: {
+      type: String,
+      enum: ["upvote", "downvote"],
+    },
+    totalVotes: {
+      type: Number,
+    },
     upVotes: [
       {
         type: Schema.Types.ObjectId,

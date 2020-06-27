@@ -39,6 +39,7 @@ app.use(cookieParser());
 app.use(cors());
 
 //setup app routes
+app.use("/", commentRoutes);
 app.use("/report/comments", commentRoutes);
 app.use("/reports/comments/replies", repliesRoutes);
 app.use(["/", "/documentation"], documentationRoutes);

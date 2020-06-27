@@ -289,9 +289,9 @@ Request Body must contain the type of vote `upvote` or `downvote` and Comment ID
 
 > Body
 
-```
+`vote: string "upvote || downvote"`
 {
-    "vote_type": enum["upvote", "downvote"]
+    "voteType": enum["upvote", "downvote"]
 }
 ```
 
