@@ -1,5 +1,7 @@
 // connect to mongoDB and prolly seed here
 
+console.log(process.env.DB_URL);
+
 require("dotenv").config();
 const mongoose = require("mongoose");
 
