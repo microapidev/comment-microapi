@@ -6,8 +6,8 @@ const Comments = require("../models/comments");
 // const User = require("../models/users");
 const errHandler = require("../utils/errorhandler");
 const mongoose = require("mongoose");
-const CustomError = require('../utils/customError');
-const { default: responseHandler } = require('../utils/responseHandler');
+const CustomError = require("../utils/customError");
+const { default: responseHandler } = require("../utils/responseHandler");
 
 exports.flagComment = async (req, res) => {
   try {
@@ -56,9 +56,11 @@ exports.flagComment = async (req, res) => {
 
 exports.getUnflaggedComments = (req, res, next) => {
   Comments.find({ isFlagged: false })
-    .select('_id replies upVotes downVotes commentBody commentOrigin commentOwner createdAt updatedAt')
+    .select(
+      "_id replies upVotes downVotes commentBody commentOrigin commentOwner createdAt updatedAt"
+    )
     .exec()
-    .then(comments => {
+    .then((comments) => {
       if (!comments || comments.length < 1) {
         return next(new CustomError(404, "No unflagged comments found"));
       } else {
@@ -66,7 +68,13 @@ exports.getUnflaggedComments = (req, res, next) => {
         return responseHandler(res, 200, comments, message);
       }
     })
-    .catch(err => {
-      return next(new CustomError(500, "Oops, something went wrong, please try againg", [err]))
+    .catch((err) => {
+      return next(
+        new CustomError(
+          500,
+          "Oops, something went wrong, please try againg",
+          err
+        )
+      );
     });
-}
+};
