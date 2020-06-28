@@ -30,8 +30,4 @@ app.use("*", (req, res, next) => {
 app.use((err, req, res, next) => {
   errorHandler(err, req, res, next);
 });
-//unhandled promise rejections error handler
-//process.on("unhandledRejection", function (err) {
-//console.log(err);
-//});
 module.exports = app;
