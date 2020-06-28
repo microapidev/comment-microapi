@@ -22,6 +22,10 @@ const ReplySchema = new Schema({
     },
   ],
   isFlagged: Boolean,
+  numOfFlags: {
+    type: Number,
+    default: 0,
+  },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
 });
 
