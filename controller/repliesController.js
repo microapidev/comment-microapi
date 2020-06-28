@@ -18,16 +18,18 @@ const getCommentReplies = async (req, res, next) => {
     const comment = await Comments.findById(commentId);
     // If the comment does not exist,send an error msg
     if (!comment) {
-      console.log(comment);
       return next(new CustomError(404, ' Comment not found '));
     }
 
-    const replies = await Replies.find({ comment_id: commentId });
+    const replies = await Replies.find({ commentId: comment._id }).populate(
+      'users'
+    );
     let message = ' Replies found. ';
     if (!replies.length) {
       message = ' No replies found. ';
     }
 
+    console.log(replies);
     return responseHandler(res, 200, replies, message);
   } catch (err) {
     next(err);
@@ -37,3 +39,4 @@ const getCommentReplies = async (req, res, next) => {
 module.exports = {
   getCommentReplies,
 };
+

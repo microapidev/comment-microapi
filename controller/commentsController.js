@@ -7,21 +7,6 @@ const CustomError = require('../utils/customError');
 // const User = require("../models/users");
 const errHandler = require('../utils/errorhandler');
 
-exports.getCommentReplies = (req, res, next) => {
-  const commentId = mongoose.Types.ObjectId(req.params.commentId);
-  if (!mongoose.Types.ObjectId.isValid(commentId)) {
-    const error = new CustomError(400, `Please provide a valid ID.`);
-    next(error);
-  }
-  console.log(commentId);
-  Comments.findById(commentId)
-    .populate('replies')
-    .populate('commentOwner')
-    .then((response) => {
-      return res.status(200).json({ response });
-    })
-    .catch(next);
-};
 exports.flagComment = async (req, res) => {
   try {
     const { commentId } = req.params;

@@ -34,9 +34,9 @@ app.use('*', (req, res, next) => {
   next(error);
 });
 
-// error handler
-app.use((err, req, res, next) => {
-  errorHandler(err, req, res, next);
-});
+// // error handler
+// app.use((err, req, res, next) => {
+//   errorHandler(err, req, res, next);
+// });
 
 module.exports = app;
