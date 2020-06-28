@@ -1,8 +1,8 @@
-const app = require("../server");
+const app = require("../../server");
 // const Comments = require("../models/comments");
 const supertest = require("supertest");
 const request = supertest(app);
-import { skipIfNotFound } from "./helpers/conditionalTests";
+import { skipIfNotFound } from "../helpers/conditionalTests";
 
 describe("GET Comments Endpoints", () => {
   skipIfNotFound("/comments", "GET");

@@ -3,8 +3,10 @@ const supertest = require("supertest");
 const CommentModel = require("../../models/comments");
 const mongoose = require("mongoose");
 const request = supertest(app);
+import { skipIfNotFound } from "../helpers/conditionalTests";
 
-describe("POST '/comments' && '/comments/:id/replies'", () => {
+describe("POST '/comments'", () => {
+  skipIfNotFound("POST", "/comments");
   test("Should create comment", async () => {
     const res = await request.post("/comments").send({
       commentBody: "this is a comment",
@@ -20,7 +22,10 @@ describe("POST '/comments' && '/comments/:id/replies'", () => {
     expect(res.body.data.commentOwnerName).toBeTruthy();
     expect(res.body.data.commentOwnerEmail).toBeTruthy();
   });
+});
 
+describe("POST '/comments/:commentId/replies'", () => {
+  skipIfNotFound("POST", "/comments/:id/replies");
   test("Should create new reply to comment", async () => {
     const comment = new CommentModel({
       commentBody: "this is a comment",
