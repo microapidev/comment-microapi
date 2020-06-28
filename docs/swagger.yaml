@@ -1095,7 +1095,7 @@ components:
 
     ownerNameParam: # Can be referenced via '#/components/parameters/ownerNameParam'
       in: query
-      name: ownerEmail
+      name: ownerName
       description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain owner name. If omitted, the response includes all comments, or replies, regardless of its owner name.
       schema:
         type: string
