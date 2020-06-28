@@ -3,11 +3,19 @@ const Schema = mongoose.Schema;
 
 const CommentSchema = new Schema(
   {
-    comment_body: {
+    commentBody: {
       type: String,
       required: true,
     },
-    comment_origin: String,
+    commentOwnerName: {
+      type: String,
+      required: true,
+    },
+    commentOwnerEmail: {
+      type: String,
+      required: true,
+    },
+    commentOrigin: String,
     isFlagged: { type: Boolean, default: false },
     numOfFlags: {
       type: Number,
