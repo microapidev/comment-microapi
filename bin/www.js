@@ -18,6 +18,8 @@ console.log("\n \t Attempting to connect to database...");
 const database = require("../db/database");
 database.connect();
 
+console.log("\n \t Database connected successfully");
+
 /**
  * Get port from environment and store in Express.
  */
