@@ -6,11 +6,11 @@
   "scripts": {
     "start": "node ./bin/www",
     "startDev": "nodemon --exec babel-node ./bin/www",
-    "test": "cross-env NODE_ENV=test jest",
-    "test:debug": "cross-env NODE_ENV=test jest --detectOpenHandles",
-    "test:watch": "cross-env NODE_ENV=test jest --watch",
+    "test": "cross-env NODE_ENV=test jest --verbose",
+    "test:debug": "cross-env NODE_ENV=test jest --detectOpenHandles --verbose",
+    "test:watch": "cross-env NODE_ENV=test jest --watch --verbose",
     "test:cover": "cross-env NODE_ENV=test jest --coverage",
-    "test:ci": "cross-env NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | coveralls",
+    "test:ci": "cross-env NODE_ENV=test jest --coverage --verbose && cat ./coverage/lcov.info | coveralls",
     "lint": "eslint \"./**/*.js\"",
     "lint:fix": "eslint --fix \"./**/*.js\""
   },
