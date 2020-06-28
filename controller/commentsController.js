@@ -1,9 +1,8 @@
 // UNCOMMENT EACH MODEL HERE AS NEEDED
 
-// const Replies = require("../models/replies");
-
+const Replies = require("../models/replies");
 const Comments = require("../models/comments");
-// const User = require("../models/users");
+const User = require("../models/users");
 const errHandler = require("../utils/errorhandler");
 const mongoose = require("mongoose");
 
@@ -50,4 +49,81 @@ exports.flagComment = async (req, res) => {
   } catch (error) {
     errHandler(error, res);
   }
+};
+
+exports.getComments = async (req, res, next) => {
+  const origin = req.query.origin;
+  try {
+    await Comments.find({ commentOrigin: origin })
+      .populate("replies")
+      .populate("users")
+      .then((comments) => {
+        res.status(200).json({
+          status: "success",
+          message: `Comments Retrieved Successfully for ${origin}`,
+          data: comments,
+        });
+      })
+      .catch(next);
+  } catch (err) {
+    res.status(401).json({
+      status: "error",
+      message: `Something went wrong`,
+      data: err,
+    });
+  }
+};
+
+exports.getFlaggedComments = async (req, res, next) => {
+  const origin = req.query.origin;
+  try {
+    await Comments.find({ commentOrigin: origin, isFlagged: true })
+      .populate("replies")
+      .populate("users")
+      .then((comments) => {
+        res.status(200).json({
+          status: "success",
+          message: `Flagged Comments Retrieved Successfully for ${origin}`,
+          data: comments,
+        });
+      })
+      .catch(next);
+  } catch (err) {
+    res.status(401).json({
+      status: "error",
+      message: `Something went wrong`,
+      data: err,
+    });
+  }
+};
+
+exports.getUnFlaggedComments = async (req, res, next) => {
+  const origin = req.query.origin;
+  try {
+    await Comments.find({ commentOrigin: origin, isFlagged: false })
+      .populate("replies")
+      .populate("users")
+      .then((comments) => {
+        res.status(200).json({
+          status: "success",
+          message: `Unflagged Comments Retrieved Successfully for ${origin}`,
+          data: comments,
+        });
+      })
+      .catch(next);
+  } catch (err) {
+    res.status(401).json({
+      status: "error",
+      message: `Something went wrong`,
+      data: err,
+    });
+  }
+};
+
+// Nothing is happening here for now - just to avoid lint errors
+exports.unusedMethod = async () => {
+  let user = new User({});
+  let reply = new Replies({});
+  user.save();
+  reply.save();
 };
