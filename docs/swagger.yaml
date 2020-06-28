@@ -1,0 +1,1139 @@
+paths:
+  # Endpoint to get all comments or create a comment
+  /comments:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets all comments
+
+      parameters:
+        - in: query
+          $ref: "#/components/parameters/isFlaggedParam"
+
+        - in: query
+          $ref: "#/components/parameters/refIdParam"
+
+        - in: query
+          $ref: "#/components/parameters/ownerNameParam"
+
+        - in: query
+          $ref: "#/components/parameters/ownerEmailParam"
+
+        - in: query
+          $ref: "#/components/parameters/originParam"
+
+        - in: query
+          $ref: "#/components/parameters/totalVotesParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+    # POST operation
+    post:
+      tags:
+        - comments
+
+      summary: Creates a new comment
+
+      parameters:
+        - in: body
+          name: body
+          description: A JSON object containing the comment information
+          required: true
+          schema:
+            $ref: "#/components/schemas/CreateComment"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to update or delete a comment
+  /comments/{commentId}:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates a comment
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the comment information to update
+          required: true
+          schema:
+            $ref: "#/components/schemas/UpdateComment"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                $ref: "#/components/schemas/UpdateComment"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+    # DELETE operation
+    delete:
+      tags:
+        - comments
+
+      summary: Deletes a comment
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the email of the comment
+          required: true
+          schema:
+            $ref: "#/components/schemas/DeleteComment"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to get all votes of a comment
+  /comments/{commentId}/votes:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets all the votes of a comment
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VotedComment"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to update upvotes on a comment
+  /comments/{commentId}/votes/upvote:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the upvotes of a comment
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the owner email of the voter
+          required: true
+          schema:
+            $ref: "#/components/schemas/Vote"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VotedComment"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to update downvotes on a comment
+  /comments/{commentId}/votes/downvote:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the downvotes of a comment
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the owner email of the voter
+          required: true
+          schema:
+            $ref: "#/components/schemas/Vote"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VotedComment"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to update the flag status of the comment
+  /comments/{commentId}/flag:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the flag status of the comment
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FlaggedComment"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to create a reply to a comment
+  /comments/{commentId}/replies:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets all replies of a comment
+
+      parameters:
+        - in: query
+          $ref: "#/components/parameters/isFlaggedParam"
+
+        - in: query
+          $ref: "#/components/parameters/ownerNameParam"
+
+        - in: query
+          $ref: "#/components/parameters/ownerEmailParam"
+
+        - in: query
+          $ref: "#/components/parameters/totalVotesParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing an array of the reply information
+          required: true
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reply"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reply"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+    # POST operation
+    post:
+      tags:
+        - comments
+
+      summary: Creates a new reply to a comment
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the reply information
+          required: true
+          schema:
+            $ref: "#/components/schemas/CreateReply"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reply"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to update a reply of a comment
+  /comments/{commentId}/replies/{replyId}:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates a reply of a comment
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the reply information
+          required: true
+          schema:
+            $ref: "#/components/schemas/UpdateReply"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UpdateReply"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+    # DELETE operation
+    delete:
+      tags:
+        - comments
+
+      summary: Deletes a reply of a comment
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the email of the comment
+          required: true
+          schema:
+            $ref: "#/components/schemas/DeleteReply"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reply"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to get all votes of a comment's reply
+  /comments/{commentId}/replies/{replyId}/votes:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets all votes of a comment's reply
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VotedReply"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to update upvotes of a comment's reply
+  /comments/{commentId}/replies/{replyId}/votes/upvote:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the upvotes of a comment's reply
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the owner email of the voter
+          required: true
+          schema:
+            $ref: "#/components/schemas/Vote"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VotedReply"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to update downvotes of a comment's reply
+  /comments/{commentId}/replies/{replyId}/votes/downvote:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the downvotes of a comment's reply
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the owner email of the voter
+          required: true
+          schema:
+            $ref: "#/components/schemas/Vote"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VotedReply"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to update the flag status of a reply of a comment
+  /comments/{commentId}/replies/{replyId}/flag:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the flag status of the reply of comment
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FlaggedReply"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+components:
+  #-------------------------------
+  # Reusable schemas (data models)
+  #-------------------------------
+  schemas:
+    Comment: # Can be referenced as '#/components/schemas/Comment'
+      type: object
+      required:
+        - _id
+        - refId
+        - body
+        - ownerName
+        - ownerEmail
+        - origin
+        - totalVotes
+        - upvotes
+        - downvotes
+        - isFlagged
+        - replies
+        - repliesCount
+      properties:
+        _id:
+          type: string
+        refId:
+          type: string
+        body:
+          type: string
+        ownerName:
+          type: string
+        ownerEmail:
+          type: string
+          format: email
+        origin:
+          type: string
+        totalVotes:
+          type: number
+        upvotes:
+          type: array
+          items:
+            type: string
+        downvotes:
+          type: array
+          items:
+            type: string
+        isFlagged:
+          type: boolean
+        replies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Reply"
+        repliesCount:
+          type: number
+
+    CreateComment: # Can be referenced as '#/components/schemas/CreateComment'
+      type: object
+      required:
+        - body
+        - ownerName
+        - ownerEmail
+        - origin
+      properties:
+        refId:
+          type: string
+        body:
+          type: string
+          minLength: 1
+        ownerName:
+          type: string
+          minLength: 1
+        ownerEmail:
+          type: string
+          format: email
+        origin:
+          type: string
+
+    UpdateComment: # Can be referenced as '#/components/schemas/UpdateComment'
+      type: object
+      properties:
+        body:
+          type: string
+          minLength: 1
+        ownerEmail:
+          type: string
+          format: email
+
+    DeleteComment: # Can be referenced as '#/components/schemas/DeleteComment'
+      type: object
+      required:
+        - ownerEmail
+      properties:
+        ownerEmail:
+          type: string
+          format: email
+
+    VotedComment: # Can be referenced as '#/components/schemas/VotedComment'
+      type: object
+      properties:
+        commentId:
+          type: string
+        totalVotes:
+          type: integer
+        upvotes:
+          type: array
+          items:
+            type: string
+        downvotes:
+          type: array
+          items:
+            type: string
+
+    FlaggedComment: # Can be referenced as '#/components/schemas/FlaggedComment'
+      type: object
+      properties:
+        commentId:
+          type: string
+        isFlagged:
+          type: boolean
+
+    Reply: # Can be referenced as '#/components/schemas/Reply'
+      type: object
+      required:
+        - _id
+        - commentId
+        - body
+        - ownerName
+        - ownerEmail
+        - totalVotes
+        - upvotes
+        - downvotes
+        - isFlagged
+      properties:
+        _id:
+          type: string
+        commentId:
+          type: string
+        body:
+          type: string
+        ownerName:
+          type: string
+        ownerEmail:
+          type: string
+          format: email
+        totalVotes:
+          type: number
+        upvotes:
+          type: array
+          items:
+            type: string
+        downvotes:
+          type: array
+          items:
+            type: string
+        isFlagged:
+          type: boolean
+
+    CreateReply: # Can be referenced as '#/components/schemas/CreateReply'
+      type: object
+      required:
+        - body
+        - ownerName
+        - ownerEmail
+      properties:
+        body:
+          type: string
+          minLength: 1
+        ownerName:
+          type: string
+          minLength: 1
+        ownerEmail:
+          type: string
+          format: email
+
+    UpdateReply: # Can be referenced as '#/components/schemas/UpdateReply'
+      type: object
+      properties:
+        body:
+          type: string
+          minLength: 1
+        ownerEmail:
+          type: string
+          format: email
+
+    DeleteReply: # Can be referenced as '#/components/schemas/DeleteReply'
+      type: object
+      required:
+        - ownerEmail
+      properties:
+        ownerEmail:
+          type: string
+          format: email
+
+    VotedReply: # Can be referenced as '#/components/schemas/VotedReply'
+      type: object
+      properties:
+        replyId:
+          type: string
+        commentId:
+          type: string
+        totalVotes:
+          type: integer
+        upvotes:
+          type: array
+          items:
+            type: string
+        downvotes:
+          type: array
+          items:
+            type: string
+
+    FlaggedReply: # Can be referenced as '#/components/schemas/FlaggedReply'
+      type: object
+      properties:
+        commentId:
+          type: string
+        replyId:
+          type: string
+        isFlagged:
+          type: boolean
+
+    Vote: # Can be referenced as '#/components/schemas/Vote'
+      type: object
+      required:
+        - voterEmail
+      properties:
+        voterEmail:
+          type: string
+          format: email
+
+    ErrorResponse: # Can be referenced as '#/components/schemas/Error'
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+          example: []
+
+  #-------------------------------
+  # Reusable operation parameters
+  #-------------------------------
+  parameters:
+    commentIdParam: # Can be referenced via '#/components/parameters/commentIdParam'
+      in: path
+      name: commentId
+      description: String ID of the comment
+      required: true
+      schema:
+        type: string
+
+    replyIdParam: # Can be referenced via '#/components/parameters/replyIdParam'
+      in: path
+      name: replyId
+      description: String ID of the reply
+      required: true
+      schema:
+        type: string
+
+    isFlaggedParam: # Can be referenced via '#/components/parameters/isFlaggedParam'
+      in: query
+      name: isFlagged
+      description: An optional query parameter, that takes a boolean as a value, to filter comments, or replies, by whether or not the comment, or reply, is flagged. If omitted, the response includes all comments, or replies, regardless of its flag state.
+      schema:
+        type: boolean
+
+    refIdParam: # Can be referenced via '#/components/parameters/refIdParam'
+      in: query
+      name: refId
+      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain reference ID. If omitted, the response includes all comments, or replies, regardless of its reference ID.
+      schema:
+        type: string
+
+    ownerNameParam: # Can be referenced via '#/components/parameters/ownerNameParam'
+      in: query
+      name: ownerEmail
+      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain owner name. If omitted, the response includes all comments, or replies, regardless of its owner name.
+      schema:
+        type: string
+
+    ownerEmailParam: # Can be referenced via '#/components/parameters/ownerEmailParam'
+      in: query
+      name: ownerEmail
+      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain owner email. If omitted, the response includes all comments, or replies, regardless of its owner email.
+      schema:
+        type: string
+
+    originParam: # Can be referenced via '#/components/parameters/originParam'
+      in: query
+      name: origin
+      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain origin. If omitted, the response includes all comments, or replies, regardless of its origin.
+      schema:
+        type: string
+
+    totalVotesParam: # Can be referenced via '#/components/parameters/totalVotesParam'
+      in: query
+      name: totalVotes
+      description: An optional query parameter, that takes an integer as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain number of votes. If omitted, the response includes all comments, or replies, regardless of its number of votes.
+      schema:
+        type: integer
+
+  #-------------------------------
+  # Reusable responses
+  #-------------------------------
+  responses:
+    401: # Can be referenced via '#/components/responses/401'
+      description: Authentication error
+      schema:
+        $ref: "#/components/schemas/ErrorResponse"
+    404: # Can be referenced via '#/components/responses/404'
+      description: Invalid ID error
+      schema:
+        $ref: "#/components/schemas/ErrorResponse"
+    422: # Can be referenced via '#/components/responses/422'
+      description: Validation error
+      schema:
+        $ref: "#/components/schemas/ErrorResponse"
