@@ -1,9 +1,9 @@
 const { connect, disconnect } = require("./db");
 
 beforeAll(async () => {
-  connect();
+  await connect();
 });
 
 afterAll(async () => {
-  disconnect();
+  await disconnect();
 });
