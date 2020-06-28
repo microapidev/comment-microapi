@@ -6,7 +6,6 @@ const Comments = require("../models/comments");
 const User = require("../models/users");
 const errHandler = require("../utils/errorhandler");
 const mongoose = require("mongoose");
-//const validation = require("../utils/validationRules");
 
 exports.flagComment = async (req, res) => {
   try {
