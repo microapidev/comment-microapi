@@ -113,6 +113,20 @@ module.exports = {
   },
 
   /**
+   * Schema validation for PATCH '/comments/{commentId}/replies/{replyId}'
+   */
+  updateCommentReplySchema: {
+    params: Joi.object({
+      commentId: Joi.string().required(),
+      replyId: Joi.string().required(),
+    }),
+    body: Joi.object().keys({
+      replyBody: Joi.string().min(1).required(),
+      replyOwnerEmail: Joi.string().email().required(),
+    }),
+  },
+
+  /**
    * Schema validation for DELETE '/comments/{commentId}/replies/{replyId}'
    */
   deleteCommentReplySchema: {
