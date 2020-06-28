@@ -3,20 +3,23 @@ const CommentModel = require('../../models/comments');
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const request = supertest(app);
+const { skipIfNotFound } = require('../helpers/conditionalTests');
 
-describe("GET '/comments' && '/comments/ref/:refId' && '/comments/:commentId/replies' ", () => {
-  it('gets all comments from the db', async () => {
+describe("GET '/comments' ", () => {
+  it('Return all comments from the db', async () => {
     const res = await request.get('/comments');
     if (res.status === 404) {
-      console.log('Route Not Implemented');
+      console.log('GET /comments Not Implemented Yet');
       return true;
     }
     expect(res.status).toBe(200);
     expect(res.body.status).toBe('success');
     expect(res.body.data).toBeTruthy();
   });
+});
 
-  it('gets all comment for a particular ref', async () => {
+describe('GET /comments/refs/:refId', () => {
+  it('Return all comment for a particular ref', async () => {
     const comment = new CommentModel({
       commentBody: 'this is a comment',
       commentOwnerName: 'userName',
@@ -26,19 +29,19 @@ describe("GET '/comments' && '/comments/ref/:refId' && '/comments/:commentId/rep
       commentOwner: mongoose.Types.ObjectId(),
     });
     await comment.save();
-
     const res = await request.get(`/comments/refs/${comment.refId}`);
     if (res.status === 404) {
-      console.log('Route Not Implemented Yet');
+      console.log(`GET /comments/refs/:refId Not Implemented Yet`);
       return true;
     }
     expect(res.status).toBe(200);
     expect(res.body.status).toBe('success');
     expect(res.body.data.refId).toEqual(comment.refId);
-
   });
+});
 
-  it('gets all replies for a comment', async () => {
+describe('GET /comments/:commentId/replies', () => {
+  it('Return all replies for a comment', async () => {
     const comment = new CommentModel({
       commentBody: 'this is a comment',
       commentOwnerName: 'userName',
@@ -52,13 +55,13 @@ describe("GET '/comments' && '/comments/ref/:refId' && '/comments/:commentId/rep
     const commentId = comment._id;
 
     const res = await request.get(`/comments/${commentId}/replies`);
+
     if (res.status === 404) {
-      console.log('Route Not Implemented Yet');
+      console.log(`/comments/:commentId/replies, Route Not Implemented Yet`);
       return true;
     }
     expect(res.status).toBe(200);
     expect(res.body.status).toBe('success');
-    expect(res.body.data.commentId).toEqual(commentId);
-    expect(res.body.data.refId).toEqual(comment.refId);
+    expect(res.body.data).toBeTruthy();
   });
 });

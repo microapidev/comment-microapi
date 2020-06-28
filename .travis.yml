@@ -12,6 +12,3 @@ deploy:
   app: comments-microservice
   on:
     branch: develop
-env:
-  global:
-    DB_URL: 'mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority'

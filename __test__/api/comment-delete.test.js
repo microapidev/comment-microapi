@@ -4,8 +4,10 @@ const CommentModel = require("../../models/comments");
 const ReplyModel = require("../../models/replies");
 const mongoose = require("mongoose");
 const request = supertest(app);
+import { skipIfNotFound } from "../helpers/conditionalTests";
 
-describe("DELETE '/comments/:id' && '/comments/:id/replies/:id'", () => {
+describe("DELETE '/comments/:commentId'", () => {
+  skipIfNotFound("DELETE", "/comments");
   test("Should delete comment", async () => {
     const comment = new CommentModel({
       commentBody: "this is a comment",
@@ -27,7 +29,10 @@ describe("DELETE '/comments/:id' && '/comments/:id/replies/:id'", () => {
     expect(res.body.data.commentOwnerName).toBeTruthy();
     expect(res.body.data.commentOwnerEmail).toBeTruthy();
   });
+});
 
+describe("DELETE '/comments/:commentId/replies/:replyId'", () => {
+  skipIfNotFound("DELETE", "/comments/:commentId/replies/:replyId");
   test("Should delete a reply to a comment", async () => {
     const comment = new CommentModel({
       commentBody: "this is a comment",

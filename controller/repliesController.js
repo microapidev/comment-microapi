@@ -1,8 +1,8 @@
 // UNCOMMENT EACH MODEL HERE AS NEEDED
-const { ObjectId } = require('mongoose').Types;
 
 const Replies = require('../models/replies');
 const Comments = require('../models/comments');
+const { ObjectId } = require('mongoose').Types;
 
 const CustomError = require('../utils/customError');
 const responseHandler = require('../utils/responseHandler');
@@ -21,15 +21,13 @@ const getCommentReplies = async (req, res, next) => {
       return next(new CustomError(404, ' Comment not found '));
     }
 
-    const replies = await Replies.find({ commentId: comment._id }).populate(
-      'users'
+    const replies = await Replies.find({ commentId: commentId }).populate(
+      'replyOwner'
     );
     let message = ' Replies found. ';
     if (!replies.length) {
       message = ' No replies found. ';
     }
-
-    console.log(replies);
     return responseHandler(res, 200, replies, message);
   } catch (err) {
     next(err);
@@ -39,4 +37,3 @@ const getCommentReplies = async (req, res, next) => {
 module.exports = {
   getCommentReplies,
 };
-
