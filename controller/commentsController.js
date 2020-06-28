@@ -2,9 +2,10 @@
 
 const Replies = require("../models/replies");
 const Comments = require("../models/comments");
+const mongoose = require("mongoose");
+// const CustomError = require("../utils/customError");
 const User = require("../models/users");
 const errHandler = require("../utils/errorhandler");
-const mongoose = require("mongoose");
 
 exports.flagComment = async (req, res) => {
   try {
@@ -52,15 +53,15 @@ exports.flagComment = async (req, res) => {
 };
 
 exports.getComments = async (req, res, next) => {
-  const origin = req.query.origin;
+  const { refs, refId } = req.params;
   try {
-    await Comments.find({ commentOrigin: origin })
+    await Comments.find({ refId: refId })
       .populate("replies")
       .populate("users")
       .then((comments) => {
         res.status(200).json({
           status: "success",
-          message: `Comments Retrieved Successfully for ${origin}`,
+          message: `Comments Retrieved Successfully for ${refs}/${refId}`,
           data: comments,
         });
       })
@@ -75,15 +76,15 @@ exports.getComments = async (req, res, next) => {
 };
 
 exports.getFlaggedComments = async (req, res, next) => {
-  const origin = req.query.origin;
+  const { refs, refId } = req.params;
   try {
-    await Comments.find({ commentOrigin: origin, isFlagged: true })
+    await Comments.find({ isFlagged: true, refId: refId })
       .populate("replies")
       .populate("users")
       .then((comments) => {
         res.status(200).json({
           status: "success",
-          message: `Flagged Comments Retrieved Successfully for ${origin}`,
+          message: `Flagged Comments Retrieved Successfully for ${refs}/${refId}`,
           data: comments,
         });
       })
@@ -98,15 +99,15 @@ exports.getFlaggedComments = async (req, res, next) => {
 };
 
 exports.getUnFlaggedComments = async (req, res, next) => {
-  const origin = req.query.origin;
+  const { refs, refId } = req.params;
   try {
-    await Comments.find({ commentOrigin: origin, isFlagged: false })
+    await Comments.find({ isFlagged: false, refId: refId })
       .populate("replies")
       .populate("users")
       .then((comments) => {
         res.status(200).json({
           status: "success",
-          message: `Unflagged Comments Retrieved Successfully for ${origin}`,
+          message: `Unflagged Comments Retrieved Successfully for ${refs}/${refId}`,
           data: comments,
         });
       })
