@@ -51,3 +51,36 @@ exports.flagComment = async (req, res) => {
     errHandler(error, res);
   }
 };
+
+//find coments by this user
+//check for the id of the comment is by the user before deleting
+exports.deleteComment = (req, res) => {
+  const commentId = req.query.commentId;
+  const userId = req.params.userId;
+  Comments.find({ commentOwner: userId, _id: commentId })
+    .then((comment) => {
+      if (comment.length) {
+        Comments.findByIdAndDelete(commentId).then((success) => {
+          if (!success) {
+            return res.status(400).json({
+              status: false,
+              message:
+                "Canot delete your comment at this time. Please try again",
+            });
+          } else {
+            return res.status(200).json({
+              status: true,
+              message: "Comment deleted successfully",
+            });
+          }
+        });
+      } else {
+        return res.status(400).json({
+          status: false,
+          message:
+            "Comment cannot be deleted because you are not the owner of this comment.",
+        });
+      }
+    })
+    .catch((err) => console.log(err));
+};
