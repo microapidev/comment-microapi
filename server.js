@@ -10,6 +10,10 @@ const errorHandler = require("./utils/errorhandler");
 require('dotenv').config();
 const app = express();
 
+//connect to mongodb
+const database = require("./db/database");
+database.connect();
+
 // setup middleware
 app.use(logger('dev'));
 app.use(express.json());

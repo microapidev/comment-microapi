@@ -1,7 +1,7 @@
-export default (res, status, data, message) => {
+module.exports = (res, status, data, message) => {
   res.status(status).json({
     data,
-    status: "success",
+    status: 'success',
     message,
   });
 };

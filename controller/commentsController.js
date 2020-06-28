@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const CustomError = require('../utils/customError');
 // const User = require("../models/users");
 const errHandler = require('../utils/errorhandler');
-const mongoose = require('mongoose');
 
 exports.getCommentReplies = (req, res, next) => {
   const commentId = mongoose.Types.ObjectId(req.params.commentId);
