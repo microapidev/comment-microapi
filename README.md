@@ -1,5 +1,7 @@
 # Comments Microservice
 
+[![Build Status](https://travis-ci.org/microapidev/comment-microapi.svg?branch=develop)](https://travis-ci.org/microapidev/comment-microapi) [![Coverage Status](https://coveralls.io/repos/github/microapidev/comment-microapi/badge.svg?branch=develop)](https://coveralls.io/github/microapidev/comment-microapi?branch=develop)
+
 This is a microservice that allows user to create comments, edit comments and also flags comment. Users can also reply comments, flag reply and also upvote and downvote comments and replies. Also, origin of these comments are tracked.
 
 For quick navigation:

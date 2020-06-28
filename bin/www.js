@@ -11,6 +11,15 @@ var http = require("http");
  */
 require("dotenv").config();
 
+//connect to mongodb
+console.log("\n \t Attempting to connect to database...");
+
+//connect to mongodb
+const database = require("../db/database");
+database.connect();
+
+console.log("\n \t Database connected successfully");
+
 /**
  * Get port from environment and store in Express.
  */
