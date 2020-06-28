@@ -5,7 +5,7 @@ const documentationRoutes = require("./routes/documentation");
 const CustomError = require("./utils/customError");
 const errorHandler = require("./utils/errorhandler");
 
-require('dotenv').config();
+require("dotenv").config();
 const app = express();
 
 // setup middleware
@@ -14,11 +14,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 //setup app routes
-app.use('/comments', commentRoutes);
-app.use(['/', '/documentation'], documentationRoutes);
+app.use("/comments", commentRoutes);
+app.use(["/", "/documentation"], documentationRoutes);
 
 // Invalid route error handler
-app.use('*', (req, res, next) => {
+app.use("*", (req, res, next) => {
   const error = new CustomError(
     404,
     `Oops. The route ${req.method} ${req.originalUrl} is not recognised`

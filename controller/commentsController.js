@@ -1,11 +1,11 @@
 // UNCOMMENT EACH MODEL HERE AS NEEDED
 
-const Replies = require('../models/replies');
-const Comments = require('../models/comments');
-const mongoose = require('mongoose');
-const CustomError = require('../utils/customError');
+// const Replies = require("../models/replies");
+const Comments = require("../models/comments");
+const mongoose = require("mongoose");
+// const CustomError = require("../utils/customError");
 // const User = require("../models/users");
-const errHandler = require('../utils/errorhandler');
+const errHandler = require("../utils/errorhandler");
 
 exports.flagComment = async (req, res) => {
   try {
@@ -26,21 +26,21 @@ exports.flagComment = async (req, res) => {
     );
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       return res.status(422).json({
-        status: 'error',
-        response: '422 error',
-        message: 'Invalid ID',
+        status: "error",
+        response: "422 error",
+        message: "Invalid ID",
       });
     }
     if (!comment) {
       return res.status(404).json({
-        status: 'error',
+        status: "error",
         message: `Comment with the ID ${commentId} doesn't exist or has been deleted`,
         data: null,
       });
     }
     return res.status(200).json({
-      message: 'Comment has been flagged successfully',
-      response: '200 OK',
+      message: "Comment has been flagged successfully",
+      response: "200 OK",
       data: {
         commentId: comment._id,
         isFlagged: comment.isFlagged,
