@@ -1,48 +1,48 @@
-const express = require("express");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const commentRoutes = require("./routes/comments");
-const documentationRoutes = require("./routes/documentation");
-const CustomError = require("./utils/customError");
-const errorHandler = require("./utils/errorhandler");
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const commentRoutes = require('./routes/comments');
+const documentationRoutes = require('./routes/documentation');
+const CustomError = require('./utils/customError');
+const errorHandler = require('./utils/errorhandler');
 
-require("dotenv").config();
+require('dotenv').config();
 const app = express();
 
 //connect to mongodb
 mongoose
   .connect(
-    "mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority",
+    'mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority',
     {
       useNewUrlParser: true, // for connection warning
       useUnifiedTopology: true,
     },
     () => {
       console.log(
-        "\n \t Database connection has been established successfully"
+        '\n \t Database connection has been established successfully'
       );
     }
   )
   .catch((err) => {
-    console.error("App starting error:", err.stack);
+    console.error('App starting error:', err.stack);
     process.exit(1);
   });
 
 // setup middleware
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 
 //setup app routes
-app.use("/comments", commentRoutes);
-app.use(["/", "/documentation"], documentationRoutes);
+app.use('/comments', commentRoutes);
+app.use(['/', '/documentation'], documentationRoutes);
 
 // Invalid route error handler
-app.use("*", (req, res, next) => {
+app.use('*', (req, res, next) => {
   const error = new CustomError(
     404,
     `Oops. The route ${req.method} ${req.originalUrl} is not recognised.`
@@ -51,8 +51,8 @@ app.use("*", (req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res, next) => {
-  errorHandler(err, req, res, next);
-});
+// app.use((err, req, res, next) => {
+//   errorHandler(err, req, res, next);
+// });
 
 module.exports = app;

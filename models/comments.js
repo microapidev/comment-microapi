@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CommentSchema = new Schema(
@@ -14,22 +14,22 @@ const CommentSchema = new Schema(
       type: Number,
       default: 0,
     },
-    replies: [{ type: Schema.Types.ObjectId, ref: "Replies" }],
+    replies: [{ type: Schema.Types.ObjectId, ref: 'Replies' }],
     upVotes: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Users",
+        ref: 'Users',
       },
     ],
     downVotes: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Users",
+        ref: 'Users',
       },
     ],
-    commentOwner: { type: Schema.Types.ObjectId, required: true, ref: "Users" },
+    commentOwner: { type: Schema.Types.ObjectId, ref: 'Users' },
   },
   { timestamps: true }
 );
-const Comment = mongoose.model("Comments", CommentSchema);
+const Comment = mongoose.model('Comments', CommentSchema);
 module.exports = Comment;

@@ -1,6 +1,8 @@
-const repliesRoutes = require("./replies");
-const router = require("express").Router();
+const repliesRoutes = require('./replies');
+const router = require('express').Router();
+const commentsController = require('../controller/commentsController');
 
-router.use("/comments/replies", repliesRoutes);
+router.use('/replies', repliesRoutes);
+router.get('/:commentId/replies', commentsController.getCommentReplies);
 
 module.exports = router;
