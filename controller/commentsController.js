@@ -3,7 +3,7 @@
 // const Replies = require("../models/replies");
 
 const Comments = require("../models/comments");
-// const User = require("../models/users");
+const User = require("../models/users");
 const errHandler = require("../utils/errorhandler");
 const mongoose = require("mongoose");
 
@@ -49,5 +49,62 @@ exports.flagComment = async (req, res) => {
     });
   } catch (error) {
     errHandler(error, res);
+  }
+};
+
+//create and save a comment
+exports.create = async (req, res) => {
+  //validate request
+  //check if the commenting user exists before saving the comment in the db
+  const userCommenting = await User.findOne({
+    email: req.body.commentOwnerEmail,
+  });
+  //if user exists in the db save the comment
+  if (userCommenting) {
+    const commentingUserId = userCommenting._id;
+    //create a new comment
+    const comment = new Comments({
+      refId: req.body.refId,
+      commentBody: req.body.commentBody,
+      commentOrigin: req.body.commentOrigin,
+      commentOwner: commentingUserId,
+    });
+    //save comment in our db
+    try {
+      const savedComment = await comment.save();
+      res.send(savedComment);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  } else {
+    //create user,save the user then save the user's comment to db
+    const user = new User({
+      name: req.body.commentOwnerName,
+      email: req.body.commentOwnerEmail,
+    });
+    try {
+      const savedUser = await user.save();
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+    //get the id of the user we've just saved to db and save their comment
+    const justSavedUser = await User.findOne({
+      email: req.body.commentOwnerEmail,
+    });
+    const commentingUserId = justSavedUser._id;
+    //create a new comment
+    const comment = new Comments({
+      refId: req.body.refId,
+      commentBody: req.body.commentBody,
+      commentOrigin: req.body.commentOrigin,
+      commentOwner: commentingUserId,
+    });
+    //save comment in our db
+    try {
+      const savedComment = await comment.save();
+      res.send(savedComment);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
   }
 };
