@@ -1,13 +1,9 @@
-const database = require("../../db/database");
+const { connect, disconnect } = require("./db");
 
-beforeAll(() => {
-  return database.connect();
+beforeAll(async () => {
+  connect();
 });
 
-beforeEach(() => {
-  return database.truncate();
-});
-
-afterAll(() => {
-  return database.disconnect();
+afterAll(async () => {
+  disconnect();
 });
