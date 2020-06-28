@@ -1,7 +1,5 @@
-const router = require('express').Router();
-const commentController = require('../controller/commentsController');
+const router = require("express").Router({ mergeParams: true });
+const repliesController = require("../controller/repliesController");
 
-router.get('/', function (req, res) {
-  res.send('hello');
-});
+router.get("/", repliesController.getCommentReplies);
 module.exports = router;

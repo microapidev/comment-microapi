@@ -1,34 +1,14 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const commentRoutes = require('./routes/comments');
-const documentationRoutes = require('./routes/documentation');
-const CustomError = require('./utils/customError');
-const errorHandler = require('./utils/errorhandler');
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const cors = require("cors");
+const commentRoutes = require("./routes/comments");
+const documentationRoutes = require("./routes/documentation");
+const CustomError = require("./utils/customError");
+const errorHandler = require("./utils/errorhandler");
 
 require('dotenv').config();
 const app = express();
-
-//connect to mongodb
-mongoose
-  .connect(
-    'mongodb+srv://fg-expense-tracker:backend@fg-expense-tracker-c1uom.mongodb.net/comments-service?retryWrites=true&w=majority',
-    {
-      useNewUrlParser: true, // for connection warning
-      useUnifiedTopology: true,
-    },
-    () => {
-      console.log(
-        '\n \t Database connection has been established successfully'
-      );
-    }
-  )
-  .catch((err) => {
-    console.error('App starting error:', err.stack);
-    process.exit(1);
-  });
 
 // setup middleware
 app.use(logger('dev'));
@@ -51,8 +31,8 @@ app.use('*', (req, res, next) => {
 });
 
 // error handler
-// app.use((err, req, res, next) => {
-//   errorHandler(err, req, res, next);
-// });
+app.use((err, req, res, next) => {
+  errorHandler(err, req, res, next);
+});
 
 module.exports = app;

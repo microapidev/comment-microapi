@@ -1,8 +1,8 @@
-const repliesRoutes = require('./replies');
-const router = require('express').Router();
-const commentsController = require('../controller/commentsController');
+const repliesRoutes = require("./replies");
+const router = require("express").Router();
+const commentController = require("../controller/commentsController");
 
-router.use('/replies', repliesRoutes);
-router.get('/:commentId/replies', commentsController.getCommentReplies);
+router.use("/:commentId/replies", repliesRoutes);
 
+router.patch("/:commentId/flag", commentController.flagComment);
 module.exports = router;
