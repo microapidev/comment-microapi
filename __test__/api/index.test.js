@@ -7,10 +7,6 @@ describe("GET /", () => {
     const res = await request.get("/");
     expect(res.status).toBe(200);
     expect(res.text).toMatchSnapshot();
-<<<<<<< HEAD
-=======
-    done();
->>>>>>> 2010a29cabdc39ef3503f4a4930767536316c3af
   });
 });
 
