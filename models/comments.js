@@ -14,12 +14,12 @@ const CommentSchema = new Schema(
       type: String,
       required: true,
     },
-    commentBody: {
+    content: {
       // field contains comment body
       type: String,
       required: true,
     },
-    commentOrigin: String, // field is free for use by applications as seen fit
+    origin: String, // field is free for use by applications as seen fit
     replies: [{ type: Schema.Types.ObjectId, ref: "Replies" }], // array of replies
     flags: [
       // contains array of ownerId allowing only one flag per user
