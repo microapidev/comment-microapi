@@ -56,89 +56,77 @@ paths:
           schema:
             $ref: "#/components/responses/422"
 
-    # PATCH operation
-    patch:
-      tags:
-        - organizations
-
-      summary: Updates an organization
-
-      parameters:
-        - in: body
-          name: body
-          description: A JSON object containing the organization's information
-          required: true
-          schema:
-            $ref: "#/components/schemas/UpdateOrganization"
-
-      responses:
-        "200":
-          description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Organization"
-
-        "401":
-          schema:
-            $ref: "#/components/responses/401"
-
-        "404":
-          schema:
-            $ref: "#/components/responses/404"
-
-        "422":
-          schema:
-            $ref: "#/components/responses/422"
-
-    # DELETE operation
-    delete:
-      tags:
-        - organizations
-
-      summary: Deletes an organization
-
-      responses:
-        "200":
-          description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Organization"
-
-        "401":
-          schema:
-            $ref: "#/components/responses/401"
-
-        "404":
-          schema:
-            $ref: "#/components/responses/404"
-
-        "422":
-          schema:
-            $ref: "#/components/responses/422"
+    # # PATCH operation
+    # patch:
+    #   tags:
+    #     - organizations
+    #   summary: Updates an organization
+    #   parameters:
+    #     - in: body
+    #       name: body
+    #       description: A JSON object containing the organization's information
+    #       required: true
+    #       schema:
+    #         $ref: "#/components/schemas/UpdateOrganization"
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       schema:
+    #         type: object
+    #         required:
+    #           - message
+    #           - response
+    #           - data
+    #         properties:
+    #           message:
+    #             type: string
+    #           response:
+    #             type: string
+    #           data:
+    #             type: array
+    #             items:
+    #               $ref: "#/components/schemas/Organization"
+    #     "401":
+    #       schema:
+    #         $ref: "#/components/responses/401"
+    #     "404":
+    #       schema:
+    #         $ref: "#/components/responses/404"
+    #     "422":
+    #       schema:
+    #         $ref: "#/components/responses/422"
+    # # DELETE operation
+    # delete:
+    #   tags:
+    #     - organizations
+    #   summary: Deletes an organization
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       schema:
+    #         type: object
+    #         required:
+    #           - message
+    #           - response
+    #           - data
+    #         properties:
+    #           message:
+    #             type: string
+    #           response:
+    #             type: string
+    #           data:
+    #             type: array
+    #             items:
+    #               $ref: "#/components/schemas/Organization"
+    #     "401":
+    #       schema:
+    #         $ref: "#/components/responses/401"
+    #     "404":
+    #       schema:
+    #         $ref: "#/components/responses/404"
+    #     "422":
+    #       schema:
+    #         $ref: "#/components/responses/422"
 
   # Endpoint to create an organization's admin
   /organizations/{organizationId}/admins:
@@ -266,89 +254,77 @@ paths:
           schema:
             $ref: "#/components/responses/422"
 
-    # PATCH operation
-    patch:
-      tags:
-        - organizations
-
-      summary: Updates an organization's admin
-
-      parameters:
-        - in: body
-          name: body
-          description: A JSON object containing the organization's admin information
-          required: true
-          schema:
-            $ref: "#/components/schemas/UpdateAdmin"
-
-      responses:
-        "200":
-          description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Admin"
-
-        "401":
-          schema:
-            $ref: "#/components/responses/401"
-
-        "404":
-          schema:
-            $ref: "#/components/responses/404"
-
-        "422":
-          schema:
-            $ref: "#/components/responses/422"
-
-    # DELETE operation
-    delete:
-      tags:
-        - organizations
-
-      summary: Deletes an organization's admin
-
-      responses:
-        "200":
-          description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Admin"
-
-        "401":
-          schema:
-            $ref: "#/components/responses/401"
-
-        "404":
-          schema:
-            $ref: "#/components/responses/404"
-
-        "422":
-          schema:
-            $ref: "#/components/responses/422"
+    # # PATCH operation
+    # patch:
+    #   tags:
+    #     - organizations
+    #   summary: Updates an organization's admin
+    #   parameters:
+    #     - in: body
+    #       name: body
+    #       description: A JSON object containing the organization's admin information
+    #       required: true
+    #       schema:
+    #         $ref: "#/components/schemas/UpdateAdmin"
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       schema:
+    #         type: object
+    #         required:
+    #           - message
+    #           - response
+    #           - data
+    #         properties:
+    #           message:
+    #             type: string
+    #           response:
+    #             type: string
+    #           data:
+    #             type: array
+    #             items:
+    #               $ref: "#/components/schemas/Admin"
+    #     "401":
+    #       schema:
+    #         $ref: "#/components/responses/401"
+    #     "404":
+    #       schema:
+    #         $ref: "#/components/responses/404"
+    #     "422":
+    #       schema:
+    #         $ref: "#/components/responses/422"
+    # # DELETE operation
+    # delete:
+    #   tags:
+    #     - organizations
+    #   summary: Deletes an organization's admin
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       schema:
+    #         type: object
+    #         required:
+    #           - message
+    #           - response
+    #           - data
+    #         properties:
+    #           message:
+    #             type: string
+    #           response:
+    #             type: string
+    #           data:
+    #             type: array
+    #             items:
+    #               $ref: "#/components/schemas/Admin"
+    #     "401":
+    #       schema:
+    #         $ref: "#/components/responses/401"
+    #     "404":
+    #       schema:
+    #         $ref: "#/components/responses/404"
+    #     "422":
+    #       schema:
+    #         $ref: "#/components/responses/422"
 
   # Endpoint to get all the organization's applications or create an organization's application
   /organizations/{organizationId}/applications:
@@ -476,89 +452,77 @@ paths:
           schema:
             $ref: "#/components/responses/422"
 
-    # PATCH operation
-    patch:
-      tags:
-        - organizations
-
-      summary: Updates an organization's application
-
-      parameters:
-        - in: body
-          name: body
-          description: A JSON object containing the organization's application information
-          required: true
-          schema:
-            $ref: "#/components/schemas/UpdateApplication"
-
-      responses:
-        "200":
-          description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Application"
-
-        "401":
-          schema:
-            $ref: "#/components/responses/401"
-
-        "404":
-          schema:
-            $ref: "#/components/responses/404"
-
-        "422":
-          schema:
-            $ref: "#/components/responses/422"
-
-    # DELETE operation
-    delete:
-      tags:
-        - organizations
-
-      summary: Deletes an organization's application
-
-      responses:
-        "200":
-          description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Application"
-
-        "401":
-          schema:
-            $ref: "#/components/responses/401"
-
-        "404":
-          schema:
-            $ref: "#/components/responses/404"
-
-        "422":
-          schema:
-            $ref: "#/components/responses/422"
+    # # PATCH operation
+    # patch:
+    #   tags:
+    #     - organizations
+    #   summary: Updates an organization's application
+    #   parameters:
+    #     - in: body
+    #       name: body
+    #       description: A JSON object containing the organization's application information
+    #       required: true
+    #       schema:
+    #         $ref: "#/components/schemas/UpdateApplication"
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       schema:
+    #         type: object
+    #         required:
+    #           - message
+    #           - response
+    #           - data
+    #         properties:
+    #           message:
+    #             type: string
+    #           response:
+    #             type: string
+    #           data:
+    #             type: array
+    #             items:
+    #               $ref: "#/components/schemas/Application"
+    #     "401":
+    #       schema:
+    #         $ref: "#/components/responses/401"
+    #     "404":
+    #       schema:
+    #         $ref: "#/components/responses/404"
+    #     "422":
+    #       schema:
+    #         $ref: "#/components/responses/422"
+    # # DELETE operation
+    # delete:
+    #   tags:
+    #     - organizations
+    #   summary: Deletes an organization's application
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       schema:
+    #         type: object
+    #         required:
+    #           - message
+    #           - response
+    #           - data
+    #         properties:
+    #           message:
+    #             type: string
+    #           response:
+    #             type: string
+    #           data:
+    #             type: array
+    #             items:
+    #               $ref: "#/components/schemas/Application"
+    #     "401":
+    #       schema:
+    #         $ref: "#/components/responses/401"
+    #     "404":
+    #       schema:
+    #         $ref: "#/components/responses/404"
+    #     "422":
+    #       schema:
+    #         $ref: "#/components/responses/422"
 
   # Endpoint to get all comments or create a comment
   /comments:
