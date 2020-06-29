@@ -10,15 +10,12 @@ const errHandler = require("../utils/errorhandler");
 exports.voteComment = async (req, res) => {
   try {
     const id = req.params.commentId;
-    console.log(id);
     const { voteType, email } = req.body;
     const comment = await Comments.findById({ _id: id });
-    console.log(comment);
     if (voteType === "upvote") comment.totalVotes = comment.totalVotes + 1;
     const total = comment.totalVotes;
     comment.voteType = voteType;
     const userData = await User.findOne({ email });
-    console.log(userData);
     if (voteType === "upvote") comment.upVotes.push(userData);
     if (voteType === "downvote") comment.downVotes.push(userData);
     comment.save();
