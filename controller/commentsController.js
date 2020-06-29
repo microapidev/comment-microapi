@@ -56,9 +56,6 @@ exports.flagComment = async (req, res) => {
 exports.updateComment = async (req, res, next) => {
   const comment_id = req.params.commentId;
   const commentBody = req.body.commentBody;
-  if (!commentBody || commentBody.trim() == "") {
-    return res.status(400).json({ message: "Invalid comment body" });
-  }
   Comments.findById(comment_id)
     .exec()
     .then((comment) => {
