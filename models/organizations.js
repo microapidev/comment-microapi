@@ -10,6 +10,7 @@ const OrganizationSchema = new Schema(
     email: {
       type: String,
       lowercase: true,
+      unique: true,
       required: true,
     },
     secret: {

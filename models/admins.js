@@ -9,8 +9,8 @@ const AdminSchema = new Schema(
     },
     email: {
       type: String,
+      lowercase: true,
       required: true,
-      unique: true,
     },
     password: {
       type: String,
@@ -25,5 +25,9 @@ const AdminSchema = new Schema(
   },
   { timestamps: true }
 );
+AdminSchema.index({
+  organizationId: 1,
+  email: 1,
+});
 const Admin = mongoose.model("Admins", AdminSchema);
 module.exports = Admin;
