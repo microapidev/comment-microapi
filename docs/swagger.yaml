@@ -1426,6 +1426,65 @@ paths:
 
   # Endpoint to update a reply of a comment
   /comments/{commentId}/replies/{replyId}:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets a reply of a comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Reply"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
     # PATCH operation
     patch:
       tags:
