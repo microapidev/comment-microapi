@@ -1,5 +1,5 @@
 paths:
-  # Endpoint to create a comment
+  # Endpoint to get all comments or create a comment
   /comments:
     # GET operation
     get:
@@ -7,6 +7,13 @@ paths:
         - comments
 
       summary: Gets all comments
+
+      parameters:
+        - in: query
+          name: isFlagged
+          description: An optional query parameter, that takes a boolean as a value, to filter comments by whether or not a comment is flagged. If omitted, the response includes all comments regardless of their flag state.
+          schema:
+            type: boolean
 
       responses:
         "200":
@@ -89,6 +96,12 @@ paths:
       summary: Gets all comments for a particular reference ID
 
       parameters:
+        - in: query
+          name: isFlagged
+          description: An optional query parameter, that takes a boolean as a value, to filter comments by whether or not a comment is flagged. If omitted, the response includes all comments regardless of their flag state.
+          schema:
+            type: boolean
+
         - in: path
           name: refId
           description: String ID of the reference
@@ -298,7 +311,7 @@ paths:
 
         - in: body
           name: body
-          description: A JSON object containing the flag status and email of the comment
+          description: A JSON object containing the flag status of the comment
           required: true
           schema:
             $ref: "#/definitions/Flag"
@@ -345,6 +358,12 @@ paths:
       summary: Gets all replies of a comment
 
       parameters:
+        - in: query
+          name: isFlagged
+          description: An optional query parameter, that takes a boolean as a value, to filter a comment's replies by whether or not a comment is flagged. If omitted, the response includes all comment's replies regardless of their flag state.
+          schema:
+            type: boolean
+
         - in: path
           name: commentId
           description: String ID of the comment
@@ -693,6 +712,7 @@ definitions:
       - totalVotes
       - upvotes
       - downvotes
+      - isFlagged
       - replies
       - repliesCount
     properties:
@@ -715,6 +735,8 @@ definitions:
         type: number
       downvotes:
         type: number
+      isFlagged:
+        type: boolean
       replies:
         type: array
         items:
@@ -726,20 +748,19 @@ definitions:
   CreateComment:
     type: object
     required:
-      - refId
       - commentBody
       - commentOwnerName
       - commentOwnerEmail
       - commentOrigin
     properties:
-      _id:
-        type: string
       refId:
         type: string
       commentBody:
         type: string
+        minLength: 1
       commentOwnerName:
         type: string
+        minLength: 1
       commentOwnerEmail:
         type: string
         format: email
@@ -752,6 +773,7 @@ definitions:
     properties:
       commentBody:
         type: string
+        minLength: 1
       commentOwnerEmail:
         type: string
         format: email
@@ -816,8 +838,10 @@ definitions:
       - replyBody
       - replyOwnerName
       - replyOwnerEmail
+      - totalVotes
       - upvotes
       - downvotes
+      - isFlagged
     properties:
       replyId:
         type: string
@@ -830,28 +854,29 @@ definitions:
       replyOwnerEmail:
         type: string
         format: email
+      totalVotes:
+        type: number
       upvotes:
         type: number
       downvotes:
         type: number
+      isFlagged:
+        type: boolean
 
   # CreateReply schema
   CreateReply:
     type: object
     required:
-      - commentId
       - replyBody
       - replyOwnerName
       - replyOwnerEmail
-      - upvotes
-      - downvotes
     properties:
-      commentId:
-        type: string
       replyBody:
         type: string
+        minLength: 1
       replyOwnerName:
         type: string
+        minLength: 1
       replyOwnerEmail:
         type: string
         format: email
@@ -862,6 +887,7 @@ definitions:
     properties:
       replyBody:
         type: string
+        minLength: 1
       replyOwnerEmail:
         type: string
         format: email
