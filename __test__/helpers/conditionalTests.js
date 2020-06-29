@@ -3,7 +3,7 @@ const app = require("../../server");
 import { it } from "@jest/globals";
 // console.log(listEndpoints(app));
 
-const findEndpoint = (path, method) => {
+const findEndpoint = (method, path) => {
   const endpoints = listEndpoints(app);
 
   // find path in array of objects
@@ -16,8 +16,8 @@ const findEndpoint = (path, method) => {
   });
 };
 
-export const skipIfNotFound = (path, method) => {
-  if (!findEndpoint(path, method)) {
+export const skipIfNotFound = (method, path) => {
+  if (!findEndpoint(method, path)) {
     return it.only("Skipping test. This route has not been implemented yet!", () => {
       // do nothing
     });
