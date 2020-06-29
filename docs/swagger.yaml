@@ -135,7 +135,7 @@ paths:
       tags:
         - organizations
 
-      summary: Gets all of the organization's admin
+      summary: Gets all of the organization's admins
 
       responses:
         "200":
