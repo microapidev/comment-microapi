@@ -1,4 +1,565 @@
 paths:
+  # Endpoint to create an organization
+  /organizations:
+    # POST operation
+    post:
+      tags:
+        - organizations
+
+      summary: Creates an organization
+
+      parameters:
+        - in: body
+          name: body
+          description: A JSON object containing the organization information
+          required: true
+          schema:
+            $ref: "#/components/schemas/CreateOrganization"
+
+  # Endpoint to get, delete, or update an organization's application
+  /organizations/{organizationId}:
+    # GET operation
+    get:
+      tags:
+        - organizations
+
+      summary: Gets an organization
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Organization"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+    # PATCH operation
+    patch:
+      tags:
+        - organizations
+
+      summary: Updates an organization
+
+      parameters:
+        - in: body
+          name: body
+          description: A JSON object containing the organization's information
+          required: true
+          schema:
+            $ref: "#/components/schemas/UpdateOrganization"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Organization"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+    # DELETE operation
+    delete:
+      tags:
+        - organizations
+
+      summary: Deletes an organization
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Organization"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to create an organization's admin
+  /organizations/{organizationId}/admins:
+    # GET operation
+    get:
+      tags:
+        - organizations
+
+      summary: Gets all of the organization's admin
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Admin"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+    # POST operation
+    post:
+      tags:
+        - organizations
+
+      summary: Creates the organization's admin
+
+      parameters:
+        - in: body
+          name: body
+          description: A JSON object containing the organization's admin information
+          required: true
+          schema:
+            $ref: "#/components/schemas/CreateAdmin"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Admin"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to get, delete, or update an organization's admin
+  /organizations/{organizationId}/admins/{adminId}:
+    # GET operation
+    get:
+      tags:
+        - organizations
+
+      summary: Gets an organization's admin
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Admin"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+    # PATCH operation
+    patch:
+      tags:
+        - organizations
+
+      summary: Updates an organization's admin
+
+      parameters:
+        - in: body
+          name: body
+          description: A JSON object containing the organization's admin information
+          required: true
+          schema:
+            $ref: "#/components/schemas/UpdateAdmin"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Admin"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+    # DELETE operation
+    delete:
+      tags:
+        - organizations
+
+      summary: Deletes an organization's admin
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Admin"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to get all the organization's applications or create an organization's application
+  /organizations/{organizationId}/applications:
+    # GET operation
+    get:
+      tags:
+        - organizations
+
+      summary: Gets all the organization's applications
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Application"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+    # POST operation
+    post:
+      tags:
+        - organizations
+
+      summary: Creates an organization's application
+
+      parameters:
+        - in: body
+          name: body
+          description: A JSON object containing an organization's application information
+          required: true
+          schema:
+            $ref: "#/components/schemas/CreateApplication"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Application"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+  # Endpoint to get, delete, or update an organization's application
+  /organizations/{organizationId}/applications/{applicationId}:
+    # GET operation
+    get:
+      tags:
+        - organizations
+
+      summary: Gets an organization's application
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Application"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+    # PATCH operation
+    patch:
+      tags:
+        - organizations
+
+      summary: Updates an organization's application
+
+      parameters:
+        - in: body
+          name: body
+          description: A JSON object containing the organization's application information
+          required: true
+          schema:
+            $ref: "#/components/schemas/UpdateApplication"
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Application"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
+    # DELETE operation
+    delete:
+      tags:
+        - organizations
+
+      summary: Deletes an organization's application
+
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - message
+              - response
+              - data
+            properties:
+              message:
+                type: string
+              response:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Application"
+
+        "401":
+          schema:
+            $ref: "#/components/responses/401"
+
+        "404":
+          schema:
+            $ref: "#/components/responses/404"
+
+        "422":
+          schema:
+            $ref: "#/components/responses/422"
+
   # Endpoint to get all comments or create a comment
   /comments:
     # GET operation
@@ -819,6 +1380,143 @@ components:
   # Reusable schemas (data models)
   #-------------------------------
   schemas:
+    Organization: # Can be referenced as '#/components/schemas/Organization'
+      type: object
+      required:
+        - _id
+        - organizationName
+        - organizationEmail
+        - secret
+        - ownerName
+        - ownerEmail
+        - admins
+      properties:
+        _id:
+          type: string
+        organizationName:
+          type: string
+        organizationEmail:
+          type: string
+          format: email
+        secret:
+          type: string
+        ownerName:
+          type: string
+        ownerEmail:
+          type: string
+          format: email
+        admins:
+          type: array
+          items:
+            $ref: "#/components/schemas/Admin"
+
+    CreateOrganization: # Can be referenced as '#/components/schemas/CreateOrganization'
+      type: object
+      required:
+        - organizationName
+        - organizationEmail
+        - secret
+        - ownerName
+        - ownerEmail
+        - ownerPassword
+      properties:
+        organizationName:
+          type: string
+        organizationEmail:
+          type: string
+          format: email
+        secret:
+          type: string
+        ownerName:
+          type: string
+        ownerEmail:
+          type: string
+          format: email
+        ownerPassword:
+          type: string
+          format: password
+
+    UpdateOrganization: # Can be referenced as '#/components/schemas/UpdateOrganization'
+      type: object
+      properties:
+        organizationName:
+          type: string
+        organizationEmail:
+          type: string
+          format: email
+        secret:
+          type: string
+        ownerName:
+          type: string
+        ownerEmail:
+          type: string
+          format: email
+
+    Admin: # Can be referenced as '#/components/schemas/Admin'
+      type: object
+      required:
+        - _id
+        - adminName
+        - adminEmail
+      properties:
+        _id:
+          type: string
+        adminName:
+          type: string
+        adminEmail:
+          type: string
+          format: email
+
+    CreateAdmin: # Can be referenced as '#/components/schemas/CreateAdmin'
+      type: object
+      required:
+        - adminName
+        - adminEmail
+        - adminPassword
+      properties:
+        adminName:
+          type: string
+        adminEmail:
+          type: string
+          format: email
+        adminPassword:
+          type: string
+          format: password
+
+    UpdateAdmin: # Can be referenced as '#/components/schemas/UpdateAdmin'
+      type: object
+      properties:
+        adminName:
+          type: string
+        adminEmail:
+          type: string
+          format: email
+
+    Application: # Can be referenced as '#/components/schemas/Application'
+      type: object
+      required:
+        - _id
+        - applicationName
+      properties:
+        _id:
+          type: string
+        applicationName:
+          type: string
+
+    CreateApplication: # Can be referenced as '#/components/schemas/CreateApplication'
+      type: object
+      required:
+        - applicationName
+      properties:
+        applicationName:
+          type: string
+
+    UpdateApplication: # Can be referenced as '#/components/schemas/UpdateApplication'
+      type: object
+      properties:
+        applicationName:
+          type: string
+
     Comment: # Can be referenced as '#/components/schemas/Comment'
       type: object
       required:
