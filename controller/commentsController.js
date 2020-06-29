@@ -55,7 +55,8 @@ exports.flagComment = async (req, res) => {
 
 exports.updateComment = async (req, res, next) => {
   const comment_id = req.params.commentId;
-  const commentBody = req.body.body;
+  const commentBody = req.body.commentBody;
+  const ownerEmail = req.body.ownerEmail;
   Comments.findById(comment_id)
     .exec()
     .then((comment) => {
@@ -64,13 +65,14 @@ exports.updateComment = async (req, res, next) => {
       } else {
         Comments.updateOne(
           { _id: comment_id },
-          { $set: { commentBody: commentBody, isEdited: true } }
+          { $set: { commentBody: commentBody, commentOwnerEmail: ownerEmail, isEdited: true } },
+          { upsert: true }
         )
           .then(() => {
             return responseHandler(
               res,
               200,
-              { body: commentBody, ownerEmail: req.body.ownerEmail },
+              { body: commentBody, ownerEmail: ownerEmail },
               "Updated successfully"
             );
           })
