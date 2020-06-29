@@ -3,7 +3,7 @@ const app = require("../../server");
 import { it, describe } from "@jest/globals";
 // console.log(listEndpoints(app));
 
-const findEndpoint = (path, method) => {
+const findEndpoint = (method, path) => {
   const endpoints = listEndpoints(app);
 
   // find path in array of objects

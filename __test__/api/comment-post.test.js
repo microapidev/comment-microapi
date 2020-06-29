@@ -13,9 +13,6 @@ describeIfEndpoint("POST", "/comments", "POST '/comments'", () => {
       commentOwnerEmail: "useremail@email.com",
       commentOrigin: "123123",
     });
-    if (res.status === 404) {
-      return true; // route not implemented yet
-    }
     expect(res.status).toBe(200);
     expect(res.body.data.commentBody).toBeTruthy();
     expect(res.body.data.commentOwnerName).toBeTruthy();

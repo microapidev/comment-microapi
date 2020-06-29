@@ -1,0 +1,2323 @@
+paths:
+  # Endpoint to create an organization
+  /organizations:
+    # POST operation
+    post:
+      tags:
+        - organizations
+
+      summary: Creates an organization
+
+      parameters:
+        - in: body
+          name: body
+          description: A JSON object containing the organization information
+          required: true
+          schema:
+            $ref: "#/components/schemas/CreateOrganization"
+
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/OrganizationResponse"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to get, delete, or update an organization's application
+  /organizations/{organizationId}:
+    # GET operation
+    get:
+      tags:
+        - organizations
+
+      summary: Gets an organization
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Organization"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # # PATCH operation
+    # patch:
+    #   tags:
+    #     - organizations
+    #   summary: Updates an organization
+    #   parameters:
+    #     - in: body
+    #       name: body
+    #       description: A JSON object containing the organization's information
+    #       required: true
+    #       schema:
+    #         $ref: "#/components/schemas/UpdateOrganization"
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       schema:
+    #         type: object
+    #         required:
+    #           - message
+    #           - response
+    #           - data
+    #         properties:
+    #           message:
+    #             type: string
+    #           response:
+    #             type: string
+    #           data:
+    #             type: array
+    #             items:
+    #               $ref: "#/components/schemas/Organization"
+    #     "401":
+    #       schema:
+    #         $ref: "#/components/responses/401"
+    #     "404":
+    #       schema:
+    #         $ref: "#/components/responses/404"
+    #     "422":
+    #       schema:
+    #         $ref: "#/components/responses/422"
+    # # DELETE operation
+    # delete:
+    #   tags:
+    #     - organizations
+    #   summary: Deletes an organization
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       schema:
+    #         type: object
+    #         required:
+    #           - message
+    #           - response
+    #           - data
+    #         properties:
+    #           message:
+    #             type: string
+    #           response:
+    #             type: string
+    #           data:
+    #             type: array
+    #             items:
+    #               $ref: "#/components/schemas/Organization"
+    #     "401":
+    #       schema:
+    #         $ref: "#/components/responses/401"
+    #     "404":
+    #       schema:
+    #         $ref: "#/components/responses/404"
+    #     "422":
+    #       schema:
+    #         $ref: "#/components/responses/422"
+
+  # Endpoint to create an organization's admin
+  /organizations/{organizationId}/admins:
+    # GET operation
+    get:
+      tags:
+        - organizations
+
+      summary: Gets all of the organization's admins
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Admin"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # POST operation
+    post:
+      tags:
+        - organizations
+
+      summary: Creates the organization's admin
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the organization's admin information
+          required: true
+          schema:
+            $ref: "#/components/schemas/CreateAdmin"
+
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Admin"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to get, delete, or update an organization's admin
+  /organizations/{organizationId}/admins/{adminId}:
+    # GET operation
+    get:
+      tags:
+        - organizations
+
+      summary: Gets an organization's admin
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/adminIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Admin"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # # PATCH operation
+    # patch:
+    #   tags:
+    #     - organizations
+    #   summary: Updates an organization's admin
+    #   parameters:
+    #     - in: body
+    #       name: body
+    #       description: A JSON object containing the organization's admin information
+    #       required: true
+    #       schema:
+    #         $ref: "#/components/schemas/UpdateAdmin"
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       schema:
+    #         type: object
+    #         required:
+    #           - message
+    #           - response
+    #           - data
+    #         properties:
+    #           message:
+    #             type: string
+    #           response:
+    #             type: string
+    #           data:
+    #             type: array
+    #             items:
+    #               $ref: "#/components/schemas/Admin"
+    #     "401":
+    #       schema:
+    #         $ref: "#/components/responses/401"
+    #     "404":
+    #       schema:
+    #         $ref: "#/components/responses/404"
+    #     "422":
+    #       schema:
+    #         $ref: "#/components/responses/422"
+    # # DELETE operation
+    # delete:
+    #   tags:
+    #     - organizations
+    #   summary: Deletes an organization's admin
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       schema:
+    #         type: object
+    #         required:
+    #           - message
+    #           - response
+    #           - data
+    #         properties:
+    #           message:
+    #             type: string
+    #           response:
+    #             type: string
+    #           data:
+    #             type: array
+    #             items:
+    #               $ref: "#/components/schemas/Admin"
+    #     "401":
+    #       schema:
+    #         $ref: "#/components/responses/401"
+    #     "404":
+    #       schema:
+    #         $ref: "#/components/responses/404"
+    #     "422":
+    #       schema:
+    #         $ref: "#/components/responses/422"
+
+  # Endpoint to get all the organization's applications or create an organization's application
+  /organizations/{organizationId}/applications:
+    # GET operation
+    get:
+      tags:
+        - organizations
+
+      summary: Gets all the organization's applications
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Application"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # POST operation
+    post:
+      tags:
+        - organizations
+
+      summary: Creates an organization's application
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing an organization's application information
+          required: true
+          schema:
+            $ref: "#/components/schemas/CreateApplication"
+
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Application"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to get, delete, or update an organization's application
+  /organizations/{organizationId}/applications/{applicationId}:
+    # GET operation
+    get:
+      tags:
+        - organizations
+
+      summary: Gets an organization's application
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Application"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # # PATCH operation
+    # patch:
+    #   tags:
+    #     - organizations
+    #   summary: Updates an organization's application
+    #   parameters:
+    #     - in: body
+    #       name: body
+    #       description: A JSON object containing the organization's application information
+    #       required: true
+    #       schema:
+    #         $ref: "#/components/schemas/UpdateApplication"
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       schema:
+    #         type: object
+    #         required:
+    #           - message
+    #           - response
+    #           - data
+    #         properties:
+    #           message:
+    #             type: string
+    #           response:
+    #             type: string
+    #           data:
+    #             type: array
+    #             items:
+    #               $ref: "#/components/schemas/Application"
+    #     "401":
+    #       schema:
+    #         $ref: "#/components/responses/401"
+    #     "404":
+    #       schema:
+    #         $ref: "#/components/responses/404"
+    #     "422":
+    #       schema:
+    #         $ref: "#/components/responses/422"
+    # # DELETE operation
+    # delete:
+    #   tags:
+    #     - organizations
+    #   summary: Deletes an organization's application
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       schema:
+    #         type: object
+    #         required:
+    #           - message
+    #           - response
+    #           - data
+    #         properties:
+    #           message:
+    #             type: string
+    #           response:
+    #             type: string
+    #           data:
+    #             type: array
+    #             items:
+    #               $ref: "#/components/schemas/Application"
+    #     "401":
+    #       schema:
+    #         $ref: "#/components/responses/401"
+    #     "404":
+    #       schema:
+    #         $ref: "#/components/responses/404"
+    #     "422":
+    #       schema:
+    #         $ref: "#/components/responses/422"
+
+  # Endpoint to get all comments or create a comment
+  /comments:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets all comments
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: query
+          $ref: "#/components/parameters/isFlaggedParam"
+
+        - in: query
+          $ref: "#/components/parameters/refIdParam"
+
+        - in: query
+          $ref: "#/components/parameters/ownerNameParam"
+
+        - in: query
+          $ref: "#/components/parameters/ownerEmailParam"
+
+        - in: query
+          $ref: "#/components/parameters/originParam"
+
+        - in: query
+          $ref: "#/components/parameters/totalVotesParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Comment"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # POST operation
+    post:
+      tags:
+        - comments
+
+      summary: Creates a new comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: body
+          name: body
+          description: A JSON object containing the comment information
+          required: true
+          schema:
+            $ref: "#/components/schemas/CreateComment"
+
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Comment"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to update or delete a comment
+  /comments/{commentId}:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets a comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Comment"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates a comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the comment information to update
+          required: true
+          schema:
+            $ref: "#/components/schemas/UpdateComment"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UpdateComment"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # DELETE operation
+    delete:
+      tags:
+        - comments
+
+      summary: Deletes a comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the email of the comment
+          required: true
+          schema:
+            $ref: "#/components/schemas/DeleteComment"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Comment"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to get all votes of a comment
+  /comments/{commentId}/votes:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets all the votes of a comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VotedComment"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to update upvotes on a comment
+  /comments/{commentId}/votes/upvote:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the upvotes of a comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the owner email of the voter
+          required: true
+          schema:
+            $ref: "#/components/schemas/Vote"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VotedComment"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to update downvotes on a comment
+  /comments/{commentId}/votes/downvote:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the downvotes of a comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the owner email of the voter
+          required: true
+          schema:
+            $ref: "#/components/schemas/Vote"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VotedComment"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to update the flag status of the comment
+  /comments/{commentId}/flag:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the flag status of the comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FlaggedComment"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to create a reply to a comment
+  /comments/{commentId}/replies:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets all replies of a comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: query
+          $ref: "#/components/parameters/isFlaggedParam"
+
+        - in: query
+          $ref: "#/components/parameters/ownerNameParam"
+
+        - in: query
+          $ref: "#/components/parameters/ownerEmailParam"
+
+        - in: query
+          $ref: "#/components/parameters/totalVotesParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Reply"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # POST operation
+    post:
+      tags:
+        - comments
+
+      summary: Creates a new reply to a comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the reply information
+          required: true
+          schema:
+            $ref: "#/components/schemas/CreateReply"
+
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Reply"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to update a reply of a comment
+  /comments/{commentId}/replies/{replyId}:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates a reply of a comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the reply information
+          required: true
+          schema:
+            $ref: "#/components/schemas/UpdateReply"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UpdateReply"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # DELETE operation
+    delete:
+      tags:
+        - comments
+
+      summary: Deletes a reply of a comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the email of the comment
+          required: true
+          schema:
+            $ref: "#/components/schemas/DeleteReply"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Reply"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to get all votes of a comment's reply
+  /comments/{commentId}/replies/{replyId}/votes:
+    # GET operation
+    get:
+      tags:
+        - comments
+
+      summary: Gets all votes of a comment's reply
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VotedReply"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to update upvotes of a comment's reply
+  /comments/{commentId}/replies/{replyId}/votes/upvote:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the upvotes of a comment's reply
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the owner email of the voter
+          required: true
+          schema:
+            $ref: "#/components/schemas/Vote"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VotedReply"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to update downvotes of a comment's reply
+  /comments/{commentId}/replies/{replyId}/votes/downvote:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the downvotes of a comment's reply
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the owner email of the voter
+          required: true
+          schema:
+            $ref: "#/components/schemas/Vote"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VotedReply"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to update the flag status of a reply of a comment
+  /comments/{commentId}/replies/{replyId}/flag:
+    # PATCH operation
+    patch:
+      tags:
+        - comments
+
+      summary: Updates the flag status of the reply of comment
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/replyIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FlaggedReply"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  #-------------------------------
+  # Reusable schemas (data models)
+  #-------------------------------
+  schemas:
+    Organization: # Can be referenced as '#/components/schemas/Organization'
+      type: object
+      required:
+        - _id
+        - organizationName
+        - organizationEmail
+        - secret
+        - ownerName
+        - ownerEmail
+        - admins
+      properties:
+        _id:
+          type: string
+        organizationName:
+          type: string
+        organizationEmail:
+          type: string
+          format: email
+        secret:
+          type: string
+        ownerName:
+          type: string
+        ownerEmail:
+          type: string
+          format: email
+        admins:
+          type: array
+          items:
+            $ref: "#/components/schemas/Admin"
+
+    CreateOrganization: # Can be referenced as '#/components/schemas/CreateOrganization'
+      type: object
+      required:
+        - organizationName
+        - organizationEmail
+        - secret
+        - ownerName
+        - ownerEmail
+        - ownerPassword
+      properties:
+        organizationName:
+          type: string
+        organizationEmail:
+          type: string
+          format: email
+        secret:
+          type: string
+        ownerName:
+          type: string
+        ownerEmail:
+          type: string
+          format: email
+        ownerPassword:
+          type: string
+          format: password
+
+    UpdateOrganization: # Can be referenced as '#/components/schemas/UpdateOrganization'
+      type: object
+      properties:
+        organizationName:
+          type: string
+        organizationEmail:
+          type: string
+          format: email
+        secret:
+          type: string
+        ownerName:
+          type: string
+        ownerEmail:
+          type: string
+          format: email
+
+    OrganizationResponse: # Can be referenced as '#/components/schemas/OrganizationResponse'
+      type: object
+      properties:
+        organizationId:
+          type: string
+        adminId:
+          type: string
+        organizationToken:
+          type: string
+
+    Admin: # Can be referenced as '#/components/schemas/Admin'
+      type: object
+      required:
+        - _id
+        - adminName
+        - adminEmail
+      properties:
+        _id:
+          type: string
+        adminName:
+          type: string
+        adminEmail:
+          type: string
+          format: email
+
+    CreateAdmin: # Can be referenced as '#/components/schemas/CreateAdmin'
+      type: object
+      required:
+        - adminName
+        - adminEmail
+        - adminPassword
+      properties:
+        adminName:
+          type: string
+        adminEmail:
+          type: string
+          format: email
+        adminPassword:
+          type: string
+          format: password
+
+    UpdateAdmin: # Can be referenced as '#/components/schemas/UpdateAdmin'
+      type: object
+      properties:
+        adminName:
+          type: string
+        adminEmail:
+          type: string
+          format: email
+
+    Application: # Can be referenced as '#/components/schemas/Application'
+      type: object
+      required:
+        - _id
+        - applicationName
+      properties:
+        _id:
+          type: string
+        applicationName:
+          type: string
+
+    CreateApplication: # Can be referenced as '#/components/schemas/CreateApplication'
+      type: object
+      required:
+        - applicationName
+      properties:
+        applicationName:
+          type: string
+
+    UpdateApplication: # Can be referenced as '#/components/schemas/UpdateApplication'
+      type: object
+      properties:
+        applicationName:
+          type: string
+
+    Comment: # Can be referenced as '#/components/schemas/Comment'
+      type: object
+      required:
+        - _id
+        - refId
+        - body
+        - ownerName
+        - ownerEmail
+        - origin
+        - totalVotes
+        - upvotes
+        - downvotes
+        - isFlagged
+        - replies
+        - repliesCount
+      properties:
+        _id:
+          type: string
+        refId:
+          type: string
+        body:
+          type: string
+        ownerName:
+          type: string
+        ownerEmail:
+          type: string
+          format: email
+        origin:
+          type: string
+        totalVotes:
+          type: number
+        upvotes:
+          type: array
+          items:
+            type: string
+        downvotes:
+          type: array
+          items:
+            type: string
+        isFlagged:
+          type: boolean
+        replies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Reply"
+        repliesCount:
+          type: number
+
+    CreateComment: # Can be referenced as '#/components/schemas/CreateComment'
+      type: object
+      required:
+        - body
+        - ownerName
+        - ownerEmail
+        - origin
+      properties:
+        refId:
+          type: string
+        body:
+          type: string
+          minLength: 1
+        ownerName:
+          type: string
+          minLength: 1
+        ownerEmail:
+          type: string
+          format: email
+        origin:
+          type: string
+
+    UpdateComment: # Can be referenced as '#/components/schemas/UpdateComment'
+      type: object
+      properties:
+        body:
+          type: string
+          minLength: 1
+        ownerEmail:
+          type: string
+          format: email
+
+    DeleteComment: # Can be referenced as '#/components/schemas/DeleteComment'
+      type: object
+      required:
+        - ownerEmail
+      properties:
+        ownerEmail:
+          type: string
+          format: email
+
+    VotedComment: # Can be referenced as '#/components/schemas/VotedComment'
+      type: object
+      properties:
+        commentId:
+          type: string
+        totalVotes:
+          type: integer
+        upvotes:
+          type: array
+          items:
+            type: string
+        downvotes:
+          type: array
+          items:
+            type: string
+
+    FlaggedComment: # Can be referenced as '#/components/schemas/FlaggedComment'
+      type: object
+      properties:
+        commentId:
+          type: string
+        isFlagged:
+          type: boolean
+
+    Reply: # Can be referenced as '#/components/schemas/Reply'
+      type: object
+      required:
+        - _id
+        - commentId
+        - body
+        - ownerName
+        - ownerEmail
+        - totalVotes
+        - upvotes
+        - downvotes
+        - isFlagged
+      properties:
+        _id:
+          type: string
+        commentId:
+          type: string
+        body:
+          type: string
+        ownerName:
+          type: string
+        ownerEmail:
+          type: string
+          format: email
+        totalVotes:
+          type: number
+        upvotes:
+          type: array
+          items:
+            type: string
+        downvotes:
+          type: array
+          items:
+            type: string
+        isFlagged:
+          type: boolean
+
+    CreateReply: # Can be referenced as '#/components/schemas/CreateReply'
+      type: object
+      required:
+        - body
+        - ownerName
+        - ownerEmail
+      properties:
+        body:
+          type: string
+          minLength: 1
+        ownerName:
+          type: string
+          minLength: 1
+        ownerEmail:
+          type: string
+          format: email
+
+    UpdateReply: # Can be referenced as '#/components/schemas/UpdateReply'
+      type: object
+      properties:
+        body:
+          type: string
+          minLength: 1
+        ownerEmail:
+          type: string
+          format: email
+
+    DeleteReply: # Can be referenced as '#/components/schemas/DeleteReply'
+      type: object
+      required:
+        - ownerEmail
+      properties:
+        ownerEmail:
+          type: string
+          format: email
+
+    VotedReply: # Can be referenced as '#/components/schemas/VotedReply'
+      type: object
+      properties:
+        replyId:
+          type: string
+        commentId:
+          type: string
+        totalVotes:
+          type: integer
+        upvotes:
+          type: array
+          items:
+            type: string
+        downvotes:
+          type: array
+          items:
+            type: string
+
+    FlaggedReply: # Can be referenced as '#/components/schemas/FlaggedReply'
+      type: object
+      properties:
+        commentId:
+          type: string
+        replyId:
+          type: string
+        isFlagged:
+          type: boolean
+
+    Vote: # Can be referenced as '#/components/schemas/Vote'
+      type: object
+      required:
+        - voterEmail
+      properties:
+        voterEmail:
+          type: string
+          format: email
+
+    ErrorResponse: # Can be referenced as '#/components/schemas/Error'
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+          example: []
+
+  #-------------------------------
+  # Reusable operation parameters
+  #-------------------------------
+  parameters:
+    organizationIdParam: # Can be referenced via '#/components/parameters/organizationIdParam'
+      in: path
+      name: organizationId
+      description: String ID of the organization
+      required: true
+      schema:
+        type: string
+
+    adminIdParam: # Can be referenced via '#/components/parameters/adminIdParam'
+      in: path
+      name: adminId
+      description: String ID of the admin
+      required: true
+      schema:
+        type: string
+
+    applicationIdParam: # Can be referenced via '#/components/parameters/applicationIdParam'
+      in: path
+      name: applicationId
+      description: String ID of the application
+      required: true
+      schema:
+        type: string
+
+    commentIdParam: # Can be referenced via '#/components/parameters/commentIdParam'
+      in: path
+      name: commentId
+      description: String ID of the comment
+      required: true
+      schema:
+        type: string
+
+    replyIdParam: # Can be referenced via '#/components/parameters/replyIdParam'
+      in: path
+      name: replyId
+      description: String ID of the reply
+      required: true
+      schema:
+        type: string
+
+    isFlaggedParam: # Can be referenced via '#/components/parameters/isFlaggedParam'
+      in: query
+      name: isFlagged
+      description: An optional query parameter, that takes a boolean as a value, to filter comments, or replies, by whether or not the comment, or reply, is flagged. If omitted, the response includes all comments, or replies, regardless of its flag state.
+      schema:
+        type: boolean
+
+    refIdParam: # Can be referenced via '#/components/parameters/refIdParam'
+      in: query
+      name: refId
+      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain reference ID. If omitted, the response includes all comments, or replies, regardless of its reference ID.
+      schema:
+        type: string
+
+    ownerNameParam: # Can be referenced via '#/components/parameters/ownerNameParam'
+      in: query
+      name: ownerName
+      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain owner name. If omitted, the response includes all comments, or replies, regardless of its owner name.
+      schema:
+        type: string
+
+    ownerEmailParam: # Can be referenced via '#/components/parameters/ownerEmailParam'
+      in: query
+      name: ownerEmail
+      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain owner email. If omitted, the response includes all comments, or replies, regardless of its owner email.
+      schema:
+        type: string
+
+    originParam: # Can be referenced via '#/components/parameters/originParam'
+      in: query
+      name: origin
+      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain origin. If omitted, the response includes all comments, or replies, regardless of its origin.
+      schema:
+        type: string
+
+    totalVotesParam: # Can be referenced via '#/components/parameters/totalVotesParam'
+      in: query
+      name: totalVotes
+      description: An optional query parameter, that takes an integer as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain number of votes. If omitted, the response includes all comments, or replies, regardless of its number of votes.
+      schema:
+        type: integer
