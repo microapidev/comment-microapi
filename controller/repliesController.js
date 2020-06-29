@@ -6,6 +6,7 @@ const { ObjectId } = require("mongoose").Types;
 
 const CustomError = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
+const Reply = require("../models/replies");
 
 const getCommentReplies = async (req, res, next) => {
   const { commentId } = req.params;
@@ -34,6 +35,35 @@ const getCommentReplies = async (req, res, next) => {
   }
 };
 
+// GET a single reply
+const getASingleReply = async (req, res, next) => {
+  const { commentId, replyId } = req.params;
+
+  if (!ObjectId.isValid(commentId)) {
+    return next(new CustomError(400, " Invalid comment Id "));
+  }
+  if (!ObjectId.isValid(replyId)) {
+    return next(new CustomError(400, " Invalid reply Id "));
+  }
+  try {
+    //check if such comment exists
+    const comment = await Comments.findById(commentId);
+    // If the comment does not exist,send an error msg
+    if (!comment) {
+      return next(new CustomError(404, " Comment not found "));
+    }
+    const reply = await Replies.findOne({
+      $and: [{ commentId }, { _id: replyId }],
+    });
+    if (!reply) {
+      return next(new CustomError(400, " Invalid reply Id "));
+    }
+    return responseHandler(res, 200, reply, " Reply found ");
+  } catch (err) {
+    next(err);
+  }
+};
 module.exports = {
   getCommentReplies,
+  getASingleReply,
 };
