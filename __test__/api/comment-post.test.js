@@ -3,10 +3,9 @@ const supertest = require("supertest");
 const CommentModel = require("../../models/comments");
 const mongoose = require("mongoose");
 const request = supertest(app);
-import { skipIfNotFound } from "../helpers/conditionalTests";
+import { describeIfEndpoint } from "../helpers/conditionalTests";
 
-describe("POST '/comments'", () => {
-  skipIfNotFound("POST", "/comments");
+describeIfEndpoint("POST", "/comments", "POST '/comments'", () => {
   test("Should create comment", async () => {
     const res = await request.post("/comments").send({
       commentBody: "this is a comment",
@@ -24,30 +23,34 @@ describe("POST '/comments'", () => {
   });
 });
 
-describe("POST '/comments/:commentId/replies'", () => {
-  skipIfNotFound("POST", "/comments/:id/replies");
-  test("Should create new reply to comment", async () => {
-    const comment = new CommentModel({
-      commentBody: "this is a comment",
-      commentOwnerName: "userName",
-      commentOwnerEmail: "useremail@email.com",
-      commentOrigin: "123123",
-      commentOwner: mongoose.Types.ObjectId(),
-    });
-    await comment.save();
+describeIfEndpoint(
+  "POST",
+  "/comments/:id/replies",
+  "POST '/comments/:commentId/replies'",
+  () => {
+    test("Should create new reply to comment", async () => {
+      const comment = new CommentModel({
+        commentBody: "this is a comment",
+        commentOwnerName: "userName",
+        commentOwnerEmail: "useremail@email.com",
+        commentOrigin: "123123",
+        commentOwner: mongoose.Types.ObjectId(),
+      });
+      await comment.save();
 
-    const res = await request.post(`/comments/${comment._id}/replies`).send({
-      commentId: comment._id,
-      replyBody: "this is a reply to a comment",
-      replyOwnerName: "userName",
-      replyOwnerEmail: "useremail@email.com",
+      const res = await request.post(`/comments/${comment._id}/replies`).send({
+        commentId: comment._id,
+        replyBody: "this is a reply to a comment",
+        replyOwnerName: "userName",
+        replyOwnerEmail: "useremail@email.com",
+      });
+      if (res.status === 404) {
+        return true; // route not implemented yet
+      }
+      expect(res.status).toBe(200);
+      expect(res.body.data.commentId).toEqual(comment._id);
+      expect(res.body.data.commentBody).toBeTruthy();
+      expect(res.body.data.commentOwnerEmail).toBeTruthy();
     });
-    if (res.status === 404) {
-      return true; // route not implemented yet
-    }
-    expect(res.status).toBe(200);
-    expect(res.body.data.commentId).toEqual(comment._id);
-    expect(res.body.data.commentBody).toBeTruthy();
-    expect(res.body.data.commentOwnerEmail).toBeTruthy();
-  });
-});
+  }
+);
