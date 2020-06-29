@@ -3,9 +3,10 @@
 // const Replies = require("../models/replies");
 const Comments = require("../models/comments");
 const mongoose = require("mongoose");
-// const CustomError = require("../utils/customError");
+const CustomError = require("../utils/customError");
 // const User = require("../models/users");
 const errHandler = require("../utils/errorhandler");
+const responseHandler = require("../utils/responseHandler");
 
 exports.flagComment = async (req, res) => {
   try {
@@ -52,52 +53,43 @@ exports.flagComment = async (req, res) => {
   }
 };
 
-exports.deleteComment = async (req, res) => {
+exports.deleteComment = async (req, res, next) => {
   const commentId = req.params.commentId;
   const userEmail = req.body.commentOwnerEmail;
-  if (!commentId || !userEmail) {
-    return res.status(400).json({
-      data: null,
-      status: "Failed",
-      message: "Comment Id and email address required",
-    });
-  }
   try {
     const comment = await Comments.findOne({ _id: commentId }).populate(
       "commentOwner"
     );
     if (!comment) {
-      return res.status(400).json({
-        data: null,
-        status: "Failed",
-        message: "Comment not found",
-      });
+      return next(CustomError(400, "Comment not found"));
     }
     const email = await comment;
     if (email.commentOwner.email.toLowerCase() == userEmail.toLowerCase()) {
       const deleting = await Comments.findByIdAndDelete(commentId);
       if (deleting) {
-        return res.status(200).json({
-          data,
-          status: "Success",
-          message: "Comment deleted successfully",
-        });
+        return responseHandler(
+          res,
+          200,
+          deleting,
+          "Comment deleted successfully"
+        );
       } else {
-        return res.status(400).json({
-          data: null,
-          status: "Failed",
-          message: "Cannot delete your comment at this time. Please try again",
-        });
+        return next(
+          CustomError(
+            400,
+            "Cannot delete your comment at this time. Please try again"
+          )
+        );
       }
     } else {
-      return res.status(400).json({
-        data: null,
-        status: "Failed",
-        message:
-          "Comment cannot be deleted because you are not the owner of this comment.",
-      });
+      return next(
+        CustomError(
+          400,
+          "Comment cannot be deleted because you are not the owner of this comment."
+        )
+      );
     }
   } catch (error) {
-    errHandler(error, res);
+    return next(new CustomError(500,"Something went wrong,please try again", error))
   }
 };
