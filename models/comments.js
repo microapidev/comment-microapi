@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const CommentSchema = new Schema(
   {
+    refId: Number,
     commentBody: {
       type: String,
       required: true,
@@ -21,29 +22,20 @@ const CommentSchema = new Schema(
       type: Number,
       default: 0,
     },
-    replies: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
-    voteType: {
-      type: String,
-      enum: ["upvote", "downvote"],
-    },
-    totalVotes: {
-      type: Number,
-    },
+    replies: [{ type: Schema.Types.ObjectId, ref: "Replies" }],
     upVotes: [
       {
         type: Schema.Types.ObjectId,
-        required: true,
         ref: "Users",
       },
     ],
     downVotes: [
       {
         type: Schema.Types.ObjectId,
-        required: true,
         ref: "Users",
       },
     ],
-    user: [{ type: Schema.Types.ObjectId, ref: "Users" }],
+    commentOwner: { type: Schema.Types.ObjectId, required: true, ref: "Users" },
   },
   { timestamps: true }
 );
