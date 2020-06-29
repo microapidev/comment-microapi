@@ -56,9 +56,9 @@ exports.deleteComment = async (req, res) => {
   const commentId = req.params.commentId;
   const userEmail = req.body.commentOwnerEmail;
   if (!commentId || !userEmail) {
-    return res.status(401).json({
+    return res.status(400).json({
       status: false,
-      message: "Comment Id and email adress required",
+      message: "Comment Id and email address required",
     });
   }
   try {
