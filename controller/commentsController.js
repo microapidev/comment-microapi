@@ -55,7 +55,7 @@ exports.flagComment = async (req, res) => {
 
 exports.updateComment = async (req, res, next) => {
   const comment_id = req.params.commentId;
-  const commentBody = req.body.commentBody;
+  const commentBody = req.body.body;
   Comments.findById(comment_id)
     .exec()
     .then((comment) => {
@@ -70,7 +70,7 @@ exports.updateComment = async (req, res, next) => {
             return responseHandler(
               res,
               200,
-              commentBody,
+              { body: commentBody, ownerEmail: req.body.ownerEmail },
               "Updated successfully"
             );
           })
