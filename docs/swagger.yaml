@@ -25,6 +25,13 @@ paths:
 
       summary: Gets an organization
 
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
       responses:
         "200":
           description: Successful operation
@@ -137,6 +144,13 @@ paths:
 
       summary: Gets all of the organization's admins
 
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
       responses:
         "200":
           description: Successful operation
@@ -175,7 +189,13 @@ paths:
 
       summary: Creates the organization's admin
 
+      security:
+        - Bearer: []
+
       parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
         - in: body
           name: body
           description: A JSON object containing the organization's admin information
@@ -222,6 +242,16 @@ paths:
         - organizations
 
       summary: Gets an organization's admin
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/adminIdParam"
 
       responses:
         "200":
@@ -335,6 +365,13 @@ paths:
 
       summary: Gets all the organization's applications
 
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
       responses:
         "200":
           description: Successful operation
@@ -373,7 +410,13 @@ paths:
 
       summary: Creates an organization's application
 
+      security:
+        - Bearer: []
+
       parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
         - in: body
           name: body
           description: A JSON object containing an organization's application information
@@ -420,6 +463,16 @@ paths:
         - organizations
 
       summary: Gets an organization's application
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
 
       responses:
         "200":
@@ -533,6 +586,9 @@ paths:
 
       summary: Gets all comments
 
+      security:
+        - Bearer: []
+
       parameters:
         - in: query
           $ref: "#/components/parameters/isFlaggedParam"
@@ -586,6 +642,9 @@ paths:
 
       summary: Creates a new comment
 
+      security:
+        - Bearer: []
+
       parameters:
         - in: body
           name: body
@@ -629,6 +688,9 @@ paths:
         - comments
 
       summary: Updates a comment
+
+      security:
+        - Bearer: []
 
       parameters:
         - in: path
@@ -676,6 +738,9 @@ paths:
         - comments
 
       summary: Deletes a comment
+
+      security:
+        - Bearer: []
 
       parameters:
         - in: path
@@ -728,6 +793,9 @@ paths:
 
       summary: Gets all the votes of a comment
 
+      security:
+        - Bearer: []
+
       parameters:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
@@ -771,6 +839,9 @@ paths:
         - comments
 
       summary: Updates the upvotes of a comment
+
+      security:
+        - Bearer: []
 
       parameters:
         - in: path
@@ -823,6 +894,9 @@ paths:
 
       summary: Updates the downvotes of a comment
 
+      security:
+        - Bearer: []
+
       parameters:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
@@ -874,6 +948,9 @@ paths:
 
       summary: Updates the flag status of the comment
 
+      security:
+        - Bearer: []
+
       parameters:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
@@ -917,6 +994,9 @@ paths:
         - comments
 
       summary: Gets all replies of a comment
+
+      security:
+        - Bearer: []
 
       parameters:
         - in: query
@@ -989,6 +1069,9 @@ paths:
 
       summary: Creates a new reply to a comment
 
+      security:
+        - Bearer: []
+
       parameters:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
@@ -1039,6 +1122,9 @@ paths:
         - comments
 
       summary: Updates a reply of a comment
+
+      security:
+        - Bearer: []
 
       parameters:
         - in: path
@@ -1091,6 +1177,9 @@ paths:
         - comments
 
       summary: Deletes a reply of a comment
+
+      security:
+        - Bearer: []
 
       parameters:
         - in: path
@@ -1146,6 +1235,9 @@ paths:
 
       summary: Gets all votes of a comment's reply
 
+      security:
+        - Bearer: []
+
       parameters:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
@@ -1192,6 +1284,9 @@ paths:
         - comments
 
       summary: Updates the upvotes of a comment's reply
+
+      security:
+        - Bearer: []
 
       parameters:
         - in: path
@@ -1247,6 +1342,9 @@ paths:
 
       summary: Updates the downvotes of a comment's reply
 
+      security:
+        - Bearer: []
+
       parameters:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
@@ -1300,6 +1398,9 @@ paths:
         - comments
 
       summary: Updates the flag status of the reply of comment
+
+      security:
+        - Bearer: []
 
       parameters:
         - in: path
@@ -1725,6 +1826,30 @@ components:
   # Reusable operation parameters
   #-------------------------------
   parameters:
+    organizationIdParam: # Can be referenced via '#/components/parameters/organizationIdParam'
+      in: path
+      name: organizationId
+      description: String ID of the organization
+      required: true
+      schema:
+        type: string
+
+    adminIdParam: # Can be referenced via '#/components/parameters/adminIdParam'
+      in: path
+      name: adminId
+      description: String ID of the admin
+      required: true
+      schema:
+        type: string
+
+    applicationIdParam: # Can be referenced via '#/components/parameters/applicationIdParam'
+      in: path
+      name: applicationId
+      description: String ID of the application
+      required: true
+      schema:
+        type: string
+
     commentIdParam: # Can be referenced via '#/components/parameters/commentIdParam'
       in: path
       name: commentId
