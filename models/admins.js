@@ -25,12 +25,14 @@ const AdminSchema = new Schema(
   },
   { timestamps: true }
 );
-AdminSchema.index({
-  organizationId: 1,
-  email: 1  
-},
-{ 
-  unique: true 
-});
+AdminSchema.index(
+  {
+    organizationId: 1,
+    email: 1,
+  },
+  {
+    unique: true,
+  }
+);
 const Admin = mongoose.model("Admins", AdminSchema);
 module.exports = Admin;
