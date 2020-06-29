@@ -17,7 +17,7 @@ const findEndpoint = (method, path) => {
 };
 
 export const skipIfNotFound = (method, path) => {
-  if (!findEndpoint(path, method)) {
+  if (!findEndpoint(method, path)) {
     return it.only("Skipping all tests in file. This route has not been implemented yet!", () => {
       // do nothing
     });
@@ -25,7 +25,7 @@ export const skipIfNotFound = (method, path) => {
 };
 
 export const describeIfEndpoint = (method, path, name, callback) => {
-  if (findEndpoint(path, method)) {
+  if (findEndpoint(method, path)) {
     return describe(name, callback);
   } else {
     return describe.skip(
