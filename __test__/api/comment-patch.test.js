@@ -6,12 +6,42 @@ const supertest = require("supertest");
 const request = supertest(app);
 const { describeIfEndpoint } = require("../helpers/conditionalTests");
 
+// describeIfEndpoint(
+//   "PATCH",
+//   "/comments/:commentId",
+//   "PATCH /comments/:commentId",
+//   () => {
+//     it("Updates a comment", async () => {
+//       const comment = new CommentModel({
+//         commentBody: "this is a comment",
+//         commentOwnerName: "userName",
+//         commentOwnerEmail: "useremail@email.com",
+//         commentOrigin: "123123",
+//         commentOwner: mongoose.Types.ObjectId(),
+//       });
+//       await comment.save();
+
+//       const commentId = comment._id;
+
+//       const res = await request.patch(`/comments/${commentId}`).send({
+//         commentOwnerEmail: comment.commentOwnerEmail,
+//         commentBody: "New Comment Update",
+//       });
+
+//       expect(res.status).toBe(200);
+//       expect(res.body.status).toBe("success");
+//       expect(res.body.data.commentBody).toBeTruthy();
+//       expect(res.body.data.commentOwnerEmail).toBeTruthy();
+//     });
+//   }
+// );
+
 describeIfEndpoint(
   "PATCH",
-  "/comments/:commentId",
-  "PATCH /comments/:commentId",
+  "/comments/:commentId/flag",
+  "PATCH /comments/:commentId/flag",
   () => {
-    it("Updates a comment", async () => {
+    it("Flags a comment", async () => {
       const comment = new CommentModel({
         commentBody: "this is a comment",
         commentOwnerName: "userName",
@@ -23,15 +53,13 @@ describeIfEndpoint(
 
       const commentId = comment._id;
 
-      const res = await request.patch(`/comments/${commentId}`).send({
-        commentOwnerEmail: comment.commentOwnerEmail,
-        commentBody: "New Comment Update",
+      const res = await request.patch(`/comments/${commentId}/flag`).send({
+        isFlagged: true,
       });
 
       expect(res.status).toBe(200);
-      expect(res.body.status).toBe("success");
-      expect(res.body.data.commentBody).toBeTruthy();
-      expect(res.body.data.commentOwnerEmail).toBeTruthy();
+      expect(res.body.data.commentId).toBeTruthy();
+      expect(res.body.data.isFlagged).toBeTruthy();
     });
   }
 );
