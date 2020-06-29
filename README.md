@@ -19,7 +19,6 @@ For quick navigation:
 
 
 
-
 ## <a name="getting-started"></a> Getting Started
 
 Ensure that your local machine has all the required software, listed below, before setting up your local environment.
