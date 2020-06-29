@@ -8,6 +8,7 @@ const CommentSchema = new Schema(
       //the id of the application that this comment belongs to
       type: Schema.Types.ObjectId,
       ref: "Applications",
+      required: true,
     },
     ownerId: {
       // field used for emails, userId from the applcation used to identify its users

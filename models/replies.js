@@ -8,11 +8,10 @@ const ReplySchema = new Schema({
     required: true,
   },
   content: {
-    // field contains comment body
+    // field contains reply body
     type: String,
     required: true,
   },
-  replies: [{ type: Schema.Types.ObjectId, ref: "Replies" }], // array of replies
   flags: [
     // contains array of ownerId allowing only one flag per user
     {
@@ -33,7 +32,7 @@ const ReplySchema = new Schema({
       type: String, // array of ownerId
     },
   ],
-  commentId: { type: mongoose.Schema.Types.ObjectId, ref: "Comments" },
+  commentId: { type: mongoose.Schema.Types.ObjectId, ref: "Comments" }, // ref to parent comment
 });
 
 const Reply = mongoose.model("Replies", ReplySchema);
