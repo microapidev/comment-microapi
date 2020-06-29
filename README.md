@@ -6,12 +6,18 @@ This is a microservice that allows user to create comments, edit comments and al
 
 For quick navigation:
 
+- [How it Works](#how-it-works)
 - [Getting Started](#getting-started)
 - [Linting Your Code](#linting-your-code)
 - [Testing Your Code](#testing-your-code)
 - [Contributing Your Code](#contributing-your-code)
 - [Endpoints Documentation](#endpoints-documentation)
 - [Schema Design Explanation](#schema-design-explanation)
+
+
+## <a name="how-it-works"></a> How it works
+
+
 
 ## <a name="getting-started"></a> Getting Started
 
@@ -38,11 +44,42 @@ You will first need to setup your local environment and ensure that all configur
 3. Ensure you fix any remaining linting errors displayed.
    Run npm run test:ci to ensure your code matches the test
 
-## <a name="linting-your-code"></a> Testing Your Code
+## <a name="testing-your-code"></a> Testing Your Code
 
 1. Run `npm run test` to ensure your code passes all tests
 
 ## <a name="contributing-your-code"></a> Contributing Your Code
+
+Are you willing to contribute to this project? You can contribute in many areas but primarily in the following areas
+
+1. Implementing endpoints and controllers
+2. Writing unit tests for endpoints and controllers. 
+3. Documentation 
+4. Creating middleware and their consumables
+5. Fixing/pointing out bugs
+6. We could use a boost in our code coverage, so any tests to cover untested fucntions is highly welcome
+
+### Quick Reference
+
+- All responses must follow the format specified in the online [swagger documentation](https://comments-microservice.herokuapp.com/). To facilitate this a few utility functions have been provided and you should use them to send your responses to stay consistent. 
+   + **responseHandler** for sending responses with custom response code, optional data and a message 
+   + **customError** for error responses with custom error response code, message and optional data. To use this in a try..catch block, create a new instance of the customError class with the above properties. Pass this new error object to the `next` callback in your controller znd that is it. An **errorHandler** utility will send the necessary response
+
+- A validation middleware is created to validate all endpoints using the `Joi` validation package. Validation rules are available for every endpoint and you must use a validation middleware when implementing an endpoint. If the validation rule/middleware for the endpoint you are not working on has not been implemented then open a new issue requesting to create the validatiion rule/middleware. 
+
+- Some endpoints are guarded and require authenication via JWT tokens. These endpoints are indicated in the swagger documentation. Authentication middleware have been provided for these endpoints. Make use of appropriate auth middleware, where required, when implementing these endpoints.
+
+- To enable this project move swiftly. In the initial stages, tests were not written alongside implementation. For this reason, tests and implementation are separate. To enable tests not fail for non-existent endpoints, a helper method, **describeIfEndpoint**, has been created to defer running of tests until the endpoint itself has been created. Please use when necessary. When writing tests, for a minimum, test for a valid request's response, auth error response (if auth required), and validation error response.
+
+- If for any reason, your contribution is impeded because some component mentioned above is not available, kindly reach out to the maintainers so that you will be advised on how to proceed.
+
+- Always lint your code as stated [above](#linting-your-code)
+
+- Ensure you rebase/sync your local repo with the latest updates from the original repo to prevent merge conflicts. Your PR will not be attended to until you have resolved all merge conflicts
+
+- When making a pull request, make use of the PR template and edit the placeholders with relevant information. PR descriptions must include reference to the issue being fixed using: fixes/resolves #issue_number e.g `fixes #12` or `resolves #25` linking to the original issue number.
+
+### Further details
 
 Ensure that you lint and test your code before submitting a pull request (PR). For more information on the contributing guidelines and tips on certain implementation details, please see the [contributing documentation](https://github.com/microapi/comment-microapi/tree/master/CONTRIBUTING.md).
 
