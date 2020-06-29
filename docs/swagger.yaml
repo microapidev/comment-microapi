@@ -16,6 +16,41 @@ paths:
           schema:
             $ref: "#/components/schemas/CreateOrganization"
 
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/OrganizationResponse"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
   # Endpoint to get, delete, or update an organization's application
   /organizations/{organizationId}:
     # GET operation
@@ -35,33 +70,44 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Organization"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Organization"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
     # # PATCH operation
     # patch:
@@ -154,33 +200,44 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Admin"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Admin"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
     # POST operation
     post:
@@ -204,35 +261,53 @@ paths:
             $ref: "#/components/schemas/CreateAdmin"
 
       responses:
-        "200":
+        "201":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Admin"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Admin"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to get, delete, or update an organization's admin
   /organizations/{organizationId}/admins/{adminId}:
@@ -256,33 +331,44 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Admin"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Admin"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
     # # PATCH operation
     # patch:
@@ -375,33 +461,44 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Application"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Application"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
     # POST operation
     post:
@@ -425,35 +522,53 @@ paths:
             $ref: "#/components/schemas/CreateApplication"
 
       responses:
-        "200":
+        "201":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Application"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Application"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to get, delete, or update an organization's application
   /organizations/{organizationId}/applications/{applicationId}:
@@ -477,33 +592,44 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Application"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Application"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
     # # PATCH operation
     # patch:
@@ -611,29 +737,37 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Comment"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Comment"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
     # POST operation
     post:
@@ -654,31 +788,46 @@ paths:
             $ref: "#/components/schemas/CreateComment"
 
       responses:
-        "200":
+        "201":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Comment"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Comment"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to update or delete a comment
   /comments/{commentId}:
@@ -706,31 +855,51 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                $ref: "#/components/schemas/UpdateComment"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UpdateComment"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
     # DELETE operation
     delete:
@@ -756,33 +925,51 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Comment"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Comment"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to get all votes of a comment
   /comments/{commentId}/votes:
@@ -803,33 +990,44 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/VotedComment"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VotedComment"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to update upvotes on a comment
   /comments/{commentId}/votes/upvote:
@@ -857,33 +1055,51 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/VotedComment"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VotedComment"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to update downvotes on a comment
   /comments/{commentId}/votes/downvote:
@@ -911,33 +1127,51 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/VotedComment"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VotedComment"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to update the flag status of the comment
   /comments/{commentId}/flag:
@@ -958,33 +1192,44 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/FlaggedComment"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FlaggedComment"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to create a reply to a comment
   /comments/{commentId}/replies:
@@ -1011,56 +1256,47 @@ paths:
         - in: query
           $ref: "#/components/parameters/totalVotesParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing an array of the reply information
-          required: true
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Reply"
-
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Reply"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Reply"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
     # POST operation
     post:
@@ -1084,35 +1320,53 @@ paths:
             $ref: "#/components/schemas/CreateReply"
 
       responses:
-        "200":
+        "201":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Reply"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Reply"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to update a reply of a comment
   /comments/{commentId}/replies/{replyId}:
@@ -1143,33 +1397,51 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UpdateReply"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UpdateReply"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
     # DELETE operation
     delete:
@@ -1198,33 +1470,51 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Reply"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Reply"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to get all votes of a comment's reply
   /comments/{commentId}/replies/{replyId}/votes:
@@ -1248,33 +1538,44 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/VotedReply"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VotedReply"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to update upvotes of a comment's reply
   /comments/{commentId}/replies/{replyId}/votes/upvote:
@@ -1305,33 +1606,51 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/VotedReply"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VotedReply"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to update downvotes of a comment's reply
   /comments/{commentId}/replies/{replyId}/votes/downvote:
@@ -1362,33 +1681,51 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/VotedReply"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VotedReply"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to update the flag status of a reply of a comment
   /comments/{commentId}/replies/{replyId}/flag:
@@ -1412,33 +1749,44 @@ paths:
       responses:
         "200":
           description: Successful operation
-          schema:
-            type: object
-            required:
-              - message
-              - response
-              - data
-            properties:
-              message:
-                type: string
-              response:
-                type: string
-              data:
-                type: array
-                items:
-                  $ref: "#/components/schemas/FlaggedReply"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FlaggedReply"
 
         "401":
-          schema:
-            $ref: "#/components/responses/401"
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "404":
-          schema:
-            $ref: "#/components/responses/404"
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
-          schema:
-            $ref: "#/components/responses/422"
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
 components:
   #-------------------------------
@@ -1516,6 +1864,16 @@ components:
         ownerEmail:
           type: string
           format: email
+
+    OrganizationResponse: # Can be referenced as '#/components/schemas/OrganizationResponse'
+      type: object
+      properties:
+        organizationId:
+          type: string
+        adminId:
+          type: string
+        organizationToken:
+          type: string
 
     Admin: # Can be referenced as '#/components/schemas/Admin'
       type: object
@@ -1907,20 +2265,3 @@ components:
       description: An optional query parameter, that takes an integer as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain number of votes. If omitted, the response includes all comments, or replies, regardless of its number of votes.
       schema:
         type: integer
-
-  #-------------------------------
-  # Reusable responses
-  #-------------------------------
-  responses:
-    401: # Can be referenced via '#/components/responses/401'
-      description: Authentication error
-      schema:
-        $ref: "#/components/schemas/ErrorResponse"
-    404: # Can be referenced via '#/components/responses/404'
-      description: Invalid ID error
-      schema:
-        $ref: "#/components/schemas/ErrorResponse"
-    422: # Can be referenced via '#/components/responses/422'
-      description: Validation error
-      schema:
-        $ref: "#/components/schemas/ErrorResponse"
