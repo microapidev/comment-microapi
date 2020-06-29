@@ -57,7 +57,8 @@ exports.deleteComment = async (req, res) => {
   const userEmail = req.body.commentOwnerEmail;
   if (!commentId || !userEmail) {
     return res.status(400).json({
-      status: false,
+      data: null,
+      status: "Failed",
       message: "Comment Id and email address required",
     });
   }
@@ -67,7 +68,8 @@ exports.deleteComment = async (req, res) => {
     );
     if (!comment) {
       return res.status(400).json({
-        status: false,
+        data: null,
+        status: "Failed",
         message: "Comment not found",
       });
     }
@@ -76,23 +78,26 @@ exports.deleteComment = async (req, res) => {
       const deleting = await Comments.findByIdAndDelete(commentId);
       if (deleting) {
         return res.status(200).json({
-          status: true,
+          data,
+          status: "Success",
           message: "Comment deleted successfully",
         });
       } else {
         return res.status(400).json({
-          status: false,
-          message: "Canot delete your comment at this time. Please try again",
+          data: null,
+          status: "Failed",
+          message: "Cannot delete your comment at this time. Please try again",
         });
       }
     } else {
       return res.status(400).json({
-        status: false,
+        data: null,
+        status: "Failed",
         message:
           "Comment cannot be deleted because you are not the owner of this comment.",
       });
     }
-  } catch (err) {
-    console.log(err, res);
+  } catch (error) {
+    errHandler(error, res);
   }
 };
