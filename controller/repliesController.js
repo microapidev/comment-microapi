@@ -6,7 +6,6 @@ const { ObjectId } = require("mongoose").Types;
 
 const CustomError = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
-const Reply = require("../models/replies");
 
 const getCommentReplies = async (req, res, next) => {
   const { commentId } = req.params;
