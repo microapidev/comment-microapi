@@ -12,7 +12,7 @@ describeIfEndpoint("GET", "/comments", "GET '/comments' ", () => {
       console.log("GET /comments Not Implemented Yet");
       return true;
     }
-    
+
     expect(res.status).toBe(200);
     expect(res.body.status).toBe("success");
     expect(res.body.data).toBeTruthy();
