@@ -2,7 +2,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ReplySchema = new Schema({
-  replyBody: {
+  body: {
+    type: String,
+    required: true,
+  },
+  ownerName: {
+    type: String,
+    required: true,
+  },
+  ownerEmail: {
     type: String,
     required: true,
   },
