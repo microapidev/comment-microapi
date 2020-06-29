@@ -52,35 +52,47 @@ exports.flagComment = async (req, res) => {
   }
 };
 
-//find coments by this user
-//check for the id of the comment is by the user before deleting
-exports.deleteComment = (req, res) => {
-  const commentId = req.query.commentId;
-  const userId = req.params.userId;
-  Comments.find({ commentOwner: userId, _id: commentId })
-    .then((comment) => {
-      if (comment.length) {
-        Comments.findByIdAndDelete(commentId).then((success) => {
-          if (!success) {
-            return res.status(400).json({
-              status: false,
-              message:
-                "Canot delete your comment at this time. Please try again",
-            });
-          } else {
-            return res.status(200).json({
-              status: true,
-              message: "Comment deleted successfully",
-            });
-          }
+exports.deleteComment = async (req, res) => {
+  const commentId = req.params.commentId;
+  const userEmail = req.body.commentOwnerEmail;
+  if (!commentId || !userEmail) {
+    return res.status(401).json({
+      status: false,
+      message: "Comment Id and email adress required",
+    });
+  }
+  try {
+    const comment = await Comments.findOne({ _id: commentId }).populate(
+      "commentOwner"
+    );
+    if (!comment) {
+      return res.status(400).json({
+        status: false,
+        message: "Comment not found",
+      });
+    }
+    const email = await comment;
+    if (email.commentOwner.email.toLowerCase() == userEmail.toLowerCase()) {
+      const deleting = await Comments.findByIdAndDelete(commentId);
+      if (deleting) {
+        return res.status(200).json({
+          status: true,
+          message: "Comment deleted successfully",
         });
       } else {
         return res.status(400).json({
           status: false,
-          message:
-            "Comment cannot be deleted because you are not the owner of this comment.",
+          message: "Canot delete your comment at this time. Please try again",
         });
       }
-    })
-    .catch((err) => console.log(err));
+    } else {
+      return res.status(400).json({
+        status: false,
+        message:
+          "Comment cannot be deleted because you are not the owner of this comment.",
+      });
+    }
+  } catch (err) {
+    console.log(err, res);
+  }
 };
