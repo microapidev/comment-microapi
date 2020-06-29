@@ -48,13 +48,10 @@ const flagCommentReplies = async (req, res, next) => {
     const reply = await Replies.findOneAndUpdate(
       {
         _id: replyId,
-        comment_id: commentId,
+        commentId: commentId,
       },
       {
         isFlagged: true,
-        $inc: {
-          numOfFlags: 1,
-        },
       },
       {
         new: true,
@@ -69,9 +66,8 @@ const flagCommentReplies = async (req, res, next) => {
     }
     const data = {
       replyId: reply._id,
-      commentId: reply.comment_id,
+      commentId: reply.commentId,
       isFlagged: reply.isFlagged,
-      numOfFlags: reply.numOfFlags,
     };
 
     return responseHandler(
