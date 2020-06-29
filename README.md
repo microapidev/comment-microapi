@@ -76,7 +76,11 @@ Are you willing to contribute to this project? You can contribute in many areas 
 
 - Always lint your code using `npm run lint:fix` to catch and fix any sysntax errors, format your code with our code style choice, `prettier`. Do this also before pushing your commits to a new or an existing PR. If your code fails linting, it will not be accepted.
 
+- Ensure you rebase/sync your local repo with the latest updates from the original repo to prevent merge conflicts. Your PR will not be attended to until you have resolved all merge conflicts
+
 - When making a pull request, make use of the PR template and edit the placeholders with relevant information. PR descriptions must include reference to the issue being fixed using: fixes/resolves #issue_number e.g `fixes #12` or `resolves #25` linking to the original issue number.
+
+### Futher details
 
 Ensure that you lint and test your code before submitting a pull request (PR). For more information on the contributing guidelines and tips on certain implementation details, please see the [contributing documentation](https://github.com/microapi/comment-microapi/tree/master/CONTRIBUTING.md).
 
