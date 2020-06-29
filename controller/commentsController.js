@@ -61,7 +61,7 @@ exports.deleteComment = async (req, res, next) => {
       "commentOwner"
     );
     if (!comment) {
-      return next(CustomError(400, "Comment not found"));
+      return next(new CustomError(400, "Comment not found"));
     }
     const email = await comment;
     if (email.commentOwner.email.toLowerCase() == userEmail.toLowerCase()) {
@@ -75,7 +75,7 @@ exports.deleteComment = async (req, res, next) => {
         );
       } else {
         return next(
-          CustomError(
+          new CustomError(
             400,
             "Cannot delete your comment at this time. Please try again"
           )
@@ -83,13 +83,15 @@ exports.deleteComment = async (req, res, next) => {
       }
     } else {
       return next(
-        CustomError(
+        new CustomError(
           400,
           "Comment cannot be deleted because you are not the owner of this comment."
         )
       );
     }
   } catch (error) {
-    return next(new CustomError(500,"Something went wrong,please try again", error))
+    return next(
+      new CustomError(500, "Something went wrong,please try again", error)
+    );
   }
 };
