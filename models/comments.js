@@ -27,7 +27,7 @@ const CommentSchema = new Schema(
         ref: "Users",
       },
     ],
-    commentOwner: { type: Schema.Types.ObjectId, required: true, ref: "Users" },
+    commentOwner: { type: Schema.Types.ObjectId, ref: "Users" },
   },
   { timestamps: true }
 );
