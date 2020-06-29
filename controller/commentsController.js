@@ -69,7 +69,7 @@ exports.updateComment = async (req, res, next) => {
           .then(() => {
             return responseHandler(
               res,
-              201,
+              200,
               commentBody,
               "Updated successfully"
             );
