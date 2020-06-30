@@ -195,17 +195,15 @@ const getReplyVotes = async (req, res, next) => {
       votes,
     };
 
-    responseHandler(res, 200, data, "OK");
-    return;
+    return responseHandler(res, 200, data, "OK");
   } catch (error) {
-    next(
+    return next(
       new CustomError(
         500,
         "Something went wrong, please try again later",
         error
       )
     );
-    return;
   }
 };
 
