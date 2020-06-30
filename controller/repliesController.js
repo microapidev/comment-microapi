@@ -134,7 +134,7 @@ const getReplyVotes = async (req, res, next) => {
       return next(
         new CustomError(
           404,
-          `Reply with the ID ${commentId} does not exist or has been deleted`
+          `Reply with the ID ${replyId} does not exist or has been deleted`
         )
       );
     }
