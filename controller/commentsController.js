@@ -187,12 +187,9 @@ exports.getCommentVotes = async (req, res) => {
       return next(new CustomError(404, "Not found"));
     }
     //comment by pushing ownerId into vote array
-    if (
-      !comment.upVotes.includes(ownerId) &&
-      !comment.downVotes.includes(ownerId)
-    ) {
-      comment.upVotes.push(ownerId);
-      comment.downVotes.push(ownerId);
+    if (!comment.upVotes.includes(id) && !comment.downVotes.includes(id)) {
+      comment.upVotes.push(id);
+      comment.downVotes.push(id);
     }
     const data = {
       replyId: comment.replyId,
@@ -210,7 +207,7 @@ exports.getCommentVotes = async (req, res) => {
       );
     }
   } catch (err) {
+    // eslint-disable-next-line no-undef
     return next(new CustomError(522, "There is an error ", err));
   }
-};
 };

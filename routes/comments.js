@@ -6,6 +6,8 @@ const { appAuthMW } = require("../middleware/auth");
 router.use(appAuthMW);
 router.use("/:commentId/replies", repliesRoutes);
 
+router.patch("/:commentId/votes/upvote", commentController.upvoteComment);
+
 // get comment voteType(upVotes or downVotes);
 router.get("/comments/:commentId/votes", commentController.getCommentVotes);
 
