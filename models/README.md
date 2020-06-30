@@ -19,7 +19,7 @@ organizationId: ObjectId # required, ref: Organizations
 ## Comments
 
 ```yaml
-refId: String # required
+refId: String # optional
 applicationId: ObjectId # required, ref: Applications
 ownerId: String # required
 content: String # required
