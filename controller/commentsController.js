@@ -18,19 +18,42 @@ exports.upvoteComment = async (req, res, next) => {
     }
     const comment = await Comments.findById({ _id: commentId });
 
+    //if user exists in downvotes array
+    if (comment.downVotes.includes(ownerId)) {
+      //get index of user in downvotes array
+      const voterIndex = comment.downVotes.indexOf(ownerId);
+      //if index exists
+      if (voterIndex > -1) {
+        //delete that index
+        comment.upVotes.splice(voterIndex, 1);
+      }
+    }
+
+    //same as above for upvotes
     if (comment.upVotes.includes(ownerId)) {
       const voterIdx = comment.upVotes.indexOf(ownerId);
       if (voterIdx > -1) {
         comment.upVotes.splice(voterIdx, 1);
       }
-      return "Your upvote has already been registered";
     }
+
+    // add user to the top of the upvotes array
     comment.upVotes.unshift(ownerId);
+    //save the comment vote
     comment.save();
+
+    //get total number of elements in array
     const totalVotes = comment.upVotes.length;
+    const totalDownVotes = comment.downVotes.length;
+
+    //get total number of votes
+    const total = totalVotes + totalDownVotes;
+
     const data = {
-      totalVotes,
-      comments: comment.upVotes,
+      commentId: comment._id,
+      numOfVotes: total,
+      numOfUpVotes: totalVotes,
+      numOfDownVotes: totalDownVotes,
     };
     return responseHandler(res, 200, data, "Comment upVoted Successfully!");
   } catch (err) {
