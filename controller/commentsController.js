@@ -25,7 +25,7 @@ exports.upvoteComment = async (req, res, next) => {
       //if index exists
       if (voterIndex > -1) {
         //delete that index
-        comment.upVotes.splice(voterIndex, 1);
+        comment.downVotes.splice(voterIndex, 1);
       }
     }
 
