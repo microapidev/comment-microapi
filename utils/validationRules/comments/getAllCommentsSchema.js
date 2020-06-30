@@ -15,9 +15,8 @@ const getAllCommentsSchema = {
   query: Joi.object({
     isFlagged: Joi.boolean(),
     refId: Joi.string(),
-    ownerName: Joi.string(),
+    ownerId: Joi.string(),
     origin: Joi.string(),
-    totalVotes: Joi.number(),
   }),
 };
 
