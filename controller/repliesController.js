@@ -102,7 +102,85 @@ const createReply = async (req, res, next) => {
   }
 };
 
+const getReplyVotes = async (req, res, next) => {
+  try {
+    const { commentId, replyId } = req.params;
+    const { voteType } = req.query;
+
+    if (!ObjectId.isValid(commentId)) {
+      return next(new CustomError(404, "Invalid ID"));
+    }
+
+    if (!ObjectId.isValid(replyId)) {
+      return next(new CustomError(404, "Invalid ID"));
+    }
+
+    const parentComment = await Comments.findById(commentId);
+
+    // Check to see if the parent comment exists.
+    if (!parentComment) {
+      return next(
+        new CustomError(
+          404,
+          `Comment with the ID ${commentId} does not exist or has been deleted`
+        )
+      );
+    }
+
+    const reply = await Replies.findById(replyId);
+
+    // Check to see if the reply exists.
+    if (!reply) {
+      return next(
+        new CustomError(
+          404,
+          `Reply with the ID ${commentId} does not exist or has been deleted`
+        )
+      );
+    }
+
+    // A list of all the votes
+    const votes = [];
+
+    if (!voteType) {
+      // Add all votes
+      votes.push(...reply.upVotes);
+      votes.push(...reply.downVotes);
+    } else {
+      if (voteType === "upvote") {
+        // Add upvotes only
+        votes.push(...reply.upVotes);
+      }
+
+      if (voteType === "downvote") {
+        // Add downvotes only
+        votes.push(...reply.downVotes);
+      }
+    }
+
+    // The data object to be returned in the response
+    const data = {
+      replyId,
+      commentId,
+      votes,
+    };
+
+    responseHandler(res, 200, data, "OK");
+    return;
+  } catch (error) {
+    next(
+      new CustomError(
+        500,
+        "Something went wrong, please try again later",
+        error
+      )
+    );
+    return;
+  }
+};
+
 module.exports = {
   getCommentReplies,
   createReply,
+  getReplyVotes,
 };
