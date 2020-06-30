@@ -52,7 +52,7 @@ exports.deleteComment = async (req, res, next) => {
   const commentId = req.params.commentId;
   const ownerId = req.body.ownerId;
   try {
-    const comment = await Comments.findOne({ _id: commentId })
+    const comment = await Comments.findOne({ _id: commentId });
     if (!comment) {
       return next(new CustomError(400, "Comment not found"));
     }
