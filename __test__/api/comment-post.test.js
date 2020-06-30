@@ -3,48 +3,48 @@ const supertest = require("supertest");
 const CommentModel = require("../../models/comments");
 const mongoose = require("mongoose");
 const request = supertest(app);
-import { describeIfEndpoint } from "../helpers/conditionalTests";
+import { skipIfNotFound } from "../helpers/conditionalTests";
 
-describeIfEndpoint("POST", "/comments", "POST '/comments'", () => {
+describe("POST '/comments'", () => {
+  skipIfNotFound("POST", "/comments");
   test("Should create comment", async () => {
     const res = await request.post("/comments").send({
-      content: "this is a comment",
-      ownerId: "useremail@email.com",
-      origin: "123123",
+      commentBody: "this is a comment",
+      commentOwnerName: "userName",
+      commentOwnerEmail: "useremail@email.com",
+      commentOrigin: "123123",
     });
     expect(res.status).toBe(200);
-    expect(res.body.data.content).toBeTruthy();
-    expect(res.body.data.ownerId).toBeTruthy();
+    expect(res.body.data.commentBody).toBeTruthy();
+    expect(res.body.data.commentOwnerName).toBeTruthy();
+    expect(res.body.data.commentOwnerEmail).toBeTruthy();
   });
 });
 
-describeIfEndpoint(
-  "POST",
-  "/comments/:id/replies",
-  "POST '/comments/:commentId/replies'",
-  () => {
-    test("Should create new reply to comment", async () => {
-      const comment = new CommentModel({
-        content: "this is a comment",
-        ownerId: "useremail@email.com",
-        origin: "123123",
-        applicationId: mongoose.Types.ObjectId(),
-      });
-      await comment.save();
-
-      const res = await request.post(`/comments/${comment._id}/replies`).send({
-        commentId: comment._id,
-        replyBody: "this is a reply to a comment",
-        replyOwnerName: "userName",
-        replyOwnerEmail: "useremail@email.com",
-      });
-      if (res.status === 404) {
-        return true; // route not implemented yet
-      }
-      expect(res.status).toBe(200);
-      expect(res.body.data.commentId).toEqual(comment._id);
-      expect(res.body.data.content).toBeTruthy();
-      expect(res.body.data.ownerId).toBeTruthy();
+describe("POST '/comments/:commentId/replies'", () => {
+  skipIfNotFound("POST", "/comments/:commentId/replies");
+  test("Should create new reply to comment", async () => {
+    const comment = new CommentModel({
+      commentBody: "this is a comment",
+      commentOwnerName: "userName",
+      commentOwnerEmail: "useremail@email.com",
+      commentOrigin: "123123",
+      commentOwner: mongoose.Types.ObjectId(),
     });
-  }
-);
+    await comment.save();
+
+    const res = await request.post(`/comments/${comment._id}/replies`).send({
+      commentId: comment._id,
+      replyBody: "this is a reply to a comment",
+      replyOwnerName: "userName",
+      replyOwnerEmail: "useremail@email.com",
+    });
+    if (res.status === 404) {
+      return true; // route not implemented yet
+    }
+    expect(res.status).toBe(200);
+    expect(res.body.data.commentId).toEqual(comment._id);
+    expect(res.body.data.commentBody).toBeTruthy();
+    expect(res.body.data.commentOwnerEmail).toBeTruthy();
+  });
+});

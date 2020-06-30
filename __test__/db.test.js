@@ -11,16 +11,18 @@ describe("INSERT", () => {
     const id = mongoose.Types.ObjectId();
     const mockComment = new CommentModel({
       _id: id,
-      content: "this is a comment",
-      ownerId: "useremail@email.com",
-      origin: "123123",
-      refId: "50",
-      applicationId: mongoose.Types.ObjectId(),
+      commentBody: "this is a comment",
+      commentOwnerName: "userName",
+      commentOwnerEmail: "useremail@email.com",
+      commentOrigin: "123123",
+      commentOwner: mongoose.Types.ObjectId(),
     });
     await mockComment.save();
 
     const insertedComment = await CommentModel.findById(id);
     expect(insertedComment._id).toEqual(mockComment._id);
-    expect(insertedComment.ownerId).toEqual(mockComment.ownerId);
+    expect(insertedComment.commentOwnerEmail).toEqual(
+      mockComment.commentOwnerEmail
+    );
   });
 });

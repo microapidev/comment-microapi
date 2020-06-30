@@ -34,6 +34,54 @@ const getCommentReplies = async (req, res, next) => {
   }
 };
 
+const flagCommentReplies = async (req, res, next) => {
+  const { commentId, replyId } = req.params;
+
+  if (!ObjectId.isValid(commentId)) {
+    return next(new CustomError(422, " Invalid comment Id "));
+  }
+
+  if (!ObjectId.isValid(replyId)) {
+    return next(new CustomError(422, " Invalid reply Id "));
+  }
+  try {
+    const reply = await Replies.findOneAndUpdate(
+      {
+        _id: replyId,
+        commentId: commentId,
+      },
+      {
+        isFlagged: true,
+      },
+      {
+        new: true,
+      }
+    );
+    if (!reply) {
+      return res.status(404).json({
+        status: "error",
+        message: `Reply with the ID ${replyId} doesn't exist or has been deleted`,
+        data: null,
+      });
+    }
+    const data = {
+      replyId: reply._id,
+      commentId: reply.commentId,
+      isFlagged: reply.isFlagged,
+    };
+
+    return responseHandler(
+      res,
+      200,
+      data,
+      "Reply has been flagged successfully"
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getCommentReplies,
+  flagCommentReplies,
 };

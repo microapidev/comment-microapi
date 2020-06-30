@@ -6,8 +6,6 @@
 
 **What does this PR do?**
 
-Fixes #issue_number (replace issue_number with the issue number this PR solves)
-
 Summarise the main tasks handled in the pull request
 
 **description of Task to be completed?**
