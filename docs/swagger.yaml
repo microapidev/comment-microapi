@@ -723,16 +723,10 @@ paths:
           $ref: "#/components/parameters/refIdParam"
 
         - in: query
-          $ref: "#/components/parameters/ownerNameParam"
-
-        - in: query
-          $ref: "#/components/parameters/ownerEmailParam"
+          $ref: "#/components/parameters/ownerIdParam"
 
         - in: query
           $ref: "#/components/parameters/originParam"
-
-        - in: query
-          $ref: "#/components/parameters/totalVotesParam"
 
       responses:
         "200":
@@ -1043,6 +1037,9 @@ paths:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
 
+        - in: path
+          $ref: "#/components/parameters/voteTypeParam"
+
       responses:
         "200":
           description: Successful operation
@@ -1062,7 +1059,16 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/VotedComment"
+                      type: object
+                      properties:
+                        replyId:
+                          type: string
+                        commentId:
+                          type: string
+                        votes:
+                          type: array
+                          items:
+                            type: string
 
         "401":
           description: Authentication error
@@ -1103,10 +1109,10 @@ paths:
 
         - in: body
           name: body
-          description: A JSON object containing the owner email of the voter
+          description: A JSON object containing the ID of the owner
           required: true
           schema:
-            $ref: "#/components/schemas/Vote"
+            $ref: "#/components/schemas/OwnerID"
 
       responses:
         "200":
@@ -1175,10 +1181,10 @@ paths:
 
         - in: body
           name: body
-          description: A JSON object containing the owner email of the voter
+          description: A JSON object containing the ID of the owner
           required: true
           schema:
-            $ref: "#/components/schemas/Vote"
+            $ref: "#/components/schemas/OwnerID"
 
       responses:
         "200":
@@ -1245,6 +1251,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
 
+        - in: body
+          name: body
+          description: A JSON object containing the ID of the owner
+          required: true
+          schema:
+            $ref: "#/components/schemas/OwnerID"
+
       responses:
         "200":
           description: Successful operation
@@ -1304,13 +1317,7 @@ paths:
           $ref: "#/components/parameters/isFlaggedParam"
 
         - in: query
-          $ref: "#/components/parameters/ownerNameParam"
-
-        - in: query
-          $ref: "#/components/parameters/ownerEmailParam"
-
-        - in: query
-          $ref: "#/components/parameters/totalVotesParam"
+          $ref: "#/components/parameters/ownerIdParam"
 
       responses:
         "200":
@@ -1650,6 +1657,9 @@ paths:
         - in: path
           $ref: "#/components/parameters/replyIdParam"
 
+        - in: path
+          $ref: "#/components/parameters/voteTypeParam"
+
       responses:
         "200":
           description: Successful operation
@@ -1669,7 +1679,16 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/VotedReply"
+                      type: object
+                      properties:
+                        replyId:
+                          type: string
+                        commentId:
+                          type: string
+                        votes:
+                          type: array
+                          items:
+                            type: string
 
         "401":
           description: Authentication error
@@ -1713,10 +1732,10 @@ paths:
 
         - in: body
           name: body
-          description: A JSON object containing the owner email of the voter
+          description: A JSON object containing the ID of the owner
           required: true
           schema:
-            $ref: "#/components/schemas/Vote"
+            $ref: "#/components/schemas/OwnerID"
 
       responses:
         "200":
@@ -1788,10 +1807,10 @@ paths:
 
         - in: body
           name: body
-          description: A JSON object containing the owner email of the voter
+          description: A JSON object containing the ID of the owner
           required: true
           schema:
-            $ref: "#/components/schemas/Vote"
+            $ref: "#/components/schemas/OwnerID"
 
       responses:
         "200":
@@ -1861,6 +1880,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/replyIdParam"
 
+        - in: body
+          name: body
+          description: A JSON object containing the ID of the owner
+          required: true
+          schema:
+            $ref: "#/components/schemas/OwnerID"
+
       responses:
         "200":
           description: Successful operation
@@ -1911,7 +1937,7 @@ components:
     Organization: # Can be referenced as '#/components/schemas/Organization'
       type: object
       required:
-        - _id
+        - organizationId
         - organizationName
         - organizationEmail
         - secret
@@ -1919,7 +1945,7 @@ components:
         - ownerEmail
         - admins
       properties:
-        _id:
+        organizationId:
           type: string
         organizationName:
           type: string
@@ -1993,11 +2019,11 @@ components:
     Admin: # Can be referenced as '#/components/schemas/Admin'
       type: object
       required:
-        - _id
+        - adminId
         - adminName
         - adminEmail
       properties:
-        _id:
+        adminId:
           type: string
         adminName:
           type: string
@@ -2033,10 +2059,10 @@ components:
     Application: # Can be referenced as '#/components/schemas/Application'
       type: object
       required:
-        - _id
+        - applicationId
         - applicationName
       properties:
-        _id:
+        applicationId:
           type: string
         applicationName:
           type: string
@@ -2058,34 +2084,29 @@ components:
     Comment: # Can be referenced as '#/components/schemas/Comment'
       type: object
       required:
-        - _id
+        - commentId
         - refId
-        - body
-        - ownerName
-        - ownerEmail
+        - applicationId
+        - ownerId
+        - content
         - origin
-        - totalVotes
         - upvotes
         - downvotes
-        - isFlagged
+        - flags
         - replies
-        - repliesCount
       properties:
-        _id:
+        commentId:
           type: string
         refId:
           type: string
-        body:
+        applicationId:
           type: string
-        ownerName:
+        ownerId:
           type: string
-        ownerEmail:
+        content:
           type: string
-          format: email
         origin:
           type: string
-        totalVotes:
-          type: number
         upvotes:
           type: array
           items:
@@ -2094,106 +2115,90 @@ components:
           type: array
           items:
             type: string
-        isFlagged:
-          type: boolean
+        flags:
+          type: array
+          items:
+            type: string
         replies:
           type: array
           items:
             $ref: "#/components/schemas/Reply"
-        repliesCount:
-          type: number
 
     CreateComment: # Can be referenced as '#/components/schemas/CreateComment'
       type: object
       required:
-        - body
-        - ownerName
-        - ownerEmail
-        - origin
+        - content
+        - applicationId
+        - ownerId
       properties:
         refId:
           type: string
-        body:
+        applicationId:
+          type: string
+        ownerId:
+          type: string
+        content:
           type: string
           minLength: 1
-        ownerName:
-          type: string
-          minLength: 1
-        ownerEmail:
-          type: string
-          format: email
         origin:
           type: string
 
     UpdateComment: # Can be referenced as '#/components/schemas/UpdateComment'
       type: object
       properties:
-        body:
+        content:
           type: string
           minLength: 1
-        ownerEmail:
+        ownerId:
           type: string
-          format: email
 
     DeleteComment: # Can be referenced as '#/components/schemas/DeleteComment'
       type: object
       required:
-        - ownerEmail
+        - ownerId
       properties:
-        ownerEmail:
+        ownerId:
           type: string
-          format: email
 
     VotedComment: # Can be referenced as '#/components/schemas/VotedComment'
       type: object
       properties:
         commentId:
           type: string
-        totalVotes:
+        numOfVotes:
           type: integer
-        upvotes:
-          type: array
-          items:
-            type: string
-        downvotes:
-          type: array
-          items:
-            type: string
+        numOfUpVotes:
+          type: integer
+        numOfDownVotes:
+          type: integer
 
     FlaggedComment: # Can be referenced as '#/components/schemas/FlaggedComment'
       type: object
       properties:
         commentId:
           type: string
-        isFlagged:
-          type: boolean
+        numOfFlags:
+          type: integer
 
     Reply: # Can be referenced as '#/components/schemas/Reply'
       type: object
       required:
-        - _id
+        - replyId
         - commentId
-        - body
-        - ownerName
-        - ownerEmail
-        - totalVotes
+        - ownerId
+        - content
         - upvotes
         - downvotes
-        - isFlagged
+        - flags
       properties:
-        _id:
+        replyId:
           type: string
         commentId:
           type: string
-        body:
+        ownerId:
           type: string
-        ownerName:
+        content:
           type: string
-        ownerEmail:
-          type: string
-          format: email
-        totalVotes:
-          type: number
         upvotes:
           type: array
           items:
@@ -2202,44 +2207,39 @@ components:
           type: array
           items:
             type: string
-        isFlagged:
-          type: boolean
+        flags:
+          type: array
+          items:
+            type: string
 
     CreateReply: # Can be referenced as '#/components/schemas/CreateReply'
       type: object
       required:
-        - body
-        - ownerName
-        - ownerEmail
+        - content
+        - ownerId
       properties:
-        body:
+        content:
           type: string
           minLength: 1
-        ownerName:
+        ownerId:
           type: string
-          minLength: 1
-        ownerEmail:
-          type: string
-          format: email
 
     UpdateReply: # Can be referenced as '#/components/schemas/UpdateReply'
       type: object
       properties:
-        body:
+        content:
           type: string
           minLength: 1
-        ownerEmail:
+        ownerId:
           type: string
-          format: email
 
     DeleteReply: # Can be referenced as '#/components/schemas/DeleteReply'
       type: object
       required:
-        - ownerEmail
+        - ownerId
       properties:
-        ownerEmail:
+        ownerId:
           type: string
-          format: email
 
     VotedReply: # Can be referenced as '#/components/schemas/VotedReply'
       type: object
@@ -2248,35 +2248,30 @@ components:
           type: string
         commentId:
           type: string
-        totalVotes:
+        numOfVotes:
           type: integer
-        upvotes:
-          type: array
-          items:
-            type: string
-        downvotes:
-          type: array
-          items:
-            type: string
+        numOfUpVotes:
+          type: integer
+        numOfDownVotes:
+          type: integer
 
     FlaggedReply: # Can be referenced as '#/components/schemas/FlaggedReply'
       type: object
       properties:
-        commentId:
-          type: string
         replyId:
           type: string
-        isFlagged:
-          type: boolean
+        commentId:
+          type: string
+        numOfFlags:
+          type: integer
 
-    Vote: # Can be referenced as '#/components/schemas/Vote'
+    OwnerID: # Can be referenced as '#/components/schemas/OwnerID'
       type: object
       required:
-        - voterEmail
+        - ownerId
       properties:
-        voterEmail:
+        ownerId:
           type: string
-          format: email
 
     ErrorResponse: # Can be referenced as '#/components/schemas/Error'
       type: object
@@ -2342,41 +2337,34 @@ components:
     isFlaggedParam: # Can be referenced via '#/components/parameters/isFlaggedParam'
       in: query
       name: isFlagged
-      description: An optional query parameter, that takes a boolean as a value, to filter comments, or replies, by whether or not the comment, or reply, is flagged. If omitted, the response includes all comments, or replies, regardless of its flag state.
+      description: Filters comments, or replies, by flagged state. If omitted, the response includes all comments, or replies, regardless of their flag state.
       schema:
         type: boolean
+
+    voteTypeParam: # Can be referenced via '#/components/parameters/voteTypeParam'
+      in: query
+      name: voteType
+      description: Filters comments, or replies, by vote type. If omitted, the response includes all comments, or replies, regardless of their vote type.
+      schema:
+        type: string
 
     refIdParam: # Can be referenced via '#/components/parameters/refIdParam'
       in: query
       name: refId
-      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain reference ID. If omitted, the response includes all comments, or replies, regardless of its reference ID.
+      description: Filters comments, or replies, by reference's ID. If omitted, the response includes all comments, or replies, regardless of their reference ID.
       schema:
         type: string
 
-    ownerNameParam: # Can be referenced via '#/components/parameters/ownerNameParam'
+    ownerIdParam: # Can be referenced via '#/components/parameters/ownerIdParam'
       in: query
-      name: ownerName
-      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain owner name. If omitted, the response includes all comments, or replies, regardless of its owner name.
-      schema:
-        type: string
-
-    ownerEmailParam: # Can be referenced via '#/components/parameters/ownerEmailParam'
-      in: query
-      name: ownerEmail
-      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain owner email. If omitted, the response includes all comments, or replies, regardless of its owner email.
+      name: ownerId
+      description: Filters comments, or replies, by owner's ID. If omitted, the response includes all comments, or replies, regardless of its owner.
       schema:
         type: string
 
     originParam: # Can be referenced via '#/components/parameters/originParam'
       in: query
       name: origin
-      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain origin. If omitted, the response includes all comments, or replies, regardless of its origin.
+      description: Filters comments, or replies, by origin. If omitted, the response includes all comments, or replies, regardless of its origin.
       schema:
         type: string
-
-    totalVotesParam: # Can be referenced via '#/components/parameters/totalVotesParam'
-      in: query
-      name: totalVotes
-      description: An optional query parameter, that takes an integer as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain number of votes. If omitted, the response includes all comments, or replies, regardless of its number of votes.
-      schema:
-        type: integer
