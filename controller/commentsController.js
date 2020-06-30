@@ -51,34 +51,38 @@ exports.flagComment = async (req, res, next) => {
 
 exports.updateComment = async (req, res, next) => {
   const comment_id = req.params.commentId;
-  const commentBody = req.body.content;
-  const owner = req.body.ownerId;
+  const content = req.body.content;
+  const ownerId = req.body.ownerId;
 
   Comments.findById(comment_id)
     .exec()
     .then((comment) => {
       if (!comment) {
-        return new CustomError(404, "Comment not found");
-      } else if (comment.ownerId != owner) {
-        return new CustomError(
-          403,
-          "Sorry, comment cannot be updated or Unauthorized"
+        return next(new CustomError(404, "Comment not found"));
+      } else if (comment.ownerId != ownerId) {
+        return next(
+          new CustomError(
+            403,
+            "Sorry, comment cannot be updated or Unauthorized"
+          )
         );
       }
       Comments.updateOne(
         { _id: comment_id },
-        { $set: { commentBody: commentBody, isEdited: true } }
+        { $set: { content: content, isEdited: true } }
       )
         .then(() => {
           return responseHandler(
             res,
             200,
-            { content: commentBody, ownerId: owner },
+            { content: content, ownerId: ownerId },
             "Updated sucessfully"
           );
         })
         .catch((err) => {
-          return new CustomError(400, "Update failed, please try again", err);
+          return next(
+            new CustomError(400, "Update failed, please try again", err)
+          );
         });
     })
     .catch((err) => {
