@@ -8,15 +8,13 @@ import { describeIfEndpoint } from "../helpers/conditionalTests";
 describeIfEndpoint("POST", "/comments", "POST '/comments'", () => {
   test("Should create comment", async () => {
     const res = await request.post("/comments").send({
-      commentBody: "this is a comment",
-      commentOwnerName: "userName",
-      commentOwnerEmail: "useremail@email.com",
-      commentOrigin: "123123",
+      content: "this is a comment",
+      ownerId: "useremail@email.com",
+      origin: "123123",
     });
     expect(res.status).toBe(200);
-    expect(res.body.data.commentBody).toBeTruthy();
-    expect(res.body.data.commentOwnerName).toBeTruthy();
-    expect(res.body.data.commentOwnerEmail).toBeTruthy();
+    expect(res.body.data.content).toBeTruthy();
+    expect(res.body.data.ownerId).toBeTruthy();
   });
 });
 
@@ -27,11 +25,10 @@ describeIfEndpoint(
   () => {
     test("Should create new reply to comment", async () => {
       const comment = new CommentModel({
-        commentBody: "this is a comment",
-        commentOwnerName: "userName",
-        commentOwnerEmail: "useremail@email.com",
-        commentOrigin: "123123",
-        commentOwner: mongoose.Types.ObjectId(),
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
+        applicationId: mongoose.Types.ObjectId(),
       });
       await comment.save();
 
@@ -46,8 +43,8 @@ describeIfEndpoint(
       }
       expect(res.status).toBe(200);
       expect(res.body.data.commentId).toEqual(comment._id);
-      expect(res.body.data.commentBody).toBeTruthy();
-      expect(res.body.data.commentOwnerEmail).toBeTruthy();
+      expect(res.body.data.content).toBeTruthy();
+      expect(res.body.data.ownerId).toBeTruthy();
     });
   }
 );

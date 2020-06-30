@@ -26,12 +26,11 @@ describeIfEndpoint(
   () => {
     it("Return all comment for a particular ref", async () => {
       const comment = new CommentModel({
-        commentBody: "this is a comment",
-        commentOwnerName: "userName",
-        commentOwnerEmail: "useremail@email.com",
-        commentOrigin: "123123",
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
         refId: 2,
-        commentOwner: mongoose.Types.ObjectId(),
+        applicationId: mongoose.Types.ObjectId(),
       });
       await comment.save();
       const res = await request.get(`/comments/refs/${comment.refId}`);
@@ -53,12 +52,11 @@ describeIfEndpoint(
   () => {
     it("Return all replies for a comment", async () => {
       const comment = new CommentModel({
-        commentBody: "this is a comment",
-        commentOwnerName: "userName",
-        commentOwnerEmail: "useremail@email.com",
-        commentOrigin: "123123",
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
         refId: 2,
-        commentOwner: mongoose.Types.ObjectId(),
+        applicationId: mongoose.Types.ObjectId(),
       });
       await comment.save();
 
