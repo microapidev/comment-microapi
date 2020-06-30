@@ -3,6 +3,9 @@ const router = require("express").Router();
 const commentController = require("../controller/commentsController");
 const { appAuthMW } = require("../middleware/auth");
 
+// get vote comment
+router.get("/comments/:commentId/votes", commentController.getCommentVote);
+
 // upvote a comment
 router.patch("/:commentId/votes/upvote", commentController.upvoteComment);
 
