@@ -80,7 +80,7 @@ git commit
 git push origin <branch-name>
 ```
 
-> For more information on the contributing guidelines and implementation details, please see the [contributing documentation](https://github.com/microapi/comment-microapi/tree/master/CONTRIBUTING.md).
+> For more information on the contributing guidelines and implementation details, please see the [contributing documentation](CONTRIBUTING.md).
 
 ## Schema Design
 
