@@ -35,30 +35,31 @@ exports.upvoteComment = async (req, res, next) => {
       if (voterIdx > -1) {
         comment.upVotes.splice(voterIdx, 1);
       }
+    } else {
+      // add user to the top of the upvotes array
+      comment.upVotes.unshift(ownerId);
     }
 
-    // add user to the top of the upvotes array
-    comment.upVotes.unshift(ownerId);
     //save the comment vote
     comment.save();
 
     //get total number of elements in array
-    const totalVotes = comment.upVotes.length;
+    const totalUpVotes = comment.upVotes.length;
     const totalDownVotes = comment.downVotes.length;
 
     //get total number of votes
-    const total = totalVotes + totalDownVotes;
+    const totalVotes = totalUpVotes + totalDownVotes;
 
     const data = {
       commentId: comment._id,
-      numOfVotes: total,
-      numOfUpVotes: totalVotes,
+      numOfVotes: totalVotes,
+      numOfUpVotes: totalUpVotes,
       numOfDownVotes: totalDownVotes,
     };
     return responseHandler(res, 200, data, "Comment upVoted Successfully!");
   } catch (err) {
     return next(
-      new CustomError(400, "Something went wrong, please try again later", err)
+      new CustomError(500, "Something went wrong, please try again later", err)
     );
   }
 };
