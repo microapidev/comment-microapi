@@ -109,7 +109,6 @@ exports.flagComment = async (req, res, next) => {
   }
 };
 
-
 // issue#114_airon begins
 exports.getComments = async (req, res, next) => {
   const applicationId = req.token.applicationId; //this will be retrieved from api token
