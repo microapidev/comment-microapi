@@ -13,10 +13,10 @@ const createCommentSchema = {
   }),
 
   body: Joi.object().keys({
-    refId: Joi.string().min(1),
-    body: Joi.string().min(1).required(),
-    ownerName: Joi.string().min(1).required(),
-    ownerEmail: Joi.string().email().required(),
+    refId: Joi.string(),
+    ownerId: Joi.string().required(),
+    applicationId: Joi.string().required(),
+    content: Joi.string().required(),
     origin: Joi.string(),
   }),
 };
