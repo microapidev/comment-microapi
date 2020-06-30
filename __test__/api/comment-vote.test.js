@@ -25,9 +25,6 @@ describeIfEndpoint(
         .send({
           ownerId: commentObject.ownerId,
         });
-      if (res.status === 404) {
-        return true; // route not implemented yet
-      }
       expect(res.status).toBe(200);
       expect(res.body.data.commentId).toEqual(String(comment._id));
       expect(res.body.data.numOfVotes).toEqual(1);
@@ -57,9 +54,6 @@ describeIfEndpoint(
         .send({
           ownerId: commentObject.ownerId,
         });
-      if (res.status === 404) {
-        return true; // route not implemented yet
-      }
       expect(res.status).toBe(200);
       expect(res.body.data.commentId).toEqual(String(comment._id));
       expect(res.body.data.numOfVotes).toEqual(1);
