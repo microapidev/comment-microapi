@@ -7,6 +7,63 @@ const CustomError = require("../utils/customError");
 // const User = require("../models/users");
 const responseHandler = require("../utils/responseHandler");
 
+exports.upvoteComment = async (req, res, next) => {
+  try {
+    const { commentId } = req.params;
+    const { ownerId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      next(new CustomError(422, "invalid ID"));
+      return;
+    }
+    const comment = await Comments.findById({ _id: commentId });
+
+    //if user exists in downvotes array
+    if (comment.downVotes.includes(ownerId)) {
+      //get index of user in downvotes array
+      const voterIndex = comment.downVotes.indexOf(ownerId);
+      //if index exists
+      if (voterIndex > -1) {
+        //delete that index
+        comment.downVotes.splice(voterIndex, 1);
+      }
+    }
+
+    //same as above for upvotes
+    if (comment.upVotes.includes(ownerId)) {
+      const voterIdx = comment.upVotes.indexOf(ownerId);
+      if (voterIdx > -1) {
+        comment.upVotes.splice(voterIdx, 1);
+      }
+    } else {
+      // add user to the top of the upvotes array
+      comment.upVotes.unshift(ownerId);
+    }
+
+    //save the comment vote
+    comment.save();
+
+    //get total number of elements in array
+    const totalUpVotes = comment.upVotes.length;
+    const totalDownVotes = comment.downVotes.length;
+
+    //get total number of votes
+    const totalVotes = totalUpVotes + totalDownVotes;
+
+    const data = {
+      commentId: comment._id,
+      numOfVotes: totalVotes,
+      numOfUpVotes: totalUpVotes,
+      numOfDownVotes: totalDownVotes,
+    };
+    return responseHandler(res, 200, data, "Comment upVoted Successfully!");
+  } catch (err) {
+    return next(
+      new CustomError(500, "Something went wrong, please try again later", err)
+    );
+  }
+};
+
 exports.flagComment = async (req, res, next) => {
   try {
     //validation should be done via middleware
@@ -91,32 +148,20 @@ exports.updateComment = async (req, res, next) => {
         new CustomError(500, "Something went wrong, please try again", err)
       );
     });
-
-  exports.deleteComment = async (req, res, next) => {
-    const commentId = req.params.commentId;
-    const ownerId = req.body.ownerId;
-    try {
-      const comment = await Comments.findOne({ _id: commentId });
-      if (!comment) {
-        return next(new CustomError(400, "Comment not found"));
-      }
-      if (comment.ownerId == ownerId) {
-        const deleting = await Comments.findByIdAndDelete(commentId);
-        if (deleting) {
-          return responseHandler(
-            res,
-            200,
-            deleting,
-            "Comment deleted successfully"
-          );
-        } else {
-          return next(
-            new CustomError(
-              400,
-              "Cannot delete your comment at this time. Please try again"
-            )
-          );
-        }
+};
+exports.deleteComment = async (req, res, next) => {
+  const commentId = req.params.commentId;
+  const ownerId = req.body.ownerId;
+  try {
+    const comment = await Comments.findOne({ _id: commentId });
+    if (!comment) {
+      return next(new CustomError(400, "Comment not found"));
+    }
+    if (comment.ownerId == ownerId) {
+      const deleting = await Comments.findByIdAndDelete(commentId);
+      if (deleting) {
+        responseHandler(res, 200, deleting, "Comment deleted successfully");
+        return;
       } else {
         return next(
           new CustomError(
@@ -125,46 +170,47 @@ exports.updateComment = async (req, res, next) => {
           )
         );
       }
-    } catch (error) {
+    }
+  } catch (error) {
+    return next(
+      new CustomError(500, "Something went wrong,please try again", error)
+    );
+  }
+};
+
+exports.getCommentVotes = async (req, res) => {
+  const id = req.params.commentId;
+  const { upVotes, downVotes } = req.body;
+  try {
+    const comment = await Comments.findById(id);
+    if (!comment) {
+      return next(new CustomError(404, "Not found"));
+    }
+    //comment by pushing ownerId into vote array
+    if (
+      !comment.upVotes.includes(ownerId) &&
+      !comment.downVotes.includes(ownerId)
+    ) {
+      comment.upVotes.push(ownerId);
+      comment.downVotes.push(ownerId);
+    }
+    const data = {
+      replyId: comment.replyId,
+      commentId: id,
+      votes: comment.upVotes.length,
+    };
+    if (comment.upVotes === upVotes && comment.downVotes === downVotes) {
+      return responseHandler(res, 200, data);
+    } else {
       return next(
-        new CustomError(500, "Something went wrong,please try again", error)
+        new CustomError(
+          400,
+          "No votes for this particular comment. Please try again"
+        )
       );
     }
-  };
-
-  exports.getCommentVotes = async (req, res) => {
-    const id = req.params.commentId;
-    const { upVotes, downVotes } = req.body;
-    try {
-      const comment = await Comments.findById(id);
-      if (!comment) {
-        return next(new CustomError(404, "Not found"));
-      }
-      //comment by pushing ownerId into vote array
-      if (
-        !comment.upVotes.includes(ownerId) &&
-        !comment.downVotes.includes(ownerId)
-      ) {
-        comment.upVotes.push(ownerId);
-        comment.downVotes.push(ownerId);
-      }
-      const data = {
-        replyId: comment.replyId,
-        commentId: id,
-        votes: comment.upVotes.length,
-      };
-      if (comment.upVotes === upVotes && comment.downVotes === downVotes) {
-        return responseHandler(res, 200, data);
-      } else {
-        return next(
-          new CustomError(
-            400,
-            "No votes for this particular comment. Please try again"
-          )
-        );
-      }
-    } catch (err) {
-      return next(new CustomError(522, "There is an error ", err));
-    }
-  };
+  } catch (err) {
+    return next(new CustomError(522, "There is an error ", err));
+  }
+};
 };
