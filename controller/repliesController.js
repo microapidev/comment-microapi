@@ -55,11 +55,13 @@ const getASingleReply = async (req, res, next) => {
       $and: [{ commentId }, { _id: replyId }],
     });
     if (!reply) {
-      return next(new CustomError(400, " Invalid reply Id "));
+      return next(new CustomError(404, " Reply not found "));
     }
     return responseHandler(res, 200, reply, " Reply found ");
   } catch (err) {
-    next(err);
+    next(
+      new CustomError(500, " Something went wrong, please try again later,err")
+    );
   }
 };
 module.exports = {
