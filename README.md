@@ -76,6 +76,8 @@ To facilitate consistent code, a few [Utility Functions](utils/README.md) have b
 git remote add upstream https://github.com/microapidev/comment-microapi.git
 git fetch upstream
 git merge upstream/develop
+git commit
+git push origin <branch-name>
 ```
 
 > For more information on the contributing guidelines and implementation details, please see the [contributing documentation](https://github.com/microapi/comment-microapi/tree/master/CONTRIBUTING.md).
