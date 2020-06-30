@@ -75,3 +75,43 @@ exports.flagComment = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.deleteComment = async (req, res, next) => {
+  const commentId = req.params.commentId;
+  const ownerId = req.body.ownerId;
+  try {
+    const comment = await Comments.findOne({ _id: commentId })
+    if (!comment) {
+      return next(new CustomError(400, "Comment not found"));
+    }
+    if (comment.ownerId == ownerId) {
+      const deleting = await Comments.findByIdAndDelete(commentId);
+      if (deleting) {
+        return responseHandler(
+          res,
+          200,
+          deleting,
+          "Comment deleted successfully"
+        );
+      } else {
+        return next(
+          new CustomError(
+            400,
+            "Cannot delete your comment at this time. Please try again"
+          )
+        );
+      }
+    } else {
+      return next(
+        new CustomError(
+          400,
+          "Comment cannot be deleted because you are not the owner of this comment."
+        )
+      );
+    }
+  } catch (error) {
+    return next(
+      new CustomError(500, "Something went wrong,please try again", error)
+    );
+  }
+};
