@@ -13,24 +13,22 @@ describeIfEndpoint(
   () => {
     test("Should delete comment", async () => {
       const comment = new CommentModel({
-        commentBody: "this is a comment",
-        commentOwnerName: "userName",
-        commentOwnerEmail: "useremail@email.com",
-        commentOrigin: "123123",
-        commentOwner: mongoose.Types.ObjectId(),
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
+        applicationId: mongoose.Types.ObjectId(),
       });
       await comment.save();
 
       const res = await request.delete(`/comments/${comment._id}`).send({
-        commentOwnerEmail: comment.email,
+        ownerId: comment.email,
       });
       if (res.status === 404) {
         return true;
       }
       expect(res.status).toBe(200);
-      expect(res.body.data.commentBody).toBeTruthy();
-      expect(res.body.data.commentOwnerName).toBeTruthy();
-      expect(res.body.data.commentOwnerEmail).toBeTruthy();
+      expect(res.body.data.content).toBeTruthy();
+      expect(res.body.data.ownerId).toBeTruthy();
     });
   }
 );
@@ -42,11 +40,10 @@ describeIfEndpoint(
   () => {
     test("Should delete a reply to a comment", async () => {
       const comment = new CommentModel({
-        commentBody: "this is a comment",
-        commentOwnerName: "userName",
-        commentOwnerEmail: "useremail@email.com",
-        commentOrigin: "123123",
-        commentOwner: mongoose.Types.ObjectId(),
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
+        applicationId: mongoose.Types.ObjectId(),
       });
       await comment.save();
 
