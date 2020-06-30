@@ -54,16 +54,13 @@ exports.flagComment = async (req, res) => {
 
 exports.deleteComment = async (req, res, next) => {
   const commentId = req.params.commentId;
-  const userEmail = req.body.commentOwnerEmail;
+  const ownerId = req.body.ownerId;
   try {
-    const comment = await Comments.findOne({ _id: commentId }).populate(
-      "commentOwner"
-    );
+    const comment = await Comments.findOne({ _id: commentId })
     if (!comment) {
       return next(new CustomError(400, "Comment not found"));
     }
-    const email = await comment;
-    if (email.commentOwner.email.toLowerCase() == userEmail.toLowerCase()) {
+    if (comment.ownerId == ownerId) {
       const deleting = await Comments.findByIdAndDelete(commentId);
       if (deleting) {
         return responseHandler(
