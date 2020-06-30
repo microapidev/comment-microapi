@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const jwtMW = require("express-jwt");
 
 exports.appAuthMW = (req, res, next) => {
   req.token = {
