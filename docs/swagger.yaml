@@ -1037,6 +1037,9 @@ paths:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
 
+        - in: path
+          $ref: "#/components/parameters/voteTypeParam"
+
       responses:
         "200":
           description: Successful operation
@@ -1056,7 +1059,16 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/VotedComment"
+                      type: object
+                      properties:
+                        replyId:
+                          type: string
+                        commentId:
+                          type: string
+                        votes:
+                          type: array
+                          items:
+                            type: string
 
         "401":
           description: Authentication error
@@ -1645,6 +1657,9 @@ paths:
         - in: path
           $ref: "#/components/parameters/replyIdParam"
 
+        - in: path
+          $ref: "#/components/parameters/voteTypeParam"
+
       responses:
         "200":
           description: Successful operation
@@ -1664,7 +1679,16 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/VotedReply"
+                      type: object
+                      properties:
+                        replyId:
+                          type: string
+                        commentId:
+                          type: string
+                        votes:
+                          type: array
+                          items:
+                            type: string
 
         "401":
           description: Authentication error
@@ -1913,7 +1937,7 @@ components:
     Organization: # Can be referenced as '#/components/schemas/Organization'
       type: object
       required:
-        - _id
+        - organizationId
         - organizationName
         - organizationEmail
         - secret
@@ -1921,7 +1945,7 @@ components:
         - ownerEmail
         - admins
       properties:
-        _id:
+        organizationId:
           type: string
         organizationName:
           type: string
@@ -1995,11 +2019,11 @@ components:
     Admin: # Can be referenced as '#/components/schemas/Admin'
       type: object
       required:
-        - _id
+        - adminId
         - adminName
         - adminEmail
       properties:
-        _id:
+        adminId:
           type: string
         adminName:
           type: string
@@ -2035,10 +2059,10 @@ components:
     Application: # Can be referenced as '#/components/schemas/Application'
       type: object
       required:
-        - _id
+        - applicationId
         - applicationName
       properties:
-        _id:
+        applicationId:
           type: string
         applicationName:
           type: string
@@ -2139,22 +2163,22 @@ components:
     VotedComment: # Can be referenced as '#/components/schemas/VotedComment'
       type: object
       properties:
-        upvotes:
-          type: array
-          items:
-            type: string
-        downvotes:
-          type: array
-          items:
-            type: string
+        commentId:
+          type: string
+        numOfVotes:
+          type: integer
+        numOfUpVotes:
+          type: integer
+        numOfDownVotes:
+          type: integer
 
     FlaggedComment: # Can be referenced as '#/components/schemas/FlaggedComment'
       type: object
       properties:
-        flags:
-          type: array
-          items:
-            type: string
+        commentId:
+          type: string
+        numOfFlags:
+          type: integer
 
     Reply: # Can be referenced as '#/components/schemas/Reply'
       type: object
@@ -2218,22 +2242,26 @@ components:
     VotedReply: # Can be referenced as '#/components/schemas/VotedReply'
       type: object
       properties:
-        upvotes:
-          type: array
-          items:
-            type: string
-        downvotes:
-          type: array
-          items:
-            type: string
+        replyId:
+          type: string
+        commentId:
+          type: string
+        numVotes:
+          type: integer
+        numUpVotes:
+          type: integer
+        numDownVotes:
+          type: integer
 
     FlaggedReply: # Can be referenced as '#/components/schemas/FlaggedReply'
       type: object
       properties:
-        flags:
-          type: array
-          items:
-            type: string
+        replyId:
+          type: string
+        commentId:
+          type: string
+        numOfFlags:
+          type: integer
 
     OwnerID: # Can be referenced as '#/components/schemas/OwnerID'
       type: object
@@ -2307,27 +2335,34 @@ components:
     isFlaggedParam: # Can be referenced via '#/components/parameters/isFlaggedParam'
       in: query
       name: isFlagged
-      description: An optional query parameter, that takes a boolean as a value, to filter comments, or replies, by whether or not the comment, or reply, is flagged. If omitted, the response includes all comments, or replies, regardless of its flag state.
+      description: Filters comments, or replies, by flagged state. If omitted, the response includes all comments, or replies, regardless of their flag state.
       schema:
         type: boolean
+
+    voteTypeParam: # Can be referenced via '#/components/parameters/voteTypeParam'
+      in: query
+      name: voteType
+      description: Filters comments, or replies, by vote type. If omitted, the response includes all comments, or replies, regardless of their vote type.
+      schema:
+        type: string
 
     refIdParam: # Can be referenced via '#/components/parameters/refIdParam'
       in: query
       name: refId
-      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain reference ID. If omitted, the response includes all comments, or replies, regardless of its reference ID.
+      description: Filters comments, or replies, by reference's ID. If omitted, the response includes all comments, or replies, regardless of their reference ID.
       schema:
         type: string
 
     ownerIdParam: # Can be referenced via '#/components/parameters/ownerIdParam'
       in: query
       name: ownerId
-      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain owner. If omitted, the response includes all comments, or replies, regardless of its owner.
+      description: Filters comments, or replies, by owner's ID. If omitted, the response includes all comments, or replies, regardless of its owner.
       schema:
         type: string
 
     originParam: # Can be referenced via '#/components/parameters/originParam'
       in: query
       name: origin
-      description: An optional query parameter, that takes a string as a value, to filter comments, or replies, by whether or not the comment, or reply, has a certain origin. If omitted, the response includes all comments, or replies, regardless of its origin.
+      description: Filters comments, or replies, by origin. If omitted, the response includes all comments, or replies, regardless of its origin.
       schema:
         type: string
