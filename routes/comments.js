@@ -2,7 +2,7 @@ const repliesRoutes = require("./replies");
 const router = require("express").Router();
 const commentController = require("../controller/commentsController");
 
-router.patch("/:commentId/votes", commentController.voteComment);
+router.patch("/:commentId/votes/upvote", commentController.upvoteComment);
 router.use("/:commentId/replies", repliesRoutes);
 
 //delete comments

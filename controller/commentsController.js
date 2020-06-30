@@ -18,7 +18,7 @@ exports.upvoteComment = async (req, res) => {
     const { commentId } = req.params;
     const { ownerId } = req.body;
 
-    validate(commentId);
+    await validate(commentId);
     const comment = await Comments.findById({ _id: commentId });
     comment.vote = comment.vote + 1;
     const commentResponse = comment.upVotes.includes(ownerId)
@@ -80,7 +80,7 @@ exports.deleteComment = async (req, res, next) => {
   const commentId = req.params.commentId;
   const ownerId = req.body.ownerId;
   try {
-    const comment = await Comments.findOne({ _id: commentId })
+    const comment = await Comments.findOne({ _id: commentId });
     if (!comment) {
       return next(new CustomError(400, "Comment not found"));
     }
