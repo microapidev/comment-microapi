@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const CustomError = require("../utils/customError");
 // const User = require("../models/users");
 const responseHandler = require("../utils/responseHandler");
+const Applications = require("../models/applications");
 
 exports.flagComment = async (req, res, next) => {
   try {
@@ -50,6 +51,33 @@ exports.flagComment = async (req, res, next) => {
   }
 };
 
+//create and save a comment
+exports.create = async (req, res, next) => {
+  //validate request
+  //extra check to make sure the application id exists in the db
+  try {
+    await Applications.findById(req.body.applicationId);
+  } catch (err) {
+    return next(new CustomError(400, "Invalid application id"));
+  }
+  //create a new comment
+  const comment = new Comments({
+    refId: req.body.refId,
+    applicationId: req.body.applicationId,
+    ownerId: req.body.ownerId,
+    content: req.body.content,
+    origin: req.body.origin,
+  });
+  //save comment
+  try {
+    const savedComment = await comment.save();
+    return responseHandler(res, 200, savedComment);
+  } catch (err) {
+    return next(
+      new CustomError(500, "Something went wrong, please try again", err)
+    );
+  }
+};
 exports.updateComment = async (req, res, next) => {
   const comment_id = req.params.commentId;
   const content = req.body.content;
