@@ -3,39 +3,49 @@ const Schema = mongoose.Schema;
 
 const CommentSchema = new Schema(
   {
-    refId: Number,
-    commentBody: {
+    refId: String, // field used by applications to point to reference comment location in their app
+    applicationId: {
+      //the id of the application that this comment belongs to
+      type: Schema.Types.ObjectId,
+      ref: "Applications",
+      required: true,
+    },
+    ownerId: {
+      // field used for emails, userId from the applcation used to identify its users
       type: String,
       required: true,
     },
-    commentOwnerName: {
+    content: {
+      // field contains comment body
       type: String,
       required: true,
     },
-    commentOwnerEmail: {
-      type: String,
-      required: true,
-    },
-    commentOrigin: String,
-    isFlagged: { type: Boolean, default: false },
-    numOfFlags: {
+    origin: String, // field is free for use by applications as seen fit
+    replies: [{ type: Schema.Types.ObjectId, ref: "Replies" }], // array of replies
+    flags: [
+      // contains array of ownerId allowing only one flag per user
+      {
+        type: String, // array of ownerId
+      },
+    ],
+    vote: {
       type: Number,
       default: 0,
     },
-    replies: [{ type: Schema.Types.ObjectId, ref: "Replies" }],
     upVotes: [
+      // contains array of ownerId allowing only one vote per user either up or neither
+      // push ownerId onto array to vote, remove from array to unvote
       {
-        type: Schema.Types.ObjectId,
-        ref: "Users",
+        type: String, // array of ownerId
       },
     ],
     downVotes: [
+      // contains array of ownerId allowing only one vote per user down or neither
+      // push ownerId onto array to vote, remove from array to unvote
       {
-        type: Schema.Types.ObjectId,
-        ref: "Users",
+        type: String, // array of ownerId
       },
     ],
-    commentOwner: { type: Schema.Types.ObjectId, ref: "Users" },
   },
   { timestamps: true }
 );

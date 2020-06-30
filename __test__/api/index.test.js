@@ -9,7 +9,7 @@ describe("GET /", () => {
   });
 });
 
-describe("Invalid routes '/xyz'", () => {
+describe("ALL '/xyz' - Invalid routes", () => {
   test("Requests should return status 404 and error message", async () => {
     const res = await request(app).post("/xyz");
     expect(res.status).toBe(404);

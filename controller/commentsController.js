@@ -3,82 +3,86 @@
 // const Replies = require("../models/replies");
 const Comments = require("../models/comments");
 const mongoose = require("mongoose");
-// const CustomError = require("../utils/customError");
-const User = require("../models/users");
-const errHandler = require("../utils/errorhandler");
+const CustomError = require("../utils/customError");
+const responseHandler = require("../utils/responseHandler");
 
-exports.voteComment = async (req, res) => {
-  try {
-    const id = req.params.commentId;
-    const { voteType, email } = req.body;
-    const comment = await Comments.findById({ _id: id });
-    if (voteType === "upvote") comment.totalVotes = comment.totalVotes + 1;
-    const total = comment.totalVotes;
-    comment.voteType = voteType;
-    const userData = await User.findOne({ email });
-    if (voteType === "upvote") comment.upVotes.push(userData);
-    if (voteType === "downvote") comment.downVotes.push(userData);
-    comment.save();
-    const data = {
-      commentId: id,
-      total_votes: total,
-      upVotes: comment.upVotes,
-      downVotes: comment.downVotes,
-    };
-    res.json({
-      message: "Comment Voted Successfully!",
-      response: "Ok",
-      data: data,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "Failed",
-      message: err.message,
-      data: [],
-    });
-  }
-};
-exports.flagComment = async (req, res) => {
+exports.upvoteComment = async (req, res) => {
   try {
     const { commentId } = req.params;
-    const comment = await Comments.findOneAndUpdate(
-      {
-        _id: commentId,
-      },
-      {
-        isFlagged: true,
-        $inc: {
-          numOfFlags: 1,
-        },
-      },
-      {
-        new: true,
-      }
-    );
-    if (!mongoose.Types.ObjectId.isValid(commentId)) {
-      return res.status(422).json({
-        status: "error",
-        response: "422 error",
-        message: "Invalid ID",
-      });
-    }
-    if (!comment) {
-      return res.status(404).json({
-        status: "error",
-        message: `Comment with the ID ${commentId} doesn't exist or has been deleted`,
-        data: null,
-      });
-    }
-    return res.status(200).json({
-      message: "Comment has been flagged successfully",
-      response: "200 OK",
-      data: {
-        commentId: comment._id,
-        isFlagged: comment.isFlagged,
-        numOfflags: comment.numOfFlags,
-      },
+    const { ownerId } = req.body;
+
+    const comment = await Comments.findById({ _id: commentId });
+    comment.vote = comment.vote + 1;
+    const commentResponse = comment.upVotes.includes(ownerId)
+      ? "Your upvote has already been registered"
+      : comment.upVotes.unshift(ownerId);
+    return res.json({
+      message: "Comment upVoted Successfully!",
+      response: "Ok",
+      data: commentResponse,
     });
+  } catch (err) {
+    CustomError(err, res);
+  }
+};
+
+exports.downvoteComment = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const { ownerId } = req.body;
+
+    const comment = await Comments.findById({ _id: commentId });
+    comment.vote = comment.vote + 1;
+    const commentResponse = comment.downVotes.includes(ownerId)
+      ? "Your downvote has already been registered"
+      : comment.downVotes.unshift(ownerId);
+    return res.json({
+      message: "Comment downVoted Successfully!",
+      response: "Ok",
+      data: commentResponse,
+    });
+  } catch (err) {
+    CustomError(err, res);
+  }
+};
+exports.flagComment = async (req, res, next) => {
+  try {
+    //validation should be done via middleware
+    //ownerId in body also needs to be validated
+
+    const { commentId } = req.params;
+    const { ownerId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      next(new CustomError(422, "invalid ID"));
+      return;
+    }
+    const comment = await Comments.findOne({
+      _id: commentId,
+    });
+
+    if (!comment) {
+      next(
+        new CustomError(
+          404,
+          `Comment with the ID ${commentId} doesn't exist or has been deleted`
+        )
+      );
+      return;
+    }
+
+    //flag comment by pushing ownerId into flags array
+    if (!comment.flags.includes(ownerId)) {
+      comment.flags.push(ownerId);
+    }
+
+    const data = {
+      commentId: comment._id,
+      numOfFlags: comment.flags.length,
+    };
+
+    responseHandler(res, 200, data, "Comment has been flagged successfully");
   } catch (error) {
-    errHandler(error, res);
+    next(error);
   }
 };
