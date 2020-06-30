@@ -32,7 +32,12 @@ const ReplySchema = new Schema({
       type: String, // array of ownerId
     },
   ],
-  commentId: { type: mongoose.Schema.Types.ObjectId, ref: "Comments" }, // ref to parent comment
+  commentId: {
+    // ref to parent comment
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Comments",
+    required: true,
+  },
 });
 
 const Reply = mongoose.model("Replies", ReplySchema);
