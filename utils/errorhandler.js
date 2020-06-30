@@ -20,6 +20,9 @@ const errorHandler = (err, req, res) => {
       error: "Internal server error",
       data: [], // no data to return
     });
+
+    //we want to see the actual error
+    console.log(err.message);
   }
 };
 
