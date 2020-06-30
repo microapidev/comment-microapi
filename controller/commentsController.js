@@ -13,7 +13,7 @@ exports.flagComment = async (req, res, next) => {
 
     const { commentId } = req.params;
     const { ownerId } = req.body;
-    console.log(`applicationId: ${req.token.applicationId}`);
+    // console.log(`applicationId: ${req.token.applicationId}`);
 
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       next(new CustomError(422, "invalid ID"));
