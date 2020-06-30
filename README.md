@@ -84,6 +84,9 @@ git push origin <branch-name>
 
 ## Schema Design
 
+- Organization Model
+- Admin Model
+- Application Model
 - Comments Model
 - Replies Model
 - Users Model
