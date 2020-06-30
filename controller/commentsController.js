@@ -10,6 +10,7 @@ exports.flagComment = async (req, res, next) => {
   try {
     //validation should be done via middleware
     //ownerId in body also needs to be validated
+
     const { commentId } = req.params;
     const { ownerId } = req.body;
 
