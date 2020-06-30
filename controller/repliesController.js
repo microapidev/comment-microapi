@@ -91,7 +91,8 @@ const createReply = async (req, res, next) => {
     responseHandler(res, 201, data, "Reply added successfully");
     return;
   } catch (error) {
-    next(error);
+    next(new CustomError(500, "Something went wrong, please try again later", error));
+    return;
   }
 };
 
