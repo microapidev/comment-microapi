@@ -1,6 +1,6 @@
 const listEndpoints = require("express-list-endpoints");
 const app = require("../../server");
-import { it, describe } from "@jest/globals";
+import { describe } from "@jest/globals";
 // console.log(listEndpoints(app));
 
 const findEndpoint = (method, path) => {
