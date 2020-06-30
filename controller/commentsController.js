@@ -243,3 +243,42 @@ exports.deleteComment = async (req, res, next) => {
     );
   }
 };
+
+exports.getCommentVote = async (req, res, next) => {
+  const commentId = req.params.commentId;
+  const ownerId = req.body.ownerId;
+  try {
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      return next(new CustomError(422, "invalid ID"));
+    }
+    const comment = await Comments.findOne({
+      _id: commentId,
+    });
+    if (!comment) {
+      next(
+        new CustomError(
+          404,
+          `Comment with the ID ${commentId} doesn't exist or has been deleted`
+        )
+      );
+      return;
+    } else {
+      // get comment vote
+      if (comment.ownerId === ownerId) {
+        if (comment.upVote.includes(ownerId)) {
+          if (comment.downVotes.includes(ownerId)) {
+            const totalVotes =
+              comment.upVotes.length + comment.downVotes.length;
+            const data = {
+              commentId: comment._id,
+              numOfVotes: totalVotes,
+            };
+            responseHandler(res, 200, data, "get comment Vote successfully");
+          }
+        }
+      }
+    }
+  } catch (err) {
+    return next(new CustomError(400, "No Vote under this specific comment"));
+  }
+};
