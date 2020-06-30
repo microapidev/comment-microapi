@@ -103,10 +103,10 @@ const createReply = async (req, res, next) => {
 };
 
 const flagCommentReplies = async (req, res, next) => {
-  try {  
+  try {
     //validation should be done via middleware
     //ownerId in body also needs to be validated
-    
+
     const { commentId, replyId } = req.params;
     const { ownerId } = req.body;
 
@@ -117,7 +117,7 @@ const flagCommentReplies = async (req, res, next) => {
     if (!ObjectId.isValid(replyId)) {
       return next(new CustomError(422, " Invalid reply Id "));
     }
-    const reply = await Replies.findOne({ 
+    const reply = await Replies.findOne({
       _id: replyId,
       commentId: commentId,
     });
