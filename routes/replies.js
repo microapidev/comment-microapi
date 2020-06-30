@@ -4,4 +4,5 @@ const repliesController = require("../controller/repliesController");
 router.get("/", repliesController.getCommentReplies);
 router.get("/:replyId", repliesController.getASingleReply);
 router.post("/", repliesController.createReply);
+router.patch("/:replyId/flag", repliesController.flagCommentReplies);
 module.exports = router;
