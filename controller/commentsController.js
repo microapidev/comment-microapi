@@ -6,11 +6,19 @@ const mongoose = require("mongoose");
 const CustomError = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
 
+const validate = (value) => {
+  if (!mongoose.Types.ObjectId.isValid(value)) {
+    new CustomError(422, "invalid ID");
+    return;
+  }
+};
+
 exports.upvoteComment = async (req, res) => {
   try {
     const { commentId } = req.params;
     const { ownerId } = req.body;
 
+    validate(commentId);
     const comment = await Comments.findById({ _id: commentId });
     comment.vote = comment.vote + 1;
     const commentResponse = comment.upVotes.includes(ownerId)
@@ -26,25 +34,6 @@ exports.upvoteComment = async (req, res) => {
   }
 };
 
-exports.downvoteComment = async (req, res) => {
-  try {
-    const { commentId } = req.params;
-    const { ownerId } = req.body;
-
-    const comment = await Comments.findById({ _id: commentId });
-    comment.vote = comment.vote + 1;
-    const commentResponse = comment.downVotes.includes(ownerId)
-      ? "Your downvote has already been registered"
-      : comment.downVotes.unshift(ownerId);
-    return res.json({
-      message: "Comment downVoted Successfully!",
-      response: "Ok",
-      data: commentResponse,
-    });
-  } catch (err) {
-    CustomError(err, res);
-  }
-};
 exports.flagComment = async (req, res, next) => {
   try {
     //validation should be done via middleware
