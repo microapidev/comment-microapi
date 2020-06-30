@@ -2230,6 +2230,8 @@ components:
         content:
           type: string
           minLength: 1
+        ownerId:
+          type: string
 
     DeleteReply: # Can be referenced as '#/components/schemas/DeleteReply'
       type: object
@@ -2246,11 +2248,11 @@ components:
           type: string
         commentId:
           type: string
-        numVotes:
+        numOfVotes:
           type: integer
-        numUpVotes:
+        numOfUpVotes:
           type: integer
-        numDownVotes:
+        numOfDownVotes:
           type: integer
 
     FlaggedReply: # Can be referenced as '#/components/schemas/FlaggedReply'
