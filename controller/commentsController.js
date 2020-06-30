@@ -17,21 +17,19 @@ exports.flagComment = async (req, res, next) => {
     // console.log(`applicationId: ${req.token.applicationId}`);
 
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
-      next(new CustomError(422, "invalid ID"));
-      return;
+      return next(new CustomError(422, "invalid ID"));
     }
     const comment = await Comments.findOne({
       _id: commentId,
     });
 
     if (!comment) {
-      next(
+      return next(
         new CustomError(
           404,
           `Comment with the ID ${commentId} doesn't exist or has been deleted`
         )
       );
-      return;
     }
 
     //flag comment by pushing ownerId into flags array
@@ -46,7 +44,7 @@ exports.flagComment = async (req, res, next) => {
 
     responseHandler(res, 200, data, "Comment has been flagged successfully");
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -59,9 +57,9 @@ exports.updateComment = async (req, res, next) => {
     .exec()
     .then((comment) => {
       if (!comment) {
-        return next(new CustomError(404, "Comment not found"));
-      } else if (comment.ownerId != ownerId) {
-        return next(
+        next(new CustomError(404, "Comment not found"));
+      } else if (comment.ownerId !== ownerId) {
+        next(
           new CustomError(
             403,
             "Sorry, comment cannot be updated or Unauthorized"
@@ -91,6 +89,7 @@ exports.updateComment = async (req, res, next) => {
         new CustomError(500, "Something went wrong, please try again", err)
       );
     });
+};
 
 exports.deleteComment = async (req, res, next) => {
   const commentId = req.params.commentId;
@@ -100,7 +99,7 @@ exports.deleteComment = async (req, res, next) => {
     if (!comment) {
       return next(new CustomError(400, "Comment not found"));
     }
-    if (comment.ownerId == ownerId) {
+    if (comment.ownerId === ownerId) {
       const deleting = await Comments.findByIdAndDelete(commentId);
       if (deleting) {
         return responseHandler(
@@ -126,8 +125,6 @@ exports.deleteComment = async (req, res, next) => {
       );
     }
   } catch (error) {
-    return next(
-      new CustomError(500, "Something went wrong,please try again", error)
-    );
+    return next(error);
   }
 };
