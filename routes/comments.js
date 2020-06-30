@@ -6,8 +6,13 @@ const { appAuthMW } = require("../middleware/auth");
 router.use(appAuthMW);
 router.use("/:commentId/replies", repliesRoutes);
 
-//delete comments
+// update comment
+router.patch("/:commentId", commentController.updateComment);
+
+// delete comment
 router.delete("/:commentId", commentController.deleteComment);
 
+// flag comment
 router.patch("/:commentId/flag", commentController.flagComment);
+
 module.exports = router;
