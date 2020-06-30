@@ -3,5 +3,5 @@ const repliesController = require("../controller/repliesController");
 
 router.get("/", repliesController.getCommentReplies);
 router.post("/", repliesController.createReply);
-router.patch("/:replyId/downvote", repliesController.downvoteReply);
+router.patch("/:replyId/votes/downvote", repliesController.downvoteReply);
 module.exports = router;
