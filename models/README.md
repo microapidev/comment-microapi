@@ -1,16 +1,33 @@
 # Schema Design
 
-## Comments
-
-This model contains the following fields
+## Admins
 
 ```yaml
-comment_body: string # the body of the comment
-comment_origin: string # the origin of the comment; Bot or Reports from FE
-isFlagged: boolean # if the comment has been flagged for sensitive words
-upVotes: number
-downVotes:  number
-user: schema ref # the details of the person that commented
+fullname: String # required
+email: String # required, composite key
+password: String # required
+organizationId: ObjectId # required, ref: Organizations, composite key
+```
+
+## Applications
+
+```yaml
+name: String # required
+organizationId: ObjectId # required, ref: Organizations
+```
+
+## Comments
+
+```yaml
+refId: String # required
+applicationId: ObjectId # required, ref: Applications
+ownerId: String # required
+content: String # required
+origin:  String # optional
+replies: [ObjectId] # optional, ref: Replies
+flags: [String] # optional, ref: ownerId
+upVotes: [String] # optional, ref: ownerId
+downVotes: [String] # optional, ref: ownerId
 ```
 
 ## Replies
@@ -18,11 +35,12 @@ user: schema ref # the details of the person that commented
 This model contains the following fields
 
 ```yaml
-reply_body: string # the body of the comment
-comment_id: schema ref # the id of the comment
-isFlagged: boolean # if the comment has been flagged for sensitive words
-upVotes: number
-downVotes:  number
+ownerId: String # required
+content: String # required
+flags: [String] # optional, ref: ownerId
+upVotes: [String] # optional, ref: ownerId
+downVotes: [String] # optional, ref: ownerId
+commentId: ObjectId # required, ref: Comments
 ```
 
 ## Users
@@ -30,6 +48,6 @@ downVotes:  number
 This model contains the following fields
 
 ```yaml
-name: string # name of the person comment
-email: string # email address of the person commenting
+name: String # required
+email: String # required
 ```
