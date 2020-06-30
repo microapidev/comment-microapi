@@ -55,31 +55,43 @@ exports.flagComment = async (req, res) => {
 
 exports.updateComment = async (req, res, next) => {
   const comment_id = req.params.commentId;
-  const commentBody = req.body.body;
+  const commentBody = req.body.commentBody;
+  const owner = req.body.ownerId;
+
   Comments.findById(comment_id)
     .exec()
     .then((comment) => {
       if (!comment) {
-        return next(new CustomError(404, "Comment not found!!"));
-      } else {
-        Comments.updateOne(
-          { _id: comment_id },
-          { $set: { commentBody: commentBody, isEdited: true } }
-        )
-          .then(() => {
-            return responseHandler(
-              res,
-              200,
-              { body: commentBody, ownerEmail: req.body.ownerEmail },
-              "Updated successfully"
-            );
-          })
-          .catch((err) => {
-            return next(new CustomError(400, "Update failed, try again", err));
-          });
+        return next(new CustomError(404, "Comment not found"));
+      } else if (comment.ownerId != owner) {
+        return next(
+          new CustomError(
+            403,
+            "Sorry, comment cannot be updated or Unauthorized"
+          )
+        );
       }
+      Comments.updateOne(
+        { _id: comment_id },
+        { $set: { commentBody: commentBody, isEdited: true } }
+      )
+        .then(() => {
+          return responseHandler(
+            res,
+            200,
+            { body: commentBody, ownerId: owner },
+            "Updated sucessfully"
+          );
+        })
+        .catch((err) => {
+          return next(
+            new CustomError(400, "Update failed, please try again", err)
+          );
+        });
     })
     .catch((err) => {
-      return next(new CustomError(500, "Something went wrong, try again", err));
+      return next(
+        new CustomError(500, "Something went wrong, please try again", err)
+      );
     });
 };
