@@ -16,13 +16,13 @@ const findEndpoint = (method, path) => {
   });
 };
 
-export const skipIfNotFound = (method, path) => {
-  if (!findEndpoint(method, path)) {
-    return it.only("Skipping all tests in file. This route has not been implemented yet!", () => {
-      // do nothing
-    });
-  }
-};
+// export const skipIfNotFound = (method, path) => {
+//   if (!findEndpoint(method, path)) {
+//     return it.only("Skipping all tests in file. This route has not been implemented yet!", () => {
+//       // do nothing
+//     });
+//   }
+// };
 
 export const describeIfEndpoint = (method, path, name, callback) => {
   if (findEndpoint(method, path)) {
