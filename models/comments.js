@@ -28,10 +28,6 @@ const CommentSchema = new Schema(
         type: String, // array of ownerId
       },
     ],
-    vote: {
-      type: Number,
-      default: 0,
-    },
     upVotes: [
       // contains array of ownerId allowing only one vote per user either up or neither
       // push ownerId onto array to vote, remove from array to unvote

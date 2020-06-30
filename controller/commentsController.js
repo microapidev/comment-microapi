@@ -6,31 +6,36 @@ const mongoose = require("mongoose");
 const CustomError = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
 
-const validate = (value) => {
-  if (!mongoose.Types.ObjectId.isValid(value)) {
-    new CustomError(422, "invalid ID");
-    return;
-  }
-};
-
-exports.upvoteComment = async (req, res) => {
+exports.upvoteComment = async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const { ownerId } = req.body;
 
-    await validate(commentId);
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      next(new CustomError(422, "invalid ID"));
+      return;
+    }
     const comment = await Comments.findById({ _id: commentId });
-    comment.vote = comment.vote + 1;
-    const commentResponse = comment.upVotes.includes(ownerId)
-      ? "Your upvote has already been registered"
-      : comment.upVotes.unshift(ownerId);
-    return res.json({
-      message: "Comment upVoted Successfully!",
-      response: "Ok",
-      data: commentResponse,
-    });
+
+    if (comment.upVotes.includes(ownerId)) {
+      const voterIdx = comment.upVotes.indexOf(ownerId);
+      if (voterIdx > -1) {
+        comment.upVotes.splice(voterIdx, 1);
+      }
+      return "Your upvote has already been registered";
+    }
+    comment.upVotes.unshift(ownerId);
+    comment.save();
+    const totalVotes = comment.upVotes.length;
+    const data = {
+      totalVotes,
+      comments: comment.upVotes,
+    };
+    return responseHandler(res, 200, data, "Comment upVoted Successfully!");
   } catch (err) {
-    CustomError(err, res);
+    return next(
+      new CustomError(400, "Something went wrong, please try again later", err)
+    );
   }
 };
 
