@@ -128,3 +128,21 @@ exports.deleteComment = async (req, res, next) => {
     );
   }
 };
+
+exports.getSingleComment = async (req, res, next) => {
+  const comment_id = req.params.commentId;
+
+  try {
+    let comment = await Comments.findById(comment_id);
+
+    if (!comment) {
+      return next(new CustomError(404, "Comment does not exist or not found"));
+    } else {
+      return responseHandler(res, 200, comment, "Comment found");
+    }
+  } catch (error) {
+    return next(
+      new CustomError(500, "Something went wrong, please try again", error)
+    );
+  }
+};

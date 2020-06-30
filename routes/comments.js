@@ -6,6 +6,9 @@ const { appAuthMW } = require("../middleware/auth");
 router.use(appAuthMW);
 router.use("/:commentId/replies", repliesRoutes);
 
+// get single comment
+router.get("/:commentId", commentController.getSingleComment);
+
 // update comment
 router.patch("/:commentId", commentController.updateComment);
 
