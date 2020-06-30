@@ -58,13 +58,11 @@ exports.updateComment = async (req, res, next) => {
     .exec()
     .then((comment) => {
       if (!comment) {
-        return next(new CustomError(404, "Comment not found"));
+        return new CustomError(404, "Comment not found");
       } else if (comment.ownerId != owner) {
-        return next(
-          new CustomError(
-            403,
-            "Sorry, comment cannot be updated or Unauthorized"
-          )
+        return new CustomError(
+          403,
+          "Sorry, comment cannot be updated or Unauthorized"
         );
       }
       Comments.updateOne(
@@ -80,9 +78,7 @@ exports.updateComment = async (req, res, next) => {
           );
         })
         .catch((err) => {
-          return next(
-            new CustomError(400, "Update failed, please try again", err)
-          );
+          return new CustomError(400, "Update failed, please try again", err);
         });
     })
     .catch((err) => {
