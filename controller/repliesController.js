@@ -128,13 +128,18 @@ const downvoteReply = async (req, res, next) => {
       _id: replyId,
       $push: { downVotes: voterId },
     });
-    return responseHandler(res, 200, {
-      commentId: commentId,
-      replyId: replyId,
-      numOfVotes: reply.downVotes.length + reply.upVotes.length + 1,
-      numOfUpvotes: reply.upVotes.length,
-      numOfDownvotes: reply.downVotes.length + 1,
-    });
+    return responseHandler(
+      res,
+      200,
+      {
+        commentId: commentId,
+        replyId: replyId,
+        numOfVotes: reply.downVotes.length + reply.upVotes.length + 1,
+        numOfUpvotes: reply.upVotes.length,
+        numOfDownvotes: reply.downVotes.length + 1,
+      },
+      "Reply downvoted successfully"
+    );
   } catch (error) {
     return next(new CustomError(500, "Something went wrong, try again", error));
   }
