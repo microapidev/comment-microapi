@@ -29,7 +29,7 @@ describeIfEndpoint(
         return true; // route not implemented yet
       }
       expect(res.status).toBe(200);
-      expect(res.body.data.commentId).toEqual(comment._id);
+      expect(res.body.data.commentId).toEqual(String(comment._id));
       expect(res.body.data.numOfVotes).toEqual(1);
       expect(res.body.data.numOfUpVotes).toEqual(1);
       expect(res.body.data.numOfDownVotes).toEqual(0);
@@ -61,7 +61,7 @@ describeIfEndpoint(
         return true; // route not implemented yet
       }
       expect(res.status).toBe(200);
-      expect(res.body.data.commentId).toEqual(comment._id);
+      expect(res.body.data.commentId).toEqual(String(comment._id));
       expect(res.body.data.numOfVotes).toEqual(1);
       expect(res.body.data.numOfUpVotes).toEqual(0);
       expect(res.body.data.numOfDownVotes).toEqual(1);
