@@ -73,7 +73,7 @@ exports.updateComment = async (req, res, next) => {
           return responseHandler(
             res,
             200,
-            { body: commentBody, ownerId: owner },
+            { content: commentBody, ownerId: owner },
             "Updated sucessfully"
           );
         })
