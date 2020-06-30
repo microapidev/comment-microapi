@@ -3,6 +3,7 @@ const router = require("express").Router();
 const commentController = require("../controller/commentsController");
 const { appAuthMW } = require("../middleware/auth");
 
+router.patch("/:commentId/votes/upvote", commentController.upvoteComment);
 router.use(appAuthMW);
 router.use("/:commentId/replies", repliesRoutes);
 
