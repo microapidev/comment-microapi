@@ -10,21 +10,11 @@ const responseHandler = require("../utils/responseHandler");
 
 exports.flagComment = async (req, res) => {
   try {
+    //validation should be done via middleware
+    //ownerId in body also needs to be validated
     const { commentId } = req.params;
-    const comment = await Comments.findOneAndUpdate(
-      {
-        _id: commentId,
-      },
-      {
-        isFlagged: true,
-        $inc: {
-          numOfFlags: 1,
-        },
-      },
-      {
-        new: true,
-      }
-    );
+    const { ownerId } = req.body;
+
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       return res.status(422).json({
         status: "error",
@@ -32,6 +22,10 @@ exports.flagComment = async (req, res) => {
         message: "Invalid ID",
       });
     }
+    const comment = await Comments.findOne({
+      _id: commentId,
+    });
+
     if (!comment) {
       return res.status(404).json({
         status: "error",
@@ -39,13 +33,18 @@ exports.flagComment = async (req, res) => {
         data: null,
       });
     }
+
+    //flag comment by pushing ownerId into flags array
+    if (!comment.flags.includes(ownerId)) {
+      comment.flags.push(ownerId);
+    }
+
     return res.status(200).json({
       message: "Comment has been flagged successfully",
       response: "200 OK",
       data: {
         commentId: comment._id,
-        isFlagged: comment.isFlagged,
-        numOfflags: comment.numOfFlags,
+        numOfFlags: comment.flags.length,
       },
     });
   } catch (error) {

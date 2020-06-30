@@ -12,11 +12,10 @@ describeIfEndpoint(
   () => {
     test("Should upvote a comment", async () => {
       const comment = new CommentModel({
-        commentBody: "this is a comment",
-        commentOwnerName: "userName",
-        commentOwnerEmail: "useremail@email.com",
-        commentOrigin: "123123",
-        commentOwner: mongoose.Types.ObjectId(),
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
+        applicationId: mongoose.Types.ObjectId(),
       });
       await comment.save();
 
@@ -35,11 +34,10 @@ describeIfEndpoint(
 
     test("Should downvote a comment", async () => {
       const comment = new CommentModel({
-        commentBody: "this is a comment",
-        commentOwnerName: "userName",
-        commentOwnerEmail: "useremail2@email.com",
-        commentOrigin: "123123",
-        commentOwner: mongoose.Types.ObjectId(),
+        content: "this is a comment",
+        ownerId: "useremail2@email.com",
+        origin: "123123",
+        applicationId: mongoose.Types.ObjectId(),
       });
       await comment.save();
 
@@ -58,11 +56,10 @@ describeIfEndpoint(
 
     test("Should reject unknown vote type", async () => {
       const comment = new CommentModel({
-        commentBody: "this is a comment",
-        commentOwnerName: "userName",
-        commentOwnerEmail: "useremail3@email.com",
-        commentOrigin: "123123",
-        commentOwner: mongoose.Types.ObjectId(),
+        content: "this is a comment",
+        ownerId: "useremail3@email.com",
+        origin: "123123",
+        applicationId: mongoose.Types.ObjectId(),
       });
       await comment.save();
 
