@@ -51,7 +51,7 @@ exports.flagComment = async (req, res, next) => {
 
 exports.updateComment = async (req, res, next) => {
   const comment_id = req.params.commentId;
-  const commentBody = req.body.commentBody;
+  const commentBody = req.body.content;
   const owner = req.body.ownerId;
 
   Comments.findById(comment_id)
