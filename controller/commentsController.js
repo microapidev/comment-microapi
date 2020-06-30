@@ -91,6 +91,7 @@ exports.updateComment = async (req, res, next) => {
         new CustomError(500, "Something went wrong, please try again", err)
       );
     });
+};
 
 exports.deleteComment = async (req, res, next) => {
   const commentId = req.params.commentId;
