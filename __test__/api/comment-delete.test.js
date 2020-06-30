@@ -21,7 +21,7 @@ describeIfEndpoint(
       await comment.save();
 
       const res = await request.delete(`/comments/${comment._id}`).send({
-        ownerId: comment.email,
+        ownerId: comment.ownerId,
       });
       if (res.status === 404) {
         return true;
