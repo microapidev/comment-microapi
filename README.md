@@ -1,6 +1,6 @@
 # Comments Microservice
 
-[![Build Status](https://travis-ci.org/microapidev/comment-microapi.svg?branch=develop)](https://travis-ci.org/microapidev/comment-microapi) [![Coverage Status](https://coveralls.io/repos/github/microapidev/comment-microapi/badge.svg?branch=develop)](https://coveralls.io/github/microapidev/comment-microapi?branch=develop)
+[![Build Status](https://travis-ci.org/microapidev/comment-microapi.svg?branch=develop)](https://travis-ci.org/microapidev/comment-microapi) [![Coverage Status](https://coveralls.io/repos/github/microapidev/comment-microapi/badge.svg?branch=develop)](https://coveralls.io/github/microapidev/comment-microapi?branch=develop) ![Issues](https://img.shields.io/github/issues/microapidev/comment-microapi) ![Forks](https://img.shields.io/github/forks/microapidev/comment-microapi) ![MIT License](https://img.shields.io/github/license/microapidev/comment-microapi)
 
 This is a microservice that allows user to create comments, edit comments and also flags comment. Users can also reply comments, flag reply and also upvote and downvote comments and replies. Also, origin of these comments are tracked.
 
@@ -12,14 +12,11 @@ For quick navigation:
 - [Testing Your Code](#testing-your-code)
 - [Contributing Your Code](#contributing-your-code)
 - [Endpoints Documentation](#endpoints-documentation)
-- [Schema Design Explanation](#schema-design-explanation)
+- [Schema Design](#schema-design)
 
+## How it works
 
-## <a name="how-it-works"></a> How it works
-
-
-
-## <a name="getting-started"></a> Getting Started
+## Getting Started
 
 Ensure that your local machine has all the required software, listed below, before setting up your local environment.
 
@@ -37,109 +34,62 @@ You will first need to setup your local environment and ensure that all configur
 4. In your terminal, run `cp .env.example .env`.
 5. In your terminal, run `npm run startDev`.
 
-## <a name="linting-your-code"></a> Linting Your Code
+## Linting Your Code
 
 1. Run `npm run lint:fix` to fix all fixable errors in source code and format with prettier
 2. Run `npm run lint` to find errors that still remain in your code syntax/format
 3. Ensure you fix any remaining linting errors displayed.
    Run npm run test:ci to ensure your code matches the test
 
-## <a name="testing-your-code"></a> Testing Your Code
+## Testing Your Code
 
 1. Run `npm run test` to ensure your code passes all tests
 
-## <a name="contributing-your-code"></a> Contributing Your Code
+## Contributing Your Code
 
 Are you willing to contribute to this project? You can contribute in many areas but primarily in the following areas
 
 1. Implementing endpoints and controllers
-2. Writing unit tests for endpoints and controllers. 
-3. Documentation 
+2. Writing unit tests for endpoints and controllers.
+3. Documentation
 4. Creating middleware and their consumables
 5. Fixing/pointing out bugs
 6. We could use a boost in our code coverage, so any tests to cover untested fucntions is highly welcome
 
-### Quick Reference
+### Endpoint Documentation
 
-- All responses must follow the format specified in the online [swagger documentation](https://comments-microservice.herokuapp.com/). To facilitate this a few utility functions have been provided and you should use them to send your responses to stay consistent. 
-   + **responseHandler** for sending responses with custom response code, optional data and a message 
-   + **customError** for error responses with custom error response code, message and optional data. To use this in a try..catch block, create a new instance of the customError class with the above properties. Pass this new error object to the `next` callback in your controller znd that is it. An **errorHandler** utility will send the necessary response
+All responses must follow the format specified in the online [swagger documentation](https://comments-microservice.herokuapp.com/). This should be your first go to as this will be the live server with the most trustworthy documentation.
 
-- A validation middleware is created to validate all endpoints using the `Joi` validation package. Validation rules are available for every endpoint and you must use a validation middleware when implementing an endpoint. If the validation rule/middleware for the endpoint you are not working on has not been implemented then open a new issue requesting to create the validatiion rule/middleware. 
+### Utility Functions
 
-- Some endpoints are guarded and require authenication via JWT tokens. These endpoints are indicated in the swagger documentation. Authentication middleware have been provided for these endpoints. Make use of appropriate auth middleware, where required, when implementing these endpoints.
+To facilitate consistent code, a few [Utility Functions](utils/README.md) have been provided and you should use them to send your responses to maintain consistent implementation.
 
-- To enable this project move swiftly. In the initial stages, tests were not written alongside implementation. For this reason, tests and implementation are separate. To enable tests not fail for non-existent endpoints, a helper method, **describeIfEndpoint**, has been created to defer running of tests until the endpoint itself has been created. Please use when necessary. When writing tests, for a minimum, test for a valid request's response, auth error response (if auth required), and validation error response.
+### Before Submitting Pull Request
 
-- If for any reason, your contribution is impeded because some component mentioned above is not available, kindly reach out to the maintainers so that you will be advised on how to proceed.
+- Always lint and test your code as stated [above](#linting-your-code)
 
-- Always lint your code as stated [above](#linting-your-code)
+- Make use of the PR template and edit the placeholders with relevant information. PR descriptions must reference the issue number being fixed, e.g `fix #12` or `resolve #25`.
 
-- Ensure you rebase/sync your local repo with the latest updates from the original repo to prevent merge conflicts. Your PR will not be attended to until you have resolved all merge conflicts
+- Before pushing your commits, ensure your local/forked repo is synced with the latest updates from the original repo to avoid merge conflicts. You can safely do this with a fast-forwards merge.
 
-- When making a pull request, make use of the PR template and edit the placeholders with relevant information. PR descriptions must include reference to the issue being fixed using: fixes/resolves #issue_number e.g `fixes #12` or `resolves #25` linking to the original issue number.
-
-### Further details
-
-Ensure that you lint and test your code before submitting a pull request (PR). For more information on the contributing guidelines and tips on certain implementation details, please see the [contributing documentation](https://github.com/microapi/comment-microapi/tree/master/CONTRIBUTING.md).
-
-## <a name="endpoints-documentation"></a> Endpoints Documentation
-
-There are two options that you can choose from when you would like to view the endpoints' Swagger documentation.
-
-The first option is online and should be your first go to as this will be the live server with the most trustworthy documentation.
-
-The second option is local and should be used as a last resort when the online option is unavailable.
-
-### Online
-
-Visit the [online server](https://comments-microservice.herokuapp.com/) to see the live Swagger documentation.
-
-### Locally
-
-After setting up your local environment (see above), please visit the `localhost:4000` or the `localhost:4000/documentation` route to see the local Swagger documentation.
-
-## <a name="schema-design-explanation"></a> Schema Design Explanation
-
-### Comments
-
-This model contains the following fields
-
-```
-comment_body: string (the body of the comment)
-comment_origin: string ( the origin of the comment; Bot or Reports from FE)
-isFlagged: boolean( if the comment has been flagged for sensitive words)
-upVotes: number
-downVotes:  number
-user: schema ref ( the details of the person that commented);
-
+```bash
+git remote add upstream https://github.com/microapidev/comment-microapi.git
+git fetch upstream
+git merge upstream/develop
 ```
 
-### Replies
+> For more information on the contributing guidelines and implementation details, please see the [contributing documentation](https://github.com/microapi/comment-microapi/tree/master/CONTRIBUTING.md).
 
-This model contains the following fields
+## Schema Design
 
-```
-reply_body: string (the body of the comment)
-comment_id: schema ref ( the id of the comment)
-isFlagged: boolean( if the comment has been flagged for sensitive words)
-upVotes: number
-downVotes:  number
+- Comments Model
+- Replies Model
+- Users Model
 
-```
-
-### Users
-
-This model contains the following fields
-
-```
-name: string (name of the person comment)
-email: string (email address of the person commenting)
-
-```
+> Please see the [complete Schema Design Document](models/README.md).
 
 ## License
 
-MIT License
+![MIT License](https://img.shields.io/github/license/microapidev/comment-microapi)
 
 Copyright (c) 2020, Team Justice League. All rights reserved.
