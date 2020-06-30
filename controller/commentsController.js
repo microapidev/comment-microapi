@@ -102,12 +102,8 @@ exports.deleteComment = async (req, res, next) => {
     if (comment.ownerId === ownerId) {
       const deleting = await Comments.findByIdAndDelete(commentId);
       if (deleting) {
-        return responseHandler(
-          res,
-          200,
-          deleting,
-          "Comment deleted successfully"
-        );
+        responseHandler(res, 200, deleting, "Comment deleted successfully");
+        return;
       } else {
         return next(
           new CustomError(
