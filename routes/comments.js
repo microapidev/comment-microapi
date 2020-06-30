@@ -4,5 +4,8 @@ const commentController = require("../controller/commentsController");
 
 router.use("/:commentId/replies", repliesRoutes);
 
+//delete comments
+router.delete("/:commentId", commentController.deleteComment);
+
 router.patch("/:commentId/flag", commentController.flagComment);
 module.exports = router;

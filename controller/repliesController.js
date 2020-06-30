@@ -34,40 +34,113 @@ const getCommentReplies = async (req, res, next) => {
   }
 };
 
-const flagCommentReplies = async (req, res, next) => {
-  const { commentId, replyId } = req.params;
-
-  if (!ObjectId.isValid(commentId)) {
-    return next(new CustomError(422, " Invalid comment Id "));
-  }
-
-  if (!ObjectId.isValid(replyId)) {
-    return next(new CustomError(422, " Invalid reply Id "));
-  }
+const createReply = async (req, res, next) => {
   try {
-    const reply = await Replies.findOneAndUpdate(
+    //validation should be done via middleware
+    //ownerId in body also needs to be validated
+
+    const { ownerId, content } = req.body;
+    const { commentId } = req.params;
+
+    if (!ObjectId.isValid(commentId)) {
+      next(new CustomError(404, "invalid ID"));
+      return;
+    }
+
+    if (!ownerId || !content) {
+      next(new CustomError(422, `Enter the required fields`));
+      return;
+    }
+    const reply = new Replies({
+      content,
+      ownerId,
+      commentId,
+    });
+
+    const savedReply = await reply.save();
+    const parentComment = await Comments.findByIdAndUpdate(
+      commentId,
       {
-        _id: replyId,
-        commentId: commentId,
-      },
-      {
-        isFlagged: true,
+        $push: {
+          replies: savedReply._id,
+        },
       },
       {
         new: true,
       }
     );
-    if (!reply) {
-      return res.status(404).json({
-        status: "error",
-        message: `Reply with the ID ${replyId} doesn't exist or has been deleted`,
-        data: null,
-      });
+    if (!parentComment) {
+      next(
+        new CustomError(
+          404,
+          `Comment with the ID ${commentId} does not exist or has been deleted`
+        )
+      );
+      return;
     }
+    const data = {
+      replyId: savedReply._id,
+      commentId: savedReply.commentId,
+      content: savedReply.content,
+      ownerId: savedReply.ownerId,
+      upVotes: savedReply.upVotes,
+      downVotes: savedReply.downVotes,
+      flags: savedReply.flags,
+    };
+
+    responseHandler(res, 201, data, "Reply added successfully");
+    return;
+  } catch (error) {
+    next(
+      new CustomError(
+        500,
+        "Something went wrong, please try again later",
+        error
+      )
+    );
+    return;
+  }
+};
+
+const flagCommentReplies = async (req, res, next) => {
+  try {
+    //validation should be done via middleware
+    //ownerId in body also needs to be validated
+
+    const { commentId, replyId } = req.params;
+    const { ownerId } = req.body;
+
+    if (!ObjectId.isValid(commentId)) {
+      return next(new CustomError(422, " Invalid comment Id "));
+    }
+
+    if (!ObjectId.isValid(replyId)) {
+      return next(new CustomError(422, " Invalid reply Id "));
+    }
+    const reply = await Replies.findOne({
+      _id: replyId,
+      commentId: commentId,
+    });
+
+    if (!reply) {
+      next(
+        new CustomError(
+          404,
+          `Reply with the ID ${replyId} doesn't exist or has been deleted`
+        )
+      );
+      return;
+    }
+
+    //flag comment reply by pushing ownerId into flags array
+    if (!reply.flags.includes(ownerId)) {
+      reply.flags.push(ownerId);
+    }
+
     const data = {
       replyId: reply._id,
       commentId: reply.commentId,
-      isFlagged: reply.isFlagged,
+      numOfFlags: reply.flags.length,
     };
 
     return responseHandler(
@@ -77,11 +150,19 @@ const flagCommentReplies = async (req, res, next) => {
       "Reply has been flagged successfully"
     );
   } catch (error) {
-    next(error);
+    next(
+      new CustomError(
+        500,
+        "Something went wrong, please try again later",
+        error
+      )
+    );
+    return;
   }
 };
 
 module.exports = {
   getCommentReplies,
+  createReply,
   flagCommentReplies,
 };

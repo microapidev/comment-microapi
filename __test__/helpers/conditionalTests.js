@@ -1,6 +1,6 @@
 const listEndpoints = require("express-list-endpoints");
 const app = require("../../server");
-import { it } from "@jest/globals";
+import { describe } from "@jest/globals";
 // console.log(listEndpoints(app));
 
 const findEndpoint = (method, path) => {
@@ -16,10 +16,21 @@ const findEndpoint = (method, path) => {
   });
 };
 
-export const skipIfNotFound = (method, path) => {
-  if (!findEndpoint(method, path)) {
-    return it.only("Skipping test. This route has not been implemented yet!", () => {
-      // do nothing
-    });
+// export const skipIfNotFound = (method, path) => {
+//   if (!findEndpoint(method, path)) {
+//     return it.only("Skipping all tests in file. This route has not been implemented yet!", () => {
+//       // do nothing
+//     });
+//   }
+// };
+
+export const describeIfEndpoint = (method, path, name, callback) => {
+  if (findEndpoint(method, path)) {
+    return describe(name, callback);
+  } else {
+    return describe.skip(
+      `Skipping "${name}" test. It has not been implemented yet!`,
+      callback
+    );
   }
 };
