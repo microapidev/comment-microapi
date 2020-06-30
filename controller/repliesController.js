@@ -35,26 +35,25 @@ const getCommentReplies = async (req, res, next) => {
 };
 
 const createReply = async (req, res, next) => {
-  const { body, ownerName, ownerEmail } = req.body;
-  const { commentId } = req.params;
-
-  if (!ObjectId.isValid(commentId)) {
-    return next(new CustomError(400, " Invalid comment Id "));
-  }
-
-  if (!body || !ownerName || ownerEmail) {
-    return res.status(422).json({
-      status: "422 Error",
-      message: "Enter the required fields",
-      data: [],
-    });
-  }
-
   try {
+    //validation should be done via middleware
+    //ownerId in body also needs to be validated
+
+    const { ownerId, content } = req.body;
+    const { commentId } = req.params;
+
+    if (!ObjectId.isValid(commentId)) {
+      next(new CustomError(404, "invalid ID"));
+      return;
+    }
+
+    if (!ownerId || !content) {
+      next(new CustomError(422, `Enter the required fields`));
+      return;
+    }
     const reply = new Replies({
-      body,
-      ownerName,
-      ownerEmail,
+      content,
+      ownerId,
       commentId,
     });
 
@@ -71,30 +70,26 @@ const createReply = async (req, res, next) => {
       }
     );
     if (!parentComment) {
-      return res.status(404).json({
-        status: "404 Error",
-        message: `Comment with the ID ${commentId} does not exist or has been deleted`,
-        data: [],
-      });
+      next(
+        new CustomError(
+          404,
+          `Comment with the ID ${commentId} does not exist or has been deleted`
+        )
+      );
+      return;
     }
-    const totalVotes = savedReply.upVotes.length + savedReply.downVotes.length;
-    return res.status(201).json({
-      message: "Reply added successfully",
-      response: "201 Created",
-      data: [
-        {
-          replyId: savedReply._id,
-          commentId: savedReply.commentId,
-          body: savedReply.body,
-          ownerEmail: savedReply.ownerEmail,
-          ownerName: savedReply.ownerName,
-          isFlagged: savedReply.isFlagged,
-          upVotes: savedReply.upVotes,
-          downVotes: savedReply.downVotes,
-          totalVotes,
-        },
-      ],
-    });
+    const data = {
+      replyId: savedReply._id,
+      commentId: savedReply.commentId,
+      content: savedReply.content,
+      ownerId: savedReply.ownerId,
+      upVotes: savedReply.upVotes,
+      downVotes: savedReply.downVotes,
+      flags: savedReply.flags,
+    };
+
+    responseHandler(res, 201, data, "Reply added successfully");
+    return;
   } catch (error) {
     next(error);
   }
