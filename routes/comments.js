@@ -7,6 +7,7 @@ router.patch("/:commentId/votes/upvote", commentController.upvoteComment);
 router.use(appAuthMW);
 router.use("/:commentId/replies", repliesRoutes);
 
+router.post("/", commentController.create);
 // update comment
 router.patch("/:commentId", commentController.updateComment);
 

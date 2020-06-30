@@ -131,7 +131,11 @@ exports.create = async (req, res, next) => {
     return responseHandler(res, 200, savedComment);
   } catch (err) {
     return next(
-      new CustomError(500, "Something went wrong, please try again", err)
+      new CustomError(
+        500,
+        "Something went wrong, please try again",
+        err.message
+      )
     );
   }
 };
