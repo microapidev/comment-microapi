@@ -4,6 +4,9 @@ const repliesController = require("../controller/repliesController");
 // gets all replies of a comment
 router.get("/", repliesController.getCommentReplies);
 
+// gets a single reply of a comment
+router.get("/:replyId", repliesController.getASingleReply);
+
 // creates a reply to a comment
 router.post("/", repliesController.createReply);
 
