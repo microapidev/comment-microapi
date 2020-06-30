@@ -6,35 +6,31 @@ const supertest = require("supertest");
 const request = supertest(app);
 const { describeIfEndpoint } = require("../helpers/conditionalTests");
 
-// describeIfEndpoint(
-//   "PATCH",
-//   "/comments/:commentId",
-//   "PATCH /comments/:commentId",
-//   () => {
-//     it("Updates a comment", async () => {
-//       const comment = new CommentModel({
-//         commentBody: "this is a comment",
-//         commentOwnerName: "userName",
-//         commentOwnerEmail: "useremail@email.com",
-//         commentOrigin: "123123",
-//         commentOwner: mongoose.Types.ObjectId(),
-//       });
-//       await comment.save();
+describeIfEndpoint(
+  "PATCH",
+  "/comments/:commentId",
+  "PATCH /comments/:commentId",
+  () => {
+    it("Updates a comment", async () => {
+      const comment = new CommentModel({
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
+        applicationId: mongoose.Types.ObjectId(),
+      });
+      await comment.save();
 
-//       const commentId = comment._id;
+      const res = await request.patch(`/comments/${comment._id}`).send({
+        ownerId: comment.ownerId,
+        content: "New Comment Update",
+      });
 
-//       const res = await request.patch(`/comments/${commentId}`).send({
-//         commentOwnerEmail: comment.commentOwnerEmail,
-//         commentBody: "New Comment Update",
-//       });
-
-//       expect(res.status).toBe(200);
-//       expect(res.body.status).toBe("success");
-//       expect(res.body.data.commentBody).toBeTruthy();
-//       expect(res.body.data.commentOwnerEmail).toBeTruthy();
-//     });
-//   }
-// );
+      expect(res.status).toBe(200);
+      expect(res.body.data.content).toBeTruthy();
+      expect(res.body.data.ownerId).toBeTruthy();
+    });
+  }
+);
 
 describeIfEndpoint(
   "PATCH",
@@ -43,23 +39,20 @@ describeIfEndpoint(
   () => {
     it("Flags a comment", async () => {
       const comment = new CommentModel({
-        commentBody: "this is a comment",
-        commentOwnerName: "userName",
-        commentOwnerEmail: "useremail@email.com",
-        commentOrigin: "123123",
-        commentOwner: mongoose.Types.ObjectId(),
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
+        applicationId: mongoose.Types.ObjectId(),
       });
       await comment.save();
 
-      const commentId = comment._id;
-
-      const res = await request.patch(`/comments/${commentId}/flag`).send({
-        isFlagged: true,
+      const res = await request.patch(`/comments/${comment._id}/flag`).send({
+        ownerId: "offendeduser@email.com",
       });
 
       expect(res.status).toBe(200);
       expect(res.body.data.commentId).toBeTruthy();
-      expect(res.body.data.isFlagged).toBeTruthy();
+      expect(res.body.data.numOfFlags).toBeTruthy();
     });
   }
 );
