@@ -15,6 +15,9 @@ const getReplyVotesSchema = {
     commentId: Joi.string().length(24).require(),
     replyId: Joi.string().length(24).required(),
   }),
+  query: Joi.object().keys({
+    voteType: Joi.string()
+  }),
 };
 
 module.exports = getReplyVotesSchema;
