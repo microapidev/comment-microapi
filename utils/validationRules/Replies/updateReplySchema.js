@@ -6,7 +6,7 @@ const Joi = require("@hapi/joi");
 
 const updateReplySchema = {
   options: {
-    allowUnkown: true,
+    allowUnknown: true,
   },
 
   headers: Joi.object({
