@@ -3,7 +3,7 @@ const Joi = require("@hapi/joi");
  * Schema getReplyVotesSchema - GET /comments/{commentId}/replies/{replyId}/votes:
  */
 
-const getReplyVotesSchema  = {
+const getReplyVotesSchema = {
   options: {
     allowUnknown: true,
   },
@@ -17,4 +17,4 @@ const getReplyVotesSchema  = {
   }),
 };
 
-module.exports = getReplyVotesSchema ;
+module.exports = getReplyVotesSchema;
