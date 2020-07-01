@@ -272,15 +272,29 @@ exports.deleteComment = async (req, res, next) => {
     return next(error);
   }
 };
-exports.getComment = async (req, res) => {
+exports.getSingleComment = async (req, res, next) => {
+  const { refId } = req.query;
+  const commentId = req.params.commentId;
+  const applicationId = req.headers.token; //this will be retrieved from decoded api token after full auth implementation
+  const query = { applicationId: applicationId, _id: commentId };
+  if (refId) query.refId = refId;
   try {
-    const comment = await Comments.findById(req.params.commentId);
-    if (!comment) {
-      throw new Error("Comment does not exist..."); //mad app, na issues with my format
-    }
-    //Success Response
-    responseHandler(res, 200, comment, `Comment with ${comment.id}`); //That's it, basically....  wait let me do test
-  } catch (error) {
-    errorHandler(error, res);
+    await Comments.find(query)
+      .populate("replies")
+      .then((comment) => {
+        res.status(200).json({
+          status: "success",
+          message: `Comment Retrieved Successfully`,
+          query: query,
+          data: comment,
+        });
+      })
+      .catch(next);
+  } catch (err) {
+    res.status(401).json({
+      status: "error",
+      message: `Something went wrong`,
+      data: err,
+    });
   }
 };
