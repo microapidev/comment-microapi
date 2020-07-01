@@ -1,7 +1,7 @@
 const app = require("../../server");
 const CommentModel = require("../../models/comments");
 const ReplyModel = require("../../models/replies");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const supertest = require("supertest");
 const request = supertest(app);
 const { describeIfEndpoint } = require("../helpers/conditionalTests");
@@ -45,13 +45,16 @@ describeIfEndpoint(
         content: "this is a comment",
         ownerId: "useremail@email.com",
         origin: "123123",
-        applicationId: mongoose.Types.ObjectId(),
+        applicationId: global.application._id,
       });
       await comment.save();
 
-      const res = await request.patch(`/comments/${comment._id}/flag`).send({
-        ownerId: "offendeduser@email.com",
-      });
+      const res = await request
+        .patch(`/comments/${comment._id}/flag`)
+        .set("Authorization", `bearer ${global.appToken}`)
+        .send({
+          ownerId: "offendeduser@email.com",
+        });
 
       expect(res.status).toBe(200);
       expect(res.body.data.commentId).toBeTruthy();
@@ -70,7 +73,7 @@ describeIfEndpoint(
         content: "this is a comment",
         ownerId: "useremail@email.com",
         origin: "123123",
-        applicationId: mongoose.Types.ObjectId(),
+        applicationId: global.application._id,
       });
       await comment.save();
 
@@ -85,6 +88,7 @@ describeIfEndpoint(
 
       const res = await request
         .patch(`/comments/${comment._id}/replies/${reply._id}/flag`)
+        .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: "offendeduser@email.com",
         });
