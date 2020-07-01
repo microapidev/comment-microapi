@@ -35,7 +35,6 @@ const getCommentReplies = async (req, res, next) => {
   }
 };
 
-
 // GET a single reply
 const getASingleReply = async (req, res, next) => {
   const { commentId, replyId } = req.params;
@@ -365,5 +364,4 @@ module.exports = {
   getReplyVotes,
   flagCommentReplies,
   deleteCommentReply,
-
 };
