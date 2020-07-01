@@ -7,6 +7,7 @@ const { ObjectId } = require("mongoose").Types;
 const CustomError = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
 
+//GET Replies to a comment
 const getCommentReplies = async (req, res, next) => {
   const { commentId } = req.params;
 
@@ -33,6 +34,8 @@ const getCommentReplies = async (req, res, next) => {
     next(err);
   }
 };
+
+
 // GET a single reply
 const getASingleReply = async (req, res, next) => {
   const { commentId, replyId } = req.params;
@@ -64,6 +67,7 @@ const getASingleReply = async (req, res, next) => {
   }
 };
 
+// POST a new reply
 const createReply = async (req, res, next) => {
   try {
     //validation should be done via middleware
@@ -132,6 +136,51 @@ const createReply = async (req, res, next) => {
   }
 };
 
+//PATCH downvote a reply
+const downvoteReply = async (req, res, next) => {
+  const commentId = req.params.commentId;
+  const replyId = req.params.replyId;
+  const voterId = req.body.voterId;
+
+  try {
+    let comment = await Comments.findById(commentId);
+    if (!comment) {
+      return next(new CustomError(404, "Comment not found or deleted"));
+    }
+    let reply = await Replies.findById(replyId);
+    if (!reply) {
+      return next(new CustomError(404, "Reply not found or deleted"));
+    }
+    if (reply.upVotes.includes(voterId)) {
+      return next(
+        new CustomError(409, "You've upvoted this reply, you can't downvote")
+      );
+    }
+    if (reply.downVotes.includes(voterId)) {
+      return next(new CustomError(409, "You've already downvoted this reply"));
+    }
+    await reply.updateOne({
+      _id: replyId,
+      $push: { downVotes: voterId },
+    });
+    return responseHandler(
+      res,
+      200,
+      {
+        commentId: commentId,
+        replyId: replyId,
+        numOfVotes: reply.downVotes.length + reply.upVotes.length + 1,
+        numOfUpvotes: reply.upVotes.length,
+        numOfDownvotes: reply.downVotes.length + 1,
+      },
+      "Reply downvoted successfully"
+    );
+  } catch (error) {
+    return next(new CustomError(500, "Something went wrong, try again", error));
+  }
+};
+
+//GET Replies votes
 const getReplyVotes = async (req, res, next) => {
   try {
     const { commentId, replyId } = req.params;
@@ -207,6 +256,7 @@ const getReplyVotes = async (req, res, next) => {
   }
 };
 
+//PATCH Flag Replies
 const flagCommentReplies = async (req, res, next) => {
   try {
     //validation should be done via middleware
@@ -268,6 +318,7 @@ const flagCommentReplies = async (req, res, next) => {
   }
 };
 
+//DEETE Reply
 const deleteCommentReply = async (req, res, next) => {
   const { commentId, replyId } = req.params;
   const { ownerId } = req.body;
@@ -304,11 +355,15 @@ const deleteCommentReply = async (req, res, next) => {
     );
   }
 };
+
+//Export methods
 module.exports = {
   getCommentReplies,
   getASingleReply,
   createReply,
+  downvoteReply,
   getReplyVotes,
   flagCommentReplies,
   deleteCommentReply,
+
 };
