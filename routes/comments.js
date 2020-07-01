@@ -12,6 +12,8 @@ router.use(appAuthMW);
 router.use("/:commentId/replies", repliesRoutes);
 
 router.post("/", commentController.create);
+// get comment
+router.get("/", commentController.getCommentVote);
 // update comment
 router.patch("/:commentId", commentController.updateComment);
 
