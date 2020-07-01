@@ -8,7 +8,7 @@ const createReplySchema = {
     allowUnknown: true,
   },
 
-  header: Joi.object({
+  headers: Joi.object({
     authorization: Joi.string().required(),
   }),
 
