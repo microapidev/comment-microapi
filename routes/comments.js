@@ -3,17 +3,25 @@ const router = require("express").Router();
 const commentController = require("../controller/commentsController");
 const { appAuthMW } = require("../middleware/auth");
 
+// -------- DO NOT TOUCH!!! ---------
+// authentication middleware must be at the top
+router.use(appAuthMW);
+
+// reroute ../replies route requests to Replies router
+router.use("/:commentId/replies", repliesRoutes);
+
 // upvote a comment
 router.patch("/:commentId/votes/upvote", commentController.upvoteComment);
 
 // downvote comment
 router.patch("/:commentId/votes/downvote", commentController.downvoteComment);
-router.use(appAuthMW);
-router.use("/:commentId/replies", repliesRoutes);
 
+// create a comment
 router.post("/", commentController.create);
-// get comment
-router.get("/", commentController.getCommentVote);
+
+//
+router.get("/:commentId/votes", commentController.getCommentVote);
+
 // update comment
 router.patch("/:commentId", commentController.updateComment);
 
