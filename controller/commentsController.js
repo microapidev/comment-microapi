@@ -55,8 +55,8 @@ exports.upvoteComment = async (req, res, next) => {
 
     //Check the comment vote state
     const message = isUpvoted
-      ? "Comment Upvoted Successfully!"
-      : "Upvote removed";
+      ? "Comment upvote added successfully!"
+      : "Comment upvote removed successfully!";
 
     const data = {
       commentId: comment._id,
@@ -121,8 +121,8 @@ exports.downvoteComment = async (req, res, next) => {
 
     //Check the comment vote state
     const message = isDownvoted
-      ? "Comment Downvoted Successfully!"
-      : "Downvote removed";
+      ? "Comment downvote added successfully!"
+      : "Comment downvote removed successfully!";
 
     const data = {
       commentId: comment._id,
