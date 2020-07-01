@@ -6,6 +6,7 @@ const deleteCommentSchema = require("./comments/deleteCommentSchema");
 const getCommentVotesSchema = require("./comments/getCommentVotesSchema");
 const updateCommentUpAndDownVoteSchema = require("./comments/updateCommentUpAndDownVoteSchema");
 
+const updateReplySchema = require("./Replies/updateReplySchema");
 const updateReplyUpAndDownVoteSchema = require("./Replies/updateReplyUpAndDownVoteSchema");
 
 /**
@@ -22,5 +23,6 @@ module.exports = {
   updateCommentUpAndDownVoteSchema,
 
   // Reply Endpoints validation schemas
+  updateReplySchema,
   updateReplyUpAndDownVoteSchema,
 };
