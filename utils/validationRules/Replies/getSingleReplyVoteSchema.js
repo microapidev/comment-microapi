@@ -3,9 +3,9 @@ const Joi = require("@hapi/joi");
  * Schema RepliesValidationRules - GET /comments/{commentId}/replies/{replyId}/votes:
  */
 
-const getSingleReplyVoteSchema = {
+const getReplyVotesSchema  = {
   options: {
-    allowUnknow: true,
+    allowUnknown: true,
   },
 
   headers: Joi.object({
@@ -17,4 +17,4 @@ const getSingleReplyVoteSchema = {
   }),
 };
 
-module.exports = getSingleReplyVoteSchema;
+module.exports = getReplyVotesSchema ;
