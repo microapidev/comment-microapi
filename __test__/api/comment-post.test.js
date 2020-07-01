@@ -10,6 +10,7 @@ describeIfEndpoint("POST", "/comments", "POST '/comments'", () => {
     const res = await request.post("/comments").send({
       content: "this is a comment",
       ownerId: "useremail@email.com",
+      applicationId: "5efafe22129bfdc7f768c69e",
       origin: "123123",
     });
     expect(res.status).toBe(200);

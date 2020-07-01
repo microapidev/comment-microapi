@@ -6,6 +6,123 @@ const mongoose = require("mongoose");
 const CustomError = require("../utils/customError");
 // const User = require("../models/users");
 const responseHandler = require("../utils/responseHandler");
+const Applications = require("../models/applications");
+
+exports.upvoteComment = async (req, res, next) => {
+  try {
+    const { commentId } = req.params;
+    const { ownerId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      next(new CustomError(422, "invalid ID"));
+      return;
+    }
+    const comment = await Comments.findById({ _id: commentId });
+
+    //if user exists in downvotes array
+    if (comment.downVotes.includes(ownerId)) {
+      //get index of user in downvotes array
+      const voterIndex = comment.downVotes.indexOf(ownerId);
+      //if index exists
+      if (voterIndex > -1) {
+        //delete that index
+        comment.downVotes.splice(voterIndex, 1);
+      }
+    }
+
+    //same as above for upvotes
+    if (comment.upVotes.includes(ownerId)) {
+      const voterIdx = comment.upVotes.indexOf(ownerId);
+      if (voterIdx > -1) {
+        comment.upVotes.splice(voterIdx, 1);
+      }
+    } else {
+      // add user to the top of the upvotes array
+      comment.upVotes.unshift(ownerId);
+    }
+
+    //save the comment vote
+    comment.save();
+
+    //get total number of elements in array
+    const totalUpVotes = comment.upVotes.length;
+    const totalDownVotes = comment.downVotes.length;
+
+    //get total number of votes
+    const totalVotes = totalUpVotes + totalDownVotes;
+
+    const data = {
+      commentId: comment._id,
+      numOfVotes: totalVotes,
+      numOfUpVotes: totalUpVotes,
+      numOfDownVotes: totalDownVotes,
+    };
+    return responseHandler(res, 200, data, "Comment upVoted Successfully!");
+  } catch (err) {
+    return next(
+      new CustomError(500, "Something went wrong, please try again later", err)
+    );
+  }
+};
+
+exports.downvoteComment = async (req, res, next) => {
+  try {
+    const { commentId } = req.params;
+    const { ownerId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      next(new CustomError(422, "invalid ID"));
+      return;
+    }
+    const comment = await Comments.findById({ _id: commentId });
+    if (!comment) {
+      return next(new CustomError(404, "Comment Id not found"));
+    }
+    //if user exists in upvotes array
+    if (comment.upVotes.includes(ownerId)) {
+      //get index of user in upvotes array
+      const voterIndex = comment.upVotes.indexOf(ownerId);
+      //if index exists
+      if (voterIndex > -1) {
+        //delete that index
+        comment.upVotes.splice(voterIndex, 1);
+      }
+    }
+
+    //same as above for downvotes
+    if (comment.downVotes.includes(ownerId)) {
+      const voterIdx = comment.downVotes.indexOf(ownerId);
+      if (voterIdx > -1) {
+        comment.downVotes.splice(voterIdx, 1);
+      }
+    } else {
+      // add user to the top of the downvotes array
+      comment.downVotes.unshift(ownerId);
+    }
+
+    //save the comment vote
+    comment.save();
+
+    //get total number of elements in array
+    const totalUpVotes = comment.upVotes.length;
+    const totalDownVotes = comment.downVotes.length;
+
+    //get total number of votes
+    const totalVotes = totalUpVotes + totalDownVotes;
+
+    const data = {
+      commentId: comment._id,
+      numOfVotes: totalVotes,
+      numOfUpVotes: totalUpVotes,
+      numOfDownVotes: totalDownVotes,
+    };
+    return responseHandler(res, 200, data, "Comment downVoted Successfully!");
+  } catch (err) {
+    return next(
+      new CustomError(500, "Something went wrong, please try again later", err)
+    );
+  }
+};
 
 exports.flagComment = async (req, res, next) => {
   try {
@@ -50,6 +167,37 @@ exports.flagComment = async (req, res, next) => {
   }
 };
 
+//create and save a comment
+exports.create = async (req, res, next) => {
+  //validate request
+  //extra check to make sure the application id exists in the db
+  try {
+    await Applications.findById(req.body.applicationId);
+  } catch (err) {
+    return next(new CustomError(400, "Invalid application id"));
+  }
+  //create a new comment
+  const comment = new Comments({
+    refId: req.body.refId,
+    applicationId: req.body.applicationId,
+    ownerId: req.body.ownerId,
+    content: req.body.content,
+    origin: req.body.origin,
+  });
+  //save comment
+  try {
+    const savedComment = await comment.save();
+    return responseHandler(res, 200, savedComment);
+  } catch (err) {
+    return next(
+      new CustomError(
+        500,
+        "Something went wrong, please try again",
+        err.message
+      )
+    );
+  }
+};
 exports.updateComment = async (req, res, next) => {
   const comment_id = req.params.commentId;
   const content = req.body.content;
@@ -92,7 +240,6 @@ exports.updateComment = async (req, res, next) => {
       );
     });
 };
-
 exports.deleteComment = async (req, res, next) => {
   const commentId = req.params.commentId;
   const ownerId = req.body.ownerId;
