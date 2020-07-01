@@ -1,0 +1,20 @@
+const Joi = require("@hapi/joi");
+/**
+ * Schema RepliesValidationRules - GET /comments/{commentId}/replies/{replyId}/votes:
+ */
+
+const getSingleReplyVoteSchema = {
+  options: {
+    allowUnknow: true,
+  },
+
+  headers: Joi.object({
+    authorization: Joi.string().required(),
+  }),
+  params: Joi.object().keys({
+    commentId: Joi.string().length(24).require(),
+    replyId: Joi.string().length(24).required(),
+  }),
+};
+
+module.exports = getSingleReplyVoteSchema;
