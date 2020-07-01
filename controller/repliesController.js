@@ -136,15 +136,27 @@ const createReply = async (req, res, next) => {
 };
 
 // Updates a reply
-exports.updateReply = async (req, res, next) => {
+const updateReply = async (req, res, next) => {
   const { commentId, replyId } = req.params;
   const { content, ownerId } = req.body;
+
+  if (!ObjectId.isValid(commentId)) {
+    return next(new CustomError(422, " Invalid comment ID"));
+  }
+
+  if (!ObjectId.isValid(replyId)) {
+    return next(new CustomError(422, " Invalid reply ID"));
+  }
 
   try {
     let comment = await Comments.findById(commentId);
 
     if (!comment) {
       return next(new CustomError(404, "Comment not found or deleted"));
+    }
+
+    if (ownerId !== comment.ownerId) {
+      return next(new CustomError(401, "Unauthorized ID"));
     }
 
     let reply = await Replies.findById(replyId);
@@ -400,6 +412,7 @@ module.exports = {
   getCommentReplies,
   getASingleReply,
   createReply,
+  updateReply,
   downvoteReply,
   getReplyVotes,
   flagCommentReplies,
