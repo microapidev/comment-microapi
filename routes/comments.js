@@ -15,6 +15,9 @@ router.use("/:commentId/replies", repliesRoutes);
 // creates a comment
 router.post("/", commentController.create);
 
+// get a comment votes
+router.get("/:commentId/votes", commentController.getCommentVote);
+
 // updates a comment
 router.patch(
   "/:commentId",

@@ -271,3 +271,35 @@ exports.deleteComment = async (req, res, next) => {
     return next(error);
   }
 };
+
+exports.getCommentVote = async (req, res, next) => {
+  const commentId = req.params.commentId;
+  try {
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      return next(new CustomError(422, "invalid ID"));
+    }
+    const comment = await Comments.findOne({
+      _id: commentId,
+    });
+    if (!comment) {
+      return next(
+        new CustomError(
+          404,
+          `Comment with the ID ${commentId} doesn't exist or has been removed`
+        )
+      );
+    }
+    const upvote = comment.upVotes.length;
+    const downvote = comment.downVotes.length;
+    const totalVote = upvote + downvote;
+    const data = {
+      commentId,
+      upvote,
+      downvote,
+      totalVote,
+    };
+    responseHandler(res, 200, data, "Comment Votes Retrieved successfully");
+  } catch (err) {
+    return next(new CustomError(400, "Something went wrong, Try again later"));
+  }
+};
