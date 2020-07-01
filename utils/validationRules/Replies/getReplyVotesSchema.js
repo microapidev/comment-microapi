@@ -16,7 +16,7 @@ const getReplyVotesSchema = {
     replyId: Joi.string().length(24).required(),
   }),
   query: Joi.object().keys({
-    voteType: Joi.string()
+    voteType: Joi.string(),
   }),
 };
 
