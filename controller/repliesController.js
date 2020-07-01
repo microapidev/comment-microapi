@@ -206,7 +206,8 @@ try {
         const totalVotes = totalUpVotes + totalDownVotes;
 
         const data = {
-          commentId: comment._id,
+          replyId,
+          commentId,
           numOfVotes: totalVotes,
           numOfUpVotes: totalUpVotes,
           numOfDownVotes: totalDownVotes,
