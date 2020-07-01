@@ -7,6 +7,7 @@ const CustomError = require("../utils/customError");
 // const User = require("../models/users");
 const responseHandler = require("../utils/responseHandler");
 const Applications = require("../models/applications");
+const errorHandler = require("../utils/errorhandler");
 
 exports.upvoteComment = async (req, res, next) => {
   try {
@@ -269,5 +270,17 @@ exports.deleteComment = async (req, res, next) => {
     }
   } catch (error) {
     return next(error);
+  }
+};
+exports.getComment = async (req, res) => {
+  try {
+    const comment = await Comments.findById(req.params.commentId);
+    if (!comment) {
+      throw new Error("Comment does not exist..."); //mad app, na issues with my format
+    }
+    //Success Response
+    responseHandler(res, 200, comment, `Comment with ${comment.id}`); //That's it, basically....  wait let me do test
+  } catch (error) {
+    errorHandler(error, res);
   }
 };

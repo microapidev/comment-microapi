@@ -21,4 +21,7 @@ router.delete("/:commentId", commentController.deleteComment);
 // flag comment
 router.patch("/:commentId/flag", commentController.flagComment);
 
+//get a single comment
+router.get("/:commentId", commentController.getComment);
+
 module.exports = router;
