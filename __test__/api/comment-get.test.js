@@ -92,7 +92,7 @@ describeIfEndpoint(
       const commentId = comment._id;
       const reply = new ReplyModel({
         content: "this is a reply to a comment",
-        ownerId: "useremail@email.com",
+        ownerId: "replyinguseremail@email.com",
         commentId: commentId,
       });
       await reply.save();
@@ -104,7 +104,8 @@ describeIfEndpoint(
       expect(res.status).toBe(200);
       expect(res.body.data._id).toEqual(String(replyId));
       expect(res.body.data.commentId).toEqual(String(comment._id));
-      expect(res.body.data.ownerId).toBeTruthy();
+      expect(res.body.data.content).toEqual(String(reply.content));
+      expect(res.body.data.ownerId).toEqual(String(reply.ownerId));
     });
   }
 );
