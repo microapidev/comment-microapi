@@ -1,6 +1,6 @@
 const getAllCommentsSchema = require("./comments/getAllCommentsSchema");
 const createCommentSchema = require("./comments/createCommentSchema");
-const getCommentSchema = require("./comments/getCommentSchema");
+const getSingleCommentSchema = require("./comments/getSingleCommentSchema");
 const updateCommentSchema = require("./comments/updateCommentSchema");
 const getCommentVotesSchema = require("./comments/getCommentVotesSchema");
 
@@ -10,7 +10,7 @@ const getCommentVotesSchema = require("./comments/getCommentVotesSchema");
 module.exports = {
   getAllCommentsSchema,
   createCommentSchema,
-  getCommentSchema,
+  getSingleCommentSchema,
   updateCommentSchema,
   getCommentVotesSchema,
 };

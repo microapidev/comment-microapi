@@ -17,7 +17,7 @@ const getCommentVotesSchema = {
   }),
 
   query: Joi.object({
-    voteType: Joi.string().allow(["upvote", "downvote"]),
+    voteType: Joi.string().allow("upvote").allow("downvote"),
   }),
 };
 

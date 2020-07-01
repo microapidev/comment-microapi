@@ -3,7 +3,7 @@ const Joi = require("@hapi/joi");
 /**
  * Schema validation for GET '/comments/{commentId}'
  */
-const getCommentSchema = {
+const getSingleCommentSchema = {
   options: {
     allowUnknown: true,
   },
@@ -17,4 +17,4 @@ const getCommentSchema = {
   }),
 };
 
-module.exports = getCommentSchema;
+module.exports = getSingleCommentSchema;
