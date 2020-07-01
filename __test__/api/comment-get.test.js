@@ -68,11 +68,10 @@ describeIfEndpoint(
       const res = await request.get(`/comments/${comment._id}/votes`);
 
       expect(res.status).toBe(200);
-      expect(res.message).toBeTruthy();
+      expect(res.body.message).toBeTruthy();
+      expect(res.body.status).toBeTruthy();
       expect(res.body.data.commentId).toBeTruthy();
-      expect(res.body.data.totalVotes).toBeTruthy();
-      expect(res.body.data.upvotes).toBeTruthy();
-      expect(res.body.data.downvotes).toBeTruthy();
+      expect(res.body.data.votes).toBeTruthy();
     });
   }
 );

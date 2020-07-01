@@ -1,4 +1,4 @@
-import CustomError from "../utils/customError";
+const CustomError = require("../utils/customError");
 
 const schemaKeys = ["headers", "params", "query", "body"];
 
@@ -22,7 +22,11 @@ const validationMiddleware = (requestSchema) => {
         // Check all validations for any Joi errors.
         validatedSchemas.forEach((validatedSchema) => {
           schemaKeys.forEach((schemaKey) => {
-            if (validatedSchema && validatedSchema[schemaKey]?.error) {
+            if (
+              validatedSchema &&
+              validatedSchema[schemaKey] &&
+              validatedSchema[schemaKey].error
+            ) {
               const messages = validatedSchema[schemaKey].error.details.map(
                 (detail) => detail.message + ` in ${schemaKey}`
               );
@@ -49,4 +53,4 @@ const validationMiddleware = (requestSchema) => {
   };
 };
 
-export default validationMiddleware;
+module.exports = validationMiddleware;
