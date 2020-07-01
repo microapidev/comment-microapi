@@ -48,25 +48,24 @@ describeIfEndpoint(
       await comment.save();
 
       const reply = new ReplyModel({
-        replyBody: "this is a reply to a comment",
+        content: "this is a reply to a comment",
         commentId: comment._id,
         upVotes: 0,
         downVotes: 0,
+        ownerId: "useremail@email.com",
       });
       await reply.save();
 
       const res = await request
         .delete(`/comments/${comment._id}/replies/${reply._id}`)
         .send({
-          replyOwnerEmail: "useremail@email.com",
+          ownerId: "useremail@email.com",
         });
-      if (res.status === 404) {
-        return true; // route not implemented yet
-      }
+
       expect(res.status).toBe(200);
-      expect(res.body.data.replyId).toEqual(reply._id);
-      expect(res.body.data.commentId).toEqual(comment._id);
-      expect(res.body.data.replyOwnerEmail).toBeTruthy();
+      expect(res.body.data.replyId).toEqual(String(reply._id));
+      expect(res.body.data.commentId).toEqual(String(comment._id));
+      expect(res.body.data.ownerId).toBeTruthy();
     });
   }
 );

@@ -16,4 +16,7 @@ router.get("/:replyId/votes", repliesController.getReplyVotes);
 /// updates the flags of a reply
 router.patch("/:replyId/flag", repliesController.flagCommentReplies);
 
+// delete a reply
+router.delete("/:replyId", repliesController.deleteCommentReply);
+
 module.exports = router;
