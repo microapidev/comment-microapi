@@ -3,12 +3,12 @@ const Joi = require("@hapi/joi");
 /**
  * Schema validation for GET '/comments/{commentId}'
  */
-const getCommentSchema = {
+const getSingleCommentSchema = {
   options: {
     allowUnknown: true,
   },
 
-  header: Joi.object({
+  headers: Joi.object({
     authorization: Joi.string().required(),
   }),
 
@@ -17,4 +17,4 @@ const getCommentSchema = {
   }),
 };
 
-module.exports = getCommentSchema;
+module.exports = getSingleCommentSchema;
