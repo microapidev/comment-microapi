@@ -9,10 +9,10 @@ describe("POST '/comments'", () => {
   skipIfNotFound("POST", "/comments");
   test("Should create comment", async () => {
     const res = await request.post("/comments").send({
-      commentBody: "this is a comment",
-      commentOwnerName: "userName",
-      commentOwnerEmail: "useremail@email.com",
-      commentOrigin: "123123",
+      content: "this is a comment",
+      ownerId: "useremail@email.com",
+      applicationId: "5efafe22129bfdc7f768c69e",
+      origin: "123123",
     });
     expect(res.status).toBe(200);
     expect(res.body.data.commentBody).toBeTruthy();

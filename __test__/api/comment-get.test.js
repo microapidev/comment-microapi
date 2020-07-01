@@ -15,35 +15,58 @@ describe("GET '/comments' ", () => {
   });
 });
 
-describe("GET /comments/refs/:refId", () => {
-  skipIfNotFound("GET", "/comments/refs/:refId");
-  it("Return all comment for a particular ref", async () => {
-    const comment = new CommentModel({
-      commentBody: "this is a comment",
-      commentOwnerName: "userName",
-      commentOwnerEmail: "useremail@email.com",
-      commentOrigin: "123123",
-      refId: 2,
-      commentOwner: mongoose.Types.ObjectId(),
-    });
-    await comment.save();
-    const res = await request.get(`/comments/refs/${comment.refId}`);
-    expect(res.status).toBe(200);
-    expect(res.body.status).toBe("success");
-    expect(res.body.data.refId).toEqual(comment.refId);
-  });
-});
+describeIfEndpoint(
+  "GET",
+  "/comments/:commentId/replies",
+  "GET /comments/:commentId/replies",
+  () => {
+    it("Return all replies for a comment", async () => {
+      const comment = new CommentModel({
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
+        refId: 2,
+        applicationId: mongoose.Types.ObjectId(),
+      });
+      await comment.save();
 
-describe("GET /comments/:commentId/replies", () => {
-  skipIfNotFound("GET", "/comments/:commentId/replies");
-  it("Return all replies for a comment", async () => {
-    const comment = new CommentModel({
-      commentBody: "this is a comment",
-      commentOwnerName: "userName",
-      commentOwnerEmail: "useremail@email.com",
-      commentOrigin: "123123",
-      refId: 2,
-      commentOwner: mongoose.Types.ObjectId(),
+      const commentId = comment._id;
+
+      const res = await request.get(`/comments/${commentId}/replies`);
+
+      if (res.status === 404) {
+        console.log(`/comments/:commentId/replies, Route Not Implemented Yet`);
+        return true;
+      }
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("success");
+      expect(res.body.data).toBeTruthy();
+    });
+  }
+);
+
+describeIfEndpoint(
+  "GET",
+  "/comments/:commentId/votes",
+  "GET /comments/:commentId/votes",
+  () => {
+    it("Return all votes for a comment", async () => {
+      const comment = new CommentModel({
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
+        refId: 2,
+        applicationId: mongoose.Types.ObjectId(),
+      });
+      await comment.save();
+
+      const res = await request.get(`/comments/${comment._id}/votes`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.message).toBeTruthy();
+      expect(res.body.status).toBeTruthy();
+      expect(res.body.data.commentId).toBeTruthy();
+      expect(res.body.data.votes).toBeTruthy();
     });
     await comment.save();
     const commentId = comment._id;
