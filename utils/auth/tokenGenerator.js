@@ -4,19 +4,21 @@ const mongoose = require("mongoose");
 const Application = require("../../models/applications");
 const Admin = require("../../models/admins");
 const Organization = require("../../models/organizations");
+require("dotenv").config();
 
 // token generator
-exports.generateToken = (payload, secret, duration = "30d") => {
+const generateToken = (payload, secret, duration = "30d") => {
   const secretPhrase = Buffer.from(secret, "base64");
   const token = jwt.sign(payload, secretPhrase, {
     expiresIn: duration,
+    algorithm: "HS256",
   });
 
   return token;
 };
 
 // appToken generator
-exports.getAppToken = (applicationId, adminId) => {
+exports.getAppToken = async (applicationId, adminId) => {
   if (!mongoose.Types.ObjectId.isValid(applicationId)) {
     throw new CustomError(400, "Invalid application ID");
   }
@@ -26,25 +28,25 @@ exports.getAppToken = (applicationId, adminId) => {
   }
 
   // confirm application exists
-  const application = Application.findById(applicationId);
+  const application = await Application.findById(applicationId);
   if (!application) {
     throw new CustomError(400, "Invalid application ID");
   }
 
   // confirm adminId belongs to same organization as application
-  const admin = Admin.findById(adminId);
+  const admin = await Admin.findById(adminId);
   if (!admin) {
     throw new CustomError(400, "Invalid admin ID");
   }
 
-  if (admin.organizationId !== application.organizationId) {
+  if (!admin.organizationId.equals(application.organizationId)) {
     throw new CustomError(
       401,
       "You are not authorized to access this resource"
     );
   }
 
-  this.generateToken(
+  return generateToken(
     {
       applicationId,
       adminId,
@@ -54,7 +56,7 @@ exports.getAppToken = (applicationId, adminId) => {
 };
 
 // orgToken generator
-exports.getOrgToken = (organizationId, adminId) => {
+exports.getOrgToken = async (organizationId, adminId) => {
   if (!mongoose.Types.ObjectId.isValid(organizationId)) {
     throw new CustomError(400, "Invalid organization ID");
   }
@@ -64,13 +66,13 @@ exports.getOrgToken = (organizationId, adminId) => {
   }
 
   // confirm organization exists
-  const organization = Organization.findById(organizationId);
+  const organization = await Organization.findById(organizationId);
   if (!organization) {
     throw new CustomError(400, "Invalid organization ID");
   }
 
   // confirm adminId belongs to organization
-  const admin = Admin.findById(adminId, organizationId);
+  const admin = await Admin.findById(adminId, organizationId);
   if (!admin) {
     throw new CustomError(
       401,
@@ -78,7 +80,7 @@ exports.getOrgToken = (organizationId, adminId) => {
     );
   }
 
-  this.generateToken(
+  return generateToken(
     {
       organizationId,
       adminId,
