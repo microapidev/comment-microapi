@@ -18,7 +18,7 @@ router.post("/", commentController.create);
 // updates a comment
 router.patch(
   "/:commentId",
-  validationMiddleware.default(validationRules.updateCommentSchema),
+  validationMiddleware(validationRules.updateCommentSchema),
   commentController.updateComment
 );
 
