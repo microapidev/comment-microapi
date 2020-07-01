@@ -83,9 +83,11 @@ describeIfEndpoint(
       });
       await reply.save();
 
-      const res = await request.patch(`/comments/${comment._id}/replies/${reply._id}/flag`).send({
-        ownerId: "offendeduser@email.com",
-      });
+      const res = await request
+        .patch(`/comments/${comment._id}/replies/${reply._id}/flag`)
+        .send({
+          ownerId: "offendeduser@email.com",
+        });
 
       expect(res.status).toBe(200);
       expect(res.body.data.commentId).toBeTruthy();
