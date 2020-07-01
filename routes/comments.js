@@ -1,7 +1,7 @@
 const repliesRoutes = require("./replies");
 const router = require("express").Router();
-const validationMiddleware = require("../middleware/validation");
-const validationRules = require("../utils/validationRules");
+// const validationMiddleware = require("../middleware/validation");
+// const validationRules = require("../utils/validationRules");
 const commentController = require("../controller/commentsController");
 const { appAuthMW } = require("../middleware/auth");
 
@@ -16,11 +16,7 @@ router.use("/:commentId/replies", repliesRoutes);
 router.post("/", commentController.create);
 
 // updates a comment
-router.patch(
-  "/:commentId",
-  validationMiddleware.default(validationRules.updateCommentSchema),
-  commentController.updateComment
-);
+router.patch("/:commentId", commentController.updateComment);
 
 // deletes a comment
 router.delete("/:commentId", commentController.deleteComment);
