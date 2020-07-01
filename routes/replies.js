@@ -22,5 +22,4 @@ router.patch("/:replyId/flag", repliesController.flagCommentReplies);
 // delete a reply
 router.delete("/:replyId", repliesController.deleteCommentReply);
 
-
 module.exports = router;

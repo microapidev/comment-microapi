@@ -19,7 +19,6 @@ describeIfEndpoint("GET", "/comments", "GET '/comments' ", () => {
   });
 });
 
-
 describeIfEndpoint(
   "GET",
   "/comments/:commentId/replies",
@@ -49,7 +48,6 @@ describeIfEndpoint(
     });
   }
 );
-
 
 describeIfEndpoint(
   "GET",
