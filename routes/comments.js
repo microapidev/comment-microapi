@@ -1,5 +1,7 @@
 const repliesRoutes = require("./replies");
 const router = require("express").Router();
+const validationMiddleware = require("../middleware/validation");
+const validationRules = require("../utils/validationRules");
 const commentController = require("../controller/commentsController");
 const { appAuthMW } = require("../middleware/auth");
 
@@ -10,22 +12,26 @@ router.use(appAuthMW);
 // reroute ../replies route requests to Replies router
 router.use("/:commentId/replies", repliesRoutes);
 
-// upvote a comment
-router.patch("/:commentId/votes/upvote", commentController.upvoteComment);
-
-// downvote comment
-router.patch("/:commentId/votes/downvote", commentController.downvoteComment);
-
-// create a comment
+// creates a comment
 router.post("/", commentController.create);
 
-// update comment
-router.patch("/:commentId", commentController.updateComment);
+// updates a comment
+router.patch(
+  "/:commentId",
+  validationMiddleware.default(validationRules.updateCommentSchema),
+  commentController.updateComment
+);
 
-// delete comment
+// deletes a comment
 router.delete("/:commentId", commentController.deleteComment);
 
-// flag comment
+// upvotes a comment
+router.patch("/:commentId/votes/upvote", commentController.upvoteComment);
+
+// downvotes a comment
+router.patch("/:commentId/votes/downvote", commentController.downvoteComment);
+
+// flags a comment (toggle)
 router.patch("/:commentId/flag", commentController.flagComment);
 
 module.exports = router;
