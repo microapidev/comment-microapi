@@ -15,7 +15,7 @@ const validationMiddleware = (requestSchema) => {
       })
       .catch((validationError) => {
         const message = validationError.details.map((d) => d.message).join("");
-        const err = new CustomError(400, message);
+        const err = new CustomError(422, message);
         next(err);
       });
   };
