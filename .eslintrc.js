@@ -9,5 +9,12 @@ module.exports = {
     ecmaVersion: 11,
     sourceType: "module",
   },
-  rules: {},
+  rules: {
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
+  },
 };
