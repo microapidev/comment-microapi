@@ -2090,10 +2090,11 @@ components:
         - ownerId
         - content
         - origin
-        - upvotes
-        - downvotes
-        - flags
-        - replies
+        - numOfVotes
+        - numOfUpVotes
+        - numOfDownVotes
+        - numOfFlags
+        - numOfReplies
       properties:
         commentId:
           type: string
@@ -2107,22 +2108,16 @@ components:
           type: string
         origin:
           type: string
-        upvotes:
-          type: array
-          items:
-            type: string
-        downvotes:
-          type: array
-          items:
-            type: string
-        flags:
-          type: array
-          items:
-            type: string
-        replies:
-          type: array
-          items:
-            $ref: "#/components/schemas/Reply"
+        numOfVotes:
+          type: integer
+        numOfUpVotes:
+          type: integer
+        numOfDownVotes:
+          type: integer
+        numOfFlags:
+          type: integer
+        numOfReplies:
+          type: integer
 
     CreateComment: # Can be referenced as '#/components/schemas/CreateComment'
       type: object
@@ -2187,9 +2182,10 @@ components:
         - commentId
         - ownerId
         - content
-        - upvotes
-        - downvotes
-        - flags
+        - numOfVotes
+        - numOfUpVotes
+        - numOfDownVotes
+        - numOfFlags
       properties:
         replyId:
           type: string
@@ -2199,18 +2195,14 @@ components:
           type: string
         content:
           type: string
-        upvotes:
-          type: array
-          items:
-            type: string
-        downvotes:
-          type: array
-          items:
-            type: string
-        flags:
-          type: array
-          items:
-            type: string
+        numOfVotes:
+          type: integer
+        numOfUpVotes:
+          type: integer
+        numOfDownVotes:
+          type: integer
+        numOfFlags:
+          type: integer
 
     CreateReply: # Can be referenced as '#/components/schemas/CreateReply'
       type: object
