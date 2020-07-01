@@ -103,19 +103,19 @@ describeIfEndpoint(
   () => {
     it("should downvote a reply to a comment", async () => {
       const comment = new CommentModel({
-        content: "this is a downvote comment",
-        ownerId: "fox@gmail.com",
-        origin: "23456",
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
         applicationId: mongoose.Types.ObjectId(),
       });
       await comment.save();
 
       const reply = new ReplyModel({
-        content: "this is a reply to downvote a comment",
+        content: "this is a reply to a comment",
         commentId: comment._id,
         upVotes: 0,
         flags: 0,
-        ownerId: "ben10@gmail.com",
+        ownerId: "useremail@email.com",
       });
       await reply.save();
 
@@ -129,7 +129,7 @@ describeIfEndpoint(
 
       expect(res.status).toBe(200);
       expect(res.body.data.commentId).toBeTruthy();
-      expect(res.body.data.downVotes).toEqual(1);
+      expect(res.body.data.numOfDownvotes).toEqual(1);
     });
   }
 );
