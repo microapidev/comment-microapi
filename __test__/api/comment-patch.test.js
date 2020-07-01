@@ -95,3 +95,41 @@ describeIfEndpoint(
     });
   }
 );
+
+describeIfEndpoint(
+  "PATCH",
+  "/comments/:commentId/replies/:replyId/downvote",
+  "PATCH /comments/:commentId/replies/:replyId/downvote",
+  () => {
+    it("should downvote a reply to a comment", async () => {
+      const comment = new CommentModel({
+        content: "this is a downvote comment",
+        ownerId: "fox@gmail.com",
+        origin: "23456",
+        applicationId: mongoose.Types.ObjectId(),
+      });
+      await comment.save();
+
+      const reply = new ReplyModel({
+        content: "this is a reply to downvote a comment",
+        commentId: comment._id,
+        upVotes: 0,
+        flags: 0,
+        ownerId: "ben10@gmail.com",
+      });
+      await reply.save();
+
+      const res = await request()
+        .patch(`/comments/${comment._id}/replies/${reply._id}/downvote`)
+        .set("Authorization", ``)
+        .send({
+          ownerId: "joe@gmail.com",
+        })
+        .status(200);
+
+      expect(res.status).toBe(200);
+      expect(res.body.data.commentId).toBeTruthy();
+      expect(res.body.data.downVotes).toEqual(1);
+    });
+  }
+);
