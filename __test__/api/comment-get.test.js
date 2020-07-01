@@ -1,4 +1,5 @@
 const app = require("../../server");
+const ReplyModel = require("../../models/replies");
 const CommentModel = require("../../models/comments");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
@@ -71,6 +72,39 @@ describeIfEndpoint(
       expect(res.body.status).toBeTruthy();
       expect(res.body.data.commentId).toBeTruthy();
       expect(res.body.data.votes).toBeTruthy();
+    });
+  }
+);
+describeIfEndpoint(
+  "GET",
+  "/comments/:commentId/replies/:replyId",
+  "GET '/comments/:commentId/replies/:replyId'",
+  () => {
+    test("Should return a reply to a comment", async () => {
+      const comment = new CommentModel({
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
+        applicationId: mongoose.Types.ObjectId(),
+      });
+      await comment.save();
+      const commentId = comment._id;
+      const reply = new ReplyModel({
+        content: "this is a reply to a comment",
+        ownerId: "replyinguseremail@email.com",
+        commentId: commentId,
+      });
+      await reply.save();
+      const replyId = reply._id;
+      const res = await request.get(
+        `/comments/${commentId}/replies/${replyId}`
+      );
+
+      expect(res.status).toBe(200);
+      expect(res.body.data._id).toEqual(String(replyId));
+      expect(res.body.data.commentId).toEqual(String(comment._id));
+      expect(res.body.data.content).toEqual(String(reply.content));
+      expect(res.body.data.ownerId).toEqual(String(reply.ownerId));
     });
   }
 );
