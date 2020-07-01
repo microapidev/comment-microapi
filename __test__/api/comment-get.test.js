@@ -19,31 +19,6 @@ describeIfEndpoint("GET", "/comments", "GET '/comments' ", () => {
   });
 });
 
-describeIfEndpoint(
-  "GET",
-  "/comments/refs/:refId",
-  "GET /comments/refs/:refId",
-  () => {
-    it("Return all comment for a particular ref", async () => {
-      const comment = new CommentModel({
-        content: "this is a comment",
-        ownerId: "useremail@email.com",
-        origin: "123123",
-        refId: 2,
-        applicationId: mongoose.Types.ObjectId(),
-      });
-      await comment.save();
-      const res = await request.get(`/comments/refs/${comment.refId}`);
-      if (res.status === 404) {
-        console.log(`GET /comments/refs/:refId Not Implemented Yet`);
-        return true;
-      }
-      expect(res.status).toBe(200);
-      expect(res.body.status).toBe("success");
-      expect(res.body.data.refId).toEqual(comment.refId);
-    });
-  }
-);
 
 describeIfEndpoint(
   "GET",
@@ -74,6 +49,7 @@ describeIfEndpoint(
     });
   }
 );
+
 
 describeIfEndpoint(
   "GET",

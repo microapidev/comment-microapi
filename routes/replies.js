@@ -13,7 +13,6 @@ router.post("/", repliesController.createReply);
 // downvote a reply
 router.patch("/:replyId/votes/downvote", repliesController.downvoteReply);
 
-
 // gets all votes of a reply
 router.get("/:replyId/votes", repliesController.getReplyVotes);
 
