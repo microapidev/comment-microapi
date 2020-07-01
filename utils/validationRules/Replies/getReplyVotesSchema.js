@@ -1,6 +1,6 @@
 const Joi = require("@hapi/joi");
 /**
- * Schema RepliesValidationRules - GET /comments/{commentId}/replies/{replyId}/votes:
+ * Schema getReplyVotesSchema - GET /comments/{commentId}/replies/{replyId}/votes:
  */
 
 const getReplyVotesSchema  = {
