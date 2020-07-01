@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const CustomError = require("../utils/customError");
 // const User = require("../models/users");
 const responseHandler = require("../utils/responseHandler");
+const Applications = require("../models/applications");
 
 exports.upvoteComment = async (req, res, next) => {
   try {
@@ -133,21 +134,19 @@ exports.flagComment = async (req, res, next) => {
     // console.log(`applicationId: ${req.token.applicationId}`);
 
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
-      next(new CustomError(422, "invalid ID"));
-      return;
+      return next(new CustomError(422, "invalid ID"));
     }
     const comment = await Comments.findOne({
       _id: commentId,
     });
 
     if (!comment) {
-      next(
+      return next(
         new CustomError(
           404,
           `Comment with the ID ${commentId} doesn't exist or has been deleted`
         )
       );
-      return;
     }
 
     //flag comment by pushing ownerId into flags array
@@ -162,10 +161,41 @@ exports.flagComment = async (req, res, next) => {
 
     responseHandler(res, 200, data, "Comment has been flagged successfully");
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
+//create and save a comment
+exports.create = async (req, res, next) => {
+  //validate request
+  //extra check to make sure the application id exists in the db
+  try {
+    await Applications.findById(req.body.applicationId);
+  } catch (err) {
+    return next(new CustomError(400, "Invalid application id"));
+  }
+  //create a new comment
+  const comment = new Comments({
+    refId: req.body.refId,
+    applicationId: req.body.applicationId,
+    ownerId: req.body.ownerId,
+    content: req.body.content,
+    origin: req.body.origin,
+  });
+  //save comment
+  try {
+    const savedComment = await comment.save();
+    return responseHandler(res, 200, savedComment);
+  } catch (err) {
+    return next(
+      new CustomError(
+        500,
+        "Something went wrong, please try again",
+        err.message
+      )
+    );
+  }
+};
 exports.updateComment = async (req, res, next) => {
   const comment_id = req.params.commentId;
   const content = req.body.content;
@@ -175,9 +205,9 @@ exports.updateComment = async (req, res, next) => {
     .exec()
     .then((comment) => {
       if (!comment) {
-        return next(new CustomError(404, "Comment not found"));
-      } else if (comment.ownerId != ownerId) {
-        return next(
+        next(new CustomError(404, "Comment not found"));
+      } else if (comment.ownerId !== ownerId) {
+        next(
           new CustomError(
             403,
             "Sorry, comment cannot be updated or Unauthorized"
@@ -216,7 +246,7 @@ exports.deleteComment = async (req, res, next) => {
     if (!comment) {
       return next(new CustomError(400, "Comment not found"));
     }
-    if (comment.ownerId == ownerId) {
+    if (comment.ownerId === ownerId) {
       const deleting = await Comments.findByIdAndDelete(commentId);
       if (deleting) {
         responseHandler(res, 200, deleting, "Comment deleted successfully");
@@ -238,8 +268,6 @@ exports.deleteComment = async (req, res, next) => {
       );
     }
   } catch (error) {
-    return next(
-      new CustomError(500, "Something went wrong,please try again", error)
-    );
+    return next(error);
   }
 };

@@ -1,9 +1,9 @@
 const Joi = require("@hapi/joi");
 
 /**
- * Schema validation for GET '/comments/{commentId}'
+ * Schema validation for Delete '/comments/{commentId}'
  */
-const getCommentSchema = {
+const deleteCommentSchema = {
   options: {
     allowUnknown: true,
   },
@@ -15,6 +15,10 @@ const getCommentSchema = {
   params: Joi.object({
     commentId: Joi.string().required(),
   }),
+
+  body: Joi.object().keys({
+    ownerId: Joi.string().required(),
+  }),
 };
 
-module.exports = getCommentSchema;
+module.exports = deleteCommentSchema;
