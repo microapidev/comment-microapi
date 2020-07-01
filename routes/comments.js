@@ -5,9 +5,11 @@ const validationRules = require("../utils/validationRules");
 const commentController = require("../controller/commentsController");
 const { appAuthMW } = require("../middleware/auth");
 
+// -------- DO NOT TOUCH!!! ---------
+// authentication middleware must be at the top
 router.use(appAuthMW);
 
-// routes for a comment's reply
+// reroute ../replies route requests to Replies router
 router.use("/:commentId/replies", repliesRoutes);
 
 // creates a comment
