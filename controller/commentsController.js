@@ -2,8 +2,8 @@
 
 // const Replies = require("../models/replies");
 const Comments = require("../models/comments");
-const Replies = require("../models/replies");
-const Users = require("../models/users");
+//const Replies = require("../models/replies");
+//const Users = require("../models/users");
 const mongoose = require("mongoose");
 const CustomError = require("../utils/customError");
 // const User = require("../models/users");
@@ -167,57 +167,66 @@ exports.flagComment = async (req, res, next) => {
   }
 };
 
+//$and:[{ $gte: [ "$flags", Number(2) ] }]
+
 // issue#114_airon begins
 exports.getComments = async (req, res, next) => {
   const applicationId = req.headers.token; //this will be retrieved from decoded api token after full auth implementation
-  const { refId, origin, ownerId } = req.query;
+  const { refId, origin, ownerId, isFlagged } = req.query;
   let query = { applicationId: applicationId };
   if (refId) query.refId = refId;
   if (origin) query.commentOrigin = origin;
   if (ownerId) query.ownerId = ownerId;
   try {
     await Comments.find(query)
-      .populate("replies")
       .then((comments) => {
-        let data = [];
-        for (let i = 0; i <= comments.length - 1; i++) {
-          data.push({
-            replies: comments[i].replies,
-            flags: comments[i].flags,
-            totalFlags: comments[i].flags.length,
-            upVotes: comments[i].upVotes,
-            donwVotes: comments[i].downVotes,
-            voteCount: {
-              upvotes: comments[i].upVotes.length,
-              downvotes: comments[i].downVotes.length,
-              totalVotes:
-                comments[i].upVotes.length + comments[i].downVotes.length,
-            },
-            _id: comments[i]._id,
-            refId: comments[i].refId,
-            applicationId: comments[i].applicationId,
-            ownerId: comments[i].ownerId,
-            content: comments[i].content,
-            origin: comments[i].origin,
-            createdAt: comments[i].createdAt,
-            updatedAt: comments[i].updatedAt,
-            __v: comments[i].__v,
-          });
-        }
-        res.status(200).json({
-          status: "success",
-          message: `Comments Retrieved Successfully for ${applicationId}/${refId}`,
-          query: query,
-          data: data,
+        const allComments = comments.map((comment) => {
+          return {
+            commentId: comment._id,
+            refId: comment.refId,
+            applicationId: comment.applicationId,
+            ownerId: comments.ownerId,
+            content: comment.content,
+            origin: comment.origin,
+            numOfVotes: comment.upVotes.length + comment.downVotes.length,
+            numOfUpVotes: comment.upVotes.length,
+            numOfDownVotes: comment.downVotes.length,
+            numOfFlags: comment.flags.length,
+            numOfReplies: comment.replies.length,
+            // createdAt: comment.createdAt,
+            // updatedAt: comment.updatedAt,
+          };
         });
+
+        const flaggedComments = [];
+        allComments.forEach((comments) => {
+          if (comments.numOfFlags > 0) {
+            return flaggedComments.push(comments);
+          }
+        });
+
+        const unflaggedComments = [];
+        allComments.forEach((comments) => {
+          if (comments.numOfFlags == 0) {
+            return unflaggedComments.push(comments);
+          }
+        });
+
+        // This logic is used to handle the optional isFlagged paramter
+        let data = allComments;
+        if (isFlagged === "true") data = flaggedComments;
+        if (isFlagged === "false") data = unflaggedComments;
+
+        responseHandler(
+          res,
+          200,
+          data,
+          `Comments Retrieved Successfully, query: ${JSON.stringify(req.query)}`
+        );
       })
       .catch(next);
   } catch (err) {
-    res.status(401).json({
-      status: "error",
-      message: `Something went wrong`,
-      data: err,
-    });
+    return next(new CustomError(401, `Something went wrong ${err}`));
   }
 };
 // issue#114_airon ends
