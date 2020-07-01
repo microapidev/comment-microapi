@@ -16,13 +16,13 @@ describeIfEndpoint(
         content: "this is a comment",
         ownerId: "useremail@email.com",
         origin: "123123",
-        applicationId: mongoose.Types.ObjectId(),
+        applicationId: global.application._id,
       });
       await comment.save();
 
       const res = await request
         .patch(`/comments/${comment._id}`)
-        .set({ Authorization: "" })
+        .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: comment.ownerId,
           content: "New Comment Update",
