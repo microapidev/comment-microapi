@@ -1,4 +1,6 @@
 const router = require("express").Router({ mergeParams: true });
+// const validationMiddleware = require("../middleware/validation");
+// const validationRules = require("../utils/validationRules");
 const repliesController = require("../controller/repliesController");
 
 // gets all replies of a comment
