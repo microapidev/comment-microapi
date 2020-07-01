@@ -4,6 +4,8 @@ const repliesController = require("../controller/repliesController");
 // gets all replies of a comment
 router.get("/", repliesController.getCommentReplies);
 
+//upvotes a reply
+router.patch("/:replyId/votes/upvote", repliesController.upvoteReply);
 // gets a single reply of a comment
 router.get("/:replyId", repliesController.getASingleReply);
 
