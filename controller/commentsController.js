@@ -311,7 +311,7 @@ exports.getCommentVotes = async (req, res, next) => {
 
     const data = {
       commentId,
-      votes: [votes.length],
+      votes: [votes],
     };
 
     return responseHandler(

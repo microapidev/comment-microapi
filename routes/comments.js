@@ -23,7 +23,7 @@ router.patch(
 );
 
 // get comment votes
-router.get("/:commentId", commentController.getCommentVotes);
+router.get("/:commentId/votes", commentController.getCommentVotes);
 
 // deletes a comment
 router.delete("/:commentId", commentController.deleteComment);
