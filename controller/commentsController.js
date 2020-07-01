@@ -224,14 +224,6 @@ exports.getComments = async (req, res, next) => {
 };
 // issue#114_airon ends
 
-// Nothing is happening here for now - just to avoid lint errors
-exports.unusedMethod = async () => {
-  let user = new Users({});
-  let reply = new Replies({});
-  user.save();
-  reply.save();
-};
-
 //create and save a comment
 exports.create = async (req, res, next) => {
   //validate request
