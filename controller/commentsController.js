@@ -12,6 +12,7 @@ exports.upvoteComment = async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const { ownerId } = req.body;
+    let isUpvoted = false;
 
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       next(new CustomError(422, "invalid ID"));
@@ -39,6 +40,7 @@ exports.upvoteComment = async (req, res, next) => {
     } else {
       // add user to the top of the upvotes array
       comment.upVotes.unshift(ownerId);
+      isUpvoted = true;
     }
 
     //save the comment vote
@@ -51,13 +53,18 @@ exports.upvoteComment = async (req, res, next) => {
     //get total number of votes
     const totalVotes = totalUpVotes + totalDownVotes;
 
+    //Check the comment vote state
+    const message = isUpvoted
+      ? "Comment Upvoted Successfully!"
+      : "Upvote removed";
+
     const data = {
       commentId: comment._id,
       numOfVotes: totalVotes,
       numOfUpVotes: totalUpVotes,
       numOfDownVotes: totalDownVotes,
     };
-    return responseHandler(res, 200, data, "Comment upVoted Successfully!");
+    return responseHandler(res, 200, data, message);
   } catch (err) {
     return next(
       new CustomError(500, "Something went wrong, please try again later", err)
@@ -69,6 +76,7 @@ exports.downvoteComment = async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const { ownerId } = req.body;
+    let isDownvoted = false;
 
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       next(new CustomError(422, "invalid ID"));
@@ -98,6 +106,7 @@ exports.downvoteComment = async (req, res, next) => {
     } else {
       // add user to the top of the downvotes array
       comment.downVotes.unshift(ownerId);
+      isDownvoted = true;
     }
 
     //save the comment vote
@@ -110,13 +119,18 @@ exports.downvoteComment = async (req, res, next) => {
     //get total number of votes
     const totalVotes = totalUpVotes + totalDownVotes;
 
+    //Check the comment vote state
+    const message = isDownvoted
+      ? "Comment Downvoted Successfully!"
+      : "Downvote removed";
+
     const data = {
       commentId: comment._id,
       numOfVotes: totalVotes,
       numOfUpVotes: totalUpVotes,
       numOfDownVotes: totalDownVotes,
     };
-    return responseHandler(res, 200, data, "Comment downVoted Successfully!");
+    return responseHandler(res, 200, data, message);
   } catch (err) {
     return next(
       new CustomError(500, "Something went wrong, please try again later", err)
