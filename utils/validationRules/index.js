@@ -4,6 +4,7 @@ const getSingleCommentSchema = require("./comments/getSingleCommentSchema");
 const updateCommentSchema = require("./comments/updateCommentSchema");
 const deleteCommentSchema = require("./comments/deleteCommentSchema");
 const getCommentVotesSchema = require("./comments/getCommentVotesSchema");
+const updateCommentUpAndDownVoteSchema = require("./comments/updateCommentUpAndDownVoteSchema");
 
 /**
  * Object containing schema validations for the endpoints.
@@ -15,4 +16,5 @@ module.exports = {
   updateCommentSchema,
   deleteCommentSchema,
   getCommentVotesSchema,
+  updateCommentUpAndDownVoteSchema,
 };
