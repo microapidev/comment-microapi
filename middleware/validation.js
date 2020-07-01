@@ -33,7 +33,7 @@ const validationMiddleware = (requestSchema) => {
         });
 
         if (errors.length > 0) {
-          next(new CustomError(400, "Invalid input supplied", errors));
+          next(new CustomError(422, "Invalid input supplied", errors));
         } else {
           next();
         }
