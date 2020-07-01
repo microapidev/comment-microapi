@@ -171,23 +171,46 @@ exports.flagComment = async (req, res, next) => {
 
 // issue#114_airon begins
 exports.getComments = async (req, res, next) => {
-  const applicationId = req.token.applicationId; //this will be retrieved from api token
-  const { refId, origin, ownerId, isFlagged } = req.query;
-  let query = {};
+  const applicationId = req.headers.token; //this will be retrieved from decoded api token after full auth implementation
+  const { refId, origin, ownerId } = req.query;
+  let query = { applicationId: applicationId };
   if (refId) query.refId = refId;
   if (origin) query.commentOrigin = origin;
-  if (ownerId) query.commentOwner = ownerId;
-  if (isFlagged) query.isFlagged = JSON.parse(isFlagged);
+  if (ownerId) query.ownerId = ownerId;
   try {
     await Comments.find(query)
       .populate("replies")
-      .populate("users")
       .then((comments) => {
+        let data = [];
+        for (let i = 0; i <= comments.length - 1; i++) {
+          data.push({
+            replies: comments[i].replies,
+            flags: comments[i].flags,
+            totalFlags: comments[i].flags.length,
+            upVotes: comments[i].upVotes,
+            donwVotes: comments[i].downVotes,
+            voteCount: {
+              upvotes: comments[i].upVotes.length,
+              downvotes: comments[i].downVotes.length,
+              totalVotes:
+                comments[i].upVotes.length + comments[i].downVotes.length,
+            },
+            _id: comments[i]._id,
+            refId: comments[i].refId,
+            applicationId: comments[i].applicationId,
+            ownerId: comments[i].ownerId,
+            content: comments[i].content,
+            origin: comments[i].origin,
+            createdAt: comments[i].createdAt,
+            updatedAt: comments[i].updatedAt,
+            __v: comments[i].__v,
+          });
+        }
         res.status(200).json({
           status: "success",
           message: `Comments Retrieved Successfully for ${applicationId}/${refId}`,
           query: query,
-          data: comments,
+          data: data,
         });
       })
       .catch(next);
