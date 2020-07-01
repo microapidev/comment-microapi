@@ -20,10 +20,13 @@ describeIfEndpoint(
       });
       await comment.save();
 
-      const res = await request.patch(`/comments/${comment._id}`).send({
-        ownerId: comment.ownerId,
-        content: "New Comment Update",
-      });
+      const res = await request
+        .patch(`/comments/${comment._id}`)
+        .set({ Authorization: "" })
+        .send({
+          ownerId: comment.ownerId,
+          content: "New Comment Update",
+        });
 
       expect(res.status).toBe(200);
       expect(res.body.data.content).toBeTruthy();
