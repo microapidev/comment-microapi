@@ -12,6 +12,9 @@ router.use(appAuthMW);
 // reroute ../replies route requests to Replies router
 router.use("/:commentId/replies", repliesRoutes);
 
+router.post("/", commentController.create);
+// update comment
+router.patch("/:commentId", commentController.updateComment);
 // creates a comment
 router.post("/", commentController.create);
 
