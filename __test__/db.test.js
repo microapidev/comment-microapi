@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 describe("INSERT", () => {
   beforeEach(async () => {
-    truncate(CommentModel);
+    await truncate(CommentModel);
   });
 
   test("Should confirm jest-mongodb works by adding a record", async () => {

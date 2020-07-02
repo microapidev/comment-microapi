@@ -1,15 +1,18 @@
-const mongoose = require("mongoose");
+const jwtMW = require("express-jwt");
+require("dotenv").config();
 
-exports.appAuthMW = (req, res, next) => {
-  req.token = {
-    applicationId: mongoose.Types.ObjectId(),
-  };
-  next();
-};
+const credsRequired = process.env.DISABLE_AUTH.toLowerCase() === "false";
 
-exports.orgAuthMW = (req, res, next) => {
-  req.token = {
-    organizationId: mongoose.Types.ObjectId(),
-  };
-  next();
-};
+exports.appAuthMW = jwtMW({
+  secret: Buffer.from(process.env.APP_SECRET, "base64"),
+  requestProperty: "token",
+  algorithms: ["HS256"],
+  credentialsRequired: credsRequired,
+});
+
+exports.orgAuthMW = jwtMW({
+  secret: process.env.ORG_SECRET,
+  requestProperty: "token",
+  algorithms: ["HS256"],
+  credentialsRequired: credsRequired,
+});

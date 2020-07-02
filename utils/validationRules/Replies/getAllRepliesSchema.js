@@ -1,23 +1,21 @@
 const Joi = require("@hapi/joi");
 
 /**
- * Schema validation for GET '/comments'
+ * Schema validation for GET '/comments/:commentId/replies'
  */
-const getAllCommentsSchema = {
+const getAllRepliesSchema = {
   options: {
     allowUnknown: true,
   },
 
-  headers: Joi.object({
+  header: Joi.object({
     authorization: Joi.string().required(),
   }),
 
   query: Joi.object({
     isFlagged: Joi.boolean(),
-    refId: Joi.string(),
     ownerId: Joi.string(),
-    origin: Joi.string(),
   }),
 };
 
-module.exports = getAllCommentsSchema;
+module.exports = getAllRepliesSchema;

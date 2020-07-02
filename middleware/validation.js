@@ -1,24 +1,57 @@
-import CustomError from "../utils/customError";
+const CustomError = require("../utils/customError");
+
+const schemaKeys = ["headers", "params", "query", "body"];
 
 const validationMiddleware = (requestSchema) => {
   return (req, res, next) => {
-    const validations = ["headers", "params", "query", "body"].map((key) => {
+    const validations = schemaKeys.map((key) => {
       const schema = requestSchema[key];
+      const options = requestSchema.options;
       const value = req[key];
-      const validate = () =>
-        schema ? schema.validate(value) : Promise.resolve({});
-      return validate().then((result) => ({ [key]: result }));
+
+      if (schema) {
+        const result = schema.validate(value, options);
+        return Promise.resolve({ [key]: result });
+      } else {
+        return Promise.resolve();
+      }
     });
     return Promise.all(validations)
-      .then(() => {
-        next();
+      .then((validatedSchemas) => {
+        const errors = [];
+
+        // Check all validations for any Joi errors.
+        validatedSchemas.forEach((validatedSchema) => {
+          schemaKeys.forEach((schemaKey) => {
+            if (
+              validatedSchema &&
+              validatedSchema[schemaKey] &&
+              validatedSchema[schemaKey].error
+            ) {
+              const messages = validatedSchema[schemaKey].error.details.map(
+                (detail) => detail.message + ` in ${schemaKey}`
+              );
+
+              errors.push(...messages);
+            }
+          });
+        });
+
+        if (errors.length > 0) {
+          next(new CustomError(422, "Invalid input supplied", errors));
+        } else {
+          next();
+        }
       })
-      .catch((validationError) => {
-        const message = validationError.details.map((d) => d.message).join("");
-        const err = new CustomError(400, message);
+      .catch((error) => {
+        const err = new CustomError(
+          500,
+          "Something went wrong, please try again later.",
+          error
+        );
         next(err);
       });
   };
 };
 
-export default validationMiddleware;
+module.exports = validationMiddleware;

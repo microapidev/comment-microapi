@@ -5,6 +5,8 @@ const connect = async () => {
     await mongoose.connect(global.__MONGO_URI__, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
     });
   }
 };

@@ -1,9 +1,9 @@
 const Joi = require("@hapi/joi");
 
 /**
- * Schema validation for POST '/comments'
+ * Schema validation for POST '/comments/{commentId}/replies'
  */
-const createCommentSchema = {
+const createReplySchema = {
   options: {
     allowUnknown: true,
   },
@@ -12,13 +12,14 @@ const createCommentSchema = {
     authorization: Joi.string().required(),
   }),
 
+  params: Joi.object({
+    commentId: Joi.string().length(24).required(),
+  }),
+
   body: Joi.object().keys({
-    refId: Joi.string(),
     ownerId: Joi.string().required(),
-    applicationId: Joi.string().required(),
     content: Joi.string().required(),
-    origin: Joi.string(),
   }),
 };
 
-module.exports = createCommentSchema;
+module.exports = createReplySchema;
