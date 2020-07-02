@@ -15,7 +15,6 @@ const createCommentSchema = {
   body: Joi.object().keys({
     refId: Joi.string(),
     ownerId: Joi.string().required(),
-    applicationId: Joi.string().required(),
     content: Joi.string().required(),
     origin: Joi.string(),
   }),

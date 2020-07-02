@@ -5,8 +5,12 @@ const documentationRoutes = require("./routes/documentation");
 const CustomError = require("./utils/customError");
 const errorHandler = require("./utils/errorhandler");
 
+const generator = require("./generator");
+
 require("dotenv").config();
 const app = express();
+
+generator();
 
 // setup middleware
 app.use(express.json());
