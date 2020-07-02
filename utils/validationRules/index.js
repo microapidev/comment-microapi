@@ -8,7 +8,7 @@ const updateCommentUpAndDownVoteSchema = require("./comments/updateCommentUpAndD
 
 const getAllRepliesSchema = require("./replies/getAllRepliesSchema");
 const createReplySchema = require("./replies/createReplySchema");
-const getSinlgeReplySchema = require("./replies/getSinlgeReplySchema");
+const getSinlgeReplySchema = require("./replies/getSingleReplySchema");
 const updateReplySchema = require("./replies/updateReplySchema");
 const deleteReplySchema = require("./replies/deleteReplySchema");
 const getReplyVotesSchema = require("./replies/getReplyVotesSchema");
