@@ -406,11 +406,11 @@ exports.getCommentVotes = async (req, res, next) => {
   }
 };
 exports.getSingleComment = async (req, res, next) => {
-  const { refId } = req.query;
+  // const { refId } = req.query;
   const commentId = req.params.commentId;
   const applicationId = req.headers.token; //this will be retrieved from decoded api token after full auth implementation
   const query = { applicationId: applicationId, _id: commentId };
-  if (refId) query.refId = refId;
+  // if (refId) query.refId = refId;
   try {
     await Comments.find(query)
       .then((comments) => {
