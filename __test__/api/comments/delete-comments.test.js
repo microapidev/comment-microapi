@@ -10,7 +10,13 @@ describeIfEndpoint(
   "/comments/:commentId",
   "DELETE '/comments/:commentId'",
   () => {
-    // test 200 success
+    // missing test 400 bad request
+
+    // missing test 401 authentication error
+
+    // missing test 402 validation error
+
+    // 200 success
     test("Should delete a comment", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
@@ -35,7 +41,7 @@ describeIfEndpoint(
       );
     });
 
-    // test 404 not found error
+    // 404 not found error
     test("Should fail to delete comment not found", async () => {
       const comment = {
         _id: mongoose.Types.ObjectId(),
@@ -55,11 +61,5 @@ describeIfEndpoint(
       expect(res.body.status).toEqual("error");
       expect(res.body.data.length).toBe(0);
     });
-
-    // test 400 bad request
-
-    // test 401 authentication error
-
-    // test 402 validation error
   }
 );
