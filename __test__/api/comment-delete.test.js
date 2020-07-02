@@ -2,7 +2,7 @@ const app = require("../../server");
 const supertest = require("supertest");
 const CommentModel = require("../../models/comments");
 const ReplyModel = require("../../models/replies");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const request = supertest(app);
 import { describeIfEndpoint } from "../helpers/conditionalTests";
 
@@ -16,13 +16,16 @@ describeIfEndpoint(
         content: "this is a comment",
         ownerId: "useremail@email.com",
         origin: "123123",
-        applicationId: mongoose.Types.ObjectId(),
+        applicationId: global.application._id,
       });
       await comment.save();
 
-      const res = await request.delete(`/comments/${comment._id}`).send({
-        ownerId: comment.ownerId,
-      });
+      const res = await request
+        .delete(`/comments/${comment._id}`)
+        .set("Authorization", `bearer ${global.appToken}`)
+        .send({
+          ownerId: comment.ownerId,
+        });
       if (res.status === 404) {
         return true;
       }
@@ -43,7 +46,7 @@ describeIfEndpoint(
         content: "this is a comment",
         ownerId: "useremail@email.com",
         origin: "123123",
-        applicationId: mongoose.Types.ObjectId(),
+        applicationId: global.application._id,
       });
       await comment.save();
 
@@ -58,6 +61,7 @@ describeIfEndpoint(
 
       const res = await request
         .delete(`/comments/${comment._id}/replies/${reply._id}`)
+        .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: "useremail@email.com",
         });

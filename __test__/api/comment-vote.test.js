@@ -1,7 +1,7 @@
 const app = require("../../server");
 const supertest = require("supertest");
 const CommentModel = require("../../models/comments");
-const mongoose = require("mongoose");
+// sconst mongoose = require("mongoose");
 const request = supertest(app);
 import { describeIfEndpoint } from "../helpers/conditionalTests";
 
@@ -15,16 +15,17 @@ describeIfEndpoint(
         content: "this is a comment",
         ownerId: "useremail@email.com",
         origin: "123123",
-        applicationId: mongoose.Types.ObjectId(),
+        applicationId: global.application._id,
       });
+      // const comment = new CommentModel(commentObject);
       await comment.save();
 
-      const res = await request.patch(`/comments/${comment._id}/votes`).send({
-        voteType: "upvote",
-      });
-      if (res.status === 404) {
-        return true; // route not implemented yet
-      }
+      const res = await request
+        .patch(`/comments/${comment._id}/votes/upvote`)
+        .set("Authorization", `bearer ${global.appToken}`)
+        .send({
+          ownerId: commentObject.ownerId,
+        });
       expect(res.status).toBe(200);
       expect(res.body.data.commentId).toBeTruthy();
       expect(res.body.data.totalVotes).toBeTruthy();
@@ -37,16 +38,17 @@ describeIfEndpoint(
         content: "this is a comment",
         ownerId: "useremail2@email.com",
         origin: "123123",
-        applicationId: mongoose.Types.ObjectId(),
+        applicationId: global.application._id,
       });
+      // const comment = new CommentModel(commentObject);
       await comment.save();
 
-      const res = await request.patch(`/comments/${comment._id}/votes`).send({
-        voteType: "downvote",
-      });
-      if (res.status === 404) {
-        return true; // route not implemented yet
-      }
+      const res = await request
+        .patch(`/comments/${comment._id}/votes/downvote`)
+        .set("Authorization", `bearer ${global.appToken}`)
+        .send({
+          ownerId: commentObject.ownerId,
+        });
       expect(res.status).toBe(200);
       expect(res.body.data.commentId).toBeTruthy();
       expect(res.body.data.totalVotes).toBeTruthy();
