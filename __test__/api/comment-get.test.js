@@ -8,7 +8,9 @@ const { describeIfEndpoint } = require("../helpers/conditionalTests");
 
 describeIfEndpoint("GET", "/comments", "GET '/comments' ", () => {
   it("Return all comments from the db", async () => {
-    const res = await request.get("/comments");
+    const res = await request
+      .get("/comments")
+      .set("Authorization", `bearer ${global.appToken}`);
     if (res.status === 404) {
       console.log("GET /comments Not Implemented Yet");
       return true;
@@ -38,8 +40,8 @@ describeIfEndpoint(
       const commentId = comment._id;
 
       const res = await request
-        .set("Authorization", `bearer ${global.appToken}`)
-        .get(`/comments/${commentId}/replies`);
+        .get(`/comments/${commentId}/replies`)
+        .set("Authorization", `bearer ${global.appToken}`);
 
       if (res.status === 404) {
         console.log(`/comments/:commentId/replies, Route Not Implemented Yet`);
@@ -68,8 +70,8 @@ describeIfEndpoint(
       await comment.save();
 
       const res = await request
-        .set("Authorization", `bearer ${global.appToken}`)
-        .get(`/comments/${comment._id}/votes`);
+        .get(`/comments/${comment._id}/votes`)
+        .set("Authorization", `bearer ${global.appToken}`);
 
       expect(res.status).toBe(200);
       expect(res.body.message).toBeTruthy();
@@ -101,8 +103,8 @@ describeIfEndpoint(
       await reply.save();
       const replyId = reply._id;
       const res = await request
-        .set("Authorization", `bearer ${global.appToken}`)
-        .get(`/comments/${commentId}/replies/${replyId}`);
+        .get(`/comments/${commentId}/replies/${replyId}`)
+        .set("Authorization", `bearer ${global.appToken}`);
 
       expect(res.status).toBe(200);
       expect(res.body.data._id).toEqual(String(replyId));
