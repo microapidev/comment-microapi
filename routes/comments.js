@@ -12,29 +12,32 @@ router.use(appAuthMW);
 // reroute ../replies route requests to Replies router
 router.use("/:commentId/replies", repliesRoutes);
 
-// creates a comment
-router.post("/", commentController.create);
+// Create routes
+router.post("/", commentController.createSingleComment);
 
-// updates a comment
-router.patch("/:commentId", commentController.updateComment);
+// Delete routes
+router.delete("/:commentId", commentController.deleteSingleComment);
 
-// get comment votes
-router.get("/:commentId/votes", commentController.getCommentVotes);
+// Get routes
+router.get("/", commentController.getAllComments);
 
-// deletes a comment
-router.delete("/:commentId", commentController.deleteComment);
+router.get("/:commentId", commentController.getSingleComment);
 
-// upvotes a comment
-router.patch("/:commentId/votes/upvote", commentController.upvoteComment);
+router.get("/:commentId/votes", commentController.getSingleCommentVotes);
 
-// downvotes a comment
-router.patch("/:commentId/votes/downvote", commentController.downvoteComment);
+// Patch routes
+router.patch("/:commentId", commentController.updateSingleComment);
 
-// flags a comment (toggle)
-router.patch("/:commentId/flag", commentController.flagComment);
+router.patch(
+  "/:commentId/votes/upvote",
+  commentController.updateSingleCommentUpVotes
+);
 
-// Single configurable  route to get all comments, flagged and unflagged comments
-// My intention was to use express-validate package, but couldn't get to work, I will look at this in the future
-router.get("/", commentController.getComments);
+router.patch(
+  "/:commentId/votes/downvote",
+  commentController.updateSingleCommentDownVotes
+);
+
+router.patch("/:commentId/flag", commentController.updateSingleCommentFlags);
 
 module.exports = router;
