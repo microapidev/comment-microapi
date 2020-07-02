@@ -155,16 +155,14 @@ const updateReply = async (req, res, next) => {
       return next(new CustomError(404, "Comment not found or deleted"));
     }
 
-    if (ownerId !== comment.ownerId) {
-      return next(new CustomError(401, "Unauthorized ID"));
-    }
-
     let reply = await Replies.findById(replyId);
 
     if (!reply) {
       return next(new CustomError(404, "Reply not found or deleted"));
     }
-
+    if (ownerId !== reply.ownerId) {
+      return next(new CustomError(401, "Unauthorized ID"));
+    }
     await reply.updateOne(
       { _id: replyId },
       { $set: { content: content, isEdited: true } }
