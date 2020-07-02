@@ -16,11 +16,13 @@ describeIfEndpoint(
     // missing test 404 not found error
 
     // status 200 for empty votes array - no votes
-    it("Return all votes for a comment", async () => {
+    it("Return empty votes array when comment has no votes", async () => {
       const comment = new CommentModel({
+        refId: "4edd40c86762e0fb12000003",
         content: "this is a comment",
         ownerId: "useremail@email.com",
         applicationId: global.application._id,
+        origin: "4edd40c8676",
       });
       await comment.save();
 
@@ -30,9 +32,8 @@ describeIfEndpoint(
 
       expect(res.status).toBe(200);
       expect(res.body.data.length).toBe(1);
-      expect(res.body.data[0].commentId).toEqual(comment._id);
-      expect(res.body.data[0].upVotes.length).toBe(0);
-      expect(res.body.data[0].downVotes.length).toBe(0);
+      expect(res.body.data[0].commentId).toEqual(String(comment._id));
+      expect(res.body.data[0].votes.length).toBe(0);
     });
   }
 );

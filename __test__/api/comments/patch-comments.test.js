@@ -29,6 +29,7 @@ describeIfEndpoint(
         });
 
       expect(res.status).toBe(200);
+      expect(res.body.data.length).toBe(1);
       expect(res.body.data[0].content).toEqual(newContent);
       expect(res.body.data[0].ownerId).toEqual(comment.ownerId);
     });

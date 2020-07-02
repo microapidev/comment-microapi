@@ -17,6 +17,7 @@ describeIfEndpoint(
         content: "this is a comment",
         ownerId: "useremail@email.com",
         applicationId: global.application._id,
+        origin: "4edd40c8676",
       });
       await comment.save();
 
@@ -27,8 +28,15 @@ describeIfEndpoint(
       expect(res.status).toBe(200);
       expect(res.body.status).toEqual("success");
       expect(res.body.data.length).toBe(1);
-      expect(res.body.data[0]._id).toEqual(comment._id);
-      expect(res.body.data[0].applicationId).toEqual(comment.applicationId);
+      expect(res.body.data[0].commentId).toEqual(String(comment._id));
+      expect(res.body.data[0].content).toEqual("this is a comment");
+      expect(res.body.data[0].ownerId).toEqual("useremail@email.com");
+      expect(res.body.data[0].origin).toEqual("4edd40c8676");
+      expect(res.body.data[0].numOfVotes).toBe(0);
+      expect(res.body.data[0].numOfUpVotes).toBe(0);
+      expect(res.body.data[0].numOfDownVotes).toBe(0);
+      expect(res.body.data[0].numOfFlags).toBe(0);
+      expect(res.body.data[0].numOfReplies).toBe(0);
     });
   }
 );

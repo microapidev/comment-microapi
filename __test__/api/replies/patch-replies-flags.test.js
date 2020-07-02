@@ -40,9 +40,10 @@ describeIfEndpoint(
         });
 
       expect(res.status).toBe(200);
+      expect(res.body.data.length).toBe(1);
+      expect(res.body.data[0].replyId).toEqual(reply._id);
       expect(res.body.data[0].commentId).toEqual(comment._id);
-      expect(res.body.data[0].flags.length).toBe(1);
-      expect(res.body.data[0].flags[0]).toEqual(flaggerId);
+      expect(res.body.data[0].numOfFlags).toBe(1);
     });
   }
 );

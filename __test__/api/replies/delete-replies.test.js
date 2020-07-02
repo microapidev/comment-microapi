@@ -11,7 +11,6 @@ describeIfEndpoint(
   "/comments/:commentId/replies/:replyId",
   "DELETE '/comments/:commentId/replies/:replyId'",
   () => {
-    // missing test 400 bad request
     // missing test 401 authentication error
     // missing test 402 validation error
 
@@ -42,9 +41,16 @@ describeIfEndpoint(
         });
 
       expect(res.status).toBe(200);
-      expect(res.body.data[0]._id).toEqual(reply._id);
-      expect(res.body.data[0].commentId).toEqual(comment._id);
+      expect(res.body.status).toEqual("success");
+      expect(res.body.data.length).toBe(1);
+      expect(res.body.data[0].replyId).toEqual(String(reply._id));
+      expect(res.body.data[0].commentId).toEqual(String(comment._id));
       expect(res.body.data[0].ownerId).toEqual(reply.ownerId);
+      expect(res.body.data[0].content).toEqual(String(reply.comment));
+      expect(res.body.data[0].numOfVotes).toBe(0);
+      expect(res.body.data[0].numOfUpVotes).toBe(0);
+      expect(res.body.data[0].numOfDownVotes).toBe(0);
+      expect(res.body.data[0].numOfFlags).toBe(0);
     });
 
     // 404 not found error

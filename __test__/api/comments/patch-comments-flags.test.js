@@ -20,18 +20,17 @@ describeIfEndpoint(
       });
       await comment.save();
 
-      const flaggerId = "offendeduser@email.com";
       const res = await request
         .patch(`/comments/${comment._id}/flag`)
         .set("Authorization", `bearer ${global.appToken}`)
         .send({
-          ownerId: flaggerId,
+          ownerId: "offendeduser@email.com",
         });
 
       expect(res.status).toBe(200);
-      expect(res.body.data[0].commentId).toEqual(comment._id);
-      expect(res.body.data[0].flags.length).toBe(1);
-      expect(res.body.data[0].flags[0]).toEqual(flaggerId);
+      expect(res.body.data.length).toBe(1);
+      expect(res.body.data[0].commentId).toEqual(String(comment._id));
+      expect(res.body.data[0].numOfFlags).toBe(1);
     });
   }
 );

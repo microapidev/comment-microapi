@@ -38,6 +38,7 @@ describeIfEndpoint(
         });
 
       expect(res.status).toBe(200);
+      expect(res.body.data.length).toBe(1);
       expect(res.body.data[0].ownerId).toEqual(reply.ownerId);
       expect(res.body.data[0].content).toEqual(newContent);
     });

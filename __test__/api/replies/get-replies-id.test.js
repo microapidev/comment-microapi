@@ -36,10 +36,14 @@ describeIfEndpoint(
 
       expect(res.status).toBe(200);
       expect(res.body.data.length).toBe(1);
-      expect(res.body.data[0]._id).toEqual(String(replyId));
+      expect(res.body.data[0].replyId).toEqual(String(replyId));
       expect(res.body.data[0].commentId).toEqual(String(comment._id));
       expect(res.body.data[0].content).toEqual(String(reply.content));
       expect(res.body.data[0].ownerId).toEqual(String(reply.ownerId));
+      expect(res.body.data[0].numOfVotes).toBe(0);
+      expect(res.body.data[0].numOfUpVotes).toBe(0);
+      expect(res.body.data[0].numOfDownVotes).toBe(0);
+      expect(res.body.data[0].numOfFlags).toBe(0);
     });
 
     test("Should return empty array when no replies to a comment", async () => {
