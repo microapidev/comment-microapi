@@ -6,8 +6,13 @@ const deleteCommentSchema = require("./comments/deleteCommentSchema");
 const getCommentVotesSchema = require("./comments/getCommentVotesSchema");
 const updateCommentUpAndDownVoteSchema = require("./comments/updateCommentUpAndDownVoteSchema");
 
-const updateReplySchema = require("./Replies/updateReplySchema");
-const updateReplyUpAndDownVoteSchema = require("./Replies/updateReplyUpAndDownVoteSchema");
+const getAllRepliesSchema = require("./replies/getAllRepliesSchema");
+const createReplySchema = require("./replies/createReplySchema");
+const getSinlgeReplySchema = require("./replies/getSinlgeReplySchema");
+const updateReplySchema = require("./replies/updateReplySchema");
+const deleteReplySchema = require("./replies/deleteReplySchema");
+const getReplyVotesSchema = require("./replies/getReplyVotesSchema");
+const updateReplyUpAndDownVoteSchema = require("./replies/updateReplyUpAndDownVoteSchema");
 
 /**
  * Object containing schema validations for the endpoints.
@@ -23,6 +28,11 @@ module.exports = {
   updateCommentUpAndDownVoteSchema,
 
   // Reply Endpoints validation schemas
+  getAllRepliesSchema,
+  createReplySchema,
+  getSinlgeReplySchema,
   updateReplySchema,
+  deleteReplySchema,
+  getReplyVotesSchema,
   updateReplyUpAndDownVoteSchema,
 };
