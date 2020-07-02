@@ -5,7 +5,7 @@ const responseHandler = require("../utils/responseHandler");
 const Applications = require("../models/applications");
 const Organizations = require("../models/organizations");
 
-exports.getAllApplicationOrg = async (req, res, next) => {
+exports.getAllApplications = async (req, res, next) => {
   try {
     const { orgId } = req.params;
     if (!mongoose.Types.ObjectId.isValid(orgId)) {
