@@ -1,30 +1,44 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ReplySchema = new Schema({
-  reply: {
+  ownerId: {
+    // field used for emails, userId from the applcation used to identify its users
     type: String,
     required: true,
   },
-  numOfReplies: {
-    type: Number,
-    default: 0,
-  },
-  email: {
+  content: {
+    // field contains reply body
     type: String,
     required: true,
   },
-  comment_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Comments' },
-  upVotes: {
-    type: Number,
-    default: 0,
+  flags: [
+    // contains array of ownerId allowing only one flag per user
+    {
+      type: String, // array of ownerId
+    },
+  ],
+  upVotes: [
+    // contains array of ownerId allowing only one vote per user either up or neither
+    // push ownerId onto array to vote, remove from array to unvote
+    {
+      type: String, // array of ownerId
+    },
+  ],
+  downVotes: [
+    // contains array of ownerId allowing only one vote per user down or neither
+    // push ownerId onto array to vote, remove from array to unvote
+    {
+      type: String, // array of ownerId
+    },
+  ],
+  commentId: {
+    // ref to parent comment
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Comments",
+    required: true,
   },
-  downVotes: {
-    type: Number,
-    default: 0,
-  },
-  isFlagged: Boolean,
 });
 
-const Reply = mongoose.model('Reply', ReplySchema);
+const Reply = mongoose.model("Replies", ReplySchema);
 module.exports = Reply;
