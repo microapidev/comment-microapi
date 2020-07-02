@@ -1,0 +1,1 @@
+// POST ​/organizations​/{organizationId}​/applications

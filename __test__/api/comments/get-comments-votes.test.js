@@ -1,0 +1,3 @@
+/**
+ * GET ​/comments​/{commentId}​/votes
+ */
