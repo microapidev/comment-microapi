@@ -173,7 +173,7 @@ describeIfEndpoint(
         .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: reply.ownerId,
-          content: "Updated Reply"
+          content: "Updated Reply",
         });
 
       expect(res.status).toBe(200);

@@ -11,13 +11,13 @@ describeIfEndpoint(
   "PATCH '/comments/:commentId/votes'",
   () => {
     test("Should upvote a comment", async () => {
-      const comment = new CommentModel({
+      const commentObject = {
         content: "this is a comment",
         ownerId: "useremail@email.com",
         origin: "123123",
         applicationId: global.application._id,
-      });
-      // const comment = new CommentModel(commentObject);
+      };
+      const comment = new CommentModel(commentObject);
       await comment.save();
 
       const res = await request
@@ -34,13 +34,13 @@ describeIfEndpoint(
     });
 
     test("Should downvote a comment", async () => {
-      const comment = new CommentModel({
+      const commentObject = {
         content: "this is a comment",
         ownerId: "useremail2@email.com",
         origin: "123123",
         applicationId: global.application._id,
-      });
-      // const comment = new CommentModel(commentObject);
+      };
+      const comment = new CommentModel(commentObject);
       await comment.save();
 
       const res = await request
@@ -61,7 +61,7 @@ describeIfEndpoint(
         content: "this is a comment",
         ownerId: "useremail3@email.com",
         origin: "123123",
-        applicationId: mongoose.Types.ObjectId(),
+        applicationId: global.application._id,
       });
       await comment.save();
 

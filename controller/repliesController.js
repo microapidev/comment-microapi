@@ -155,8 +155,6 @@ const updateReply = async (req, res, next) => {
       return next(new CustomError(404, "Comment not found or deleted"));
     }
 
-    
-
     let reply = await Replies.findById(replyId);
 
     if (!reply) {
