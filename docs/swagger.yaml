@@ -1061,8 +1061,6 @@ paths:
                     items:
                       type: object
                       properties:
-                        replyId:
-                          type: string
                         commentId:
                           type: string
                         votes:
