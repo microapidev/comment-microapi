@@ -110,13 +110,13 @@ describeIfEndpoint(
         content: "this is a comment",
         ownerId: "useremail@email.com",
         origin: "123123",
-        applicationId: mongoose.Types.ObjectId(),
+        applicationId: global.application._id,
       });
       await comment.save();
 
       const reply = new ReplyModel({
         content: "this is a reply",
-        commentId: mongoose.Types.ObjectId(),
+        commentId: global.application._id,
         ownerId: "useremail@email.com",
       });
       reply.downVotes.push(reply.ownerId);
@@ -127,6 +127,7 @@ describeIfEndpoint(
 
       const res = await request()
         .patch(`/comments/${comment._id}/replies/${reply._id}/downvote`)
+        .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: "offendeduser@gmail.com",
         })
