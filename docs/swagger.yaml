@@ -118,7 +118,7 @@ paths:
       tags:
         - admins
 
-      summary: Gets all of the organization's admins
+      summary: Gets all of an organization's admins
 
       security:
         - Bearer: []
@@ -170,7 +170,7 @@ paths:
       tags:
         - admins
 
-      summary: Creates the organization's admin
+      summary: Creates an organization's admin
 
       security:
         - Bearer: []
@@ -462,7 +462,7 @@ paths:
       tags:
         - applications
 
-      summary: Gets all the organization's applications
+      summary: Gets all of an organization's applications
 
       security:
         - Bearer: []
