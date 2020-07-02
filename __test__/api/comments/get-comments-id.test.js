@@ -1,22 +1,18 @@
 const app = require("../../server");
-const CommentModel = require("../../models/comments");
 const supertest = require("supertest");
+const CommentModel = require("../../models/comments");
 const request = supertest(app);
 const { describeIfEndpoint } = require("../helpers/conditionalTests");
 
 describeIfEndpoint(
   "GET",
-  "/comments/:commentId/votes",
-  "GET /comments/:commentId/votes",
+  "/comments/:commentId",
+  "GET '/comments/:commentId' ",
   () => {
-    // missing test 200 for upvote counts
-    // missing test 200 for downvote counts
-    // missing test 200 for upvote and downvote counts
     // missing test 401 authentication error
     // missing test 404 not found error
 
-    // status 200 for empty votes array - no votes
-    it("Return all votes for a comment", async () => {
+    test("Should return result matching commentId", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",
@@ -25,13 +21,14 @@ describeIfEndpoint(
       await comment.save();
 
       const res = await request
-        .get(`/comments/${comment._id}/votes`)
+        .get(`/comments/${comment._id}`)
         .set("Authorization", `bearer ${global.appToken}`);
 
       expect(res.status).toBe(200);
-      expect(res.body.message).toBeTruthy();
-      expect(res.body.data[0].commentId).toEqual(comment._id);
-      expect(res.body.data[0].votes.length).toBe(0);
+      expect(res.body.status).toEqual("success");
+      expect(res.body.data.length).toBe(1);
+      expect(res.body.data[0]._id).toEqual(comment._id);
+      expect(res.body.data[0].applicationId).toEqual(comment.applicationId);
     });
   }
 );
