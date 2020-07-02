@@ -34,6 +34,7 @@ describeIfEndpoint(
 
       const res = await request
         .get(`/comments/${commentId}/replies/${replyId}/votes`)
+        .set("Authorization", `bearer ${global.appToken}`)
         .send({
           replyId,
           commentId,

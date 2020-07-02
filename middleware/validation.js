@@ -2,11 +2,15 @@ const CustomError = require("../utils/customError");
 
 const schemaKeys = ["headers", "params", "query", "body"];
 
+const options = {
+  allowUnknown: true,
+  abortEarly: false,
+};
+
 const validationMiddleware = (requestSchema) => {
   return (req, res, next) => {
     const validations = schemaKeys.map((key) => {
       const schema = requestSchema[key];
-      const options = requestSchema.options;
       const value = req[key];
 
       if (schema) {
@@ -19,7 +23,6 @@ const validationMiddleware = (requestSchema) => {
     return Promise.all(validations)
       .then((validatedSchemas) => {
         const errors = [];
-
         // Check all validations for any Joi errors.
         validatedSchemas.forEach((validatedSchema) => {
           schemaKeys.forEach((schemaKey) => {
@@ -44,6 +47,7 @@ const validationMiddleware = (requestSchema) => {
         }
       })
       .catch((error) => {
+        console.log(error);
         const err = new CustomError(
           500,
           "Something went wrong, please try again later.",
