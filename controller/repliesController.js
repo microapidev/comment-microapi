@@ -218,9 +218,9 @@ const upvoteReply = async (req, res, next) => {
       {
         commentId: commentId,
         replyId: replyId,
-        numOfVotes: reply.upVotes.length + reply.downVotes.length + 1,
-        numOfDownvotes: reply.downVotes.length,
-        numOfUpvotes: reply.upVotes.length + 1,
+        numOfVotes: reply.downVotes.length + reply.upVotes.length + 1,
+        numOfDownVotes: reply.downVotes.length,
+        numOfUpVotes: reply.upVotes.length + 1,
       },
       "Reply upvoted successfully"
     );
