@@ -33,26 +33,7 @@ describeIfEndpoint(
       expect(res.body.data.numOfDownVotes).toBeTruthy();
     });
 
-    test("Should reject unknown vote type", async () => {
-      const comment = new CommentModel({
-        content: "this is a comment",
-        ownerId: "useremail3@email.com",
-        origin: "123123",
-        applicationId: global.application._id,
-      });
-      await comment.save();
-
-      const res = await request.patch(`/comments/${comment._id}/votes`).send({
-        voteType: "invalid",
-      });
-      if (res.status === 404) {
-        return true; // route not implemented yet
-      }
-      expect(res.status).toBe(422);
-      expect(res.body.data.status).toBeTruthy();
-      expect(res.body.data.message).toBeTruthy();
-    });
-  }
+    }
 );
 
 describeIfEndpoint(
