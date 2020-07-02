@@ -1,7 +1,7 @@
 const app = require("../../server");
 const ReplyModel = require("../../models/replies");
 const CommentModel = require("../../models/comments");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const supertest = require("supertest");
 const request = supertest(app);
 const { describeIfEndpoint } = require("../helpers/conditionalTests");
@@ -31,13 +31,15 @@ describeIfEndpoint(
         ownerId: "useremail@email.com",
         origin: "123123",
         refId: 2,
-        applicationId: mongoose.Types.ObjectId(),
+        applicationId: global.application._id,
       });
       await comment.save();
 
       const commentId = comment._id;
 
-      const res = await request.get(`/comments/${commentId}/replies`);
+      const res = await request
+        .set("Authorization", `bearer ${global.appToken}`)
+        .get(`/comments/${commentId}/replies`);
 
       if (res.status === 404) {
         console.log(`/comments/:commentId/replies, Route Not Implemented Yet`);
@@ -61,11 +63,13 @@ describeIfEndpoint(
         ownerId: "useremail@email.com",
         origin: "123123",
         refId: 2,
-        applicationId: mongoose.Types.ObjectId(),
+        applicationId: global.application._id,
       });
       await comment.save();
 
-      const res = await request.get(`/comments/${comment._id}/votes`);
+      const res = await request
+        .set("Authorization", `bearer ${global.appToken}`)
+        .get(`/comments/${comment._id}/votes`);
 
       expect(res.status).toBe(200);
       expect(res.body.message).toBeTruthy();
@@ -85,7 +89,7 @@ describeIfEndpoint(
         content: "this is a comment",
         ownerId: "useremail@email.com",
         origin: "123123",
-        applicationId: mongoose.Types.ObjectId(),
+        applicationId: global.application._id,
       });
       await comment.save();
       const commentId = comment._id;
@@ -96,9 +100,9 @@ describeIfEndpoint(
       });
       await reply.save();
       const replyId = reply._id;
-      const res = await request.get(
-        `/comments/${commentId}/replies/${replyId}`
-      );
+      const res = await request
+        .set("Authorization", `bearer ${global.appToken}`)
+        .get(`/comments/${commentId}/replies/${replyId}`);
 
       expect(res.status).toBe(200);
       expect(res.body.data._id).toEqual(String(replyId));
