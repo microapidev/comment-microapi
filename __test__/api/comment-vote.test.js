@@ -32,8 +32,7 @@ describeIfEndpoint(
       expect(res.body.data.numOfUpVotes).toBeTruthy();
       expect(res.body.data.numOfDownVotes).toBeTruthy();
     });
-
-    }
+  }
 );
 
 describeIfEndpoint(
