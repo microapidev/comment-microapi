@@ -4,7 +4,7 @@ require("dotenv").config();
 const credsRequired = process.env.DISABLE_AUTH === "false";
 
 exports.appAuthMW = jwtMW({
-  secret: Buffer.from("app_secret", "base64"),
+  secret: Buffer.from(process.env.APP_SECRET, "base64"),
   requestProperty: "token",
   algorithms: ["HS256"],
   credentialsRequired: credsRequired,
