@@ -56,33 +56,6 @@ describeIfEndpoint(
 
 describeIfEndpoint(
   "GET",
-  "/comments/:commentId/votes",
-  "GET /comments/:commentId/votes",
-  () => {
-    it("Return all votes for a comment", async () => {
-      const comment = new CommentModel({
-        content: "this is a comment",
-        ownerId: "useremail@email.com",
-        origin: "123123",
-        refId: 2,
-        applicationId: global.application._id,
-      });
-      await comment.save();
-
-      const res = await request
-        .get(`/comments/${comment._id}/votes`)
-        .set("Authorization", `bearer ${global.appToken}`);
-
-      expect(res.status).toBe(200);
-      expect(res.body.message).toBeTruthy();
-      expect(res.body.status).toBeTruthy();
-      expect(res.body.data.commentId).toBeTruthy();
-      expect(res.body.data.votes).toBeTruthy();
-    });
-  }
-);
-describeIfEndpoint(
-  "GET",
   "/comments/:commentId/replies/:replyId",
   "GET '/comments/:commentId/replies/:replyId'",
   () => {
