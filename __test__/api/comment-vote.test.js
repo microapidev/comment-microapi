@@ -7,7 +7,7 @@ import { describeIfEndpoint } from "../helpers/conditionalTests";
 
 describeIfEndpoint(
   "PATCH",
-  "/comments/:commentId/votes/votes",
+  "/comments/:commentId/votes",
   "PATCH '/comments/:commentId/votes'",
   () => {
     test("Should upvote a comment", async () => {
