@@ -46,6 +46,7 @@ describeIfEndpoint(
         return true;
       }
       expect(res.status).toBe(200);
+      expect(res.body.data.votes).toBeTruthy();
       expect(res.body.data.commentId).toBeTruthy();
       expect(res.body.data.replyId).toBeTruthy();
     });
