@@ -5,10 +5,6 @@ const Joi = require("@hapi/joi");
  */
 
 const updateReplySchema = {
-  options: {
-    allowUnknown: true,
-  },
-
   headers: Joi.object({
     authorization: Joi.string().required(),
   }),

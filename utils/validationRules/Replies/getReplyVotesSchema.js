@@ -4,10 +4,6 @@ const Joi = require("@hapi/joi");
  */
 
 const getReplyVotesSchema = {
-  options: {
-    allowUnknown: true,
-  },
-
   headers: Joi.object({
     authorization: Joi.string().required(),
   }),
