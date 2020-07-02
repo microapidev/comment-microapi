@@ -1,9 +1,9 @@
-const app = require("../../server");
-const CommentModel = require("../../models/comments");
-const ReplyModel = require("../../models/replies");
+const app = require("../../../server");
+const CommentModel = require("../../../models/comments");
+const ReplyModel = require("../../../models/replies");
 const supertest = require("supertest");
 const request = supertest(app);
-const { describeIfEndpoint } = require("../helpers/conditionalTests");
+const { describeIfEndpoint } = require("../../helpers/conditionalTests");
 
 describeIfEndpoint(
   "GET",
