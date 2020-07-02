@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const CustomError = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
 const Applications = require("../models/applications");
-const errorHandler = require("../utils/errorhandler");
 
 exports.upvoteComment = async (req, res, next) => {
   try {
