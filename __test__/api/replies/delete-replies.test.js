@@ -1,10 +1,10 @@
-const app = require("../../server");
+const app = require("../../../server");
 const supertest = require("supertest");
-const CommentModel = require("../../models/comments");
+const CommentModel = require("../../../models/comments");
 const mongoose = require("mongoose");
-const ReplyModel = require("../../models/replies");
+const ReplyModel = require("../../../models/replies");
 const request = supertest(app);
-const { describeIfEndpoint } = require("../helpers/conditionalTests");
+const { describeIfEndpoint } = require("../../helpers/conditionalTests");
 
 describeIfEndpoint(
   "DELETE",

@@ -1,9 +1,9 @@
-const app = require("../../server");
+const app = require("../../../server");
 const supertest = require("supertest");
-const CommentModel = require("../../models/comments");
+const CommentModel = require("../../../models/comments");
 const mongoose = require("mongoose");
 const request = supertest(app);
-import { describeIfEndpoint } from "../helpers/conditionalTests";
+const { describeIfEndpoint } = require("../../helpers/conditionalTests");
 
 describeIfEndpoint(
   "DELETE",

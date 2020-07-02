@@ -1,8 +1,8 @@
-const app = require("../../server");
+const app = require("../../../server");
 const supertest = require("supertest");
-const CommentModel = require("../../models/comments");
+const CommentModel = require("../../../models/comments");
 const request = supertest(app);
-const { describeIfEndpoint } = require("../helpers/conditionalTests");
+const { describeIfEndpoint } = require("../../helpers/conditionalTests");
 
 describeIfEndpoint("GET", "/comments", "GET '/comments' ", () => {
   // missing test 401 authentication error
