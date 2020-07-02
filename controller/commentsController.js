@@ -262,7 +262,7 @@ exports.create = async (req, res, next) => {
   //save comment
   try {
     const savedComment = await comment.save();
-    return responseHandler(res, 200, savedComment);
+    return responseHandler(res, 201, savedComment);
   } catch (err) {
     return next(
       new CustomError(
