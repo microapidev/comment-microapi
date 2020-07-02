@@ -1,7 +1,10 @@
-const router = require("express").Router();
+const express = require("express");
+const router = express.Router();
 const applicationController = require("../controller/ApplicationsController");
 
 router.get(
   "/:organizationId/applications",
   applicationController.getAllApplications
 );
+
+module.exports = router;
