@@ -1,1 +1,1 @@
-/** GET ​/comments​/{commentId}​/replies​/{replyId}​/votes */
+// GET /comments/:commentId/replies/:replyId/votes

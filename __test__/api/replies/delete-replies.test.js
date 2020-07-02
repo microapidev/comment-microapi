@@ -12,9 +12,7 @@ describeIfEndpoint(
   "DELETE '/comments/:commentId/replies/:replyId'",
   () => {
     // missing test 400 bad request
-
     // missing test 401 authentication error
-
     // missing test 402 validation error
 
     // status 200
@@ -33,6 +31,9 @@ describeIfEndpoint(
       });
       await reply.save();
 
+      comment.replies.push(reply);
+      await comment.save();
+
       const res = await request
         .delete(`/comments/${comment._id}/replies/${reply._id}`)
         .set("Authorization", `bearer ${global.appToken}`)
@@ -41,9 +42,9 @@ describeIfEndpoint(
         });
 
       expect(res.status).toBe(200);
-      expect(res.body.data.replyId).toEqual(String(reply._id));
-      expect(res.body.data.commentId).toEqual(String(comment._id));
-      expect(res.body.data.ownerId).toBeTruthy();
+      expect(res.body.data[0]._id).toEqual(reply._id);
+      expect(res.body.data[0].commentId).toEqual(comment._id);
+      expect(res.body.data[0].ownerId).toEqual(reply.ownerId);
     });
 
     // 404 not found error

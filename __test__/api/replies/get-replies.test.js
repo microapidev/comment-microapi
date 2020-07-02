@@ -44,6 +44,9 @@ describeIfEndpoint(
       });
       await reply.save();
 
+      comment.replies.push(reply);
+      await comment.save();
+
       const res = await request
         .get(`/comments/${comment.commentId}/replies`)
         .set("Authorization", `bearer ${global.appToken}`);
@@ -76,6 +79,9 @@ describeIfEndpoint(
         ownerId: "usertwoemail@email.com",
       });
       await reply2.save();
+
+      comment.replies.push(reply1, reply2);
+      await comment.save();
 
       const res = await request
         .get(`/comments/${comment.commentId}/replies`)

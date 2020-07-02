@@ -29,9 +29,10 @@ describeIfEndpoint(
         .set("Authorization", `bearer ${global.appToken}`);
 
       expect(res.status).toBe(200);
-      expect(res.body.message).toBeTruthy();
+      expect(res.body.data.length).toBe(1);
       expect(res.body.data[0].commentId).toEqual(comment._id);
-      expect(res.body.data[0].votes.length).toBe(0);
+      expect(res.body.data[0].upVotes.length).toBe(0);
+      expect(res.body.data[0].downVotes.length).toBe(0);
     });
   }
 );

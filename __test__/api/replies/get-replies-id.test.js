@@ -15,7 +15,6 @@ describeIfEndpoint(
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",
-        origin: "123123",
         applicationId: global.application._id,
       });
       await comment.save();
@@ -26,6 +25,10 @@ describeIfEndpoint(
         commentId: commentId,
       });
       await reply.save();
+
+      comment.replies.push(reply);
+      await comment.save();
+
       const replyId = reply._id;
       const res = await request
         .get(`/comments/${commentId}/replies/${replyId}`)
@@ -43,7 +46,6 @@ describeIfEndpoint(
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",
-        origin: "123123",
         applicationId: global.application._id,
       });
       await comment.save();

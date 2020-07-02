@@ -11,9 +11,7 @@ describeIfEndpoint(
   "DELETE '/comments/:commentId'",
   () => {
     // missing test 400 bad request
-
     // missing test 401 authentication error
-
     // missing test 402 validation error
 
     // 200 success
