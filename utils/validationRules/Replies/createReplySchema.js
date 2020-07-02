@@ -4,10 +4,6 @@ const Joi = require("@hapi/joi");
  * Schema validation for POST '/comments/{commentId}/replies'
  */
 const createReplySchema = {
-  options: {
-    allowUnknown: true,
-  },
-
   headers: Joi.object({
     authorization: Joi.string().required(),
   }),
