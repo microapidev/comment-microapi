@@ -12,9 +12,6 @@ router.use(appAuthMW);
 // reroute ../replies route requests to Replies router
 router.use("/:commentId/replies", repliesRoutes);
 
-router.post("/", commentController.create);
-// update comment
-router.patch("/:commentId", commentController.updateComment);
 // creates a comment
 router.post("/", commentController.create);
 
@@ -38,6 +35,6 @@ router.patch("/:commentId/flag", commentController.flagComment);
 
 // Single configurable  route to get all comments, flagged and unflagged comments
 // My intention was to use express-validate package, but couldn't get to work, I will look at this in the future
-router.get("", commentController.getComments);
+router.get("/", commentController.getComments);
 
 module.exports = router;

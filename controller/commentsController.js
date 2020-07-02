@@ -1,12 +1,9 @@
 // UNCOMMENT EACH MODEL HERE AS NEEDED
 
-// const Replies = require("../models/replies");
 const Comments = require("../models/comments");
 //const Replies = require("../models/replies");
-//const Users = require("../models/users");
 const mongoose = require("mongoose");
 const CustomError = require("../utils/customError");
-// const User = require("../models/users");
 const responseHandler = require("../utils/responseHandler");
 const Applications = require("../models/applications");
 
