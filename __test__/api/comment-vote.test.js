@@ -7,8 +7,8 @@ import { describeIfEndpoint } from "../helpers/conditionalTests";
 
 describeIfEndpoint(
   "PATCH",
-  "/comments/:commentId/votes",
-  "PATCH '/comments/:commentId/votes'",
+  "/comments/:commentId/votes/upvotes",
+  "PATCH '/comments/:commentId/votes/upvotes'",
   () => {
     test("Should upvote a comment", async () => {
       const commentObject = {
@@ -22,29 +22,6 @@ describeIfEndpoint(
 
       const res = await request
         .patch(`/comments/${comment._id}/votes/upvote`)
-        .set("Authorization", `bearer ${global.appToken}`)
-        .send({
-          ownerId: commentObject.ownerId,
-        });
-      expect(res.status).toBe(200);
-      expect(res.body.data.commentId).toEqual(String(comment._id));
-      expect(res.body.data.numOfVotes).toBeTruthy();
-      expect(res.body.data.numOfUpVotes).toBeTruthy();
-      expect(res.body.data.numOfDownVotes).toBeTruthy();
-    });
-
-    test("Should downvote a comment", async () => {
-      const commentObject = {
-        content: "this is a comment",
-        ownerId: "useremail2@email.com",
-        origin: "123123",
-        applicationId: global.application._id,
-      };
-      const comment = new CommentModel(commentObject);
-      await comment.save();
-
-      const res = await request
-        .patch(`/comments/${comment._id}/votes/downvote`)
         .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: commentObject.ownerId,
@@ -74,6 +51,36 @@ describeIfEndpoint(
       expect(res.status).toBe(422);
       expect(res.body.data.status).toBeTruthy();
       expect(res.body.data.message).toBeTruthy();
+    });
+  }
+);
+
+describeIfEndpoint(
+  "PATCH",
+  "/comments/:commentId/votes/downvotes",
+  "PATCH '/comments/:commentId/votes/downvotes'",
+  () => {
+    test("Should downvote a comment", async () => {
+      const commentObject = {
+        content: "this is a comment",
+        ownerId: "useremail2@email.com",
+        origin: "123123",
+        applicationId: global.application._id,
+      };
+      const comment = new CommentModel(commentObject);
+      await comment.save();
+
+      const res = await request
+        .patch(`/comments/${comment._id}/votes/downvote`)
+        .set("Authorization", `bearer ${global.appToken}`)
+        .send({
+          ownerId: commentObject.ownerId,
+        });
+      expect(res.status).toBe(200);
+      expect(res.body.data.commentId).toEqual(String(comment._id));
+      expect(res.body.data.numOfVotes).toBeTruthy();
+      expect(res.body.data.numOfUpVotes).toBeTruthy();
+      expect(res.body.data.numOfDownVotes).toBeTruthy();
     });
   }
 );
