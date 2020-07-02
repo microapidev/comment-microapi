@@ -162,7 +162,6 @@ describeIfEndpoint(
         commentId: global.application._id,
         ownerId: "useremail@email.com",
       });
-      reply.downVotes.push(reply.ownerId);
       await reply.save();
 
       comment.replies.push(reply);

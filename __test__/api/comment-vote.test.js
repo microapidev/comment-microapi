@@ -7,7 +7,7 @@ import { describeIfEndpoint } from "../helpers/conditionalTests";
 
 describeIfEndpoint(
   "PATCH",
-  "/comments/:commentId/votes",
+  "/comments/:commentId/votes/votes",
   "PATCH '/comments/:commentId/votes'",
   () => {
     test("Should upvote a comment", async () => {
@@ -27,10 +27,10 @@ describeIfEndpoint(
           ownerId: commentObject.ownerId,
         });
       expect(res.status).toBe(200);
-      expect(res.body.data.commentId).toBeTruthy();
-      expect(res.body.data.totalVotes).toBeTruthy();
-      expect(res.body.data.upvotes).toBeTruthy();
-      expect(res.body.data.downvotes).toBeTruthy();
+      expect(res.body.data.commentId).toEqual(String(comment._id));
+      expect(res.body.data.numOfVotes).toBeTruthy();
+      expect(res.body.data.numOfUpVotes).toBeTruthy();
+      expect(res.body.data.numOfDownVotes).toBeTruthy();
     });
 
     test("Should downvote a comment", async () => {
@@ -50,10 +50,10 @@ describeIfEndpoint(
           ownerId: commentObject.ownerId,
         });
       expect(res.status).toBe(200);
-      expect(res.body.data.commentId).toBeTruthy();
-      expect(res.body.data.totalVotes).toBeTruthy();
-      expect(res.body.data.upvotes).toBeTruthy();
-      expect(res.body.data.downvotes).toBeTruthy();
+      expect(res.body.data.commentId).toEqual(String(comment._id));
+      expect(res.body.data.numOfVotes).toBeTruthy();
+      expect(res.body.data.numOfUpVotes).toBeTruthy();
+      expect(res.body.data.numOfDownVotes).toBeTruthy();
     });
 
     test("Should reject unknown vote type", async () => {
