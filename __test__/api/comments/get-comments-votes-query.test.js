@@ -1,7 +1,3 @@
-// status 200 upvote query implementation
-// missing test 401 authentication error
-// missing test 404 not found error
-
-// status 200 downvote query implementation
-// missing test 401 authentication error
-// missing test 404 not found error
+// missing status 200 GET query tests for voteType = upvote
+// missing status 200 GET query tests for voteType = downvote
+// missing test for incorrect query
