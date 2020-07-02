@@ -5,9 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # image: commentapi
+    image: commentapi:${TAG}
     container_name: commentapi
-    restart: unless_stopped
+    restart: unless-stopped
     env_file: .env
     environment:
       # - MONGO_USERNAME=$MONGO_USERNAME
