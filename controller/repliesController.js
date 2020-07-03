@@ -189,7 +189,7 @@ const updateReply = async (req, res, next) => {
 const downvoteReply = async (req, res, next) => {
   const commentId = req.params.commentId;
   const replyId = req.params.replyId;
-  const ownerId = req.body.onwerId;
+  const ownerId = req.body.ownerId;
 
   try {
     let comment = await Comments.findById(commentId);
