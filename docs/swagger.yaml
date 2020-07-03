@@ -297,7 +297,7 @@ paths:
       parameters:
         - in: body
           name: body
-          description: A JSON object containing the organization's admin information
+          description: A JSON object containing the organization admin's information
           required: true
           schema:
             $ref: "#/components/schemas/UpdateAdmin"
@@ -355,7 +355,7 @@ paths:
         - Bearer: []
 
       responses:
-        "200":
+        "204":
           description: Successful operation
           content:
             application/json:
@@ -373,7 +373,8 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Admin"
+                      type: string
+                    example: []
 
         "401":
           description: Authentication error
@@ -411,6 +412,13 @@ paths:
       parameters:
         - in: path
           $ref: "#/components/parameters/adminIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the organization admin's password information
+          required: true
+          schema:
+            $ref: "#/components/schemas/ChangePassword"
 
       responses:
         "200":
@@ -612,9 +620,7 @@ paths:
                   response:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Application"
+                    $ref: "#/components/schemas/Application"
 
         "401":
           description: Authentication error
@@ -677,7 +683,8 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Application"
+                      type: string
+                    example: []
 
         "401":
           description: Authentication error
@@ -733,7 +740,8 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Application"
+                      type: string
+                    example: []
 
         "401":
           description: Authentication error
@@ -968,9 +976,7 @@ paths:
                   response:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Comment"
+                    $ref: "#/components/schemas/Comment"
 
         "401":
           description: Authentication error
@@ -1579,9 +1585,7 @@ paths:
                   response:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Reply"
+                    $ref: "#/components/schemas/Reply"
 
         "400":
           description: Bad request error
@@ -2112,9 +2116,9 @@ components:
           format: email
         secret:
           type: string
-        ownerName:
+        adminName:
           type: string
-        ownerEmail:
+        adminEmail:
           type: string
           format: email
 
@@ -2179,9 +2183,6 @@ components:
       properties:
         fullname:
           type: string
-        email:
-          type: string
-          format: email
 
     Application: # Can be referenced as '#/components/schemas/Application'
       type: object
@@ -2202,11 +2203,18 @@ components:
         name:
           type: string
 
-    UpdateApplication: # Can be referenced as '#/components/schemas/UpdateApplication'
+    ChangePassword: # Can be referenced as '#/components/schemas/ChangePassword'
       type: object
+      required:
+        - oldPassword
+        - newPassword
       properties:
-        name:
+        oldPassword:
           type: string
+          format: password
+        newPassword:
+          type: string
+          format: password
 
     Comment: # Can be referenced as '#/components/schemas/Comment'
       type: object
