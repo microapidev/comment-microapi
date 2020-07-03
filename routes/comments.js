@@ -10,17 +10,19 @@ const { generateToken } = require("../utils/auth/tokenGenerator");
 // -------- DO NOT TOUCH!!! ---------
 //Dummy tokens for now. We will remove in production
 router.use((req, res, next) => {
-  req.headers["authorization"] =
-    "Bearer " +
-    generateToken(
-      {
-        applicationId: mongoose.Types.ObjectId(),
-      },
-      process.env.APP_SECRET
-    );
+  if (process.env.DISABLE_AUTH === "true") {
+    req.headers["authorization"] =
+      "Bearer " +
+      generateToken(
+        {
+          applicationId: mongoose.Types.ObjectId(),
+        },
+        process.env.APP_SECRET
+      );
+  }
   next();
 });
-
+// -------- DONT TOUCH --------------
 // authentication middleware must be at the top
 router.use(appAuthMW);
 
