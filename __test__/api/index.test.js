@@ -4,7 +4,7 @@ const request = require("supertest");
 describe("GET /v1", () => {
   test("Should return status 200 and render Swagger docs", async () => {
     const res = await request(app).get("/v1");
-    expect(res.status).toBe(301);
+    expect(res.status).toBe(200);
     expect(res.text).toMatchSnapshot();
   });
 });
