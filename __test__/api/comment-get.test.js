@@ -6,13 +6,13 @@ const supertest = require("supertest");
 const request = supertest(app);
 const { describeIfEndpoint } = require("../helpers/conditionalTests");
 
-describeIfEndpoint("GET", "/comments", "GET '/comments' ", () => {
+describeIfEndpoint("GET", "/v1/comments", "GET '/comments' ", () => {
   it("Return all comments from the db", async () => {
     const res = await request
-      .get("/comments")
+      .get("/v1/comments")
       .set("Authorization", `bearer ${global.appToken}`);
     if (res.status === 404) {
-      console.log("GET /comments Not Implemented Yet");
+      console.log("GET /v1/comments Not Implemented Yet");
       return true;
     }
 
@@ -24,8 +24,8 @@ describeIfEndpoint("GET", "/comments", "GET '/comments' ", () => {
 
 describeIfEndpoint(
   "GET",
-  "/comments/:commentId/replies",
-  "GET /comments/:commentId/replies",
+  "/v1/comments/:commentId/replies",
+  "GET /v1/comments/:commentId/replies",
   () => {
     it("Return all replies for a comment", async () => {
       const comment = new CommentModel({
@@ -40,11 +40,13 @@ describeIfEndpoint(
       const commentId = comment._id;
 
       const res = await request
-        .get(`/comments/${commentId}/replies`)
+        .get(`/v1/comments/${commentId}/replies`)
         .set("Authorization", `bearer ${global.appToken}`);
 
       if (res.status === 404) {
-        console.log(`/comments/:commentId/replies, Route Not Implemented Yet`);
+        console.log(
+          `/v1/comments/:commentId/replies, Route Not Implemented Yet`
+        );
         return true;
       }
       expect(res.status).toBe(200);
@@ -56,8 +58,8 @@ describeIfEndpoint(
 
 describeIfEndpoint(
   "GET",
-  "/comments/:commentId/votes",
-  "GET /comments/:commentId/votes",
+  "/v1/comments/:commentId/votes",
+  "GET /v1/comments/:commentId/votes",
   () => {
     it("Return all votes for a comment", async () => {
       const comment = new CommentModel({
@@ -70,7 +72,7 @@ describeIfEndpoint(
       await comment.save();
 
       const res = await request
-        .get(`/comments/${comment._id}/votes`)
+        .get(`/v1/comments/${comment._id}/votes`)
         .set("Authorization", `bearer ${global.appToken}`);
 
       expect(res.status).toBe(200);
@@ -83,8 +85,8 @@ describeIfEndpoint(
 );
 describeIfEndpoint(
   "GET",
-  "/comments/:commentId/replies/:replyId",
-  "GET '/comments/:commentId/replies/:replyId'",
+  "/v1/comments/:commentId/replies/:replyId",
+  "GET '/v1/comments/:commentId/replies/:replyId'",
   () => {
     test("Should return a reply to a comment", async () => {
       const comment = new CommentModel({
@@ -103,7 +105,7 @@ describeIfEndpoint(
       await reply.save();
       const replyId = reply._id;
       const res = await request
-        .get(`/comments/${commentId}/replies/${replyId}`)
+        .get(`/v1/comments/${commentId}/replies/${replyId}`)
         .set("Authorization", `bearer ${global.appToken}`);
 
       expect(res.status).toBe(200);
