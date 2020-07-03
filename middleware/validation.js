@@ -6,10 +6,11 @@ const validationMiddleware = (requestSchema) => {
   return (req, res, next) => {
     const validations = schemaKeys.map((key) => {
       const schema = requestSchema[key];
+      const options = requestSchema.options;
       const value = req[key];
 
       if (schema) {
-        const result = schema.validate(value);
+        const result = schema.validate(value, options);
         return Promise.resolve({ [key]: result });
       } else {
         return Promise.resolve();

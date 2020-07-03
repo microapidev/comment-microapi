@@ -1,16 +1,18 @@
 const jwtMW = require("express-jwt");
 require("dotenv").config();
 
+const credsRequired = process.env.DISABLE_AUTH.toLowerCase() === "false";
+
 exports.appAuthMW = jwtMW({
-  secret: process.env.APP_SECRET,
+  secret: Buffer.from(process.env.APP_SECRET, "base64"),
   requestProperty: "token",
-  algorithms: ["RS256"],
-  credentialsRequired: !process.env.DISABLE_AUTH,
+  algorithms: ["HS256"],
+  credentialsRequired: credsRequired,
 });
 
 exports.orgAuthMW = jwtMW({
   secret: process.env.ORG_SECRET,
   requestProperty: "token",
-  algorithms: ["RS256"],
-  credentialsRequired: !process.env.DISABLE_AUTH,
+  algorithms: ["HS256"],
+  credentialsRequired: credsRequired,
 });

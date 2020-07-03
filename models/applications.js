@@ -12,6 +12,11 @@ const ApplicationSchema = new Schema(
       ref: "Organizations",
       required: true,
     },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "Admins",
+      required: true,
+    },
   },
   { timestamps: true }
 );
