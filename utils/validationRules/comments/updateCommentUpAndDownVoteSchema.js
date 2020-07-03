@@ -4,11 +4,7 @@ const Joi = require("@hapi/joi");
  * Schema validation for PATCH '/comments/{commentId}/votes/upvote'
  */
 const updateCommentUpAndDownVoteSchema = {
-  options: {
-    allowUnknown: true,
-  },
-
-  header: Joi.object({
+  headers: Joi.object({
     authorization: Joi.string().required(),
   }),
 

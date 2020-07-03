@@ -1179,8 +1179,6 @@ paths:
                     items:
                       type: object
                       properties:
-                        replyId:
-                          type: string
                         commentId:
                           type: string
                         votes:
@@ -2054,45 +2052,33 @@ components:
       type: object
       required:
         - organizationId
-        - organizationName
-        - organizationEmail
+        - name
+        - email
         - secret
-        - ownerName
-        - ownerEmail
-        - admins
       properties:
         organizationId:
           type: string
-        organizationName:
+        name:
           type: string
-        organizationEmail:
+        email:
           type: string
           format: email
         secret:
           type: string
-        ownerName:
-          type: string
-        ownerEmail:
-          type: string
-          format: email
-        admins:
-          type: array
-          items:
-            $ref: "#/components/schemas/Admin"
 
     CreateOrganization: # Can be referenced as '#/components/schemas/CreateOrganization'
       type: object
       required:
-        - organizationName
-        - organizationEmail
+        - name
+        - email
         - secret
         - adminName
         - adminEmail
         - adminPassword
       properties:
-        organizationName:
+        name:
           type: string
-        organizationEmail:
+        email:
           type: string
           format: email
         secret:
@@ -2109,18 +2095,21 @@ components:
     UpdateOrganization: # Can be referenced as '#/components/schemas/UpdateOrganization'
       type: object
       properties:
-        organizationName:
+        name:
           type: string
-        organizationEmail:
+        email:
           type: string
           format: email
         secret:
           type: string
+<<<<<<< HEAD
         adminName:
           type: string
         adminEmail:
           type: string
           format: email
+=======
+>>>>>>> c228c550503256aac6aa33ac12b93e2962dea50f
 
     LoginOrganization: # Can be referenced as '#/components/schemas/LoginOrganization'
       type: object
@@ -2165,11 +2154,14 @@ components:
     CreateAdmin: # Can be referenced as '#/components/schemas/CreateAdmin'
       type: object
       required:
+        - organizationId
         - fullname
         - email
         - password
       properties:
         fullname:
+          type: string
+        organizationId:
           type: string
         email:
           type: string
@@ -2199,8 +2191,14 @@ components:
       type: object
       required:
         - name
+        - organizationId
+        - createdBy
       properties:
         name:
+          type: string
+        organizationId:
+          type: string
+        createdBy:
           type: string
 
     ChangePassword: # Can be referenced as '#/components/schemas/ChangePassword'
@@ -2221,7 +2219,6 @@ components:
       required:
         - commentId
         - refId
-        - applicationId
         - ownerId
         - content
         - origin
@@ -2234,8 +2231,6 @@ components:
         commentId:
           type: string
         refId:
-          type: string
-        applicationId:
           type: string
         ownerId:
           type: string
@@ -2258,12 +2253,9 @@ components:
       type: object
       required:
         - content
-        - applicationId
         - ownerId
       properties:
         refId:
-          type: string
-        applicationId:
           type: string
         ownerId:
           type: string
@@ -2433,14 +2425,6 @@ components:
       in: path
       name: adminId
       description: String ID of the admin
-      required: true
-      schema:
-        type: string
-
-    applicationIdParam: # Can be referenced via '#/components/parameters/applicationIdParam'
-      in: path
-      name: applicationId
-      description: String ID of the application
       required: true
       schema:
         type: string
