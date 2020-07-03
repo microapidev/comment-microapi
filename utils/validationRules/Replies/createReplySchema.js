@@ -9,7 +9,7 @@ const createReplySchema = {
   }),
 
   params: Joi.object({
-    commentId: Joi.string().length(24).required(),
+    commentId: Joi.string().required(),
   }),
 
   body: Joi.object().keys({
