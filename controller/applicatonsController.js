@@ -1,11 +1,9 @@
-const CustomError = require("../utils/customError");
+/*const CustomError = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
 const Applications = require("../models/applications");
 
-//delete an application
 exports.delete = async (req, res, next) => {
   const applicationId = req.params.applicationId;
-  //check if the application exists
   try {
     const application = await Applications.findById(applicationId);
     if (!application) {
@@ -29,4 +27,4 @@ exports.delete = async (req, res, next) => {
         )
       );
     });
-};
+};*/

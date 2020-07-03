@@ -1,4 +1,4 @@
-const applicationsController = require("../controller/applicatonsController");
+/*const applicationsController = require("../controller/applicatonsController");
 const router = require("express").Router();
 const { appAuthMW } = require("../middleware/auth");
 
@@ -7,4 +7,4 @@ const { appAuthMW } = require("../middleware/auth");
 router.use(appAuthMW);
 router.delete("/:applicationId", applicationsController.delete);
 
-module.exports = router;
+module.exports = router;*/
