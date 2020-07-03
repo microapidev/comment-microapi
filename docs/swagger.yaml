@@ -355,7 +355,7 @@ paths:
         - Bearer: []
 
       responses:
-        "204":
+        "200":
           description: Successful operation
           content:
             application/json:
@@ -707,6 +707,69 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+    # PATCH operation
+    patch:
+      tags:
+        - applications
+
+      summary: Updates an organization's application
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the organization's application information
+          required: true
+          schema:
+            $ref: "#/components/schemas/UpdateApplication"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Application"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
     # DELETE operation
     delete:
       tags:
@@ -742,6 +805,7 @@ paths:
                     items:
                       type: string
                     example: []
+                      $ref: "#/components/schemas/Application"
 
         "401":
           description: Authentication error
@@ -2155,6 +2219,8 @@ components:
       properties:
         fullname:
           type: string
+        organizationId:
+          type: string
         email:
           type: string
           format: email
@@ -2167,6 +2233,8 @@ components:
       type: object
       properties:
         fullname:
+          type: string
+        email:
           type: string
 
     Application: # Can be referenced as '#/components/schemas/Application'
