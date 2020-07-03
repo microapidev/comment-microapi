@@ -5,10 +5,10 @@ const CommentModel = require("../../models/comments");
 const request = supertest(app);
 import { describeIfEndpoint } from "../helpers/conditionalTests";
 
-describeIfEndpoint("POST", "/comments", "POST '/comments'", () => {
+describeIfEndpoint("POST", "/v1/comments", "POST '/v1/comments'", () => {
   test("Should create comment", async () => {
     const res = await request
-      .post("/comments")
+      .post("/v1/comments")
       .set("Authorization", `bearer ${global.appToken}`)
       .send({
         content: "this is a comment",
@@ -24,8 +24,8 @@ describeIfEndpoint("POST", "/comments", "POST '/comments'", () => {
 
 describeIfEndpoint(
   "POST",
-  "/comments/:id/replies",
-  "POST '/comments/:commentId/replies'",
+  "/v1/comments/:id/replies",
+  "POST '/v1/comments/:commentId/replies'",
   () => {
     test("Should create new reply to comment", async () => {
       const comment = new CommentModel({
@@ -38,7 +38,7 @@ describeIfEndpoint(
 
       const res = await request
         .set("Authorization", `bearer ${global.appToken}`)
-        .post(`/comments/${comment._id}/replies`)
+        .post(`/v1/comments/${comment._id}/replies`)
         .send({
           commentId: comment._id,
           replyBody: "this is a reply to a comment",

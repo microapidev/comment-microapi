@@ -8,8 +8,8 @@ import { describeIfEndpoint } from "../helpers/conditionalTests";
 
 describeIfEndpoint(
   "DELETE",
-  "/comments/:commentId",
-  "DELETE '/comments/:commentId'",
+  "/v1/comments/:commentId",
+  "DELETE '/v1/comments/:commentId'",
   () => {
     test("Should delete comment", async () => {
       const comment = new CommentModel({
@@ -21,7 +21,7 @@ describeIfEndpoint(
       await comment.save();
 
       const res = await request
-        .delete(`/comments/${comment._id}`)
+        .delete(`/v1/comments/${comment._id}`)
         .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: comment.ownerId,
@@ -38,8 +38,8 @@ describeIfEndpoint(
 
 describeIfEndpoint(
   "DELETE",
-  "/comments/:commentId/replies/:replyId",
-  "DELETE '/comments/:commentId/replies/:replyId'",
+  "/v1/comments/:commentId/replies/:replyId",
+  "DELETE '/v1/comments/:commentId/replies/:replyId'",
   () => {
     test("Should delete a reply to a comment", async () => {
       const comment = new CommentModel({
@@ -60,7 +60,7 @@ describeIfEndpoint(
       await reply.save();
 
       const res = await request
-        .delete(`/comments/${comment._id}/replies/${reply._id}`)
+        .delete(`/v1/comments/${comment._id}/replies/${reply._id}`)
         .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: "useremail@email.com",
