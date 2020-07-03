@@ -4,11 +4,7 @@ const Joi = require("@hapi/joi");
  * Schema validation for GET '/comments/:commentId/replies'
  */
 const getAllRepliesSchema = {
-  options: {
-    allowUnknown: true,
-  },
-
-  header: Joi.object({
+  headers: Joi.object({
     authorization: Joi.string().required(),
   }),
 
