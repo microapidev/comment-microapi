@@ -79,7 +79,6 @@ describeIfEndpoint(
       expect(res.body.message).toBeTruthy();
       expect(res.body.status).toBeTruthy();
       expect(res.body.data.commentId).toBeTruthy();
-      expect(res.body.data.votes).toBeTruthy();
     });
   }
 );
