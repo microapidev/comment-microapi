@@ -51,24 +51,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  # Endpoint to get, delete, or update an organization's application
-  /organizations/{organizationId}:
-    # GET operation
-    get:
+  # Endpoint to signin to an organization for a token
+  /organizations/token:
+    # POST operation
+    post:
       tags:
         - organizations
 
-      summary: Gets an organization
-
-      security:
-        - Bearer: []
+      summary: Gets an organization token after successful login
 
       parameters:
-        - in: path
-          $ref: "#/components/parameters/organizationIdParam"
+        - in: body
+          name: body
+          description: A JSON object containing the login information
+          required: true
+          schema:
+            $ref: "#/components/schemas/LoginOrganization"
 
       responses:
-        "200":
+        "201":
           description: Successful operation
           content:
             application/json:
@@ -84,9 +85,10 @@ paths:
                   response:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Organization"
+                    type: object
+                    properties:
+                      organizationToken:
+                        type: string
 
         "401":
           description: Authentication error
@@ -95,8 +97,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-        "404":
-          description: Invalid ID error
+        "400":
+          description: Bad request error
           content:
             application/json:
               schema:
@@ -109,93 +111,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-    # # PATCH operation
-    # patch:
-    #   tags:
-    #     - organizations
-    #   summary: Updates an organization
-    #   parameters:
-    #     - in: body
-    #       name: body
-    #       description: A JSON object containing the organization's information
-    #       required: true
-    #       schema:
-    #         $ref: "#/components/schemas/UpdateOrganization"
-    #   responses:
-    #     "200":
-    #       description: Successful operation
-    #       schema:
-    #         type: object
-    #         required:
-    #           - message
-    #           - response
-    #           - data
-    #         properties:
-    #           message:
-    #             type: string
-    #           response:
-    #             type: string
-    #           data:
-    #             type: array
-    #             items:
-    #               $ref: "#/components/schemas/Organization"
-    #     "401":
-    #       schema:
-    #         $ref: "#/components/responses/401"
-    #     "404":
-    #       schema:
-    #         $ref: "#/components/responses/404"
-    #     "422":
-    #       schema:
-    #         $ref: "#/components/responses/422"
-    # # DELETE operation
-    # delete:
-    #   tags:
-    #     - organizations
-    #   summary: Deletes an organization
-    #   responses:
-    #     "200":
-    #       description: Successful operation
-    #       schema:
-    #         type: object
-    #         required:
-    #           - message
-    #           - response
-    #           - data
-    #         properties:
-    #           message:
-    #             type: string
-    #           response:
-    #             type: string
-    #           data:
-    #             type: array
-    #             items:
-    #               $ref: "#/components/schemas/Organization"
-    #     "401":
-    #       schema:
-    #         $ref: "#/components/responses/401"
-    #     "404":
-    #       schema:
-    #         $ref: "#/components/responses/404"
-    #     "422":
-    #       schema:
-    #         $ref: "#/components/responses/422"
-
   # Endpoint to create an organization's admin
-  /organizations/{organizationId}/admins:
+  /admins:
     # GET operation
     get:
       tags:
-        - organizations
+        - admins
 
-      summary: Gets all of the organization's admins
+      summary: Gets all of an organization's admins
 
       security:
         - Bearer: []
-
-      parameters:
-        - in: path
-          $ref: "#/components/parameters/organizationIdParam"
 
       responses:
         "200":
@@ -225,8 +151,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-        "404":
-          description: Invalid ID error
+        "400":
+          description: Bad request error
           content:
             application/json:
               schema:
@@ -242,17 +168,14 @@ paths:
     # POST operation
     post:
       tags:
-        - organizations
+        - admins
 
-      summary: Creates the organization's admin
+      summary: Creates an organization's admin
 
       security:
         - Bearer: []
 
       parameters:
-        - in: path
-          $ref: "#/components/parameters/organizationIdParam"
-
         - in: body
           name: body
           description: A JSON object containing the organization's admin information
@@ -277,16 +200,10 @@ paths:
                   response:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Admin"
-
-        "400":
-          description: Bad request error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                    type: object
+                    properties:
+                      adminId:
+                        type: string
 
         "401":
           description: Authentication error
@@ -310,11 +227,11 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to get, delete, or update an organization's admin
-  /organizations/{organizationId}/admins/{adminId}:
+  /admins/{adminId}:
     # GET operation
     get:
       tags:
-        - organizations
+        - admins
 
       summary: Gets an organization's admin
 
@@ -322,9 +239,6 @@ paths:
         - Bearer: []
 
       parameters:
-        - in: path
-          $ref: "#/components/parameters/organizationIdParam"
-
         - in: path
           $ref: "#/components/parameters/adminIdParam"
 
@@ -370,93 +284,188 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-    # # PATCH operation
-    # patch:
-    #   tags:
-    #     - organizations
-    #   summary: Updates an organization's admin
-    #   parameters:
-    #     - in: body
-    #       name: body
-    #       description: A JSON object containing the organization's admin information
-    #       required: true
-    #       schema:
-    #         $ref: "#/components/schemas/UpdateAdmin"
-    #   responses:
-    #     "200":
-    #       description: Successful operation
-    #       schema:
-    #         type: object
-    #         required:
-    #           - message
-    #           - response
-    #           - data
-    #         properties:
-    #           message:
-    #             type: string
-    #           response:
-    #             type: string
-    #           data:
-    #             type: array
-    #             items:
-    #               $ref: "#/components/schemas/Admin"
-    #     "401":
-    #       schema:
-    #         $ref: "#/components/responses/401"
-    #     "404":
-    #       schema:
-    #         $ref: "#/components/responses/404"
-    #     "422":
-    #       schema:
-    #         $ref: "#/components/responses/422"
-    # # DELETE operation
-    # delete:
-    #   tags:
-    #     - organizations
-    #   summary: Deletes an organization's admin
-    #   responses:
-    #     "200":
-    #       description: Successful operation
-    #       schema:
-    #         type: object
-    #         required:
-    #           - message
-    #           - response
-    #           - data
-    #         properties:
-    #           message:
-    #             type: string
-    #           response:
-    #             type: string
-    #           data:
-    #             type: array
-    #             items:
-    #               $ref: "#/components/schemas/Admin"
-    #     "401":
-    #       schema:
-    #         $ref: "#/components/responses/401"
-    #     "404":
-    #       schema:
-    #         $ref: "#/components/responses/404"
-    #     "422":
-    #       schema:
-    #         $ref: "#/components/responses/422"
-
-  # Endpoint to get all the organization's applications or create an organization's application
-  /organizations/{organizationId}/applications:
-    # GET operation
-    get:
+    # PATCH operation
+    patch:
       tags:
-        - organizations
+        - admins
 
-      summary: Gets all the organization's applications
+      summary: Updates an organization's admin
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: body
+          name: body
+          description: A JSON object containing the organization's admin information
+          required: true
+          schema:
+            $ref: "#/components/schemas/UpdateAdmin"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Admin"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # DELETE operation
+    delete:
+      tags:
+        - admins
+
+      summary: Deletes an organization's admin
+
+      security:
+        - Bearer: []
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Admin"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to change an organization admin's password
+  /admins/{adminId}/change-password:
+    # PATCH operation
+    patch:
+      tags:
+        - admins
+
+      summary: Updates an organization admin's password
 
       security:
         - Bearer: []
 
       parameters:
         - in: path
-          $ref: "#/components/parameters/organizationIdParam"
+          $ref: "#/components/parameters/adminIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: string
+                    example: []
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to get all the organization's applications or create an organization's application
+  /applications:
+    # GET operation
+    get:
+      tags:
+        - applications
+
+      summary: Gets all of an organization's applications
+
+      security:
+        - Bearer: []
 
       responses:
         "200":
@@ -503,7 +512,7 @@ paths:
     # POST operation
     post:
       tags:
-        - organizations
+        - applications
 
       summary: Creates an organization's application
 
@@ -511,9 +520,6 @@ paths:
         - Bearer: []
 
       parameters:
-        - in: path
-          $ref: "#/components/parameters/organizationIdParam"
-
         - in: body
           name: body
           description: A JSON object containing an organization's application information
@@ -538,9 +544,12 @@ paths:
                   response:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Application"
+                    type: object
+                    properties:
+                      applicationId:
+                        type: string
+                      applicationToken:
+                        type: string
 
         "400":
           description: Bad request error
@@ -571,11 +580,11 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to get, delete, or update an organization's application
-  /organizations/{organizationId}/applications/{applicationId}:
+  /applications/{applicationId}:
     # GET operation
     get:
       tags:
-        - organizations
+        - applications
 
       summary: Gets an organization's application
 
@@ -583,9 +592,6 @@ paths:
         - Bearer: []
 
       parameters:
-        - in: path
-          $ref: "#/components/parameters/organizationIdParam"
-
         - in: path
           $ref: "#/components/parameters/applicationIdParam"
 
@@ -631,77 +637,183 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-    # # PATCH operation
-    # patch:
-    #   tags:
-    #     - organizations
-    #   summary: Updates an organization's application
-    #   parameters:
-    #     - in: body
-    #       name: body
-    #       description: A JSON object containing the organization's application information
-    #       required: true
-    #       schema:
-    #         $ref: "#/components/schemas/UpdateApplication"
-    #   responses:
-    #     "200":
-    #       description: Successful operation
-    #       schema:
-    #         type: object
-    #         required:
-    #           - message
-    #           - response
-    #           - data
-    #         properties:
-    #           message:
-    #             type: string
-    #           response:
-    #             type: string
-    #           data:
-    #             type: array
-    #             items:
-    #               $ref: "#/components/schemas/Application"
-    #     "401":
-    #       schema:
-    #         $ref: "#/components/responses/401"
-    #     "404":
-    #       schema:
-    #         $ref: "#/components/responses/404"
-    #     "422":
-    #       schema:
-    #         $ref: "#/components/responses/422"
-    # # DELETE operation
-    # delete:
-    #   tags:
-    #     - organizations
-    #   summary: Deletes an organization's application
-    #   responses:
-    #     "200":
-    #       description: Successful operation
-    #       schema:
-    #         type: object
-    #         required:
-    #           - message
-    #           - response
-    #           - data
-    #         properties:
-    #           message:
-    #             type: string
-    #           response:
-    #             type: string
-    #           data:
-    #             type: array
-    #             items:
-    #               $ref: "#/components/schemas/Application"
-    #     "401":
-    #       schema:
-    #         $ref: "#/components/responses/401"
-    #     "404":
-    #       schema:
-    #         $ref: "#/components/responses/404"
-    #     "422":
-    #       schema:
-    #         $ref: "#/components/responses/422"
+    # PATCH operation
+    patch:
+      tags:
+        - applications
+
+      summary: Updates an organization's application
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
+
+        - in: body
+          name: body
+          description: A JSON object containing the organization's application information
+          required: true
+          schema:
+            $ref: "#/components/schemas/UpdateApplication"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Application"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # DELETE operation
+    delete:
+      tags:
+        - applications
+
+      summary: Deletes an organization's application
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Application"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to signin to an organization for a token
+  /applications/{applicationId}/token:
+    # POST operation
+    post:
+      tags:
+        - applications
+
+      summary: Gets an organization's application token
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
+
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - response
+                  - data
+                properties:
+                  message:
+                    type: string
+                  response:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      applicationToken:
+                        type: string
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   # Endpoint to get all comments or create a comment
   /comments:
@@ -1061,8 +1173,6 @@ paths:
                     items:
                       type: object
                       properties:
-                        replyId:
-                          type: string
                         commentId:
                           type: string
                         votes:
@@ -1938,73 +2048,71 @@ components:
       type: object
       required:
         - organizationId
-        - organizationName
-        - organizationEmail
+        - name
+        - email
         - secret
-        - ownerName
-        - ownerEmail
-        - admins
       properties:
         organizationId:
           type: string
-        organizationName:
+        name:
           type: string
-        organizationEmail:
+        email:
           type: string
           format: email
         secret:
           type: string
-        ownerName:
-          type: string
-        ownerEmail:
-          type: string
-          format: email
-        admins:
-          type: array
-          items:
-            $ref: "#/components/schemas/Admin"
 
     CreateOrganization: # Can be referenced as '#/components/schemas/CreateOrganization'
       type: object
       required:
-        - organizationName
-        - organizationEmail
+        - name
+        - email
         - secret
-        - ownerName
-        - ownerEmail
-        - ownerPassword
+        - adminName
+        - adminEmail
+        - adminPassword
       properties:
-        organizationName:
+        name:
           type: string
-        organizationEmail:
+        email:
           type: string
           format: email
         secret:
           type: string
-        ownerName:
+        adminName:
           type: string
-        ownerEmail:
+        adminEmail:
           type: string
           format: email
-        ownerPassword:
+        adminPassword:
           type: string
           format: password
 
     UpdateOrganization: # Can be referenced as '#/components/schemas/UpdateOrganization'
       type: object
       properties:
-        organizationName:
+        name:
           type: string
-        organizationEmail:
+        email:
           type: string
           format: email
         secret:
           type: string
-        ownerName:
-          type: string
-        ownerEmail:
+
+    LoginOrganization: # Can be referenced as '#/components/schemas/LoginOrganization'
+      type: object
+      required:
+        - email
+        - password
+        - organizationId
+      properties:
+        email:
           type: string
           format: email
+        password:
+          type: string
+        organizationId:
+          type: string
 
     OrganizationResponse: # Can be referenced as '#/components/schemas/OrganizationResponse'
       type: object
@@ -2020,39 +2128,42 @@ components:
       type: object
       required:
         - adminId
-        - adminName
-        - adminEmail
+        - fullname
+        - email
       properties:
         adminId:
           type: string
-        adminName:
+        fullname:
           type: string
-        adminEmail:
+        email:
           type: string
           format: email
 
     CreateAdmin: # Can be referenced as '#/components/schemas/CreateAdmin'
       type: object
       required:
-        - adminName
-        - adminEmail
-        - adminPassword
+        - organizationId
+        - fullname
+        - email
+        - password
       properties:
-        adminName:
+        fullname:
           type: string
-        adminEmail:
+        organizationId:
+          type: string
+        email:
           type: string
           format: email
-        adminPassword:
+        password:
           type: string
           format: password
 
     UpdateAdmin: # Can be referenced as '#/components/schemas/UpdateAdmin'
       type: object
       properties:
-        adminName:
+        fullname:
           type: string
-        adminEmail:
+        email:
           type: string
           format: email
 
@@ -2060,25 +2171,31 @@ components:
       type: object
       required:
         - applicationId
-        - applicationName
+        - name
       properties:
         applicationId:
           type: string
-        applicationName:
+        name:
           type: string
 
     CreateApplication: # Can be referenced as '#/components/schemas/CreateApplication'
       type: object
       required:
-        - applicationName
+        - name
+        - organizationId
+        - createdBy
       properties:
-        applicationName:
+        name:
+          type: string
+        organizationId:
+          type: string
+        createdBy:
           type: string
 
     UpdateApplication: # Can be referenced as '#/components/schemas/UpdateApplication'
       type: object
       properties:
-        applicationName:
+        name:
           type: string
 
     Comment: # Can be referenced as '#/components/schemas/Comment'
@@ -2086,7 +2203,6 @@ components:
       required:
         - commentId
         - refId
-        - applicationId
         - ownerId
         - content
         - origin
@@ -2099,8 +2215,6 @@ components:
         commentId:
           type: string
         refId:
-          type: string
-        applicationId:
           type: string
         ownerId:
           type: string
@@ -2123,12 +2237,9 @@ components:
       type: object
       required:
         - content
-        - applicationId
         - ownerId
       properties:
         refId:
-          type: string
-        applicationId:
           type: string
         ownerId:
           type: string
@@ -2298,14 +2409,6 @@ components:
       in: path
       name: adminId
       description: String ID of the admin
-      required: true
-      schema:
-        type: string
-
-    applicationIdParam: # Can be referenced via '#/components/parameters/applicationIdParam'
-      in: path
-      name: applicationId
-      description: String ID of the application
       required: true
       schema:
         type: string
