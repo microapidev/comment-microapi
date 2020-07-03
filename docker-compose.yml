@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  commentapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: commentapi:${TAG}
+    container_name: commentapi
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # - MONGO_USERNAME=$MONGO_USERNAME
+      # - MONGO_PASSWORD=$MONGO_PASSWORD
+      # - MONGO_HOSTNAME=db
+      # - MONGO_PORT=$MONGO_PORT
+      # - MONGO_DB=$MONGO_DB 
+      # - DOCKER_MONGO=true
+      - DB_URL=${DB_URL}
+      - APP_SECRET=${APP_SECRET}
+      - ORG_SECRET=${ORG_SECRET}
+      - SYSTEM_SECRET=${SYSTEM_SECRET}
+      - DISABLE_AUTH=${DISABLE_AUTH}
+    ports:
+      - "8023:4000"
+    volumes:
+      - .:/src/app
+      - node_modules:/src/app/node_modules
+    # networks:
+    #   - app-network
+    command: /src/app/node_modules/.bin/nodemon bin/www
+    # command: ./wait-for.sh db:27017 -- /src/app/node_modules/.bin/nodemon bin/www
+    
+  # db:
+  #   image: mongo:4.1.8-xenial
+  #   container_name: db
+  #   restart: unless-stopped
+  #   env_file: .env
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+  #     - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+  #   volumes:  
+  #     - dbdata:/data/db   
+  #   networks:
+  #     - app-network  
+
+
+# networks:
+#   app-network:
+#     driver: bridge
+
+volumes:
+  # dbdata:
+  node_modules: 
