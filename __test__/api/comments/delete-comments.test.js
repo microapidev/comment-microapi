@@ -32,15 +32,7 @@ describeIfEndpoint(
 
       expect(res.status).toBe(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data.commentId).toEqual(String(comment._id));
-      expect(res.body.data.content).toEqual(comment.content);
-      expect(res.body.data.ownerId).toEqual(comment.ownerId);
-      expect(res.body.data.origin).toEqual("4edd40c8676");
-      expect(res.body.data.numOfVotes).toBe(0);
-      expect(res.body.data.numOfUpVotes).toBe(0);
-      expect(res.body.data.numOfDownVotes).toBe(0);
-      expect(res.body.data.numOfFlags).toBe(0);
-      expect(res.body.data.numOfReplies).toBe(0);
+      expect(res.body.message).toEqual("Comment deleted successfully");
     });
 
     // 404 not found error

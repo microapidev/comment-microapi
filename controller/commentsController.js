@@ -323,17 +323,17 @@ exports.deleteComment = async (req, res, next) => {
   try {
     const comment = await Comments.findOne({ _id: commentId });
     if (!comment) {
-      return next(new CustomError(400, "Comment not found"));
+      return next(new CustomError(404, "Comment not found"));
     }
     if (comment.ownerId === ownerId) {
       const deleting = await Comments.findByIdAndDelete(commentId);
-      if (deleting) {
-        responseHandler(res, 200, deleting, "Comment deleted successfully");
+      if (deleting._id) {
+        responseHandler(res, 200, {}, "Comment deleted successfully");
         return;
       } else {
         return next(
           new CustomError(
-            400,
+            404,
             "Cannot delete your comment at this time. Please try again"
           )
         );
