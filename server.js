@@ -16,16 +16,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 //setup app routes
-<<<<<<< HEAD
 app.use("/comments", commentRoutes);
 app.use("/applications", applicationRoutes);
 app.use("/organizations", organizationsRoutes);
 app.use(["/", "/documentation"], documentationRoutes);
-=======
 app.use("/v1/comments", commentRoutes);
 app.use("/v1/organizations", organizationsRoutes);
 app.use(["/v1", "/v1/documentation"], documentationRoutes);
->>>>>>> 1f3824809098b6f9d27d33e212da6585561b3a81
 
 // Invalid route error handler
 app.use("*", (req, res, next) => {
