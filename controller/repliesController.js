@@ -200,56 +200,23 @@ const upvoteReply = async (req, res, next) => {
     if (!reply) {
       return next(new CustomError(404, "Reply not found or deleted"));
     }
-    if (!mongoose.Types.ObjectId.isValid(replyId)) {
-      next(new CustomError(422, "invalid ID"));
-      return;
-    }
-    const reply = await Replies.findById({ _id: replyId });
 
-    //if user exists in downvotes array
-    if (reply.downVotes.includes(ownerId)) {
-      //get index of user in downvotes array
-      const voterIndex = reply.downVotes.indexOf(ownerId);
+    if (reply.downVotes.includes(voterId)) {
+      const voterIndex = reply.downVotes.indexOf(voterId);
       //if index exists
       if (voterIndex > -1) {
         //delete that index
         reply.downVotes.splice(voterIndex, 1);
       }
     }
-
-    //same as above for upvotes
-    if (reply.upVotes.includes(ownerId)) {
-      const voterIdx = comment.Replies.upVotes.indexOf(ownerId);
+    if (reply.upVotes.includes(voterId)) {
+      const voterIdx = reply.upVotes.indexOf(voterId);
       if (voterIdx > -1) {
         reply.upVotes.splice(voterIdx, 1);
       }
     } else {
       // add user to the top of the upvotes array
-      reply.upVotes.unshift(ownerId);
-      isUpvoted = true;
-    }
-
-    //save the comment vote
-    reply.save();
-
-    //get total number of elements in array
-    const totalUpVotes = comment.upVotes.length;
-    const totalDownVotes = comment.downVotes.length;
-
-    //get total number of votes
-    const totalVotes = totalUpVotes + totalDownVotes;
-
-    //Check the comment vote state
-    const message = isUpvoted
-      ? "Comment upvote added successfully!"
-      : "Comment upvote removed successfully!";
-    if (reply.upVotes.includes(voterId)) {
-      return next(
-        new CustomError(409, "You've downvoted this reply, you can't upvote")
-      );
-    }
-    if (reply.upVotes.includes(voterId)) {
-      return next(new CustomError(409, "You've already upvoted this reply"));
+      reply.upVotes.unshift(voterId);
     }
     await reply.updateOne({
       _id: replyId,
@@ -262,10 +229,10 @@ const upvoteReply = async (req, res, next) => {
         commentId: commentId,
         replyId: replyId,
         numOfVotes: reply.downVotes.length + reply.upVotes.length + 1,
-        numOfDownVotes: reply.downVotes.length,
-        numOfUpVotes: reply.upVotes.length + 1,
+        numOfdownVotes: reply.downVotes.length,
+        numOfupVotes: reply.upVotes.length + 1,
       },
-      "Reply upvoted successfully"
+      "Reply downvoted successfully"
     );
   } catch (error) {
     return next(new CustomError(500, "Something went wrong, try again", error));
@@ -454,7 +421,7 @@ const flagCommentReplies = async (req, res, next) => {
   }
 };
 
-//DEETE Reply
+//DELETE Reply
 const deleteCommentReply = async (req, res, next) => {
   const { commentId, replyId } = req.params;
   const { ownerId } = req.body;
