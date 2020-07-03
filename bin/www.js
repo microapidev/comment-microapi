@@ -11,12 +11,21 @@ var http = require('http');
  */
 require('dotenv').config();
 
+//connect to mongodb
+console.log("\n \t Attempting to connect to database...");
+
+//connect to mongodb
+const database = require("../db/database");
+database.connect();
+
+console.log("\n \t Database connected successfully");
+
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT);
-app.set('port', port);
+var port = normalizePort(process.env.PORT || 4000);
+app.set("port", port);
 
 /**
  * Create HTTP server.

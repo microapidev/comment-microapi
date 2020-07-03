@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+- '12'
+before_script:
+- npm run lint
+script:
+- npm run test:ci
+env:
+  global:
+    - APP_SECRET=app secret
+    - ORG_SECRET=org secret
+    - JWT_SECRET=system secret
+    - DISABLE_AUTH=true
+deploy:
+  provider: heroku
+  api_key:
+    secure: M3XEyTrot+i1ZVf0W/O4sVqyoYO6XgUDdX0oT9OrOipEzGEb6JzjK8XzJkzT95tfEO4FyVVk5ym/cF/JnXBkGaNx08NnHQgsTFwgk84ReEzQR+wGrdj6bUJo4dR6hdMkgXq+wss0wc7ItvZJ/94BOJAWoLtapze/iYdWqbf0cbWKDI8yZvsSPnYlfgm/0yqUAcC1GcenHrJBZy/n6aeYw57jzr5MNA6JkxixwG7T6ISBlf9vKh5zLnnQpqoj0FLXEVzu93r58lh6vWLq7Xlk3mTI6AHooadArexGLtVBPW+bhSE+ePKe+DU+krsrnb198dP623f0O3Xg9nsfPySi5mTX4CPQLLaF/YIpdZkshGfw/i2uRvVqf6KccgpMeKVmErz7F/sirngTMuM38xB7Ib9WPV1Jfg+LuBMaXy4FQs7B0A1O3vGDYf6Yb0TYF+VyHnoXU5mOftoUfT7lMufHgv10oQJ6X3SfQ/qftFcx44HhYfGqwtpdLJRStSHdMa5r8qzosHxjk1MESrmurVCoCCmfEOVSY7KoFWX999FTIu/gDRJHJ+ikXtXTDUjVQ6gsEgMhUjhfdeV1qJtIn42IESOWgk7rRmAiji7sQoFDWQFXDf7nTlmflZBBq3+oUQmHxfjFCD7U81hj+YLZqsjBhq0xBSgL5YgosVAbKn1uATA=
+  app: comments-microservice
+  on:
+    branch: develop

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GET /v1 Should return status 200 and render Swagger docs 1`] = `
+"<!DOCTYPE html>
+<html lang=\\"en\\">
+<head>
+<meta charset=\\"utf-8\\">
+<title>Redirecting</title>
+</head>
+<body>
+<pre>Redirecting to <a href=\\"/v1/\\">/v1/</a></pre>
+</body>
+</html>
+"
+`;
