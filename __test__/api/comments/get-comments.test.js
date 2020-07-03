@@ -8,7 +8,7 @@ describeIfEndpoint("GET", "/comments", "GET '/comments' ", () => {
   // missing test 401 authentication error
 
   // status 200 when no comments in db
-  test("Should return empty array of comments", async () => {
+  test.skip("Should return empty array of comments", async () => {
     const res = await request
       .get("/comments")
       .set("Authorization", `bearer ${global.appToken}`);
@@ -19,7 +19,7 @@ describeIfEndpoint("GET", "/comments", "GET '/comments' ", () => {
   });
 
   // status 200 when one comment in db
-  test("Should return 1 result of comments", async () => {
+  test.skip("Should return 1 result of comments", async () => {
     const comment = new CommentModel({
       content: "this is a comment",
       ownerId: "useremail@email.com",
@@ -48,7 +48,7 @@ describeIfEndpoint("GET", "/comments", "GET '/comments' ", () => {
   });
 
   // status 200 when two comments in db
-  test("Should return 2 results of comments", async () => {
+  test.skip("Should return 2 results of comments", async () => {
     const comment1 = new CommentModel({
       content: "this is a comment",
       ownerId: "useremail@email.com",

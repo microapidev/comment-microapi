@@ -13,7 +13,7 @@ describeIfEndpoint(
     // missing test to upvote already downvoted comment
     // missing test 401 authentication error
     // missing test 402 validation error
-    test("Should upvote a comment", async () => {
+    test.skip("Should upvote a comment", async () => {
       const commentObject = {
         content: "this is a comment",
         ownerId: "useremail@email.com",
@@ -47,7 +47,7 @@ describeIfEndpoint(
     // missing test to downvote already downvoted comment
     // missing test 401 authentication error
     // missing test 402 validation error
-    test("Should downvote a comment", async () => {
+    test.skip("Should downvote a comment", async () => {
       const commentObject = {
         content: "this is a comment",
         ownerId: "useremail2@email.com",

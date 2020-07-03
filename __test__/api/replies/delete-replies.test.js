@@ -15,7 +15,7 @@ describeIfEndpoint(
     // missing test 402 validation error
 
     // status 200
-    test("Should delete a reply to a comment", async () => {
+    test.skip("Should delete a reply to a comment", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",
@@ -54,7 +54,7 @@ describeIfEndpoint(
     });
 
     // 404 not found error
-    test("Should fail to delete reply not found", async () => {
+    test.skip("Should fail to delete reply not found", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",

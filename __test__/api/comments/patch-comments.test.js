@@ -11,7 +11,7 @@ describeIfEndpoint(
   () => {
     // missing test 401 authentication error
     // missing test 404 not found error
-    it("Updates a comment", async () => {
+    test.skip("Updates a comment", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",

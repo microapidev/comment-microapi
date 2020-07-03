@@ -12,7 +12,7 @@ describeIfEndpoint(
     // missing test 401 authentication error
     // missing test 404 not found error
 
-    test("Should return result matching commentId", async () => {
+    test.skip("Should return result matching commentId", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",

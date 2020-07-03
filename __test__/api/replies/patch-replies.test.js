@@ -10,7 +10,7 @@ describeIfEndpoint(
   "/comments/:commentId/replies/:replyId",
   "PATCH /comments/:commentId/replies/:replyId",
   () => {
-    it("should update a reply to a comment", async () => {
+    test.skip("should update a reply to a comment", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",
