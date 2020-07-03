@@ -2,14 +2,14 @@
  * Module dependencies.
  */
 
-var app = require('../server');
-var debug = require('debug')('fblog:server');
-var http = require('http');
+var app = require("../server");
+var debug = require("debug")("fblog:server");
+var http = require("http");
 
 /**
  * Module to allow usage of process.env
  */
-require('dotenv').config();
+require("dotenv").config();
 
 //connect to mongodb
 console.log("\n \t Attempting to connect to database...");
@@ -39,10 +39,10 @@ var server = http.createServer(app);
 
 server.listen(port, () => {
   console.log(`\n \t Server listening on ${port}`);
-  console.log('\n \t Server Time: ' + Date());
+  console.log("\n \t Server Time: " + Date());
 });
-server.on('error', onError);
-server.on('listening', onListening);
+server.on("error", onError);
+server.on("listening", onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -69,20 +69,20 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
+  if (error.syscall !== "listen") {
     throw error;
   }
 
-  var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
       process.exit(1);
       break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
       process.exit(1);
       break;
     default:
@@ -96,6 +96,6 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  debug("Listening on " + bind);
 }
