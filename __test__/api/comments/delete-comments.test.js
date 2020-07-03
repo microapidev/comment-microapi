@@ -14,7 +14,7 @@ describeIfEndpoint(
     // missing test 402 validation error
 
     // 200 success
-    test("Should delete a comment", async () => {
+    test.skip("Should delete a comment", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",
@@ -36,7 +36,7 @@ describeIfEndpoint(
     });
 
     // 404 not found error
-    test("Should fail to delete comment not found", async () => {
+    test.skip("Should fail to delete comment not found", async () => {
       const comment = {
         _id: mongoose.Types.ObjectId(),
         content: "this is a comment",
