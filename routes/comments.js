@@ -4,8 +4,23 @@ const validationMiddleware = require("../middleware/validation");
 const validationRules = require("../utils/validationRules");
 const commentController = require("../controller/commentsController");
 const { appAuthMW } = require("../middleware/auth");
+const mongoose = require("mongoose");
+const { generateToken } = require("../utils/auth/tokenGenerator");
 
 // -------- DO NOT TOUCH!!! ---------
+//Dummy tokens for now. We will remove in production
+router.use((req, res, next) => {
+  req.headers["authorization"] =
+    "Bearer " +
+    generateToken(
+      {
+        applicationId: mongoose.Types.ObjectId(),
+      },
+      process.env.APP_SECRET
+    );
+  next();
+});
+
 // authentication middleware must be at the top
 router.use(appAuthMW);
 
