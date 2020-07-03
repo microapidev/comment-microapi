@@ -110,10 +110,14 @@ describeIfEndpoint(
         .set("Authorization", `bearer ${global.appToken}`);
 
       expect(res.status).toBe(200);
-      expect(res.body.data._id).toEqual(String(replyId));
+      expect(res.body.data.replyId).toEqual(String(replyId));
       expect(res.body.data.commentId).toEqual(String(comment._id));
-      expect(res.body.data.content).toEqual(String(reply.content));
       expect(res.body.data.ownerId).toEqual(String(reply.ownerId));
+      expect(res.body.data.content).toEqual(String(reply.content));
+      expect(res.body.data.numOfVotes).toEqual(0);
+      expect(res.body.data.numOfUpVotes).toEqual(0);
+      expect(res.body.data.numOfDownVotes).toEqual(0);
+      expect(res.body.data.numOfFlags).toEqual(0);
     });
   }
 );

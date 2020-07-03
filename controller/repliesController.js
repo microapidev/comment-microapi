@@ -29,7 +29,21 @@ const getCommentReplies = async (req, res, next) => {
     if (!replies.length) {
       message = " No replies found. ";
     }
-    return responseHandler(res, 200, replies, message);
+
+    const data = replies.map((reply) => {
+      return {
+        replyId: reply._id,
+        commentId: reply.commentId,
+        ownerId: reply.ownerId,
+        content: reply.content,
+        numOfVotes: reply.upVotes.length + reply.downVotes.length,
+        numOfUpVotes: reply.upVotes.length,
+        numOfDownVotes: reply.downVotes.length,
+        numOfFlags: reply.flags.length,
+      };
+    });
+
+    return responseHandler(res, 200, data, message);
   } catch (err) {
     next(err);
   }
@@ -58,7 +72,19 @@ const getASingleReply = async (req, res, next) => {
     if (!reply) {
       return next(new CustomError(404, " Reply not found "));
     }
-    return responseHandler(res, 200, reply, " Reply found ");
+
+    const data = {
+      replyId: reply._id,
+      commentId: reply.commentId,
+      ownerId: reply.ownerId,
+      content: reply.content,
+      numOfVotes: reply.upVotes.length + reply.downVotes.length,
+      numOfUpVotes: reply.upVotes.length,
+      numOfDownVotes: reply.downVotes.length,
+      numOfFlags: reply.flags.length,
+    };
+
+    return responseHandler(res, 200, data, " Reply found ");
   } catch (err) {
     next(
       new CustomError(500, " Something went wrong, please try again later,err")
@@ -185,11 +211,11 @@ const updateReply = async (req, res, next) => {
   }
 };
 
-//PATCH downvote a reply
-const downvoteReply = async (req, res, next) => {
+//PATCH upvote a reply
+const upvoteReply = async (req, res, next) => {
   const commentId = req.params.commentId;
   const replyId = req.params.replyId;
-  const voterId = req.body.voterId;
+  const ownerId = req.body.ownerId;
 
   try {
     let comment = await Comments.findById(commentId);
@@ -200,17 +226,71 @@ const downvoteReply = async (req, res, next) => {
     if (!reply) {
       return next(new CustomError(404, "Reply not found or deleted"));
     }
-    if (reply.upVotes.includes(voterId)) {
+
+    if (reply.downVotes.includes(ownerId)) {
+      const voterIndex = reply.downVotes.indexOf(ownerId);
+      //if index exists
+      if (voterIndex > -1) {
+        //delete that index
+        reply.downVotes.splice(voterIndex, 1);
+      }
+    }
+    if (reply.upVotes.includes(ownerId)) {
+      const ownerIdx = reply.upVotes.indexOf(ownerId);
+      if (ownerIdx > -1) {
+        reply.upVotes.splice(ownerIdx, 1);
+      }
+    } else {
+      // add user to the top of the upvotes array
+      reply.upVotes.unshift(ownerId);
+    }
+    await reply.updateOne({
+      _id: replyId,
+      $push: { upVotes: ownerId },
+    });
+    return responseHandler(
+      res,
+      200,
+      {
+        commentId: commentId,
+        replyId: replyId,
+        numOfVotes: reply.downVotes.length + reply.upVotes.length + 1,
+        numOfdownVotes: reply.downVotes.length,
+        numOfupVotes: reply.upVotes.length + 1,
+      },
+      "Reply downvoted successfully"
+    );
+  } catch (error) {
+    return next(new CustomError(500, "Something went wrong, try again", error));
+  }
+};
+
+//PATCH downvote a reply
+const downvoteReply = async (req, res, next) => {
+  const commentId = req.params.commentId;
+  const replyId = req.params.replyId;
+  const ownerId = req.body.ownerId;
+
+  try {
+    let comment = await Comments.findById(commentId);
+    if (!comment) {
+      return next(new CustomError(404, "Comment not found or deleted"));
+    }
+    let reply = await Replies.findById(replyId);
+    if (!reply) {
+      return next(new CustomError(404, "Reply not found or deleted"));
+    }
+    if (reply.upVotes.includes(ownerId)) {
       return next(
         new CustomError(409, "You've upvoted this reply, you can't downvote")
       );
     }
-    if (reply.downVotes.includes(voterId)) {
+    if (reply.downVotes.includes(ownerId)) {
       return next(new CustomError(409, "You've already downvoted this reply"));
     }
     await reply.updateOne({
       _id: replyId,
-      $push: { downVotes: voterId },
+      $push: { downVotes: ownerId },
     });
     return responseHandler(
       res,
@@ -275,12 +355,12 @@ const getReplyVotes = async (req, res, next) => {
       votes.push(...reply.upVotes);
       votes.push(...reply.downVotes);
     } else {
-      if (voteType === "upvote") {
+      if (voteType.toString() === "upvote") {
         // Add upvotes only
         votes.push(...reply.upVotes);
       }
 
-      if (voteType === "downvote") {
+      if (voteType.toString() === "downvote") {
         // Add downvotes only
         votes.push(...reply.downVotes);
       }
@@ -367,7 +447,7 @@ const flagCommentReplies = async (req, res, next) => {
   }
 };
 
-//DEETE Reply
+//DELETE Reply
 const deleteCommentReply = async (req, res, next) => {
   const { commentId, replyId } = req.params;
   const { ownerId } = req.body;
@@ -411,6 +491,7 @@ module.exports = {
   getASingleReply,
   createReply,
   updateReply,
+  upvoteReply,
   downvoteReply,
   getReplyVotes,
   flagCommentReplies,

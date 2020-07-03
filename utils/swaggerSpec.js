@@ -9,7 +9,7 @@ const swaggerDefinition = {
     description:
       "This is the REST API Documentation for the Comments MicroAPI created by the MicroAPI team", // short description of the app
   },
-  basePath: "/", // the basepath of your endpoint
+  basePath: "/v1", // the basepath of your endpoint
   components: {
     securitySchemes: {
       Bearer: {

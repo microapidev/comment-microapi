@@ -13,7 +13,7 @@ const getCommentVotesSchema = {
   }),
 
   query: Joi.object({
-    voteType: Joi.string().allow("upvote").allow("downvote"),
+    voteType: Joi.string().valid("upvote").valid("downvote"),
   }),
 };
 
