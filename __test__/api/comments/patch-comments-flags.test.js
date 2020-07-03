@@ -12,7 +12,7 @@ describeIfEndpoint(
     // missing test for empty body or no ownerId
     // missing test 401 authentication error
     // missing test 404 not found error
-    it("Flags a comment", async () => {
+    test.skip("Flags a comment", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",

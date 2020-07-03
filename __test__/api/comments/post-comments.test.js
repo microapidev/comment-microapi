@@ -8,7 +8,7 @@ describeIfEndpoint("POST", "/comments", "POST '/comments'", () => {
   // missing test 404 not found error
   // missing test to POST with missing required parameters
   // missing test to POST with empty body
-  test("Should create comment", async () => {
+  test.skip("Should create comment", async () => {
     const res = await request
       .post("/comments")
       .set("Authorization", `bearer ${global.appToken}`)

@@ -17,7 +17,7 @@ describeIfEndpoint(
     // missing test 404 not found error
 
     // status 200 for empty votes array - no votes
-    test("Get all votes of a comment's reply", async () => {
+    test.skip("Get all votes of a comment's reply", async () => {
       const comment = new CommentModel({
         content: "This is a comment",
         ownerId: "useremail@email.com",

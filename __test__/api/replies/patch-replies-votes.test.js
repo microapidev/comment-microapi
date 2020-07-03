@@ -18,7 +18,7 @@ describeIfEndpoint(
     // missing test 404 not found error
 
     // downvote when already downvoted
-    it("should downvote a reply to a comment", async () => {
+    test.skip("should downvote a reply to a comment", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",

@@ -13,7 +13,7 @@ describeIfEndpoint(
     // missing test 404 not found error
     // missing test to POST with missing required parameters
     // missing test to POST with empty body
-    test("Should create new reply to comment", async () => {
+    test.skip("Should create new reply to comment", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",

@@ -12,7 +12,7 @@ describeIfEndpoint(
   () => {
     // missing test 401 authentication error
     // missing test 404 not found error
-    test("Should return empty reply for a comment", async () => {
+    test.skip("Should return empty reply for a comment", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",
@@ -29,7 +29,7 @@ describeIfEndpoint(
       expect(res.body.data.length).toBe(0);
     });
 
-    test("Should return all (1) reply for a comment", async () => {
+    test.skip("Should return all (1) reply for a comment", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",
@@ -58,7 +58,7 @@ describeIfEndpoint(
       expect(res.body.data[0].commentId).toEqual(reply.commentId);
     });
 
-    test("Should return all (2) replies for a comment", async () => {
+    test.skip("Should return all (2) replies for a comment", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",

@@ -13,7 +13,7 @@ describeIfEndpoint(
     // missing test 401 authentication error
     // missing test 404 not found error
 
-    it("Flags a reply to a comment", async () => {
+    test.skip("Flags a reply to a comment", async () => {
       const comment = new CommentModel({
         content: "this is a comment",
         ownerId: "useremail@email.com",
