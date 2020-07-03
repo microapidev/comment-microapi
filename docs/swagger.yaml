@@ -25,12 +25,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -77,12 +77,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: object
@@ -132,12 +132,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -192,12 +192,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: object
@@ -251,12 +251,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -311,12 +311,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -363,12 +363,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -421,12 +421,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -476,12 +476,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -536,12 +536,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: object
@@ -604,12 +604,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -667,12 +667,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -723,12 +723,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -781,12 +781,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: object
@@ -849,12 +849,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -902,12 +902,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -960,12 +960,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1023,12 +1023,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1093,12 +1093,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1161,12 +1161,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1233,12 +1233,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1305,12 +1305,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1377,12 +1377,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1438,12 +1438,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1501,12 +1501,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1569,12 +1569,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1635,12 +1635,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1708,12 +1708,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1779,12 +1779,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1856,12 +1856,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1931,12 +1931,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -2006,12 +2006,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -2382,12 +2382,12 @@ components:
       type: object
       required:
         - status
-        - message
+        - error
         - data
       properties:
         status:
           type: string
-        message:
+        error:
           type: string
         data:
           type: array
