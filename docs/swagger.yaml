@@ -25,12 +25,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -77,12 +77,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: object
@@ -132,12 +132,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -192,12 +192,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: object
@@ -251,12 +251,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -311,12 +311,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -363,12 +363,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -429,12 +429,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -484,12 +484,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -544,12 +544,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: object
@@ -612,12 +612,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     $ref: "#/components/schemas/Application"
@@ -673,12 +673,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -730,12 +730,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -789,12 +789,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: object
@@ -857,12 +857,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -910,12 +910,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -968,12 +968,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     $ref: "#/components/schemas/Comment"
@@ -1029,12 +1029,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1099,12 +1099,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1167,12 +1167,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1239,12 +1239,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1311,12 +1311,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1383,12 +1383,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1444,12 +1444,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1507,12 +1507,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1575,12 +1575,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     $ref: "#/components/schemas/Reply"
@@ -1639,12 +1639,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1712,12 +1712,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1783,12 +1783,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1860,12 +1860,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1935,12 +1935,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -2010,12 +2010,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -2069,16 +2069,16 @@ components:
     CreateOrganization: # Can be referenced as '#/components/schemas/CreateOrganization'
       type: object
       required:
-        - name
-        - email
+        - organizationName
+        - organizationEmail
         - secret
         - adminName
         - adminEmail
         - adminPassword
       properties:
-        name:
+        organizationName:
           type: string
-        email:
+        organizationEmail:
           type: string
           format: email
         secret:
@@ -2091,6 +2091,7 @@ components:
         adminPassword:
           type: string
           format: password
+          min: 8
 
     UpdateOrganization: # Can be referenced as '#/components/schemas/UpdateOrganization'
       type: object
@@ -2102,14 +2103,6 @@ components:
           format: email
         secret:
           type: string
-<<<<<<< HEAD
-        adminName:
-          type: string
-        adminEmail:
-          type: string
-          format: email
-=======
->>>>>>> c228c550503256aac6aa33ac12b93e2962dea50f
 
     LoginOrganization: # Can be referenced as '#/components/schemas/LoginOrganization'
       type: object
@@ -2123,6 +2116,8 @@ components:
           format: email
         password:
           type: string
+          format: password
+          min: 8
         organizationId:
           type: string
 
@@ -2154,14 +2149,11 @@ components:
     CreateAdmin: # Can be referenced as '#/components/schemas/CreateAdmin'
       type: object
       required:
-        - organizationId
         - fullname
         - email
         - password
       properties:
         fullname:
-          type: string
-        organizationId:
           type: string
         email:
           type: string
@@ -2169,6 +2161,7 @@ components:
         password:
           type: string
           format: password
+          min: 8
 
     UpdateAdmin: # Can be referenced as '#/components/schemas/UpdateAdmin'
       type: object
@@ -2191,14 +2184,8 @@ components:
       type: object
       required:
         - name
-        - organizationId
-        - createdBy
       properties:
         name:
-          type: string
-        organizationId:
-          type: string
-        createdBy:
           type: string
 
     ChangePassword: # Can be referenced as '#/components/schemas/ChangePassword'
@@ -2210,9 +2197,11 @@ components:
         oldPassword:
           type: string
           format: password
+          min: 8
         newPassword:
           type: string
           format: password
+          min: 8
 
     Comment: # Can be referenced as '#/components/schemas/Comment'
       type: object
@@ -2396,12 +2385,12 @@ components:
       type: object
       required:
         - status
-        - message
+        - error
         - data
       properties:
         status:
           type: string
-        message:
+        error:
           type: string
         data:
           type: array
