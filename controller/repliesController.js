@@ -172,7 +172,7 @@ const updateReply = async (req, res, next) => {
       res,
       200,
       { content: content, ownerId: ownerId },
-      "Updated sucessfully"
+      " Reply Upvoted sucessfully"
     );
   } catch (error) {
     return next(
