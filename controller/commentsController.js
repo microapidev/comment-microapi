@@ -182,14 +182,16 @@ exports.flagComment = async (req, res, next) => {
 
 // issue#114_airon begins
 exports.getComments = async (req, res, next) => {
-  const applicationId = req.headers.token; //this will be retrieved from decoded api token after full auth implementation
+  const { applicationId } = req.token; //this will be retrieved from decoded api token after full auth implementation
+  console.log(applicationId);
   const { refId, origin, ownerId, isFlagged } = req.query;
   let query = { applicationId: applicationId };
   if (refId) query.refId = refId;
   if (origin) query.commentOrigin = origin;
   if (ownerId) query.ownerId = ownerId;
   try {
-    await Comments.find(query)
+    await Comments.find()
+      .populate("replies")
       .then((comments) => {
         const allComments = comments.map((comment) => {
           return {
