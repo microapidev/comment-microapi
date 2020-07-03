@@ -1,11 +1,7 @@
 const app = require("../../server");
 const CommentModel = require("../../models/comments");
 const ReplyModel = require("../../models/replies");
-<<<<<<< HEAD
 // const mongoose = require("mongoose");
-=======
-const mongoose = require("mongoose");
->>>>>>> 55236813d3e526f06dc8543db8239eb9304ff0c3
 const supertest = require("supertest");
 const request = supertest(app);
 const { describeIfEndpoint } = require("../helpers/conditionalTests");
