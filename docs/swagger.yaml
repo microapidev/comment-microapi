@@ -742,7 +742,6 @@ paths:
                     items:
                       type: string
                     example: []
-                      $ref: "#/components/schemas/Application"
 
         "401":
           description: Authentication error
