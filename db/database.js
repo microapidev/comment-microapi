@@ -16,7 +16,7 @@ const connect = async () => {
       await mongoose.connect(
         process.env.NODE_ENV === "test"
           ? global.__MONGO_URI__
-          : DOCKER_MONGO
+          : DOCKER_MONGO === "true"
           ? url
           : process.env.DB_URL,
         {
@@ -24,9 +24,6 @@ const connect = async () => {
           useCreateIndex: true,
           useFindAndModify: false,
           useUnifiedTopology: true,
-          // reconnectTries: Number.MAX_VALUE,
-          // reconnectInterval: 500,
-          // connectTimeoutMS:1000,
         }
       );
     } catch (err) {
