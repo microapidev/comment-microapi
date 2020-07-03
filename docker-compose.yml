@@ -22,7 +22,7 @@ services:
       - SYSTEM_SECRET=${SYSTEM_SECRET}
       - DISABLE_AUTH=${DISABLE_AUTH}
     ports:
-      - "80:4000"
+      - "8023:4000"
     volumes:
       - .:/src/app
       - node_modules:/src/app/node_modules
