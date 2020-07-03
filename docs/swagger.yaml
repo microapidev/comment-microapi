@@ -2048,15 +2048,15 @@ components:
       type: object
       required:
         - organizationId
-        - name
-        - email
+        - organizationName
+        - organizationEmail
         - secret
       properties:
         organizationId:
           type: string
-        name:
+        organizationName:
           type: string
-        email:
+        organizationEmail:
           type: string
           format: email
         secret:
@@ -2065,16 +2065,16 @@ components:
     CreateOrganization: # Can be referenced as '#/components/schemas/CreateOrganization'
       type: object
       required:
-        - name
-        - email
+        - organizationName
+        - organizationEmail
         - secret
         - adminName
         - adminEmail
         - adminPassword
       properties:
-        name:
+        organizationName:
           type: string
-        email:
+        organizationEmail:
           type: string
           format: email
         secret:
@@ -2102,15 +2102,17 @@ components:
     LoginOrganization: # Can be referenced as '#/components/schemas/LoginOrganization'
       type: object
       required:
-        - email
+        - organizationEmail
         - password
         - organizationId
       properties:
-        email:
+        organizationEmail:
           type: string
           format: email
         password:
           type: string
+          format: password
+          min: 8
         organizationId:
           type: string
 
