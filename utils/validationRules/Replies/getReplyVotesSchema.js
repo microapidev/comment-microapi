@@ -12,7 +12,7 @@ const getReplyVotesSchema = {
     replyId: Joi.string().required(),
   }),
   query: Joi.object().keys({
-    voteType: Joi.string(),
+    voteType: Joi.string().valid("upvote").valid("downvote"),
   }),
 };
 
