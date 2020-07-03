@@ -16,7 +16,7 @@ const connect = async () => {
       await mongoose.connect(
         process.env.NODE_ENV === "test"
           ? global.__MONGO_URI__
-          : DOCKER_MONGO
+          : DOCKER_MONGO === "true"
           ? url
           : process.env.DB_URL,
         {
