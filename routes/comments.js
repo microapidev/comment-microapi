@@ -82,4 +82,10 @@ router.get(
   commentController.getComments
 );
 
+router.get(
+  "/:commentId",
+  validationMiddleware(validationRules.getSingleCommentSchema),
+  commentController.getSingleComment
+);
+
 module.exports = router;
