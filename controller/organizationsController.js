@@ -3,7 +3,10 @@ const Admin = require("../models/admins");
 const CustomError = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
 const { getOrgToken } = require("../utils/auth/tokenGenerator");
-const { hashPassword } = require("../utils/auth/passwordUtils");
+const {
+  hashPassword,
+  comparePassword,
+} = require("../utils/auth/passwordUtils");
 
 const orgCtrl = {
   async createOrganization(req, res, next) {
@@ -101,6 +104,41 @@ const orgCtrl = {
       next(new CustomError(400, "An error occured generating token"));
       return;
     }
+  },
+
+  async getOrganizationToken(req, res, next) {
+    // find admin account in organization
+    const { email, password, organizationId } = req.body;
+
+    // find email of admin in organization
+    const admin = await Admin.find({ email, organizationId });
+
+    // if not found return error
+    if (!admin) {
+      next(new CustomError(400, "Invalid email or password"));
+      return;
+    }
+
+    //if found compare password
+    const passwordMatched = await comparePassword(password, admin.password);
+
+    //if not password matched return error
+    if (!passwordMatched) {
+      next(new CustomError(400, "Invalid email or password"));
+      return;
+    }
+
+    //if password matched generateToken
+    const organizationToken = await getOrgToken(organizationId, admin._id);
+
+    return responseHandler(
+      res,
+      200,
+      {
+        organizationToken,
+      },
+      "Organization token generated successfully"
+    );
   },
 };
 
