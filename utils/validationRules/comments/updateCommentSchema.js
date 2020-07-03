@@ -8,6 +8,10 @@ const updateCommentSchema = {
     authorization: Joi.string().required(),
   }),
 
+  params: Joi.object({
+    commentId: Joi.string().required(),
+  }),
+
   body: Joi.object().keys({
     content: Joi.string().min(1),
     ownerId: Joi.string().required(),
