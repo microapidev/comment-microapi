@@ -189,7 +189,7 @@ const updateReply = async (req, res, next) => {
 const upvoteReply = async (req, res, next) => {
   const commentId = req.params.commentId;
   const replyId = req.params.replyId;
-  const voterId = req.body.voterId;
+  const ownerId = req.body.ownerId;
 
   try {
     let comment = await Comments.findById(commentId);
@@ -201,26 +201,26 @@ const upvoteReply = async (req, res, next) => {
       return next(new CustomError(404, "Reply not found or deleted"));
     }
 
-    if (reply.downVotes.includes(voterId)) {
-      const voterIndex = reply.downVotes.indexOf(voterId);
+    if (reply.downVotes.includes(ownerId)) {
+      const voterIndex = reply.downVotes.indexOf(ownerId);
       //if index exists
       if (voterIndex > -1) {
         //delete that index
         reply.downVotes.splice(voterIndex, 1);
       }
     }
-    if (reply.upVotes.includes(voterId)) {
-      const voterIdx = reply.upVotes.indexOf(voterId);
-      if (voterIdx > -1) {
-        reply.upVotes.splice(voterIdx, 1);
+    if (reply.upVotes.includes(ownerId)) {
+      const ownerIdx = reply.upVotes.indexOf(ownerId);
+      if (ownerIdx > -1) {
+        reply.upVotes.splice(ownerIdx, 1);
       }
     } else {
       // add user to the top of the upvotes array
-      reply.upVotes.unshift(voterId);
+      reply.upVotes.unshift(ownerId);
     }
     await reply.updateOne({
       _id: replyId,
-      $push: { upVotes: voterId },
+      $push: { upVotes: ownerId },
     });
     return responseHandler(
       res,
@@ -243,7 +243,7 @@ const upvoteReply = async (req, res, next) => {
 const downvoteReply = async (req, res, next) => {
   const commentId = req.params.commentId;
   const replyId = req.params.replyId;
-  const voterId = req.body.voterId;
+  const ownerId = req.body.ownerId;
 
   try {
     let comment = await Comments.findById(commentId);
@@ -254,17 +254,17 @@ const downvoteReply = async (req, res, next) => {
     if (!reply) {
       return next(new CustomError(404, "Reply not found or deleted"));
     }
-    if (reply.upVotes.includes(voterId)) {
+    if (reply.upVotes.includes(ownerId)) {
       return next(
         new CustomError(409, "You've upvoted this reply, you can't downvote")
       );
     }
-    if (reply.downVotes.includes(voterId)) {
+    if (reply.downVotes.includes(ownerId)) {
       return next(new CustomError(409, "You've already downvoted this reply"));
     }
     await reply.updateOne({
       _id: replyId,
-      $push: { downVotes: voterId },
+      $push: { downVotes: ownerId },
     });
     return responseHandler(
       res,
