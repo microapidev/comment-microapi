@@ -30,9 +30,11 @@ You will first need to setup your local environment and ensure that all configur
 4. In your terminal, run `npm install`.
 5. In your terminal, run `cp .env.example .env`.
 6. In your terminal, run `npm start`.
+
 ```
 BASE_URL=
 ```
+
 ### Before making a pull request/submitting your PR for review:
 
 - Run `npm run lint` to find errors in code syntax/format
@@ -47,6 +49,7 @@ BASE_URL=
 This model contains the following fields
 
 ```
+ref_id: ref id of the origin of the comment
 comment_body: string (the body of the comment)
 comment_origin: string ( the origin of the comment; Bot or Reports from FE)
 isFlagged: boolean( if the comment has been flagged for sensitive words)
@@ -66,7 +69,7 @@ comment_id: schema ref ( the details of the person that commented)
 isFlagged: boolean( if the comment has been flagged for sensitive words)
 upVotes: number
 downVotes:  number
-
+user: schema ref ( the details of the person that commented);
 ```
 
 ### Users
