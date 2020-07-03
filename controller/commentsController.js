@@ -5,7 +5,7 @@ const Comments = require("../models/comments");
 const mongoose = require("mongoose");
 const CustomError = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
-const Applications = require("../models/applications");
+//const Applications = require("../models/applications");
 
 exports.upvoteComment = async (req, res, next) => {
   try {
