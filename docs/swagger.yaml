@@ -2444,6 +2444,9 @@ components:
       description: Filters comments, or replies, by vote type. If omitted, the response includes all comments, or replies, regardless of their vote type.
       schema:
         type: string
+        enum:
+          - upvote
+          - downvote
 
     refIdParam: # Can be referenced via '#/components/parameters/refIdParam'
       in: query
