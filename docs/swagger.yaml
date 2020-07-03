@@ -2091,9 +2091,9 @@ components:
     UpdateOrganization: # Can be referenced as '#/components/schemas/UpdateOrganization'
       type: object
       properties:
-        name:
+        organizationName:
           type: string
-        email:
+        organizationEmail:
           type: string
           format: email
         secret:
