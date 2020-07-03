@@ -301,12 +301,12 @@ const getReplyVotes = async (req, res, next) => {
       votes.push(...reply.upVotes);
       votes.push(...reply.downVotes);
     } else {
-      if (voteType === "upvote") {
+      if (voteType.toString() === "upvote") {
         // Add upvotes only
         votes.push(...reply.upVotes);
       }
 
-      if (voteType === "downvote") {
+      if (voteType.toString() === "downvote") {
         // Add downvotes only
         votes.push(...reply.downVotes);
       }
