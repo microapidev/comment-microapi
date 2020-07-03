@@ -8,8 +8,8 @@ const { describeIfEndpoint } = require("../helpers/conditionalTests");
 
 describeIfEndpoint(
   "PATCH",
-  "/comments/:commentId",
-  "PATCH /comments/:commentId",
+  "/v1/comments/:commentId",
+  "PATCH /v1/comments/:commentId",
   () => {
     it("Updates a comment", async () => {
       const comment = new CommentModel({
@@ -21,7 +21,7 @@ describeIfEndpoint(
       await comment.save();
 
       const res = await request
-        .patch(`/comments/${comment._id}`)
+        .patch(`/v1/comments/${comment._id}`)
         .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: comment.ownerId,
@@ -37,8 +37,8 @@ describeIfEndpoint(
 
 describeIfEndpoint(
   "PATCH",
-  "/comments/:commentId/flag",
-  "PATCH /comments/:commentId/flag",
+  "/v1/comments/:commentId/flag",
+  "PATCH /v1/comments/:commentId/flag",
   () => {
     it("Flags a comment", async () => {
       const comment = new CommentModel({
@@ -50,7 +50,7 @@ describeIfEndpoint(
       await comment.save();
 
       const res = await request
-        .patch(`/comments/${comment._id}/flag`)
+        .patch(`/v1/comments/${comment._id}/flag`)
         .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: "offendeduser@email.com",
@@ -65,8 +65,8 @@ describeIfEndpoint(
 
 describeIfEndpoint(
   "PATCH",
-  "/comments/:commentId/replies/:replyId/flag",
-  "PATCH /comments/:commentId/replies/:replyId/flag",
+  "/v1/comments/:commentId/replies/:replyId/flag",
+  "PATCH /v1/comments/:commentId/replies/:replyId/flag",
   () => {
     it("Flags a reply to a comment", async () => {
       const comment = new CommentModel({
@@ -87,7 +87,7 @@ describeIfEndpoint(
       await reply.save();
 
       const res = await request
-        .patch(`/comments/${comment._id}/replies/${reply._id}/flag`)
+        .patch(`/v1/comments/${comment._id}/replies/${reply._id}/flag`)
         .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: "offendeduser@email.com",
@@ -102,8 +102,8 @@ describeIfEndpoint(
 
 describeIfEndpoint(
   "PATCH",
-  "/comments/:commentId/replies/:replyId/downvote",
-  "PATCH /comments/:commentId/replies/:replyId/downvote",
+  "/v1/comments/:commentId/replies/:replyId/downvote",
+  "PATCH /v1/comments/:commentId/replies/:replyId/downvote",
   () => {
     it("should downvote a reply to a comment", async () => {
       const comment = new CommentModel({
@@ -126,7 +126,7 @@ describeIfEndpoint(
       await comment.save();
 
       const res = await request()
-        .patch(`/comments/${comment._id}/replies/${reply._id}/downvote`)
+        .patch(`/v1/comments/${comment._id}/replies/${reply._id}/downvote`)
         .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: "offendeduser@gmail.com",
@@ -145,8 +145,8 @@ describeIfEndpoint(
 
 describeIfEndpoint(
   "PATCH",
-  "/comments/:commentId/replies/:replyId",
-  "PATCH /comments/:commentId/replies/:replyId",
+  "/v1/comments/:commentId/replies/:replyId",
+  "PATCH /v1/comments/:commentId/replies/:replyId",
   () => {
     it("should update a reply to a comment", async () => {
       const comment = new CommentModel({
@@ -168,7 +168,7 @@ describeIfEndpoint(
       await comment.save();
 
       const res = await request
-        .patch(`/comments/${comment._id}/replies/${reply._id}`)
+        .patch(`/v1/comments/${comment._id}/replies/${reply._id}`)
         .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: reply.ownerId,

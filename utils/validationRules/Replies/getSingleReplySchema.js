@@ -10,8 +10,8 @@ const getSingleReplySchema = {
   }),
 
   params: Joi.object().keys({
-    commentId: Joi.string().length(24).required(),
-    replyId: Joi.string().length(24).required(),
+    commentId: Joi.string().required(),
+    replyId: Joi.string().required(),
   }),
 };
 

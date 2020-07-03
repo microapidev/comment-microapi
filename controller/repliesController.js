@@ -29,7 +29,21 @@ const getCommentReplies = async (req, res, next) => {
     if (!replies.length) {
       message = " No replies found. ";
     }
-    return responseHandler(res, 200, replies, message);
+
+    const data = replies.map((reply) => {
+      return {
+        replyId: reply._id,
+        commentId: reply.commentId,
+        ownerId: reply.ownerId,
+        content: reply.content,
+        numOfVotes: reply.upVotes.length + reply.downVotes.length,
+        numOfUpVotes: reply.upVotes.length,
+        numOfDownVotes: reply.downVotes.length,
+        numOfFlags: reply.flags.length,
+      };
+    });
+
+    return responseHandler(res, 200, data, message);
   } catch (err) {
     next(err);
   }
@@ -58,7 +72,19 @@ const getASingleReply = async (req, res, next) => {
     if (!reply) {
       return next(new CustomError(404, " Reply not found "));
     }
-    return responseHandler(res, 200, reply, " Reply found ");
+
+    const data = {
+      replyId: reply._id,
+      commentId: reply.commentId,
+      ownerId: reply.ownerId,
+      content: reply.content,
+      numOfVotes: reply.upVotes.length + reply.downVotes.length,
+      numOfUpVotes: reply.upVotes.length,
+      numOfDownVotes: reply.downVotes.length,
+      numOfFlags: reply.flags.length,
+    };
+
+    return responseHandler(res, 200, data, " Reply found ");
   } catch (err) {
     next(
       new CustomError(500, " Something went wrong, please try again later,err")
@@ -329,12 +355,12 @@ const getReplyVotes = async (req, res, next) => {
       votes.push(...reply.upVotes);
       votes.push(...reply.downVotes);
     } else {
-      if (voteType === "upvote") {
+      if (voteType.toString() === "upvote") {
         // Add upvotes only
         votes.push(...reply.upVotes);
       }
 
-      if (voteType === "downvote") {
+      if (voteType.toString() === "downvote") {
         // Add downvotes only
         votes.push(...reply.downVotes);
       }

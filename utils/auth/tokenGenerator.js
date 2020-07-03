@@ -18,7 +18,7 @@ const generateToken = (payload, secret, duration = "30d") => {
 };
 
 // appToken generator
-exports.getAppToken = async (applicationId, adminId) => {
+const getAppToken = async (applicationId, adminId) => {
   if (!mongoose.Types.ObjectId.isValid(applicationId)) {
     throw new CustomError(400, "Invalid application ID");
   }
@@ -56,7 +56,7 @@ exports.getAppToken = async (applicationId, adminId) => {
 };
 
 // orgToken generator
-exports.getOrgToken = async (organizationId, adminId) => {
+const getOrgToken = async (organizationId, adminId) => {
   if (!mongoose.Types.ObjectId.isValid(organizationId)) {
     throw new CustomError(400, "Invalid organization ID");
   }
@@ -72,7 +72,10 @@ exports.getOrgToken = async (organizationId, adminId) => {
   }
 
   // confirm adminId belongs to organization
-  const admin = await Admin.findById(adminId, organizationId);
+  const admin = await Admin.find({
+    _id: adminId,
+    organizationId: organizationId,
+  });
   if (!admin) {
     throw new CustomError(
       401,
@@ -87,4 +90,10 @@ exports.getOrgToken = async (organizationId, adminId) => {
     },
     process.env.ORG_SECRET
   );
+};
+
+module.exports = {
+  generateToken,
+  getAppToken,
+  getOrgToken,
 };
