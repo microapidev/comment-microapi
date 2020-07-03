@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const organizationRoutes = require("./routes/organizations");
 const commentRoutes = require("./routes/comments");
 const documentationRoutes = require("./routes/documentation");
 const CustomError = require("./utils/customError");
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 //setup app routes
+app.use("/organizations", organizationRoutes);
 app.use("/comments", commentRoutes);
 app.use(["/", "/documentation"], documentationRoutes);
 
