@@ -200,6 +200,49 @@ const upvoteReply = async (req, res, next) => {
     if (!reply) {
       return next(new CustomError(404, "Reply not found or deleted"));
     }
+    if (!mongoose.Types.ObjectId.isValid(replyId)) {
+      next(new CustomError(422, "invalid ID"));
+      return;
+    }
+    const reply = await Replies.findById({ _id: replyId });
+
+    //if user exists in downvotes array
+    if (reply.downVotes.includes(ownerId)) {
+      //get index of user in downvotes array
+      const voterIndex = reply.downVotes.indexOf(ownerId);
+      //if index exists
+      if (voterIndex > -1) {
+        //delete that index
+        reply.downVotes.splice(voterIndex, 1);
+      }
+    }
+
+    //same as above for upvotes
+    if (reply.upVotes.includes(ownerId)) {
+      const voterIdx = comment.Replies.upVotes.indexOf(ownerId);
+      if (voterIdx > -1) {
+        reply.upVotes.splice(voterIdx, 1);
+      }
+    } else {
+      // add user to the top of the upvotes array
+      reply.upVotes.unshift(ownerId);
+      isUpvoted = true;
+    }
+
+    //save the comment vote
+    reply.save();
+
+    //get total number of elements in array
+    const totalUpVotes = comment.upVotes.length;
+    const totalDownVotes = comment.downVotes.length;
+
+    //get total number of votes
+    const totalVotes = totalUpVotes + totalDownVotes;
+
+    //Check the comment vote state
+    const message = isUpvoted
+      ? "Comment upvote added successfully!"
+      : "Comment upvote removed successfully!";
     if (reply.upVotes.includes(voterId)) {
       return next(
         new CustomError(409, "You've downvoted this reply, you can't upvote")
