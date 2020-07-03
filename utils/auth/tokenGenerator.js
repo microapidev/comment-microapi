@@ -72,7 +72,10 @@ exports.getOrgToken = async (organizationId, adminId) => {
   }
 
   // confirm adminId belongs to organization
-  const admin = await Admin.findById(adminId, organizationId);
+  const admin = await Admin.find({
+    _id: adminId,
+    organizationId: organizationId,
+  });
   if (!admin) {
     throw new CustomError(
       401,
