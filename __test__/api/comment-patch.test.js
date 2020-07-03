@@ -1,12 +1,7 @@
 const app = require("../../server");
 const CommentModel = require("../../models/comments");
-<<<<<<< HEAD
-//const ReplyModel = require("../../models/replies");
-const mongoose = require("mongoose");
-=======
 const ReplyModel = require("../../models/replies");
 // const mongoose = require("mongoose");
->>>>>>> b489ca5a5e80f784ae9fcfbe7be41d33b09febce
 const supertest = require("supertest");
 const request = supertest(app);
 const { describeIfEndpoint } = require("../helpers/conditionalTests");
@@ -101,6 +96,46 @@ describeIfEndpoint(
       expect(res.status).toBe(200);
       expect(res.body.data.commentId).toBeTruthy();
       expect(res.body.data.numOfFlags).toEqual(1);
+    });
+  }
+);
+
+describeIfEndpoint(
+  "PATCH",
+  "/v1/comments/:commentId/replies/:replyId/upvote",
+  "PATCH /v1/comments/:commentId/replies/:replyId/upvote",
+  () => {
+    it("Upvotes a comment reply", async () => {
+      const comment = new CommentModel({
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
+        applicationId: global.application._id,
+      });
+
+      const reply = new ReplyModel({
+        content: "this is a reply",
+        ownerId: "useremail@email.com",
+        commentId: global.application._id,
+      });
+      reply.upVotes.push(reply.ownerId);
+      await reply.save();
+      comment.replies.push(reply);
+      await comment.save();
+
+      const res = await request
+        .patch(`/v1/comments/${comment._id}/replies/${reply._id}/upvote`)
+        .set("Authorization", `bearer ${global.appToken}`)
+        .send({
+          ownerId: "offendeduser@email.com",
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.body.data.replyId).toBeTruthy();
+      expect(res.body.data.commentId).toBeTruthy();
+      expect(res.body.data.numOfVotes).toBeTruthy();
+      expect(res.body.data.numOfUpVotes).toBeTruthy();
+      expect(res.body.data.numOfDownVotes).toBeTruthy();
     });
   }
 );
