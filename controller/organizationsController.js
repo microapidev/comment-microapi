@@ -111,7 +111,7 @@ const orgCtrl = {
     const { email, password, organizationId } = req.body;
 
     // find email of admin in organization
-    const admin = await Admin.find({ email, organizationId });
+    const admin = await Admin.findOne({ email, organizationId });
 
     // if not found return error
     if (!admin) {
@@ -120,7 +120,13 @@ const orgCtrl = {
     }
 
     //if found compare password
-    const passwordMatched = await comparePassword(password, admin.password);
+    let passwordMatched;
+    try {
+      passwordMatched = await comparePassword(password, admin.password);
+    } catch (error) {
+      next(new CustomError("Password check error"));
+      return;
+    }
 
     //if not password matched return error
     if (!passwordMatched) {
