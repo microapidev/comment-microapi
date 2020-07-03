@@ -1,0 +1,32 @@
+const CustomError = require("../utils/customError");
+const responseHandler = require("../utils/responseHandler");
+const Applications = require("../models/applications");
+
+//delete an application
+exports.delete = async (req, res, next) => {
+  const applicationId = req.params.applicationId;
+  //check if the application exists
+  try {
+    const application = await Applications.findById(applicationId);
+    if (!application) {
+      return next(new CustomError(400, "Application not found"));
+    }
+  } catch (err) {
+    return next(
+      new CustomError(500, "Something went wrong,please try again", err.message)
+    );
+  }
+  Applications.findByIdAndDelete(applicationId)
+    .then((app) => {
+      responseHandler(res, 200, app, "Application deleted successfully");
+    })
+    .catch((err) => {
+      return next(
+        new CustomError(
+          500,
+          "Something went wrong, please try again",
+          err.message
+        )
+      );
+    });
+};
