@@ -1,10 +1,13 @@
 const Joi = require("@hapi/joi");
 
 /**
- * Schema validation for PATCH '/comments/{commentId}/replies/{replyId}'
+ * Schema validation for PATCH '/comments/{commentId}/replies/{replyId}/flag'
  */
+const flagReplySchema = {
+  options: {
+    allowUnknown: true,
+  },
 
-const updateReplySchema = {
   headers: Joi.object({
     authorization: Joi.string().required(),
   }),
@@ -15,9 +18,8 @@ const updateReplySchema = {
   }),
 
   body: Joi.object().keys({
-    content: Joi.string().min(1).required(),
     ownerId: Joi.string().required(),
   }),
 };
 
-module.exports = updateReplySchema;
+module.exports = flagReplySchema;
