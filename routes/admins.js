@@ -7,5 +7,6 @@ const adminCtrl = require("../controller/adminsController");
 router.use(orgAuthMW);
 
 router.post("/", adminCtrl.createAdmin);
+router.get("/", adminCtrl.getAllAdmins);
 
 module.exports = router;
