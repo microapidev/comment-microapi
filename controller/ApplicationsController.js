@@ -7,34 +7,25 @@ const Organizations = require("../models/organizations");
 
 exports.getAllApplications = async (req, res, next) => {
   try {
-    const { orgId } = req.params;
+    const { orgId } = req.token;
     if (!mongoose.Types.ObjectId.isValid(orgId)) {
-      return next(new CustomError(400, "Invalid ID"));
+      return next(new CustomError(400, "Invalid OrganizationID"));
     }
 
     const organization = await Organizations.find({ _id: orgId });
     if (!organization) {
-      return next(new CustomError(400, "organizations not found"));
+      return next(new CustomError(400, "Invalid organization"));
     }
 
-    const applicationId = await Applications.findById({});
-    if (!applicationId) {
-      return next(new CustomError(400, "Application ID not found"));
-    }
+    const applications = await Applications.find({ organization });
+    const allApplication = applications.map((app) => {
+      return {
+        applicationId: app._id,
+        name: app.name,
+      };
+    });
 
-    // check if application id is for the organization.
-    if (!organization.applicationId)
-      return next(
-        new CustomError(
-          401,
-          "The Application ID is not recommended for this organization"
-        )
-      );
-
-    const data = {
-      applicationId: organization.applicationId,
-      applicationName: organization.applicationName,
-    };
+    const data = [allApplication];
     responseHandler(
       res,
       200,
