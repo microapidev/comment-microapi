@@ -8,5 +8,6 @@ router.use(orgAuthMW);
 
 router.post("/", adminCtrl.createAdmin);
 router.get("/", adminCtrl.getAllAdmins);
+router.patch("/", adminCtrl.updateAdmin);
 
 module.exports = router;
