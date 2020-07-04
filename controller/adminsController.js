@@ -112,6 +112,36 @@ const adminCtrl = {
       "Admin accounts retrieved successfully"
     );
   },
+
+  async updateAdmin(req, res, next) {
+    //get adminId from token
+    const { adminId } = req.token;
+    const { fullname } = req.body;
+
+    //validate adminId
+    if (!mongoose.Types.ObjectId.isValid(adminId)) {
+      next(new CustomError(400, "Invalid adminId"));
+      return;
+    }
+
+    //find admin
+    try {
+      const admin = await Admin.findById(adminId);
+      if (!admin) {
+        next(new CustomError(404, "Admin account not found"));
+        return;
+      }
+
+      //update name only
+      admin.fullname = fullname;
+      await admin.save();
+
+      return responseHandler(res, 200, "Admin account updated successfully");
+    } catch (error) {
+      next(new CustomError(400, "An error occured updating admin account"));
+      return;
+    }
+  },
 };
 
 module.exports = adminCtrl;
