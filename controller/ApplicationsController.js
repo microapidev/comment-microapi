@@ -7,12 +7,12 @@ const Organizations = require("../models/organizations");
 
 exports.getAllApplications = async (req, res, next) => {
   try {
-    const { orgId } = req.token;
-    if (!mongoose.Types.ObjectId.isValid(orgId)) {
+    const { organizationId } = req.token;
+    if (!mongoose.Types.ObjectId.isValid(organizationId)) {
       return next(new CustomError(400, "Invalid OrganizationID"));
     }
 
-    const organization = await Organizations.find({ _id: orgId });
+    const organization = await Organizations.find({ _id: organizationId });
     if (!organization) {
       return next(new CustomError(400, "Invalid organization"));
     }
@@ -25,12 +25,12 @@ exports.getAllApplications = async (req, res, next) => {
       };
     });
 
-    const data = [allApplication];
+    const data = allApplication;
     responseHandler(
       res,
       200,
       data,
-      "Organization appId retrieved successfully"
+      "Organization applications retrieved successfully"
     );
   } catch (err) {
     return next(
