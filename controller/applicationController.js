@@ -3,7 +3,7 @@ const { getAppToken } = require("../utils/auth/tokenGenerator");
 
 const getApplicationToken = async (req, res, next) => {
   const { applicationId } = req.params;
-  const { adminId } = req.body;
+  const { adminId } = req.token;
   try {
     const token = await getAppToken(applicationId, adminId);
     return responseHandler(
