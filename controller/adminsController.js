@@ -7,7 +7,7 @@ const { hashPassword } = require("../utils/auth/passwordUtils");
 const adminCtrl = {
   async createAdmin(req, res, next) {
     //get arguments
-    const { fullName, email, password } = req.body;
+    const { fullname, email, password } = req.body;
     const { adminId, organizationId } = req.token;
 
     //check if admin account is valid and exists in organization
@@ -45,7 +45,7 @@ const adminCtrl = {
     let newAdmin;
     try {
       newAdmin = new Admin({
-        fullname: fullName,
+        fullname: fullname,
         email: email,
         password: hashedPassword,
         organizationId: organizationId,
@@ -53,6 +53,8 @@ const adminCtrl = {
 
       await newAdmin.save();
     } catch (error) {
+      console.log(error.message);
+
       const errorType =
         error.code === 11000 ? ": admin account already exists" : "";
 

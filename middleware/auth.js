@@ -11,7 +11,7 @@ exports.appAuthMW = jwtMW({
 });
 
 exports.orgAuthMW = jwtMW({
-  secret: process.env.ORG_SECRET,
+  secret: Buffer.from(process.env.ORG_SECRET, "base64"),
   requestProperty: "token",
   algorithms: ["HS256"],
   credentialsRequired: credsRequired,
