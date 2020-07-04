@@ -3,6 +3,7 @@ const cors = require("cors");
 const commentRoutes = require("./routes/comments");
 const organizationsRoutes = require("./routes/organizations");
 const documentationRoutes = require("./routes/documentation");
+const adminsRoutes = require("./routes/admins");
 const CustomError = require("./utils/customError");
 const errorHandler = require("./utils/errorhandler");
 
@@ -17,6 +18,7 @@ app.use(cors());
 //setup app routes
 app.use("/v1/comments", commentRoutes);
 app.use("/v1/organizations", organizationsRoutes);
+app.use("/v1/admins", adminsRoutes);
 app.use(["/", "/v1", "/v1/documentation"], documentationRoutes);
 
 // Invalid route error handler
