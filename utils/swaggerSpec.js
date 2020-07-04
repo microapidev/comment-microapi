@@ -8,7 +8,7 @@ const swaggerDefinition = {
     title: "REST API for Comments MicroAPI", // Title of the documentation
     version: "1.0.0", // Version of the app
     description:
-      "This is the REST API Documentation for the Comments MicroAPI. " +
+      "This is the REST API Documentation for the Comments MicroAPI." +
       "\n\n" +
       "The API gives the developer access to built-in functionalities for when they want to " +
       "implement comments and replies within their own application." +
