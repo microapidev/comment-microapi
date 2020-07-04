@@ -182,21 +182,23 @@ exports.flagComment = async (req, res, next) => {
 
 // issue#114_airon begins
 exports.getComments = async (req, res, next) => {
-  const applicationId = req.headers.token; //this will be retrieved from decoded api token after full auth implementation
+  const { applicationId } = req.token; //this will be retrieved from decoded api token after full auth implementation
+  console.log(applicationId);
   const { refId, origin, ownerId, isFlagged } = req.query;
-  let query = { applicationId: applicationId };
+  let query = {};
   if (refId) query.refId = refId;
   if (origin) query.commentOrigin = origin;
   if (ownerId) query.ownerId = ownerId;
   try {
-    await Comments.find(query)
+    await Comments.find()
+      .populate("replies")
       .then((comments) => {
         const allComments = comments.map((comment) => {
           return {
             commentId: comment._id,
             refId: comment.refId,
-            applicationId: comment.applicationId,
-            ownerId: comments.ownerId,
+            //applicationId: comment.applicationId,
+            ownerId: comment.ownerId,
             content: comment.content,
             origin: comment.origin,
             numOfVotes: comment.upVotes.length + comment.downVotes.length,
@@ -373,16 +375,16 @@ exports.getCommentVotes = async (req, res, next) => {
     // votes array to store totalVotes, and also store upvotes or downvotes
     const votes = [];
 
-    if (voteType !== "upvote" && voteType !== "downvote") {
+    if (!voteType) {
       // Insert both upvotes and downvotes
       votes.push(...comment.upVotes);
       votes.push(...comment.downVotes);
     } else {
       // Insert upvotes only
-      if (voteType === "upvote") {
+      if (voteType.toString() === "upvote") {
         votes.push(...comment.upVotes);
       }
-      if (voteType === "downvote") {
+      if (voteType.toString() === "downvote") {
         // Insert downvotes only
         votes.push(...comment.downVotes);
       }
@@ -403,5 +405,42 @@ exports.getCommentVotes = async (req, res, next) => {
     return next(
       new CustomError(500, "Something went wrong, Try again later", err)
     );
+  }
+};
+exports.getSingleComment = async (req, res, next) => {
+  // const { refId } = req.query;
+  const commentId = req.params.commentId;
+  //  const applicationId = req.headers.token; //this will be retrieved from decoded api token after full auth implementation
+  const query = { _id: commentId };
+  // if (refId) query.refId = refId;
+  try {
+    await Comments.find(query)
+      .then((comments) => {
+        const comment = comments.map((comment) => {
+          return {
+            commentId: comment._id,
+            refId: comment.refId,
+            applicationId: comment.applicationId,
+            ownerId: comments.ownerId,
+            content: comment.content,
+            origin: comment.origin,
+            numOfVotes: comment.upVotes.length + comment.downVotes.length,
+            numOfUpVotes: comment.upVotes.length,
+            numOfDownVotes: comment.downVotes.length,
+            numOfFlags: comment.flags.length,
+            numOfReplies: comment.replies.length,
+            // createdAt: comment.createdAt,
+            // updatedAt: comment.updatedAt,
+          };
+        });
+        responseHandler(res, 200, comment, `Comment Retrieved Successfully`);
+      })
+      .catch((err) => {
+        return next(
+          new CustomError(500, "Something went wrong, please try again", err)
+        );
+      });
+  } catch (err) {
+    return next(new CustomError(401, `Something went wrong ${err}`));
   }
 };

@@ -4,12 +4,12 @@ const Joi = require("@hapi/joi");
  * Schema validation for PATCH '/comments/{commentId}'
  */
 const updateCommentSchema = {
-  options: {
-    allowUnknown: true,
-  },
-
   headers: Joi.object({
     authorization: Joi.string().required(),
+  }),
+
+  params: Joi.object({
+    commentId: Joi.string().required(),
   }),
 
   body: Joi.object().keys({

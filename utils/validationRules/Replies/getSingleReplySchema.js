@@ -5,17 +5,13 @@ const Joi = require("@hapi/joi");
  */
 
 const getSingleReplySchema = {
-  options: {
-    allowUnknown: true,
-  },
-
   headers: Joi.object({
     authorization: Joi.string().required(),
   }),
 
   params: Joi.object().keys({
-    commentId: Joi.string().length(24).required(),
-    replyId: Joi.string().length(24).required(),
+    commentId: Joi.string().required(),
+    replyId: Joi.string().required(),
   }),
 };
 

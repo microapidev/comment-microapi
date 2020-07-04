@@ -4,17 +4,13 @@ const Joi = require("@hapi/joi");
  * Schema validation for Delete '/comments/{commentId}/replies/{replyId}'
  */
 const deleteReplySchema = {
-  options: {
-    allowUnknown: true,
-  },
-
   headers: Joi.object().keys({
     authorization: Joi.string().required(),
   }),
 
   params: Joi.object().keys({
-    commentId: Joi.string().length(24).required(),
-    replyId: Joi.string().length(24).required(),
+    commentId: Joi.string().required(),
+    replyId: Joi.string().required(),
   }),
 
   body: Joi.object().keys({

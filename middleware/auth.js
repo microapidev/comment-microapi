@@ -1,7 +1,7 @@
 const jwtMW = require("express-jwt");
 require("dotenv").config();
 
-const credsRequired = process.env.DISABLE_AUTH.toLowerCase() === "false";
+const credsRequired = process.env.DISABLE_AUTH.toLowerCase() === "true";
 
 exports.appAuthMW = jwtMW({
   secret: Buffer.from(process.env.APP_SECRET, "base64"),

@@ -15,7 +15,6 @@ const AdminSchema = new Schema(
     password: {
       type: String,
       required: true,
-      select: false,
     },
     organizationId: {
       type: Schema.Types.ObjectId,

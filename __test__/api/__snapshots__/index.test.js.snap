@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GET / Should return status 200 and render Swagger docs 1`] = `
+exports[`GET /v1 Should return status 200 and render Swagger docs 1`] = `
 "
 <!-- HTML for static distribution bundle build -->
 <!DOCTYPE html>

@@ -4,10 +4,6 @@ const Joi = require("@hapi/joi");
  * Schema validation for GET '/comments/{commentId}/votes'
  */
 const getCommentVotesSchema = {
-  options: {
-    allowUnknown: true,
-  },
-
   headers: Joi.object({
     authorization: Joi.string().required(),
   }),
@@ -17,7 +13,7 @@ const getCommentVotesSchema = {
   }),
 
   query: Joi.object({
-    voteType: Joi.string().allow("upvote").allow("downvote"),
+    voteType: Joi.string().valid("upvote").valid("downvote"),
   }),
 };
 
