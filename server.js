@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const commentRoutes = require("./routes/comments");
+const applicationsRoutes = require("./routes/applications");
 const organizationsRoutes = require("./routes/organizations");
 const documentationRoutes = require("./routes/documentation");
 const CustomError = require("./utils/customError");
@@ -15,9 +16,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 //setup app routes
-app.use("/v1/comments", commentRoutes);
-app.use("/v1/organizations", organizationsRoutes);
-app.use(["/", "/v1", "/v1/documentation"], documentationRoutes);
+app.use("/comments", commentRoutes);
+app.use("/applications", applicationsRoutes);
+app.use("/organizations", organizationsRoutes);
+app.use(["/", "/documentation"], documentationRoutes);
 
 // Invalid route error handler
 app.use("*", (req, res, next) => {
