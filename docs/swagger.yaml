@@ -1430,6 +1430,9 @@ paths:
 
       parameters:
         - in: query
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: query
           $ref: "#/components/parameters/isFlaggedParam"
 
         - in: query
