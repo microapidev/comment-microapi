@@ -1,7 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const applicationController = require("../controller/ApplicationsController");
+const applicationsController = require("../controllers/applicationsController");
 
-router.get("/", applicationController.getAllApplications);
+/**
+ * POST routes
+ */
+
+/**
+ * GET routes
+ */
+router.get("/", applicationsController.getAllApplications);
+
+/**
+ * PATCH routes
+ */
+
+/**
+ * DELETE routes
+ */
 
 module.exports = router;

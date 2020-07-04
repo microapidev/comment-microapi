@@ -1,11 +1,19 @@
 const mongoose = require("mongoose");
-const CustomError = require("../utils/customError");
-const responseHandler = require("../utils/responseHandler");
-// Application model
-const Applications = require("../models/applications");
-const Organizations = require("../models/organizations");
+const CustomError = require("../../utils/customError");
+const responseHandler = require("../../utils/responseHandler");
+const Applications = require("../../models/applications");
+const Organizations = require("../../models/organizations");
 
-exports.getAllApplications = async (req, res, next) => {
+/**
+ * @author David Okanlawon
+ *
+ * Gets all applications.
+ *
+ * @param {*} req - The request object
+ * @param {*} res - The response object
+ * @param {*} next - The function executed to call the next middleware
+ */
+const getAllApplications = async (req, res, next) => {
   try {
     const { organizationId } = req.token;
     if (!mongoose.Types.ObjectId.isValid(organizationId)) {
@@ -38,3 +46,5 @@ exports.getAllApplications = async (req, res, next) => {
     );
   }
 };
+
+module.exports = getAllApplications;
