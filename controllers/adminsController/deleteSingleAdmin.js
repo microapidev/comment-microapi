@@ -1,7 +1,7 @@
-const Admin = require("../models/admins");
-const Organization = require("../models/organizations");
-const CustomError = require("../utils/customError");
-const responseHandler = require("../utils/responseHandler");
+const Admin = require("../../models/admins");
+const Organization = require("../../models/organizations");
+const CustomError = require("../../utils/customError");
+const responseHandler = require("../../utils/responseHandler");
 const mongoose = require("mongoose");
 
 /**
@@ -18,7 +18,7 @@ const deleteAdmin = async (req, res, next) => {
   //get organizationId, adminId from token
   const { organizationId, adminId } = req.token;
   const { secret } = req.body;
-  const { adminId: targetAdminId } = req.body;
+  const { adminId: targetAdminId } = req.params;
 
   //validate organizationId
   if (!mongoose.Types.ObjectId.isValid(organizationId)) {
@@ -29,6 +29,18 @@ const deleteAdmin = async (req, res, next) => {
   //validate adminId
   if (!mongoose.Types.ObjectId.isValid(adminId)) {
     next(new CustomError(400, "Invalid adminId"));
+    return;
+  }
+
+  //validate adminId
+  if (!mongoose.Types.ObjectId.isValid(targetAdminId)) {
+    next(new CustomError(400, "Invalid target adminId"));
+    return;
+  }
+
+  //can't delete your own account
+  if (targetAdminId === adminId) {
+    next(new CustomError(400, "You can't delete you own account!"));
     return;
   }
 
