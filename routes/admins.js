@@ -1,13 +1,28 @@
 const router = require("express").Router();
 const { orgAuthMW } = require("../middleware/auth");
-const adminCtrl = require("../controller/adminsController");
+const adminController = require("../controllers/adminsController");
 
 //--- DO NOT TOUCH ---
 //Must always be at the top to decode/guard routes
 router.use(orgAuthMW);
 
-router.post("/", adminCtrl.createAdmin);
-router.get("/", adminCtrl.getAllAdmins);
-router.patch("/", adminCtrl.updateAdmin);
+/**
+ * POST routes
+ */
+router.post("/", adminController.createSingleAdmin);
+
+/**
+ * GET routes
+ */
+router.get("/", adminController.getAllAdmins);
+
+/**
+ * PATCH routes
+ */
+router.patch("/:adminId", adminController.updateSingleAdmin);
+
+/**
+ * DELETE routes
+ */
 
 module.exports = router;
