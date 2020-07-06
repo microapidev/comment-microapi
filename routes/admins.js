@@ -19,10 +19,11 @@ router.get("/", adminController.getAllAdmins);
 /**
  * PATCH routes
  */
-router.patch("/:adminId", adminController.updateSingleAdmin);
+router.patch("/", adminController.updateSingleAdmin);
 
 /**
  * DELETE routes
  */
+router.delete("/:adminId", adminController.deleteSingleAdmin);
 
 module.exports = router;

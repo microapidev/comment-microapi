@@ -2,6 +2,7 @@
 const createSingleAdmin = require("./createSingleAdmin");
 
 // DELETE
+const deleteSingleAdmin = require("./deleteSingleAdmin");
 
 // GET
 const getAllAdmins = require("./getAllAdmins");
@@ -13,4 +14,5 @@ module.exports = {
   createSingleAdmin,
   getAllAdmins,
   updateSingleAdmin,
+  deleteSingleAdmin,
 };
