@@ -1,8 +1,8 @@
-const CustomError = require("../utils/customError");
-const responseHandler = require("../utils/responseHandler");
-const Applications = require("../models/applications");
+const CustomError = require("../../utils/customError");
+const responseHandler = require("../../utils/responseHandler");
+const Applications = require("../../models/applications");
 
-exports.delete = async (req, res, next) => {
+const deleteSingleApplication = async (req, res, next) => {
   const applicationId = req.params.applicationId;
   try {
     const application = await Applications.findById(applicationId);
@@ -28,3 +28,4 @@ exports.delete = async (req, res, next) => {
       );
     });
 };
+module.exports = deleteSingleApplication;
