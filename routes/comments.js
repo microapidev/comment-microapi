@@ -91,4 +91,12 @@ router.delete(
   commentsController.deleteSingleComment
 );
 
+router.get(
+  "/:commentId",
+  validationMiddleware(
+    validationRules.getSingleCommentSchema,
+    commentsController.getSingleComment
+  )
+);
+
 module.exports = router;
