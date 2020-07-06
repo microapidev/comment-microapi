@@ -8,13 +8,13 @@ paths:
 
       summary: Creates an organization
 
-      parameters:
-        - in: body
-          name: body
-          description: A JSON object containing the organization information
-          required: true
-          schema:
-            $ref: "#/components/schemas/CreateOrganization"
+      requestBody:
+        description: A JSON object containing the organization information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrganization"
 
       responses:
         "201":
@@ -25,12 +25,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -60,13 +60,13 @@ paths:
 
       summary: Gets an organization token after successful login
 
-      parameters:
-        - in: body
-          name: body
-          description: A JSON object containing the login information
-          required: true
-          schema:
-            $ref: "#/components/schemas/LoginOrganization"
+      requestBody:
+        description: A JSON object containing the login information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginOrganization"
 
       responses:
         "201":
@@ -77,12 +77,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: object
@@ -132,12 +132,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -175,13 +175,13 @@ paths:
       security:
         - Bearer: []
 
-      parameters:
-        - in: body
-          name: body
-          description: A JSON object containing the organization's admin information
-          required: true
-          schema:
-            $ref: "#/components/schemas/CreateAdmin"
+      requestBody:
+        description: A JSON object containing the organization's admin information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAdmin"
 
       responses:
         "201":
@@ -192,12 +192,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: object
@@ -251,12 +251,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -294,13 +294,13 @@ paths:
       security:
         - Bearer: []
 
-      parameters:
-        - in: body
-          name: body
-          description: A JSON object containing the organization's admin information
-          required: true
-          schema:
-            $ref: "#/components/schemas/UpdateAdmin"
+      requestBody:
+        description: A JSON object containing the organization's admin information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAdmin"
 
       responses:
         "200":
@@ -311,12 +311,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -363,12 +363,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -421,12 +421,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -476,12 +476,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -519,13 +519,13 @@ paths:
       security:
         - Bearer: []
 
-      parameters:
-        - in: body
-          name: body
-          description: A JSON object containing an organization's application information
-          required: true
-          schema:
-            $ref: "#/components/schemas/CreateApplication"
+      requestBody:
+        description: A JSON object containing an organization's application information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateApplication"
 
       responses:
         "201":
@@ -536,12 +536,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: object
@@ -604,12 +604,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -651,12 +651,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/applicationIdParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing the organization's application information
-          required: true
-          schema:
-            $ref: "#/components/schemas/UpdateApplication"
+      requestBody:
+        description: A JSON object containing the organization's application information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateApplication"
 
       responses:
         "200":
@@ -667,12 +668,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -723,12 +724,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -781,12 +782,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: object
@@ -849,12 +850,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -885,13 +886,13 @@ paths:
       security:
         - Bearer: []
 
-      parameters:
-        - in: body
-          name: body
-          description: A JSON object containing the comment information
-          required: true
-          schema:
-            $ref: "#/components/schemas/CreateComment"
+      requestBody:
+        description: A JSON object containing the comment information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateComment"
 
       responses:
         "201":
@@ -902,12 +903,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -960,12 +961,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1007,12 +1008,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing the comment information to update
-          required: true
-          schema:
-            $ref: "#/components/schemas/UpdateComment"
+      requestBody:
+        description: A JSON object containing the comment information to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateComment"
 
       responses:
         "200":
@@ -1023,12 +1025,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1077,12 +1079,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing the email of the comment
-          required: true
-          schema:
-            $ref: "#/components/schemas/DeleteComment"
+      requestBody:
+        description: A JSON object containing the ID of the comment owner
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteComment"
 
       responses:
         "200":
@@ -1093,12 +1096,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1161,12 +1164,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1217,12 +1220,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing the ID of the owner
-          required: true
-          schema:
-            $ref: "#/components/schemas/OwnerID"
+      requestBody:
+        description: A JSON object containing the ID of the owner
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerID"
 
       responses:
         "200":
@@ -1233,12 +1237,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1289,12 +1293,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing the ID of the owner
-          required: true
-          schema:
-            $ref: "#/components/schemas/OwnerID"
+      requestBody:
+        description: A JSON object containing the ID of the owner
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerID"
 
       responses:
         "200":
@@ -1305,12 +1310,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1361,12 +1366,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing the ID of the owner
-          required: true
-          schema:
-            $ref: "#/components/schemas/OwnerID"
+      requestBody:
+        description: A JSON object containing the ID of the owner
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerID"
 
       responses:
         "200":
@@ -1377,12 +1383,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1424,6 +1430,9 @@ paths:
 
       parameters:
         - in: query
+          $ref: "#/components/parameters/commentIdParam"
+
+        - in: query
           $ref: "#/components/parameters/isFlaggedParam"
 
         - in: query
@@ -1438,12 +1447,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1485,12 +1494,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/commentIdParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing the reply information
-          required: true
-          schema:
-            $ref: "#/components/schemas/CreateReply"
+      requestBody:
+        description: A JSON object containing the reply information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerID"
 
       responses:
         "201":
@@ -1501,12 +1511,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1569,12 +1579,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1619,12 +1629,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/replyIdParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing the reply information
-          required: true
-          schema:
-            $ref: "#/components/schemas/UpdateReply"
+      requestBody:
+        description: A JSON object containing the reply information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateReply"
 
       responses:
         "200":
@@ -1635,12 +1646,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1692,12 +1703,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/replyIdParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing the email of the comment
-          required: true
-          schema:
-            $ref: "#/components/schemas/DeleteReply"
+      requestBody:
+        description: A JSON object containing the email of the comment
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteReply"
 
       responses:
         "200":
@@ -1708,12 +1720,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1779,12 +1791,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1840,12 +1852,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/replyIdParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing the ID of the owner
-          required: true
-          schema:
-            $ref: "#/components/schemas/OwnerID"
+      requestBody:
+        description: A JSON object containing the ID of the owner
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerID"
 
       responses:
         "200":
@@ -1856,12 +1869,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1915,12 +1928,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/replyIdParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing the ID of the owner
-          required: true
-          schema:
-            $ref: "#/components/schemas/OwnerID"
+      requestBody:
+        description: A JSON object containing the ID of the owner
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerID"
 
       responses:
         "200":
@@ -1931,12 +1945,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -1990,12 +2004,13 @@ paths:
         - in: path
           $ref: "#/components/parameters/replyIdParam"
 
-        - in: body
-          name: body
-          description: A JSON object containing the ID of the owner
-          required: true
-          schema:
-            $ref: "#/components/schemas/OwnerID"
+      requestBody:
+        description: A JSON object containing the ID of the owner
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerID"
 
       responses:
         "200":
@@ -2006,12 +2021,12 @@ paths:
                 type: object
                 required:
                   - message
-                  - response
+                  - status
                   - data
                 properties:
                   message:
                     type: string
-                  response:
+                  status:
                     type: string
                   data:
                     type: array
@@ -2048,15 +2063,15 @@ components:
       type: object
       required:
         - organizationId
-        - name
-        - email
+        - organizationName
+        - organizationEmail
         - secret
       properties:
         organizationId:
           type: string
-        name:
+        organizationName:
           type: string
-        email:
+        organizationEmail:
           type: string
           format: email
         secret:
@@ -2065,16 +2080,16 @@ components:
     CreateOrganization: # Can be referenced as '#/components/schemas/CreateOrganization'
       type: object
       required:
-        - name
-        - email
+        - organizationName
+        - organizationEmail
         - secret
         - adminName
         - adminEmail
         - adminPassword
       properties:
-        name:
+        organizationName:
           type: string
-        email:
+        organizationEmail:
           type: string
           format: email
         secret:
@@ -2091,9 +2106,9 @@ components:
     UpdateOrganization: # Can be referenced as '#/components/schemas/UpdateOrganization'
       type: object
       properties:
-        name:
+        organizationName:
           type: string
-        email:
+        organizationEmail:
           type: string
           format: email
         secret:
@@ -2102,15 +2117,17 @@ components:
     LoginOrganization: # Can be referenced as '#/components/schemas/LoginOrganization'
       type: object
       required:
-        - email
+        - organizationEmail
         - password
         - organizationId
       properties:
-        email:
+        organizationEmail:
           type: string
           format: email
         password:
           type: string
+          format: password
+          min: 8
         organizationId:
           type: string
 
@@ -2380,12 +2397,12 @@ components:
       type: object
       required:
         - status
-        - message
+        - error
         - data
       properties:
         status:
           type: string
-        message:
+        error:
           type: string
         data:
           type: array
@@ -2442,6 +2459,9 @@ components:
       description: Filters comments, or replies, by vote type. If omitted, the response includes all comments, or replies, regardless of their vote type.
       schema:
         type: string
+        enum:
+          - upvote
+          - downvote
 
     refIdParam: # Can be referenced via '#/components/parameters/refIdParam'
       in: query

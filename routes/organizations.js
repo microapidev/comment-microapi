@@ -1,7 +1,10 @@
 const router = require("express").Router();
-const orgCtrl = require("../controller/organizationsController");
+const organizationsController = require("../controllers/organizationsController");
 
-//create a new organization
-router.post("/", orgCtrl.createOrganization);
+/**
+ * POST routes
+ */
+router.post("/", organizationsController.createSingleOrganization);
+router.post("/token", organizationsController.getSingleOrganizationToken);
 
 module.exports = router;

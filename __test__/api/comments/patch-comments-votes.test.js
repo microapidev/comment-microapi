@@ -6,8 +6,8 @@ const { describeIfEndpoint } = require("../../helpers/conditionalTests");
 
 describeIfEndpoint(
   "PATCH",
-  "/comments/:commentId/votes/upvotes",
-  "PATCH '/comments/:commentId/votes/upvotes'",
+  "/v1/comments/:commentId/votes/upvotes",
+  "PATCH '/v1/comments/:commentId/votes/upvotes'",
   () => {
     // missing test to upvote already upvoted comment
     // missing test to upvote already downvoted comment
@@ -24,7 +24,7 @@ describeIfEndpoint(
       await comment.save();
 
       const res = await request
-        .patch(`/comments/${comment._id}/votes/upvote`)
+        .patch(`/v1/comments/${comment._id}/votes/upvote`)
         .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: commentObject.ownerId,
@@ -40,8 +40,8 @@ describeIfEndpoint(
 
 describeIfEndpoint(
   "PATCH",
-  "/comments/:commentId/votes/downvotes",
-  "PATCH '/comments/:commentId/votes/downvotes'",
+  "/v1/comments/:commentId/votes/downvotes",
+  "PATCH '/v1/comments/:commentId/votes/downvotes'",
   () => {
     // missing test to downvote already upvoted comment
     // missing test to downvote already downvoted comment
@@ -58,7 +58,7 @@ describeIfEndpoint(
       await comment.save();
 
       const res = await request
-        .patch(`/comments/${comment._id}/votes/downvote`)
+        .patch(`/v1/comments/${comment._id}/votes/downvote`)
         .set("Authorization", `bearer ${global.appToken}`)
         .send({
           ownerId: commentObject.ownerId,
