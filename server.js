@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const commentRoutes = require("./routes/comments");
-//const applicationRoutes = require("./routes/applications");
 const organizationsRoutes = require("./routes/organizations");
 const applicationsRoutes = require("./routes/application");
 const documentationRoutes = require("./routes/documentation");
@@ -18,10 +17,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 //setup app routes
-app.use("/comments", commentRoutes);
-//app.use("/applications", applicationRoutes);
-app.use("/organizations", organizationsRoutes);
-app.use(["/", "/documentation"], documentationRoutes);
 app.use("/v1/comments", commentRoutes);
 app.use("/v1/organizations", organizationsRoutes);
 app.use("/v1/applications", applicationsRoutes);

@@ -4,10 +4,16 @@ const Applications = require("../../models/applications");
 
 const deleteSingleApplication = async (req, res, next) => {
   const applicationId = req.params.applicationId;
+  const organizationId = req.token.organizationId;
   try {
     const application = await Applications.findById(applicationId);
     if (!application) {
       return next(new CustomError(400, "Application not found"));
+    }
+    if (application.organizationId !== organizationId) {
+      return next(
+        new CustomError(403, "You're not allowed to access this resource")
+      );
     }
   } catch (err) {
     return next(
