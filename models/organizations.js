@@ -16,7 +16,6 @@ const OrganizationSchema = new Schema(
     secret: {
       type: String,
       required: true,
-      select: false,
     },
   },
   { timestamps: true }

@@ -1,4 +1,4 @@
-/*const CustomError = require("../utils/customError");
+const CustomError = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
 const Applications = require("../models/applications");
 
@@ -27,4 +27,4 @@ exports.delete = async (req, res, next) => {
         )
       );
     });
-};*/
+};
