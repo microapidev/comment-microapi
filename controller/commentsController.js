@@ -368,16 +368,16 @@ exports.getCommentVotes = async (req, res, next) => {
     // votes array to store totalVotes, and also store upvotes or downvotes
     const votes = [];
 
-    if (!voteType) {
+    if (voteType !== "upvote" && voteType !== "downvote") {
       // Insert both upvotes and downvotes
       votes.push(...comment.upVotes);
       votes.push(...comment.downVotes);
     } else {
       // Insert upvotes only
-      if (voteType.toString() === "upvote") {
+      if (voteType === "upvote") {
         votes.push(...comment.upVotes);
       }
-      if (voteType.toString() === "downvote") {
+      if (voteType === "downvote") {
         // Insert downvotes only
         votes.push(...comment.downVotes);
       }
