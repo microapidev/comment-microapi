@@ -10,7 +10,7 @@ const {
 /**
  * @author David Okanlawon
  *
- * Creates a single admin.
+ * Change admin password
  *
  * @param {*} req - The request object
  * @param {*} res - The response object

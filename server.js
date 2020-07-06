@@ -21,7 +21,7 @@ app.use("/v1/comments", commentRoutes);
 app.use("/v1/organizations", organizationsRoutes);
 app.use("/v1/applications", applicationsRoutes);
 app.use("/v1/admins", adminsRoutes);
-app.use(["/", "/v1", "/v1/documentation"], documentationRoutes);
+app.use(["/v1", "/"], documentationRoutes);
 
 // Invalid route error handler
 app.use("*", (req, res, next) => {

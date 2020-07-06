@@ -6,7 +6,7 @@ const responseHandler = require("../../utils/responseHandler");
 /**
  * @author David Okanlawon
  *
- * Gets all admins.
+ * Gets single admin account.
  *
  * @param {*} req - The request object
  * @param {*} res - The response object
