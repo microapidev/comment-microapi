@@ -10,6 +10,7 @@ const getSingleAdmin = require("./getSingleAdmin");
 
 // PATCH
 const updateSingleAdmin = require("./updateSingleAdmin");
+const changeAdminPassword = require("./changeAdminPassword");
 
 module.exports = {
   createSingleAdmin,
@@ -17,4 +18,5 @@ module.exports = {
   updateSingleAdmin,
   deleteSingleAdmin,
   getSingleAdmin,
+  changeAdminPassword,
 };
