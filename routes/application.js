@@ -3,6 +3,11 @@ const router = express.Router();
 const applicationsController = require("../controllers/applicationsController");
 const { createApplicationSchema } = require("../utils/validationRules");
 const validMW = require("../middleware/validation");
+const { orgAuthMW } = require("../middleware/auth");
+
+//--- DO NOT TOUCH ---
+//Must always be at the top to decode/guard routes
+router.use(orgAuthMW);
 
 /**
  * POST routes
