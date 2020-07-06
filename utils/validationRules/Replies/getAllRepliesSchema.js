@@ -1,4 +1,4 @@
-const Joi = require("./node_modules/@hapi/joi");
+const Joi = require("@hapi/joi");
 
 /**
  * Schema validation for GET '/comments/:commentId/replies'
