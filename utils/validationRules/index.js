@@ -24,6 +24,13 @@ const deleteApplicationSchema = require("./applications/deleteApplicationSchema"
 const getSingleApplicationSchema = require("./applications/getSingleApplicationSchema");
 const updateApplicationSchema = require("./applications/updateApplicationSchema");
 
+const createSingleAdminSchema = require("./admins/createSingleAdminSchema");
+const deleteSingleAdminSchema = require("./admins/deleteSingleAdminSchema");
+const getAllAdminsSchema = require("./admins/getAllAdminsSchema");
+const getSingleAdminSchema = require("./admins/getSingleAdminSchema");
+const updateSingleAdminSchema = require("./admins/updateSingleAdminSchema");
+const changeAdminPasswordSchema = require("./admins/changeAdminPasswordSchema");
+
 /**
  * Object containing schema validations for the endpoints.
  */
@@ -50,11 +57,19 @@ module.exports = {
   createOrganizationSchema,
   getOrganizationTokenSchema,
 
-  // Applicaions Endpoints validation schemas
+  // Applications Endpoints validation schemas
   createApplicationSchema,
   getAllApplicationsSchema,
   getApplicationTokenSchema,
   deleteApplicationSchema,
   getSingleApplicationSchema,
   updateApplicationSchema,
+
+  // Admins Endpoints validation schemas
+  changeAdminPasswordSchema,
+  createSingleAdminSchema,
+  deleteSingleAdminSchema,
+  getAllAdminsSchema,
+  getSingleAdminSchema,
+  updateSingleAdminSchema,
 };
