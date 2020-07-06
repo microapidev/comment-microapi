@@ -13,9 +13,12 @@ const updateReplySchema = require("./replies/updateReplySchema");
 const deleteReplySchema = require("./replies/deleteReplySchema");
 const getReplyVotesSchema = require("./replies/getReplyVotesSchema");
 const updateReplyUpAndDownVoteSchema = require("./replies/updateReplyUpAndDownVoteSchema");
+
 const createOrganizationSchema = require("./organizations/createOrganizationSchema");
 const getOrganizationTokenSchema = require("./organizations/getOrganizationTokenSchema");
+
 const createApplicationSchema = require("./applications/createApplicationSchema");
+const getAllApplicationsSchema = require("./applications/getAllApplicationsSchema");
 
 /**
  * Object containing schema validations for the endpoints.
@@ -45,4 +48,5 @@ module.exports = {
 
   // Applicaions Endpoints validation schemas
   createApplicationSchema,
+  getAllApplicationsSchema,
 };
