@@ -1,5 +1,5 @@
-const responseHandler = require("../utils/responseHandler");
-const { getAppToken } = require("../utils/auth/tokenGenerator");
+const responseHandler = require("../../utils/responseHandler");
+const { getAppToken } = require("../../utils/auth/tokenGenerator");
 
 const getApplicationToken = async (req, res, next) => {
   const { applicationId } = req.params;
