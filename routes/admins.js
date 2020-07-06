@@ -15,6 +15,7 @@ router.post("/", adminController.createSingleAdmin);
  * GET routes
  */
 router.get("/", adminController.getAllAdmins);
+router.get("/:adminId", adminController.getSingleAdmin);
 
 /**
  * PATCH routes

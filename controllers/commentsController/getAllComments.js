@@ -15,8 +15,8 @@ const responseHandler = require("../../utils/responseHandler");
  * @param {*} next - The function executed to call the next middleware
  */
 const getAllComments = async (req, res, next) => {
-  const { applicationId } = req.token; //this will be retrieved from decoded api token after full auth implementation
-  console.log(applicationId);
+  // const { applicationId } = req.token; //this will be retrieved from decoded api token after full auth implementation
+
   const { refId, origin, ownerId, isFlagged } = req.query;
   let query = {};
   if (refId) query.refId = refId;
