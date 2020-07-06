@@ -6,6 +6,7 @@ const deleteSingleAdmin = require("./deleteSingleAdmin");
 
 // GET
 const getAllAdmins = require("./getAllAdmins");
+const getSingleAdmin = require("./getSingleAdmin");
 
 // PATCH
 const updateSingleAdmin = require("./updateSingleAdmin");
@@ -15,4 +16,5 @@ module.exports = {
   getAllAdmins,
   updateSingleAdmin,
   deleteSingleAdmin,
+  getSingleAdmin,
 };

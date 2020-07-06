@@ -15,14 +15,21 @@ const responseHandler = require("../../utils/responseHandler");
 const getSingleAdmin = async (req, res, next) => {
   //get organizationId from token
   const { organizationId } = req.token;
+  const { adminId } = req.params;
+
   if (!mongoose.Types.ObjectId.isValid(organizationId)) {
     next(new CustomError(400, "Invalid organizationId"));
     return;
   }
 
+  if (!mongoose.Types.ObjectId.isValid(adminId)) {
+    next(new CustomError(400, "Invalid adminId"));
+    return;
+  }
+
   //get admin account
   try {
-    const admin = await Admin.find({ organizationId: organizationId });
+    const admin = await Admin.findById(adminId);
     if (!admin) {
       next(new CustomError(404, "Admin account not found"));
       return;
