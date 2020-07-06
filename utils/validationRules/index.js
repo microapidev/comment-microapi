@@ -19,6 +19,10 @@ const getOrganizationTokenSchema = require("./organizations/getOrganizationToken
 
 const createApplicationSchema = require("./applications/createApplicationSchema");
 const getAllApplicationsSchema = require("./applications/getAllApplicationsSchema");
+const getApplicationTokenSchema = require("./applications/getApplicationTokenSchema");
+const deleteApplicationSchema = require("./applications/deleteApplicationSchema");
+const getSingleApplicationSchema = require("./applications/getSingleApplicationSchema");
+const updateApplicationSchema = require("./applications/updateApplicationSchema");
 
 /**
  * Object containing schema validations for the endpoints.
@@ -49,4 +53,8 @@ module.exports = {
   // Applicaions Endpoints validation schemas
   createApplicationSchema,
   getAllApplicationsSchema,
+  getApplicationTokenSchema,
+  deleteApplicationSchema,
+  getSingleApplicationSchema,
+  updateApplicationSchema,
 };
