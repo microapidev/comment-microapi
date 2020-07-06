@@ -18,7 +18,7 @@ const { getAppToken } = require("../../utils/auth/tokenGenerator");
 const createSingleApplication = async (req, res, next) => {
   try {
     const { organizationId, adminId } = req.token;
-    const { applicationName } = req.body;
+    const { name } = req.body;
 
     //validate organization
     if (!mongoose.Types.ObjectId.isValid(organizationId)) {
@@ -41,7 +41,7 @@ const createSingleApplication = async (req, res, next) => {
     }
 
     const applicationData = {
-      name: applicationName,
+      name,
       organizationId,
       createdBy: adminId,
     };
@@ -69,7 +69,7 @@ const createSingleApplication = async (req, res, next) => {
 
     //generate token for application
     try {
-      const appToken = await getAppToken(application._id, admin._id);
+      const appToken = await getAppToken(application._id, adminId);
 
       //return response
       return responseHandler(

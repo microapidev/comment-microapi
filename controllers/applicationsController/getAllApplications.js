@@ -25,7 +25,7 @@ const getAllApplications = async (req, res, next) => {
       return next(new CustomError(400, "Invalid organization"));
     }
 
-    const applications = await Applications.find({ organization });
+    const applications = await Applications.find({ organizationId });
     const allApplication = applications.map((app) => {
       return {
         applicationId: app._id,
