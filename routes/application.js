@@ -19,11 +19,13 @@ router.use(orgAuthMW);
 // get token for an application
 router.post(
   "/:applicationId/token",
-  applicationsController.getApplicationToken);
+  applicationsController.getApplicationToken
+);
 router.post(
   "/",
   validMW(createApplicationSchema),
-  applicationsController.createSingleApplication);
+  applicationsController.createSingleApplication
+);
 
 /**
  * GET routes
