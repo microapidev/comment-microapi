@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const applicationsController = require("../controllers/applicationsController");
-const { createApplicationSchema } = require("../utils/validationRules");
+const {
+  createApplicationSchema,
+  getAllApplicationsSchema,
+} = require("../utils/validationRules");
 const validMW = require("../middleware/validation");
 const { orgAuthMW } = require("../middleware/auth");
 
@@ -21,7 +24,11 @@ router.post(
 /**
  * GET routes
  */
-router.get("/", applicationsController.getAllApplications);
+router.get(
+  "/",
+  validMW(getAllApplicationsSchema),
+  applicationsController.getAllApplications
+);
 
 /**
  * PATCH routes
