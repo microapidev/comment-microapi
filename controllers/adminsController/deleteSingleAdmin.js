@@ -3,6 +3,7 @@ const Organization = require("../../models/organizations");
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
 const mongoose = require("mongoose");
+const { comparePassword } = require("../../utils/auth/passwordUtils");
 
 /**
  * @author David Okanlawon
@@ -60,8 +61,19 @@ const deleteAdmin = async (req, res, next) => {
 
     //confirm organization secret
     const organization = await Organization.findById(organizationId);
-    if (organization.secret !== secret) {
-      next(new CustomError(403, "Delete operation denied"));
+
+    //if found compare password
+    let passwordMatched;
+    try {
+      passwordMatched = await comparePassword(secret, organization.secret);
+    } catch (error) {
+      next(new CustomError("Secret processing error"));
+      return;
+    }
+
+    //if not password matched return error
+    if (!passwordMatched) {
+      next(new CustomError(403, "Invalid secret provided"));
       return;
     }
 

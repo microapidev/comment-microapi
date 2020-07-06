@@ -24,13 +24,21 @@ const createSingleOrganization = async (req, res, next) => {
     adminPassword,
   } = req.body;
 
+  //encrypt secret
+  let hashedSecret;
+  try {
+    hashedSecret = await hashPassword(secret);
+  } catch (error) {
+    next(new CustomError(400, "A error occured encrypting secret"));
+    return;
+  }
   //create organization in DB
   let organization;
   try {
     organization = new Organization({
       name: organizationName,
       email: organizationEmail,
-      secret: secret,
+      secret: hashedSecret,
     });
 
     await organization.save();
