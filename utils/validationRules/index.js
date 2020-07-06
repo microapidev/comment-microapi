@@ -15,6 +15,7 @@ const getReplyVotesSchema = require("./replies/getReplyVotesSchema");
 const updateReplyUpAndDownVoteSchema = require("./replies/updateReplyUpAndDownVoteSchema");
 const createOrganizationSchema = require("./organizations/createOrganizationSchema");
 const getOrganizationTokenSchema = require("./organizations/getOrganizationTokenSchema");
+const createApplicationSchema = require("./applications/createApplicationSchema");
 
 /**
  * Object containing schema validations for the endpoints.
@@ -41,4 +42,7 @@ module.exports = {
   //Organization Endpoints validation schemas
   createOrganizationSchema,
   getOrganizationTokenSchema,
+
+  // Applicaions Endpoints validation schemas
+  createApplicationSchema,
 };
