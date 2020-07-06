@@ -10,6 +10,7 @@ router.use(orgAuthMW);
  * POST routes
  */
 router.post("/", adminController.createSingleAdmin);
+router.post("/change-password", adminController.changeAdminPassword);
 
 /**
  * GET routes
