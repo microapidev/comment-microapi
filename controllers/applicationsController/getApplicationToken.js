@@ -17,6 +17,4 @@ const getApplicationToken = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  getApplicationToken,
-};
+module.exports = getApplicationToken;

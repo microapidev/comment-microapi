@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const express = require("express");
 const router = express.Router();
 const applicationsController = require("../controllers/applicationsController");
@@ -11,7 +10,10 @@ router.use(orgAuthMW);
  */
 router.post("/", applicationsController.createSingleApplication);
 // get token for an application
-router.post("/:applicationId/token", applicationController.getApplicationToken);
+router.post(
+  "/:applicationId/token",
+  applicationsController.getApplicationToken
+);
 
 /**
  * GET routes
