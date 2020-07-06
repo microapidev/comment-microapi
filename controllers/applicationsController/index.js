@@ -1,5 +1,5 @@
 // POST
-
+const createSingleApplication = require("./createSingleApplication");
 // DELETE
 
 // GET
@@ -9,4 +9,5 @@ const getAllApplications = require("./getAllApplications");
 
 module.exports = {
   getAllApplications,
+  createSingleApplication,
 };

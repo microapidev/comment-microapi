@@ -5,6 +5,7 @@ const applicationsController = require("../controllers/applicationsController");
 /**
  * POST routes
  */
+router.post("/", applicationsController.createSingleApplication);
 
 /**
  * GET routes

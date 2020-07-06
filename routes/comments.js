@@ -95,7 +95,7 @@ router.get(
   "/:commentId",
   validationMiddleware(
     validationRules.getSingleCommentSchema,
-    commentController.getSingleComment
+    commentsController.getSingleComment
   )
 );
 
