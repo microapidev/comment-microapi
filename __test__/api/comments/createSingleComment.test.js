@@ -12,6 +12,13 @@ describe("POST /comments", () => {
   });
 
   test("Should create comment", async () => {
+    comment = {
+      refId: "4edd40c86762e0fb12000003",
+      applicationId: global.application._id,
+      ownerId: "useremail@email.com",
+      content: "this is a comment",
+      origin: "useremail@email.com",
+    };
     const res = await request
       .post("/v1/comments")
       .set("Authorization", `bearer ${global.appToken}`)
@@ -22,18 +29,27 @@ describe("POST /comments", () => {
         content: "this is a comment",
         origin: "useremail@email.com",
       });
-    comment = res.body;
+    let [expected] = await CommentModel.find({
+      refId: "4edd40c86762e0fb12000003",
+    });
+    comment = {
+      commentId: expected.id,
+      refId: expected.refId,
+      ownerId: expected.ownerId,
+      content: expected.content,
+      origin: expected.origin,
+      numOfReplies: expected.replies.length,
+      numOfVotes: expected.upVotes.length + expected.downVotes.length,
+      numOfUpVotes: expected.upVotes.length,
+      numOfDownVotes: expected.downVotes.length,
+      numOfFlags: expected.flags.length,
+    };
+    console.log("Comment", comment);
+    console.log(global.application._id, "Body Data", res.body.data);
     expect(res.status).toBe(201);
     expect(res.body.status).toEqual("success");
-    expect(res.body.data.commentId).toBeTruthy();
-    expect(res.body.data.refId).toEqual("4edd40c86762e0fb12000003");
-    expect(res.body.data.content).toEqual("this is a comment");
-    expect(res.body.data.ownerId).toEqual("useremail@email.com");
-    expect(res.body.data.numOfVotes).toBe(0);
-    expect(res.body.data.numOfUpVotes).toBe(0);
-    expect(res.body.data.numOfDownVotes).toBe(0);
-    expect(res.body.data.numOfFlags).toBe(0);
-    expect(res.body.data.numOfReplies).toBe(0);
+    expect(expected.applicationId).toEqual(global.application._id);
+    expect(res.body.data).toMatchObject(comment);
   });
 
   test("Should return 422 error when 'content' parameter missing", async () => {
