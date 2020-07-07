@@ -26,7 +26,7 @@ const updateSingleCommentFlags = async (req, res, next) => {
     const { applicationId } = req.token;
 
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
-      return next(new CustomError(422, "invalid ID"));
+      return next(new CustomError(422, "Validation Error"));
     }
     const comment = await Comments.findOne({
       _id: commentId,
@@ -40,6 +40,10 @@ const updateSingleCommentFlags = async (req, res, next) => {
           `Comment with the ID ${commentId} doesn't exist or has been deleted`
         )
       );
+    }
+
+    if (!ownerId) {
+      return next(new CustomError(404, "Invalid ID Error"));
     }
 
     //flag comment by pushing ownerId into flags array
