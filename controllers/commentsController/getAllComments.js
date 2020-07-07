@@ -15,7 +15,7 @@ const responseHandler = require("../../utils/responseHandler");
  * @param {*} next - The function executed to call the next middleware
  */
 const getAllComments = async (req, res, next) => {
-  // const { applicationId } = req.token; //this will be retrieved from decoded api token after full auth implementation
+  const { applicationId } = req.token; //this will be retrieved from decoded api token after full auth implementation
 
   const { refId, origin, ownerId, isFlagged } = req.query;
   let query = {};
@@ -23,14 +23,14 @@ const getAllComments = async (req, res, next) => {
   if (origin) query.commentOrigin = origin;
   if (ownerId) query.ownerId = ownerId;
   try {
-    await Comments.find()
+    await Comments.find({ applicationId: applicationId })
       .populate("replies")
       .then((comments) => {
         const allComments = comments.map((comment) => {
           return {
             commentId: comment._id,
             refId: comment.refId,
-            //applicationId: comment.applicationId,
+            applicationId: comment.applicationId,
             ownerId: comment.ownerId,
             content: comment.content,
             origin: comment.origin,

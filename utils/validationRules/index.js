@@ -13,8 +13,23 @@ const updateReplySchema = require("./replies/updateReplySchema");
 const deleteReplySchema = require("./replies/deleteReplySchema");
 const getReplyVotesSchema = require("./replies/getReplyVotesSchema");
 const updateReplyUpAndDownVoteSchema = require("./replies/updateReplyUpAndDownVoteSchema");
+
 const createOrganizationSchema = require("./organizations/createOrganizationSchema");
 const getOrganizationTokenSchema = require("./organizations/getOrganizationTokenSchema");
+
+const createApplicationSchema = require("./applications/createApplicationSchema");
+const getAllApplicationsSchema = require("./applications/getAllApplicationsSchema");
+const getApplicationTokenSchema = require("./applications/getApplicationTokenSchema");
+const deleteApplicationSchema = require("./applications/deleteApplicationSchema");
+const getSingleApplicationSchema = require("./applications/getSingleApplicationSchema");
+const updateApplicationSchema = require("./applications/updateApplicationSchema");
+
+const createSingleAdminSchema = require("./admins/createSingleAdminSchema");
+const deleteSingleAdminSchema = require("./admins/deleteSingleAdminSchema");
+const getAllAdminsSchema = require("./admins/getAllAdminsSchema");
+const getSingleAdminSchema = require("./admins/getSingleAdminSchema");
+const updateSingleAdminSchema = require("./admins/updateSingleAdminSchema");
+const changeAdminPasswordSchema = require("./admins/changeAdminPasswordSchema");
 
 /**
  * Object containing schema validations for the endpoints.
@@ -41,4 +56,20 @@ module.exports = {
   //Organization Endpoints validation schemas
   createOrganizationSchema,
   getOrganizationTokenSchema,
+
+  // Applications Endpoints validation schemas
+  createApplicationSchema,
+  getAllApplicationsSchema,
+  getApplicationTokenSchema,
+  deleteApplicationSchema,
+  getSingleApplicationSchema,
+  updateApplicationSchema,
+
+  // Admins Endpoints validation schemas
+  changeAdminPasswordSchema,
+  createSingleAdminSchema,
+  deleteSingleAdminSchema,
+  getAllAdminsSchema,
+  getSingleAdminSchema,
+  updateSingleAdminSchema,
 };

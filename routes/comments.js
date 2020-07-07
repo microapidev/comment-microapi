@@ -4,12 +4,12 @@ const validationMiddleware = require("../middleware/validation");
 const validationRules = require("../utils/validationRules");
 const commentsController = require("../controllers/commentsController");
 const { appAuthMW } = require("../middleware/auth");
-const mongoose = require("mongoose");
-const { generateToken } = require("../utils/auth/tokenGenerator");
+// const mongoose = require("mongoose");
+// const { generateToken } = require("../utils/auth/tokenGenerator");
 
 // -------- DO NOT TOUCH!!! ---------
 // Dummy tokens for now. We will remove in production
-router.use((req, res, next) => {
+/* router.use((req, res, next) => {
   if (process.env.DISABLE_AUTH === "true") {
     req.headers["authorization"] =
       "Bearer " +
@@ -21,7 +21,7 @@ router.use((req, res, next) => {
       );
   }
   next();
-});
+}); */
 
 // -------- DO NOT TOUCH --------------
 // authentication middleware must be at the top

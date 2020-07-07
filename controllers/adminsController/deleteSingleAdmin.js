@@ -82,7 +82,6 @@ const deleteAdmin = async (req, res, next) => {
 
     return responseHandler(res, 200, "Admin account deleted successfully");
   } catch (error) {
-    console.log(error.message);
     next(new CustomError(400, "An error occured deleting admin account"));
     return;
   }
