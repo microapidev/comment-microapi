@@ -44,8 +44,8 @@ describe("POST /comments", () => {
       numOfDownVotes: expected.downVotes.length,
       numOfFlags: expected.flags.length,
     };
-    console.log("Comment", comment);
-    console.log(global.application._id, "Body Data", res.body.data);
+    // console.log("Comment", comment);
+    // console.log(global.application._id, "Body Data", res.body.data);
     expect(res.status).toBe(201);
     expect(res.body.status).toEqual("success");
     expect(expected.applicationId).toEqual(global.application._id);

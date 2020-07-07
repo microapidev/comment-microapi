@@ -131,7 +131,7 @@ describe("GET /comments/:commentId/replies", () => {
     const expectedValue = [reply2];
 
     return getAllRepliesRequest.then((res) => {
-      console.log(res.body.data);
+      // console.log(res.body.data);
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
       expect(res.body.data).toEqual(expectedValue);
