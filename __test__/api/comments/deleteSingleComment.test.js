@@ -26,6 +26,10 @@ describe("DELETE /v1/comments/:commentId", () => {
   // 200 success
   test("Should delete a comment", async () => {
     const expected = commentHandler(comment);
+    CommentModel.findById(expected.commentId).then((item) => {
+      expect(commentHandler(item)).toMatchObject(expected);
+    });
+
     const res = await request
       .delete(`/v1/comments/${expected.commentId}`)
       .set("Authorization", `bearer ${global.appToken}`)
@@ -36,6 +40,10 @@ describe("DELETE /v1/comments/:commentId", () => {
     expect(res.status).toBe(200);
     expect(res.body.status).toEqual("success");
     expect(res.body.data).toMatchObject(expected);
+
+    CommentModel.findById(expected.commentId).then((item) => {
+      expect(item).toBeNull();
+    });
   });
 
   // 404 not found error
