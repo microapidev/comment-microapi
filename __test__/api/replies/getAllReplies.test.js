@@ -9,7 +9,7 @@ const request = supertest(app);
 let comment;
 let reply1, reply2;
 
-describe("get all replies", () => {
+describe("GET /comments/:commentId/replies", () => {
   beforeEach(async () => {
     // Mock a comment document.
     const mockedCommentDoc = new CommentModel({
@@ -38,22 +38,45 @@ describe("get all replies", () => {
     // Save mocked comment document to the database and cache.
     comment = await mockedCommentDoc.save();
 
-    // Save mocked replies document to the database and cache.
-    reply1 = await mockedReply1Doc.save();
-    reply2 = await mockedReply2Doc.save();
+    // Save mocked replies document to the database.
+    const savedReply1 = await mockedReply1Doc.save();
+    const savedReply2 = await mockedReply2Doc.save();
 
     // Add replies to the mocked comment.
     await CommentModel.findByIdAndUpdate(comment.id, {
       $push: {
-        replies: { $each: [reply1.id, reply2.id] },
+        replies: { $each: [savedReply1.id, savedReply2.id] },
       },
     });
+
+    // Cache response objects
+    reply1 = {
+      replyId: savedReply1.id,
+      commentId: savedReply1.commentId.toString(),
+      ownerId: savedReply1.ownerId,
+      content: savedReply1.content,
+      numOfVotes: savedReply1.upVotes.length + savedReply1.downVotes.length,
+      numOfUpVotes: savedReply1.upVotes.length,
+      numOfDownVotes: savedReply1.downVotes.length,
+      numOfFlags: savedReply1.flags.length,
+    };
+    reply2 = {
+      replyId: savedReply2.id,
+      commentId: savedReply2.commentId.toString(),
+      ownerId: savedReply2.ownerId,
+      content: savedReply2.content,
+      numOfVotes: savedReply2.upVotes.length + savedReply2.downVotes.length,
+      numOfUpVotes: savedReply2.upVotes.length,
+      numOfDownVotes: savedReply2.downVotes.length,
+      numOfFlags: savedReply2.flags.length,
+    };
   });
 
   afterEach(async () => {
     // Delete mocks from the database.
     await CommentModel.findByIdAndDelete(comment.id);
-    await ReplyModel.findByIdAndDelete(reply1.id);
+    await ReplyModel.findByIdAndDelete(reply1.replyId);
+    await ReplyModel.findByIdAndDelete(reply2.replyId);
 
     // Delete cache.
     comment = null;
@@ -61,7 +84,7 @@ describe("get all replies", () => {
     reply2 = null;
   });
 
-  it("given a valid comment ID", () => {
+  it("Should get all replies of a comment", () => {
     const url = `/v1/comments/${comment.id}/replies`;
     const bearerToken = `bearer ${global.appToken}`;
 
@@ -69,28 +92,7 @@ describe("get all replies", () => {
       .get(url)
       .set("Authorization", bearerToken);
 
-    const expectedValue = [
-      {
-        replyId: reply1.id,
-        commentId: reply1.commentId.toString(),
-        ownerId: reply1.ownerId,
-        content: reply1.content,
-        numOfVotes: reply1.upVotes.length + reply1.downVotes.length,
-        numOfUpVotes: reply1.upVotes.length,
-        numOfDownVotes: reply1.downVotes.length,
-        numOfFlags: reply1.flags.length,
-      },
-      {
-        replyId: reply2.id,
-        commentId: reply2.commentId.toString(),
-        ownerId: reply2.ownerId,
-        content: reply2.content,
-        numOfVotes: reply2.upVotes.length + reply2.downVotes.length,
-        numOfUpVotes: reply2.upVotes.length,
-        numOfDownVotes: reply2.downVotes.length,
-        numOfFlags: reply2.flags.length,
-      },
-    ];
+    const expectedValue = [reply1, reply2];
 
     return getAllRepliesRequest.then((res) => {
       expect(res.status).toEqual(200);
@@ -99,7 +101,7 @@ describe("get all replies", () => {
     });
   });
 
-  it("given a valid comment ID and filtered by ownerId", () => {
+  it("Should get all replies, with a certain ownerId, of a comment", () => {
     const url = `/v1/comments/${comment.id}/replies`;
     const bearerToken = `bearer ${global.appToken}`;
 
@@ -108,18 +110,7 @@ describe("get all replies", () => {
       .query({ ownerId: reply1.ownerId })
       .set("Authorization", bearerToken);
 
-    const expectedValue = [
-      {
-        replyId: reply1.id,
-        commentId: reply1.commentId.toString(),
-        ownerId: reply1.ownerId,
-        content: reply1.content,
-        numOfVotes: reply1.upVotes.length + reply1.downVotes.length,
-        numOfUpVotes: reply1.upVotes.length,
-        numOfDownVotes: reply1.downVotes.length,
-        numOfFlags: reply1.flags.length,
-      },
-    ];
+    const expectedValue = [reply1];
 
     return getAllRepliesRequest.then((res) => {
       expect(res.status).toEqual(200);
@@ -128,7 +119,7 @@ describe("get all replies", () => {
     });
   });
 
-  it("given a valid comment ID and filtered by isFlagged for only flagged replies", () => {
+  it("Should get all flagged replies of a comment", () => {
     const url = `/v1/comments/${comment.id}/replies`;
     const bearerToken = `bearer ${global.appToken}`;
 
@@ -137,18 +128,7 @@ describe("get all replies", () => {
       .query({ isFlagged: true })
       .set("Authorization", bearerToken);
 
-    const expectedValue = [
-      {
-        replyId: reply2.id,
-        commentId: reply2.commentId.toString(),
-        ownerId: reply2.ownerId,
-        content: reply2.content,
-        numOfVotes: reply2.upVotes.length + reply2.downVotes.length,
-        numOfUpVotes: reply2.upVotes.length,
-        numOfDownVotes: reply2.downVotes.length,
-        numOfFlags: reply2.flags.length,
-      },
-    ];
+    const expectedValue = [reply2];
 
     return getAllRepliesRequest.then((res) => {
       console.log(res.body.data);
@@ -158,7 +138,7 @@ describe("get all replies", () => {
     });
   });
 
-  it("given a valid comment ID and filtered by isFlagged for only unflagged replies", () => {
+  it("Should get all unflagged replies of a comment", () => {
     const url = `/v1/comments/${comment.id}/replies`;
     const bearerToken = `bearer ${global.appToken}`;
 
@@ -167,18 +147,7 @@ describe("get all replies", () => {
       .query({ isFlagged: false })
       .set("Authorization", bearerToken);
 
-    const expectedValue = [
-      {
-        replyId: reply1.id,
-        commentId: reply1.commentId.toString(),
-        ownerId: reply1.ownerId,
-        content: reply1.content,
-        numOfVotes: reply1.upVotes.length + reply1.downVotes.length,
-        numOfUpVotes: reply1.upVotes.length,
-        numOfDownVotes: reply1.downVotes.length,
-        numOfFlags: reply1.flags.length,
-      },
-    ];
+    const expectedValue = [reply1];
 
     return getAllRepliesRequest.then((res) => {
       expect(res.status).toEqual(200);
@@ -187,22 +156,7 @@ describe("get all replies", () => {
     });
   });
 
-  it("given an invalid comment ID", () => {
-    const url = `/v1/comments/5eff06f9fa2a9a0017469f54/replies`;
-    const bearerToken = `bearer ${global.appToken}`;
-
-    const getAllRepliesRequest = request
-      .get(url)
-      .set("Authorization", bearerToken);
-
-    return getAllRepliesRequest.then((res) => {
-      expect(res.status).toEqual(404);
-      expect(res.body.status).toEqual("error");
-      expect(res.body.data).toEqual([]);
-    });
-  });
-
-  it("given a valid comment ID but unauthorized bearer token", () => {
+  it("Should return a 401 error when authorization token is unauthorized", () => {
     const url = `/v1/comments/${comment.id}/replies`;
     const bearerToken = `bearer `;
 
@@ -212,6 +166,21 @@ describe("get all replies", () => {
 
     return getAllRepliesRequest.then((res) => {
       expect(res.status).toEqual(401);
+      expect(res.body.status).toEqual("error");
+      expect(res.body.data).toEqual([]);
+    });
+  });
+
+  it("Should return a 404 error when commentId is not an existing ID", () => {
+    const url = `/v1/comments/5eff06f9fa2a9a0017469f54/replies`;
+    const bearerToken = `bearer ${global.appToken}`;
+
+    const getAllRepliesRequest = request
+      .get(url)
+      .set("Authorization", bearerToken);
+
+    return getAllRepliesRequest.then((res) => {
+      expect(res.status).toEqual(404);
       expect(res.body.status).toEqual("error");
       expect(res.body.data).toEqual([]);
     });
