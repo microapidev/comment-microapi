@@ -1033,9 +1033,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/UpdateComment"
+                    $ref: "#/components/schemas/UpdateComment"
 
         "400":
           description: Bad request error
