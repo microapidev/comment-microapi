@@ -1,13 +1,7 @@
 const app = require("../../server");
 const supertest = require("supertest");
-const OrganizationModel = require("../../models/organizations");
-const AdminModel = require("../../models/admins");
 const request = supertest(app);
-
 const { describeIfEndpoint } = require("../helpers/conditionalTests");
-const { response } = require('../../server');
-const { hashPassword } = require('../../utils/auth/passwordUtils');
-const { getOrgToken } = require('../../utils/auth/tokenGenerator');
 
 describeIfEndpoint("POST", "/v1/organizations", "POST /v1/organizations", () => {
   test('should create organization and its admin', async () => {
