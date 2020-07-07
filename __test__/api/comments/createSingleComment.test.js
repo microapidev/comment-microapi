@@ -80,7 +80,7 @@ describe("POST /comments", () => {
     //expect(res.body.message).toBeTruthy(); // or {}
   });
 
-  test("Should return 401 error when 'Authorization' token missing", async () => {
+  test("Should return 401 error for 'Unauthorized' token", async () => {
     const res = await request.post("/v1/comments");
     comment = res.body;
     expect(res.status).toBe(401);
