@@ -9,6 +9,7 @@ const getAllApplications = require("./getAllApplications");
 const getSingleApplication = require("./getSingleApplication");
 
 // PATCH
+const updateSingleApplication = require("./updateSingleApplication");
 
 module.exports = {
   getAllApplications,
@@ -16,4 +17,5 @@ module.exports = {
   getApplicationToken,
   deleteSingleApplication,
   getSingleApplication,
+  updateSingleApplication,
 };
