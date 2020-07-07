@@ -128,35 +128,35 @@ describe("get all replies", () => {
     });
   });
 
-  // it("given a valid comment ID and filtered by isFlagged for only flagged replies", () => {
-  //   const url = `/v1/comments/${comment.id}/replies`;
-  //   const bearerToken = `bearer ${global.appToken}`;
+  it("given a valid comment ID and filtered by isFlagged for only flagged replies", () => {
+    const url = `/v1/comments/${comment.id}/replies`;
+    const bearerToken = `bearer ${global.appToken}`;
 
-  //   const getAllRepliesRequest = request
-  //     .get(url)
-  //     .query({ isFlagged: false })
-  //     .set("Authorization", bearerToken);
+    const getAllRepliesRequest = request
+      .get(url)
+      .query({ isFlagged: true })
+      .set("Authorization", bearerToken);
 
-  //   const expectedValue = [
-  //     {
-  //       replyId: reply2.id,
-  //       commentId: reply2.commentId.toString(),
-  //       ownerId: reply2.ownerId,
-  //       content: reply2.content,
-  //       numOfVotes: reply2.upVotes.length + reply2.downVotes.length,
-  //       numOfUpVotes: reply2.upVotes.length,
-  //       numOfDownVotes: reply2.downVotes.length,
-  //       numOfFlags: reply2.flags.length,
-  //     },
-  //   ];
+    const expectedValue = [
+      {
+        replyId: reply2.id,
+        commentId: reply2.commentId.toString(),
+        ownerId: reply2.ownerId,
+        content: reply2.content,
+        numOfVotes: reply2.upVotes.length + reply2.downVotes.length,
+        numOfUpVotes: reply2.upVotes.length,
+        numOfDownVotes: reply2.downVotes.length,
+        numOfFlags: reply2.flags.length,
+      },
+    ];
 
-  //   return getAllRepliesRequest.then((res) => {
-  //     console.log(res.body.data);
-  //     expect(res.status).toEqual(200);
-  //     expect(res.body.status).toEqual("success");
-  //     expect(res.body.data).toEqual(expectedValue);
-  //   });
-  // });
+    return getAllRepliesRequest.then((res) => {
+      console.log(res.body.data);
+      expect(res.status).toEqual(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body.data).toEqual(expectedValue);
+    });
+  });
 
   it("given an invalid comment ID", () => {
     const url = `/v1/comments/5eff06f9fa2a9a0017469f54/replies`;

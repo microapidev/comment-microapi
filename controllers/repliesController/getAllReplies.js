@@ -19,7 +19,7 @@ const responseHandler = require("../../utils/responseHandler");
  */
 const getAllReplies = async (req, res, next) => {
   const { commentId } = req.params;
-  const { ownerId } = req.query;
+  const { isFlagged, ownerId } = req.query;
 
   if (!ObjectId.isValid(commentId)) {
     return next(new CustomError(400, " Invalid comment Id "));
@@ -37,6 +37,12 @@ const getAllReplies = async (req, res, next) => {
 
     query.commentId = commentId;
     if (ownerId) query.ownerId = ownerId;
+
+    if (!!isFlagged === true) {
+      query = { ...query, flags: { $size: { $gt: 1 } } };
+    } else if (!!isFlagged === false) {
+      query = { ...query, flags: { $size: { $eq: 0 } } };
+    }
 
     const replies = await Replies.find(query);
     let message = " Replies found. ";
