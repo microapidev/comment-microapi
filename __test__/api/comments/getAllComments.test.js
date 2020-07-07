@@ -76,13 +76,13 @@ describe("GET /comments", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
-    const getAllRepliesRequest = request
+    const getAllCommentsRequest = request
       .get(url)
       .set("Authorization", bearerToken);
 
     const expectedValue = [comment1, comment2];
 
-    return getAllRepliesRequest.then((res) => {
+    return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
       expect(res.body.data).toEqual(expectedValue);
@@ -93,14 +93,14 @@ describe("GET /comments", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
-    const getAllRepliesRequest = request
+    const getAllCommentsRequest = request
       .get(url)
       .query({ ownerId: comment1.ownerId })
       .set("Authorization", bearerToken);
 
     const expectedValue = [comment1];
 
-    return getAllRepliesRequest.then((res) => {
+    return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
       expect(res.body.data).toEqual(expectedValue);
@@ -111,14 +111,14 @@ describe("GET /comments", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
-    const getAllRepliesRequest = request
+    const getAllCommentsRequest = request
       .get(url)
       .query({ refId: comment2.refId })
       .set("Authorization", bearerToken);
 
     const expectedValue = [comment2];
 
-    return getAllRepliesRequest.then((res) => {
+    return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
       expect(res.body.data).toEqual(expectedValue);
@@ -129,14 +129,14 @@ describe("GET /comments", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
-    const getAllRepliesRequest = request
+    const getAllCommentsRequest = request
       .get(url)
       .query({ origin: comment1.origin })
       .set("Authorization", bearerToken);
 
     const expectedValue = [comment1];
 
-    return getAllRepliesRequest.then((res) => {
+    return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
       expect(res.body.data).toEqual(expectedValue);
@@ -147,14 +147,14 @@ describe("GET /comments", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
-    const getAllRepliesRequest = request
+    const getAllCommentsRequest = request
       .get(url)
       .query({ isFlagged: true })
       .set("Authorization", bearerToken);
 
     const expectedValue = [comment2];
 
-    return getAllRepliesRequest.then((res) => {
+    return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
       expect(res.body.data).toEqual(expectedValue);
@@ -165,14 +165,14 @@ describe("GET /comments", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
-    const getAllRepliesRequest = request
+    const getAllCommentsRequest = request
       .get(url)
       .query({ isFlagged: false })
       .set("Authorization", bearerToken);
 
     const expectedValue = [comment1];
 
-    return getAllRepliesRequest.then((res) => {
+    return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
       expect(res.body.data).toEqual(expectedValue);
@@ -183,11 +183,11 @@ describe("GET /comments", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer `;
 
-    const getAllRepliesRequest = request
+    const getAllCommentsRequest = request
       .get(url)
       .set("Authorization", bearerToken);
 
-    return getAllRepliesRequest.then((res) => {
+    return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(401);
       expect(res.body.status).toEqual("error");
       expect(res.body.data).toEqual([]);
