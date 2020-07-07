@@ -1,6 +1,7 @@
 const app = require("../../../server");
 const ReplyModel = require("../../../models/replies");
 const CommentModel = require("../../../models/comments");
+const replyHandler = require("../../../utils/replyHandler");
 // const mongoose = require("mongoose");
 const supertest = require("supertest");
 const request = supertest(app);
@@ -50,26 +51,8 @@ describe("GET /comments/:commentId/replies", () => {
     });
 
     // Cache response objects
-    reply1 = {
-      replyId: savedReply1.id,
-      commentId: savedReply1.commentId.toString(),
-      ownerId: savedReply1.ownerId,
-      content: savedReply1.content,
-      numOfVotes: savedReply1.upVotes.length + savedReply1.downVotes.length,
-      numOfUpVotes: savedReply1.upVotes.length,
-      numOfDownVotes: savedReply1.downVotes.length,
-      numOfFlags: savedReply1.flags.length,
-    };
-    reply2 = {
-      replyId: savedReply2.id,
-      commentId: savedReply2.commentId.toString(),
-      ownerId: savedReply2.ownerId,
-      content: savedReply2.content,
-      numOfVotes: savedReply2.upVotes.length + savedReply2.downVotes.length,
-      numOfUpVotes: savedReply2.upVotes.length,
-      numOfDownVotes: savedReply2.downVotes.length,
-      numOfFlags: savedReply2.flags.length,
-    };
+    reply1 = replyHandler(savedReply1);
+    reply2 = replyHandler(savedReply2);
   });
 
   afterEach(async () => {
