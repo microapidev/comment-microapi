@@ -42,6 +42,11 @@ router.get(
 /**
  * PATCH routes
  */
+router.patch(
+  "/:applicationId",
+  validMW(validationRules.updateApplicationSchema),
+  applicationsController.updateSingleApplication
+);
 
 /**
  * DELETE routes
