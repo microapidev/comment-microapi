@@ -1,7 +1,23 @@
 const router = require("express").Router();
-const orgCtrl = require("../controller/organizationsController");
+const organizationsController = require("../controllers/organizationsController");
+const validMW = require("../middleware/validation");
+const {
+  createOrganizationSchema,
+  getOrganizationTokenSchema,
+} = require("../utils/validationRules");
 
-//create a new organization
-router.post("/", orgCtrl.createOrganization);
+/**
+ * POST routes
+ */
+router.post(
+  "/",
+  validMW(createOrganizationSchema),
+  organizationsController.createSingleOrganization
+);
+router.post(
+  "/token",
+  validMW(getOrganizationTokenSchema),
+  organizationsController.getSingleOrganizationToken
+);
 
 module.exports = router;
