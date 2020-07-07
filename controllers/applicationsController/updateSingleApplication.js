@@ -3,21 +3,18 @@ const mongoose = require("mongoose");
 const CustomError = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
 
-const appController = {
-  //Commented block gets all applications
-  /*  getAllApplications: async (req, res, next) => {
-    try {
-      const allApps = await Applications.find();
-      const data = allApps;
-      const message = "All applications retrieved successfully";
-      return responseHandler(res, 200, data, message);
-    } catch (error) {
-      return next(new CustomError(401, `Something went wrong ${error}`));
-    }
-  }, */
+/**
+ * @author Ibu Eric
+ *
+ * Creates an application.
+ *
+ * @param {*} req - The request object
+ * @param {*} res - The response object
+ * @param {*} next - The function executed to call the next middleware
+ */
 
   //update an applications details/properties
-  updateAppController: async (req, res, next) => {
+  const updateAppController = async (req, res, next) => {
     const { name } = req.body;
     const { applicationId } = req.params;
 
@@ -37,7 +34,7 @@ const appController = {
     } catch (e) {
       return next(new CustomError(401, `Something went wrong ${e}`));
     }
-  },
-};
+  };
 
-module.exports = appController;
+
+module.exports = updateAppController;
