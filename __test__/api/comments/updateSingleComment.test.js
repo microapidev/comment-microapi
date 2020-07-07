@@ -81,4 +81,38 @@ describe("PATCH /comments/:commentId", () => {
       expect(comment.content).toEqual(contentUpdate);
     });
   });
+
+  it("Should return a 401 error when the authorization header's token is unauthorized", async () => {
+    const url = `/v1/comments/${oldComment.commentId}`;
+    const bearerToken = `bearer `;
+
+    const res = await request
+      .patch(url)
+      .set("Authorization", bearerToken)
+      .send({
+        ownerId: oldComment.ownerId,
+        content: "content",
+      });
+
+    expect(res.status).toEqual(401);
+    expect(res.body.status).toEqual("error");
+    expect(res.body.data).toEqual([]);
+  });
+
+  it("Should return a 404 error when the commentId path parameter is invalid", async () => {
+    const url = `/v1/comments/4edd30e86762e0fb12000003`;
+    const bearerToken = `bearer ${global.appToken}`;
+
+    const res = await request
+      .patch(url)
+      .set("Authorization", bearerToken)
+      .send({
+        ownerId: oldComment.ownerId,
+        content: "content",
+      });
+
+    expect(res.status).toEqual(404);
+    expect(res.body.status).toEqual("error");
+    expect(res.body.data).toEqual([]);
+  });
 });
