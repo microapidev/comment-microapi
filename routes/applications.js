@@ -1,11 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const applicationsController = require("../controllers/applicationsController");
-const deleteSingleApplication = require("../controllers/applicationsController/deleteSingleApplication");
-const {
-  createApplicationSchema,
-  getAllApplicationsSchema,
-} = require("../utils/validationRules");
+const validationRules = require("../utils/validationRules");
 const validMW = require("../middleware/validation");
 const { orgAuthMW } = require("../middleware/auth");
 
@@ -19,11 +15,12 @@ router.use(orgAuthMW);
 // get token for an application
 router.post(
   "/:applicationId/token",
+  validMW(validationRules.getApplicationTokenSchema),
   applicationsController.getApplicationToken
 );
 router.post(
   "/",
-  validMW(createApplicationSchema),
+  validMW(validationRules.createApplicationSchema),
   applicationsController.createSingleApplication
 );
 
@@ -32,17 +29,32 @@ router.post(
  */
 router.get(
   "/",
-  validMW(getAllApplicationsSchema),
+  validMW(validationRules.getAllApplicationsSchema),
   applicationsController.getAllApplications
+);
+
+router.get(
+  "/:applicationId",
+  validMW(validationRules.getSingleApplicationSchema),
+  applicationsController.getSingleApplication
 );
 
 /**
  * PATCH routes
  */
+router.patch(
+  "/:applicationId",
+  validMW(validationRules.updateApplicationSchema),
+  applicationsController.updateSingleApplication
+);
 
 /**
  * DELETE routes
  */
-router.delete("/:applicationId", deleteSingleApplication);
+router.delete(
+  "/:applicationId",
+  validMW(validationRules.deleteApplicationSchema),
+  applicationsController.deleteSingleApplication
+);
 
 module.exports = router;

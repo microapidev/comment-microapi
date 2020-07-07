@@ -16,14 +16,26 @@ const responseHandler = require("../../utils/responseHandler");
  */
 const getAllComments = async (req, res, next) => {
   const { applicationId } = req.token; //this will be retrieved from decoded api token after full auth implementation
-
   const { refId, origin, ownerId, isFlagged } = req.query;
+
   let query = {};
+
+  query.applicationId = applicationId;
+
   if (refId) query.refId = refId;
-  if (origin) query.commentOrigin = origin;
+  if (origin) query.origin = origin;
   if (ownerId) query.ownerId = ownerId;
+
+  if (typeof isFlagged === "string") {
+    if (isFlagged === "true") {
+      query["flags.0"] = { $exists: true };
+    } else if (isFlagged === "false") {
+      query["flags.0"] = { $exists: false };
+    }
+  }
+
   try {
-    await Comments.find({ applicationId: applicationId })
+    await Comments.find(query)
       .populate("replies")
       .then((comments) => {
         const allComments = comments.map((comment) => {
@@ -44,24 +56,7 @@ const getAllComments = async (req, res, next) => {
           };
         });
 
-        const flaggedComments = [];
-        allComments.forEach((comments) => {
-          if (comments.numOfFlags > 0) {
-            return flaggedComments.push(comments);
-          }
-        });
-
-        const unflaggedComments = [];
-        allComments.forEach((comments) => {
-          if (comments.numOfFlags == 0) {
-            return unflaggedComments.push(comments);
-          }
-        });
-
-        // This logic is used to handle the optional isFlagged paramter
         let data = allComments;
-        if (isFlagged === "true") data = flaggedComments;
-        if (isFlagged === "false") data = unflaggedComments;
 
         responseHandler(
           res,
