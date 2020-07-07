@@ -7,7 +7,7 @@ const request = supertest(app);
 // Cached comment and reply responses
 let comment1, comment2;
 
-describe("get all comments", () => {
+describe("GET /comments", () => {
   beforeEach(async () => {
     // Mock a comment document.
     const mockedComment1Doc = new CommentModel({
@@ -72,7 +72,7 @@ describe("get all comments", () => {
     comment2 = null;
   });
 
-  it("given a valid request", () => {
+  it("Should get all comments", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
@@ -89,7 +89,7 @@ describe("get all comments", () => {
     });
   });
 
-  it("given a valid request and filtered by ownerId", () => {
+  it("Should get all comments with a certain ownerId", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
@@ -107,7 +107,7 @@ describe("get all comments", () => {
     });
   });
 
-  it("given a valid request and filtered by refId", () => {
+  it("Should get all comments with a certain refId", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
@@ -125,7 +125,7 @@ describe("get all comments", () => {
     });
   });
 
-  it("given a valid request and filtered by origin", () => {
+  it("Should get all comments with a certain origin", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
@@ -143,7 +143,7 @@ describe("get all comments", () => {
     });
   });
 
-  it("given a valid request and filtered by isFlagged for only flagged replies", () => {
+  it("Should get all comments that are flagged", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
@@ -161,7 +161,7 @@ describe("get all comments", () => {
     });
   });
 
-  it("given a valid comment ID and filtered by isFlagged for only unflagged replies", () => {
+  it("Should get all comments that are unflagged", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
@@ -179,7 +179,7 @@ describe("get all comments", () => {
     });
   });
 
-  it("given a valid comment ID but unauthorized bearer token", () => {
+  it("Should return a 401 error when authorization token is unauthorized", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer `;
 
