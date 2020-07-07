@@ -1,5 +1,6 @@
 const app = require("../../../server");
 const CommentModel = require("../../../models/comments");
+const commentHandler = require("../../../utils/commentHandler");
 // const mongoose = require("mongoose");
 const supertest = require("supertest");
 const request = supertest(app);
@@ -23,20 +24,7 @@ describe("PATCH /comments/:commentId", () => {
     const savedOldComment = await mockedOldCommentDoc.save();
 
     // Cache response objects
-    oldComment = {
-      commentId: savedOldComment.id,
-      applicationId: savedOldComment.applicationId.toString(),
-      refId: savedOldComment.refId,
-      ownerId: savedOldComment.ownerId,
-      content: savedOldComment.content,
-      origin: savedOldComment.origin,
-      numOfReplies: savedOldComment.replies.length,
-      numOfVotes:
-        savedOldComment.upVotes.length + savedOldComment.downVotes.length,
-      numOfUpVotes: savedOldComment.upVotes.length,
-      numOfDownVotes: savedOldComment.downVotes.length,
-      numOfFlags: savedOldComment.flags.length,
-    };
+    oldComment = commentHandler(savedOldComment);
   });
 
   afterEach(async () => {
@@ -114,5 +102,61 @@ describe("PATCH /comments/:commentId", () => {
     expect(res.status).toEqual(404);
     expect(res.body.status).toEqual("error");
     expect(res.body.data).toEqual([]);
+  });
+
+  it("Should return a 422 error when the content body property is missing or invalid", async () => {
+    const url = `/v1/comments/${oldComment.commentId}`;
+    const bearerToken = `bearer ${global.appToken}`;
+
+    const missingRes = await request
+      .patch(url)
+      .set("Authorization", bearerToken)
+      .send({
+        ownerId: oldComment.ownerId,
+      });
+
+    expect(missingRes.status).toEqual(422);
+    expect(missingRes.body.status).toEqual("error");
+    expect(missingRes.body.data).toBeTruthy();
+
+    const invalidRes = await request
+      .patch(url)
+      .set("Authorization", bearerToken)
+      .send({
+        ownerId: oldComment.ownerId,
+        content: "",
+      });
+
+    expect(invalidRes.status).toEqual(422);
+    expect(invalidRes.body.status).toEqual("error");
+    expect(invalidRes.body.data).toBeTruthy();
+  });
+
+  it("Should return a 422 error when the ownerId body property is missing or invalid", async () => {
+    const url = `/v1/comments/${oldComment.commentId}`;
+    const bearerToken = `bearer ${global.appToken}`;
+
+    const missingRes = await request
+      .patch(url)
+      .set("Authorization", bearerToken)
+      .send({
+        content: "content",
+      });
+
+    expect(missingRes.status).toEqual(422);
+    expect(missingRes.body.status).toEqual("error");
+    expect(missingRes.body.data).toBeTruthy();
+
+    const invalidRes = await request
+      .patch(url)
+      .set("Authorization", bearerToken)
+      .send({
+        ownerId: 2,
+        content: "content",
+      });
+
+    expect(invalidRes.status).toEqual(422);
+    expect(invalidRes.body.status).toEqual("error");
+    expect(invalidRes.body.data).toBeTruthy();
   });
 });
