@@ -10,7 +10,7 @@ const request = supertest(app);
 // Cached comment and reply responses
 let oldComment, oldReply;
 
-describe("PATCH /comments/:commentId", () => {
+describe("PATCH /comments/:commentId/replies/:replyId", () => {
   beforeEach(async () => {
     // Mock a comment document.
     const mockedCommentDoc = new CommentModel({
@@ -110,21 +110,34 @@ describe("PATCH /comments/:commentId", () => {
     expect(res.body.data).toEqual([]);
   });
 
-  it("Should return a 404 error when the commentId path parameter is invalid", async () => {
-    const url = `/v1/comments/${oldComment.commentId}/replies/4edd30e86762e0fb12000003`;
+  it("Should return a 404 error when the commentId or replyId path parameter is invalid", async () => {
+    const invalidCommentUrl = `/v1/comments/4edd30e86762e0fb12000003/replies/${oldReply.replyId}`;
+    const invalidReplyUrl = `/v1/comments/${oldComment.commentId}/replies/4edd30e86762e0fb12000003`;
     const bearerToken = `bearer ${global.appToken}`;
 
-    const res = await request
-      .patch(url)
+    const invalidCommentRes = await request
+      .patch(invalidCommentUrl)
       .set("Authorization", bearerToken)
       .send({
         ownerId: oldReply.ownerId,
         content: "content",
       });
 
-    expect(res.status).toEqual(404);
-    expect(res.body.status).toEqual("error");
-    expect(res.body.data).toEqual([]);
+    expect(invalidCommentRes.status).toEqual(404);
+    expect(invalidCommentRes.body.status).toEqual("error");
+    expect(invalidCommentRes.body.data).toEqual([]);
+
+    const invalidReplyRes = await request
+      .patch(invalidReplyUrl)
+      .set("Authorization", bearerToken)
+      .send({
+        ownerId: oldReply.ownerId,
+        content: "content",
+      });
+
+    expect(invalidReplyRes.status).toEqual(404);
+    expect(invalidReplyRes.body.status).toEqual("error");
+    expect(invalidReplyRes.body.data).toEqual([]);
   });
 
   it("Should return a 422 error when the content body property is missing or invalid", async () => {
