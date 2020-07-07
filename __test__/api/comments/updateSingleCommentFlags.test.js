@@ -4,13 +4,7 @@ const supertest = require("supertest");
 const request = supertest(app);
 
 describe("PATCH /comments/:commentId/flag", () => {
-  let sampleComment = {
-    refId: "4edd40c86762e0fb12000003",
-    applicationId: global.application._id,
-    ownerId: "useremail@email.com",
-    content: "this is a comment",
-    origin: "useremail@email.com",
-  };
+  let sampleComment;
 
   afterEach(async () => {
     await CommentModel.findByIdAndDelete(sampleComment._id);
@@ -20,11 +14,11 @@ describe("PATCH /comments/:commentId/flag", () => {
 
   test("200 - Flag a single comment", async () => {
     const comment = new CommentModel({
-      refId: sampleComment.refId,
-      applicationId: sampleComment.applicationId,
-      ownerId: sampleComment.ownerId,
-      content: sampleComment.content,
-      origin: sampleComment.origin,
+      refId: "4edd40c86762e0fb12000003",
+      applicationId: global.application._id,
+      ownerId: "useremail@email.com",
+      content: "this is a comment",
+      origin: "useremail@email.com",
     });
     await comment.save();
     const res = await request
@@ -42,11 +36,11 @@ describe("PATCH /comments/:commentId/flag", () => {
 
   test("Should return 401 authentication error", async () => {
     const comment = new CommentModel({
-      refId: sampleComment.refId,
-      applicationId: sampleComment.applicationId,
-      ownerId: sampleComment.ownerId,
-      content: sampleComment.content,
-      origin: sampleComment.origin,
+      refId: "4edd40c86762e0fb12000003",
+      applicationId: global.application._id,
+      ownerId: "useremail@email.com",
+      content: "this is a comment",
+      origin: "useremail@email.com",
     });
     await comment.save();
     const res = await request
@@ -76,11 +70,11 @@ describe("PATCH /comments/:commentId/flag", () => {
 
   test("Should return 404 Invalid ID error", async () => {
     const comment = new CommentModel({
-      refId: sampleComment.refId,
-      applicationId: sampleComment.applicationId,
+      refId: "4edd40c86762e0fb12000003",
+      applicationId: global.application._id,
       ownerId: null,
-      content: sampleComment.content,
-      origin: sampleComment.origin,
+      content: "this is a comment",
+      origin: "useremail@email.com",
     });
     await comment.save();
     const res = await request
