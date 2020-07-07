@@ -19,6 +19,7 @@ const responseHandler = require("../../utils/responseHandler");
  */
 const getAllReplies = async (req, res, next) => {
   const { commentId } = req.params;
+  const { isFlagged, ownerId } = req.query;
 
   if (!ObjectId.isValid(commentId)) {
     return next(new CustomError(400, " Invalid comment Id "));
@@ -31,9 +32,21 @@ const getAllReplies = async (req, res, next) => {
       return next(new CustomError(404, " Comment not found "));
     }
 
-    const replies = await Replies.find({ commentId: commentId }).populate(
-      "replyOwner"
-    );
+    // Create query for replies.
+    let query = {};
+
+    query.commentId = commentId;
+    if (ownerId) query.ownerId = ownerId;
+
+    if (typeof isFlagged === "string") {
+      if (isFlagged === "true") {
+        query["flags.0"] = { $exists: true };
+      } else if (isFlagged === "false") {
+        query["flags.0"] = { $exists: false };
+      }
+    }
+
+    const replies = await Replies.find(query);
     let message = " Replies found. ";
     if (!replies.length) {
       message = " No replies found. ";
