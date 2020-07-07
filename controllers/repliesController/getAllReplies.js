@@ -38,10 +38,12 @@ const getAllReplies = async (req, res, next) => {
     query.commentId = commentId;
     if (ownerId) query.ownerId = ownerId;
 
-    if (!!isFlagged === true) {
-      query = { ...query, flags: { $size: { $gt: 1 } } };
-    } else if (!!isFlagged === false) {
-      query = { ...query, flags: { $size: { $eq: 0 } } };
+    if (typeof isFlagged === "string") {
+      if (isFlagged === "true") {
+        query["flags.0"] = { $exists: true };
+      } else if (isFlagged === "false") {
+        query["flags.0"] = { $exists: false };
+      }
     }
 
     const replies = await Replies.find(query);

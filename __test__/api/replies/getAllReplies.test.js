@@ -158,6 +158,35 @@ describe("get all replies", () => {
     });
   });
 
+  it("given a valid comment ID and filtered by isFlagged for only unflagged replies", () => {
+    const url = `/v1/comments/${comment.id}/replies`;
+    const bearerToken = `bearer ${global.appToken}`;
+
+    const getAllRepliesRequest = request
+      .get(url)
+      .query({ isFlagged: false })
+      .set("Authorization", bearerToken);
+
+    const expectedValue = [
+      {
+        replyId: reply1.id,
+        commentId: reply1.commentId.toString(),
+        ownerId: reply1.ownerId,
+        content: reply1.content,
+        numOfVotes: reply1.upVotes.length + reply1.downVotes.length,
+        numOfUpVotes: reply1.upVotes.length,
+        numOfDownVotes: reply1.downVotes.length,
+        numOfFlags: reply1.flags.length,
+      },
+    ];
+
+    return getAllRepliesRequest.then((res) => {
+      expect(res.status).toEqual(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body.data).toEqual(expectedValue);
+    });
+  });
+
   it("given an invalid comment ID", () => {
     const url = `/v1/comments/5eff06f9fa2a9a0017469f54/replies`;
     const bearerToken = `bearer ${global.appToken}`;
