@@ -36,7 +36,7 @@ const getAppToken = async (applicationId, adminId) => {
   // confirm adminId belongs to same organization as application
   const admin = await Admin.findById(adminId);
   if (!admin) {
-    throw new CustomError(400, "Invalid admin ID");
+    throw new CustomError(404, "Invalid admin ID");
   }
 
   if (!admin.organizationId.equals(application.organizationId)) {

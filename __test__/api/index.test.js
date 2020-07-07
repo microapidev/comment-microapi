@@ -1,9 +1,9 @@
 const app = require("../../server");
 const request = require("supertest");
 
-describe("GET /v1", () => {
+describe("GET /", () => {
   test("Should return status 200 and render Swagger docs", async () => {
-    const res = await request(app).get("/v1");
+    const res = await request(app).get("/");
     expect(res.status).toBe(200);
     expect(res.text).toMatchSnapshot();
   });
