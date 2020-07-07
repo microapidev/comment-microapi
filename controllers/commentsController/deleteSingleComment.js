@@ -3,6 +3,7 @@ const Comments = require("../../models/comments");
 // Utilities
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
+const commentHandler = require("../../utils/commentHandler");
 
 /**
  * @author Adepoju Adeyemi Joshua <adepojuadeyemi11@gmail.com>
@@ -30,7 +31,12 @@ const deleteSingleComment = async (req, res, next) => {
     if (comment.ownerId === ownerId) {
       const deleting = await Comments.findByIdAndDelete(commentId);
       if (deleting) {
-        responseHandler(res, 200, deleting, "Comment deleted successfully");
+        responseHandler(
+          res,
+          200,
+          commentHandler(deleting),
+          "Comment deleted successfully"
+        );
         return;
       } else {
         return next(

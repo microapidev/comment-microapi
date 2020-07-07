@@ -5,6 +5,7 @@ const Comments = require("../../models/comments");
 // Utilities
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
+const commentHandler = require("../../utils/commentHandler");
 
 /**
  * @author Clish Illa
@@ -35,19 +36,12 @@ const createSingleComment = async (req, res, next) => {
   //save comment
   try {
     const savedComment = await comment.save();
-    const data = {
-      commentId: savedComment._id,
-      refId: savedComment.refId,
-      ownerId: savedComment.ownerId,
-      content: savedComment.content,
-      origin: savedComment.origin,
-      numOfVotes: savedComment.upVotes.length + savedComment.downVotes.length,
-      numOfUpVotes: savedComment.upVotes.length,
-      numOfDownVotes: savedComment.downVotes.length,
-      numOfFlags: savedComment.flags.length,
-      numOfReplies: savedComment.replies.length,
-    };
-    return responseHandler(res, 201, data);
+    return responseHandler(
+      res,
+      201,
+      commentHandler(savedComment),
+      "Comment created successfully"
+    );
   } catch (err) {
     return next(
       new CustomError(
