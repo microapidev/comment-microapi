@@ -28,7 +28,7 @@ const updateSingleCommentFlags = async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       return next(new CustomError(422, "invalid ID"));
     }
-    const comment = await Comments.find({
+    const comment = await Comments.findOne({
       _id: commentId,
       applicationId: applicationId,
     });

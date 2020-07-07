@@ -21,7 +21,7 @@ const updateSingleComment = async (req, res, next) => {
   const content = req.body.content;
   const ownerId = req.body.ownerId;
 
-  Comments.find({ _id: comment_id, applicationId: applicationId })
+  Comments.findOne({ _id: comment_id, applicationId: applicationId })
     .exec()
     .then((comment) => {
       if (!comment) {

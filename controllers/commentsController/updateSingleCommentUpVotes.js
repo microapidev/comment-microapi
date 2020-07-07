@@ -27,7 +27,7 @@ const updateSingleCommentUpVotes = async (req, res, next) => {
       next(new CustomError(422, "invalid ID"));
       return;
     }
-    const comment = await Comments.findById({
+    const comment = await Comments.findOne({
       _id: commentId,
       applicationId: applicationId,
     });

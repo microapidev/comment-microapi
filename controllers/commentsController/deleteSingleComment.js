@@ -20,7 +20,7 @@ const deleteSingleComment = async (req, res, next) => {
 
   try {
     //find comment in application
-    const comment = await Comments.find({
+    const comment = await Comments.findOne({
       _id: commentId,
       applicationId: applicationId,
     });
