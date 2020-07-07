@@ -7,14 +7,20 @@ const Organizations = require("../../models/organizations");
 /**
  * @author David Okanlawon
  *
- * Gets all applications.
+ * Updates an application's details.
  *
  * @param {*} req - The request object
  * @param {*} res - The response object
  * @param {*} next - The function executed to call the next middleware
  */
-const getAllApplications = async (req, res, next) => {
+const updateSingleApplication = async (req, res, next) => {
   try {
+    const { name } = req.body;
+    const { applicationId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(applicationId)) {
+      return next(new CustomError(400, "Invalid applicationID"));
+    }
+
     const { organizationId } = req.token;
     if (!mongoose.Types.ObjectId.isValid(organizationId)) {
       return next(new CustomError(400, "Invalid OrganizationID"));
@@ -25,25 +31,24 @@ const getAllApplications = async (req, res, next) => {
       return next(new CustomError(400, "Invalid organization"));
     }
 
-    const applications = await Applications.find({ organizationId });
-    const allApplication = applications.map((app) => {
-      return {
-        applicationId: app._id,
-        name: app.name,
-        organizationId: app.organizationId,
-      };
-    });
+    const application = await Applications.findById(applicationId);
+    if (!application) {
+      return next(new CustomError(404, "Application not found"));
+    }
 
-    const data = allApplication;
-    return responseHandler(
-      res,
-      200,
-      data,
-      "Organization applications retrieved successfully"
-    );
+    //update application
+    try {
+      application.name = name;
+      await application.save();
+    } catch (error) {
+      next(new CustomError(400, "An error occured updating application"));
+      return;
+    }
+
+    return responseHandler(res, 200, {}, "Application updated successfully");
   } catch (err) {
     return next(new CustomError(500, "Something went wrong, Try again later"));
   }
 };
 
-module.exports = getAllApplications;
+module.exports = updateSingleApplication;
