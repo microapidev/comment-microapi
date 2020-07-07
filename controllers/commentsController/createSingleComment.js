@@ -35,7 +35,19 @@ const createSingleComment = async (req, res, next) => {
   //save comment
   try {
     const savedComment = await comment.save();
-    return responseHandler(res, 200, savedComment);
+    const data = {
+      commentId: savedComment._id,
+      refId: savedComment.refId,
+      ownerId: savedComment.ownerId,
+      content: savedComment.content,
+      origin: savedComment.origin,
+      numOfVotes: savedComment.upVotes.length + savedComment.downVotes.length,
+      numOfUpVotes: savedComment.upVotes.length,
+      numOfDownVotes: savedComment.downVotes.length,
+      numOfFlags: savedComment.flags.length,
+      numOfReplies: savedComment.replies.length,
+    };
+    return responseHandler(res, 201, data);
   } catch (err) {
     return next(
       new CustomError(

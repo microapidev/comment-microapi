@@ -5,23 +5,6 @@ const CommentModel = require("../../models/comments");
 const request = supertest(app);
 import { describeIfEndpoint } from "../helpers/conditionalTests";
 
-describeIfEndpoint("POST", "/v1/comments", "POST '/v1/comments'", () => {
-  test("Should create comment", async () => {
-    const res = await request
-      .post("/v1/comments")
-      .set("Authorization", `bearer ${global.appToken}`)
-      .send({
-        content: "this is a comment",
-        ownerId: "useremail@email.com",
-        applicationId: global.application._id,
-        origin: "123123",
-      });
-    expect(res.status).toBe(200);
-    expect(res.body.data.content).toBeTruthy();
-    expect(res.body.data.ownerId).toBeTruthy();
-  });
-});
-
 describeIfEndpoint(
   "POST",
   "/v1/comments/:id/replies",
