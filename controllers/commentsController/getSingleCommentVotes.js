@@ -17,6 +17,7 @@ const responseHandler = require("../../utils/responseHandler");
  * @param {*} next - The function executed to call the next middleware
  */
 const getSingleCommentVotes = async (req, res, next) => {
+  const { applicationId } = req.token;
   try {
     const { commentId } = req.params;
     const { voteType } = req.query;
@@ -25,6 +26,7 @@ const getSingleCommentVotes = async (req, res, next) => {
     }
     const comment = await Comments.findOne({
       _id: commentId,
+      applicationId: applicationId,
     });
     if (!comment) {
       return next(
