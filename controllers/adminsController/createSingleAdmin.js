@@ -61,8 +61,6 @@ const createSingleAdmin = async (req, res, next) => {
 
     await newAdmin.save();
   } catch (error) {
-    console.log(error.message);
-
     const errorType =
       error.code === 11000 ? ": admin account already exists" : "";
 
