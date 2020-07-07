@@ -85,3 +85,29 @@ describeIfEndpoint(
     });
   }
 );
+
+describeIfEndpoint(
+  "GET",
+  "/v1/comments/:commentId/votes",
+  "GET '/v1/comments/:commentId/votes'",
+  () => {
+    test("Should return a vote to a comment", async () => {
+      const comment = new CommentModel({
+        content: "this is a comment",
+        ownerId: "useremail@email.com",
+        origin: "123123",
+        applicationId: global.application._id,
+        upVotes: [],
+      });
+      comment.upVotes.push(comment.ownerId);
+      await comment.save();
+      const commentId = comment._id;
+      const res = await request
+        .get(`/v1/comments/${commentId}/votes?upvote`)
+        .set("Authorization", `bearer ${global.appToken}`);
+      expect(res.status).toBe(200);
+      expect(res.body.data.commentId).toEqual(String(comment._id));
+      expect(res.body.data.votes[0]).toEqual(String(comment.ownerId));
+    });
+  }
+);
