@@ -1,4 +1,5 @@
 const Comments = require("../../models/comments");
+const mongoose = require("mongoose");
 
 // Utilities
 const CustomError = require("../../utils/customError");
@@ -16,38 +17,41 @@ const responseHandler = require("../../utils/responseHandler");
 const getSingleComment = async (req, res, next) => {
   // const { refId } = req.query;
   const commentId = req.params.commentId;
-  const applicationId = req.headers.token; //this will be retrieved from decoded api token after full auth implementation
+  const { applicationId } = req.token; //this will be retrieved from decoded api token after full auth implementation
   const query = { _id: commentId, applicationId: applicationId };
   // if (refId) query.refId = refId;
   try {
-    await Comments.find(query)
-      .then((comments) => {
-        const comment = comments.map((comment) => {
-          return {
-            commentId: comment._id,
-            refId: comment.refId,
-            applicationId: comment.applicationId,
-            ownerId: comments.ownerId,
-            content: comment.content,
-            origin: comment.origin,
-            numOfVotes: comment.upVotes.length + comment.downVotes.length,
-            numOfUpVotes: comment.upVotes.length,
-            numOfDownVotes: comment.downVotes.length,
-            numOfFlags: comment.flags.length,
-            numOfReplies: comment.replies.length,
-            // createdAt: comment.createdAt,
-            // updatedAt: comment.updatedAt,
-          };
-        });
-        responseHandler(res, 200, comment, `Comment Retrieved Successfully`);
-      })
-      .catch((err) => {
-        return next(
-          new CustomError(500, "Something went wrong, please try again", err)
-        );
-      });
+    // check if commentId is valid
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      return next(new CustomError(404, "invalid ID"));
+    }
+
+    const comment = await Comments.findOne(query);
+    if (!comment) {
+      return next(
+        new CustomError(
+          404,
+          `Comment with the ID ${commentId} doesn't exist or has been removed`
+        )
+      );
+    }
+    const data = {
+      commentId: comment._id,
+      refId: comment.refId,
+      applicationId: comment.applicationId,
+      ownerId: comment.ownerId,
+      content: comment.content,
+      origin: comment.origin,
+      numOfVotes: comment.upVotes.length + comment.downVotes.length,
+      numOfUpVotes: comment.upVotes.length,
+      numOfDownVotes: comment.downVotes.length,
+      numOfFlags: comment.flags.length,
+      numOfReplies: comment.replies.length,
+    };
+
+    return responseHandler(res, 200, data, `Comment Retrieved Successfully`);
   } catch (err) {
-    return next(new CustomError(401, `Something went wrong ${err}`));
+    return next(new CustomError(500, `Something went wrong ${err}`));
   }
 };
 
