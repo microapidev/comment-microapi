@@ -18,6 +18,7 @@ const responseHandler = require("../../utils/responseHandler");
  */
 const updateSingleCommentDownVotes = async (req, res, next) => {
   try {
+    const { applicationId } = req.token;
     const { commentId } = req.params;
     const { ownerId } = req.body;
     let isDownvoted = false;
@@ -26,7 +27,11 @@ const updateSingleCommentDownVotes = async (req, res, next) => {
       next(new CustomError(422, "invalid ID"));
       return;
     }
-    const comment = await Comments.findById({ _id: commentId });
+    const comment = await Comments.find({
+      _id: commentId,
+      applicationId: applicationId,
+    });
+
     if (!comment) {
       return next(new CustomError(404, "Comment Id not found"));
     }

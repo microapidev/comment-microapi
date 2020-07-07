@@ -23,13 +23,14 @@ const updateSingleCommentFlags = async (req, res, next) => {
 
     const { commentId } = req.params;
     const { ownerId } = req.body;
-    // console.log(`applicationId: ${req.token.applicationId}`);
+    const { applicationId } = req.token;
 
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       return next(new CustomError(422, "invalid ID"));
     }
-    const comment = await Comments.findOne({
+    const comment = await Comments.find({
       _id: commentId,
+      applicationId: applicationId,
     });
 
     if (!comment) {

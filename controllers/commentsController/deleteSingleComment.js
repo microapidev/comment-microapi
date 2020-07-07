@@ -16,8 +16,14 @@ const responseHandler = require("../../utils/responseHandler");
 const deleteSingleComment = async (req, res, next) => {
   const commentId = req.params.commentId;
   const ownerId = req.body.ownerId;
+  const { applicationId } = req.token;
+
   try {
-    const comment = await Comments.findOne({ _id: commentId });
+    //find comment in application
+    const comment = await Comments.find({
+      _id: commentId,
+      applicationId: applicationId,
+    });
     if (!comment) {
       return next(new CustomError(400, "Comment not found"));
     }

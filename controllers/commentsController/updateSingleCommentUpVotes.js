@@ -20,13 +20,17 @@ const updateSingleCommentUpVotes = async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const { ownerId } = req.body;
+    const { applicationId } = req.token;
     let isUpvoted = false;
 
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       next(new CustomError(422, "invalid ID"));
       return;
     }
-    const comment = await Comments.findById({ _id: commentId });
+    const comment = await Comments.findById({
+      _id: commentId,
+      applicationId: applicationId,
+    });
 
     //if user exists in downvotes array
     if (comment.downVotes.includes(ownerId)) {

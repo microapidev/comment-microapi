@@ -15,11 +15,13 @@ const responseHandler = require("../../utils/responseHandler");
  * @param {*} next - The function executed to call the next middleware
  */
 const updateSingleComment = async (req, res, next) => {
+  const { applicationId } = req.token;
+
   const comment_id = req.params.commentId;
   const content = req.body.content;
   const ownerId = req.body.ownerId;
 
-  Comments.findById(comment_id)
+  Comments.find({ _id: comment_id, applicationId: applicationId })
     .exec()
     .then((comment) => {
       if (!comment) {
