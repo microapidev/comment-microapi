@@ -30,6 +30,7 @@ const getAllApplications = async (req, res, next) => {
       return {
         applicationId: app._id,
         name: app.name,
+        organizationId: app.organizationId,
       };
     });
 
