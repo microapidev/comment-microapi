@@ -40,11 +40,14 @@ const getSingleApplication = async (req, res, next) => {
       organizationId,
     };
 
-    responseHandler(res, 200, data, "Application retrieved successfully");
-  } catch (err) {
-    return next(
-      new CustomError(500, "Something went wrong, Try again later", err)
+    return responseHandler(
+      res,
+      200,
+      data,
+      "Application retrieved successfully"
     );
+  } catch (err) {
+    return next(new CustomError(500, "Something went wrong, Try again later"));
   }
 };
 
