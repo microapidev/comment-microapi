@@ -89,7 +89,7 @@ describe("GET /comments/:commentId/replies/:replyId", () => {
     expect(res.body.data).toEqual([]);
   });
 
-  it("should return 400 for invalid commentId", async () => {
+  it("should return 422 for invalid commentId", async () => {
     const commentId = "1234dgfis203Aafhfd";
     const url = `/v1/comments/${commentId}/replies/${savedReply1.id}`;
     const bearerToken = `bearer ${global.appToken}`;
@@ -101,7 +101,7 @@ describe("GET /comments/:commentId/replies/:replyId", () => {
     expect(res.body.data).toBeTruthy();
   });
 
-  it("should return 400 for invalid replyId", async () => {
+  it("should return 422 for invalid replyId", async () => {
     const replyId = "1234dgfis203Aafhfd";
     const url = `/v1/comments/${comment.id}/replies/${replyId}`;
     const bearerToken = `bearer ${global.appToken}`;
