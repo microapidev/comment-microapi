@@ -23,7 +23,7 @@ const getSingleComment = async (req, res, next) => {
   try {
     // check if commentId is valid
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
-      return next(new CustomError(404, "invalid ID"));
+      return next(new CustomError(422, "invalid ID"));
     }
 
     const comment = await Comments.findOne(query);

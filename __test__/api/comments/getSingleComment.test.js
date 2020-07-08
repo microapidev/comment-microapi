@@ -63,15 +63,28 @@ describe("GET /comments/:commentId", () => {
     expect(res.body.error).toBeTruthy();
   });
 
-  it("should 404 error for inavlid comment Id", async () => {
+  it("should 404 error if comment doesn't exist", async () => {
     const bearerToken = `bearer ${global.appToken}`;
-    const commentId = "12345Avd"; // invalid ID
+    const commentId = "4edd30e86762e0fb12000003"; // invalid ID
 
     const res = await request
       .get(`/v1/comments/${commentId}`)
       .set("Authorization", bearerToken);
 
     expect(res.status).toBe(404);
+    expect(res.body.status).toEqual("error");
+    expect(res.body.data).toBeTruthy();
+  });
+
+  it("should return 422 error for inavlid comment Id", async () => {
+    const bearerToken = `bearer ${global.appToken}`;
+    const commentId = "12345Avd"; // invalid ID params
+
+    const res = await request
+      .get(`/v1/comments/${commentId}`)
+      .set("Authorization", bearerToken);
+
+    expect(res.status).toBe(422);
     expect(res.body.status).toEqual("error");
     expect(res.body.data).toBeTruthy();
   });
