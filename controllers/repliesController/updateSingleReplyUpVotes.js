@@ -74,7 +74,7 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
         numOfdownVotes: reply.downVotes.length,
         numOfupVotes: reply.upVotes.length + 1,
       },
-      "Reply downvoted successfully"
+      "Reply Upvoted successfully"
     );
   } catch (error) {
     return next(new CustomError(500, "Something went wrong, try again", error));
