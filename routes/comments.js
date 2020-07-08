@@ -64,7 +64,7 @@ router.get(
  */
 router.patch(
   "/:commentId",
-  validationMiddleware(validationRules.updateCommentSchema),
+  validationMiddleware(validationRules.updateSingleCommentSchema),
   commentsController.updateSingleComment
 );
 
