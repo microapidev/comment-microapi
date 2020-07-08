@@ -1387,9 +1387,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/FlaggedComment"
+                    $ref: "#/components/schemas/FlaggedComment"
 
         "401":
           description: Authentication error
@@ -1583,9 +1581,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Reply"
+                    $ref: "#/components/schemas/Reply"
 
         "400":
           description: Bad request error
@@ -1715,9 +1711,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Reply"
+                    $ref: "#/components/schemas/Reply"
 
         "400":
           description: Bad request error
