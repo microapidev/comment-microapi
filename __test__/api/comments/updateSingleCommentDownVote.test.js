@@ -8,7 +8,7 @@ const request = supertest(app);
 // Cached comment responses
 let oldComment;
 
-describe("PATCH /comments/:commentId", () => {
+describe("PATCH /comments/:commentId/votes/downvote", () => {
   beforeEach(async () => {
     // Mock a comment document.
     const mockedOldCommentDoc = new CommentModel({
