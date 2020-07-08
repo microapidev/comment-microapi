@@ -54,7 +54,11 @@ router.patch(
   repliesController.updateSingleReplyDownVotes
 );
 
-router.patch("/:replyId/flag", repliesController.updateSingleReplyFlags);
+router.patch(
+  "/:replyId/flag",
+  validationMiddleware(validationRules.updateReplyFlagSchema),
+  repliesController.updateSingleReplyFlags
+);
 
 /**
  * DELETE routes
