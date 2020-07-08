@@ -31,6 +31,7 @@ describe("PATCH /comments/:commentId/flag", () => {
     expect(res.status).toBe(200);
     expect(res.body.status).toEqual("success");
     expect(res.body.data.numOfFlags).toBeTruthy();
+    expect(comment.applicationId).toEqual(global.application._id);
   });
 
   test("Should return 401 authentication error", async () => {
