@@ -20,7 +20,7 @@ describe("PATCH /comments/:commentId/flag", () => {
       refId: "576897564",
       applicationId: global.application._id,
       ownerId: "anotheruseremail@email.com",
-      content: "this is a very bad comment with an non-valid ownerId",
+      content: "this is another comment ",
       origin: "myuseremail@email.com",
     });
 
@@ -46,14 +46,25 @@ describe("PATCH /comments/:commentId/flag", () => {
       .send({
         ownerId: sampleComment2.ownerId,
       });
+
+    //mock request by same user
+    const res2 = await request
+      .patch(`/v1/comments/${sampleComment.commentId}/flag`)
+      .set("Authorization", `bearer ${global.appToken}`)
+      .send({
+        ownerId: sampleComment2.ownerId,
+      });
+
     expect(res.status).toBe(200);
     expect(res.body.status).toEqual("success");
-    expect(res.body.data.numOfFlags).toBeTruthy();
+    expect(res.body.data.numOfFlags).toEqual(1);
+
+    //number of flags should be same for both requests
+    expect(res2.body.data.numOfFlags).toEqual(res.body.data.numOfFlags);
 
     //Match db records to verify test mockup
     await CommentModel.findById(sampleComment.commentId).then((comment) => {
-      expect(comment).toBeTruthy();
-      expect(comment.flags).toBeTruthy();
+      expect(comment.flags.length).toEqual(sampleComment.numOfFlags);
       expect(comment.ownerId).toEqual(sampleComment.ownerId);
     });
   });
@@ -68,7 +79,6 @@ describe("PATCH /comments/:commentId/flag", () => {
 
     expect(res.status).toBe(401);
     expect(res.body.status).toEqual("error");
-    expect(res.body.error).toBeTruthy();
     expect(res.body.data).toEqual([]);
   });
 
@@ -82,7 +92,6 @@ describe("PATCH /comments/:commentId/flag", () => {
 
     expect(res.status).toBe(422);
     expect(res.body.status).toEqual("error");
-    expect(res.body.error).toBeTruthy();
     expect(res.body.data).toEqual([]);
   });
 
@@ -96,6 +105,6 @@ describe("PATCH /comments/:commentId/flag", () => {
 
     expect(res.status).toBe(404);
     expect(res.body.status).toEqual("error");
-    expect(res.body.error).toBeTruthy();
+    expect(res.body.data).toEqual([]);
   });
 });
