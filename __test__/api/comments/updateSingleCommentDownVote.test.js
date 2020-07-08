@@ -6,7 +6,7 @@ const supertest = require("supertest");
 const request = supertest(app);
 
 // Cached comment responses
-let oldComment;
+let oldComment, oldCommentWithUpVote, oldCommentWithDownVote;
 
 describe("PATCH /comments/:commentId/votes/downvote", () => {
   beforeEach(async () => {
@@ -20,27 +20,55 @@ describe("PATCH /comments/:commentId/votes/downvote", () => {
       flags: ["flagger@gmail.com"],
     });
 
+    // Mock a comment document.
+    const mockedOldCommentWithUpVoteDoc = new CommentModel({
+      content: "A comment from user 2",
+      ownerId: "user2@email.com",
+      origin: "135135",
+      refId: 1,
+      applicationId: global.application._id,
+      flags: ["flagger@gmail.com"],
+      upVotes: ["voter@gmail.com"],
+    });
+
+    // Mock a comment document.
+    const mockedOldCommentWithDownVoteDoc = new CommentModel({
+      content: "A comment from user 3",
+      ownerId: "user3@email.com",
+      origin: "135135",
+      refId: 1,
+      applicationId: global.application._id,
+      flags: ["flagger@gmail.com"],
+      downVotes: ["voter@gmail.com"],
+    });
+
     // Save mocked comment document to the database.
     const savedOldComment = await mockedOldCommentDoc.save();
+    const savedOldCommentWithUpVote = await mockedOldCommentWithUpVoteDoc.save();
+    const savedOldCommentWithDownVote = await mockedOldCommentWithDownVoteDoc.save();
 
     // Cache response objects
     oldComment = commentHandler(savedOldComment);
+    oldCommentWithUpVote = commentHandler(savedOldCommentWithUpVote);
+    oldCommentWithDownVote = commentHandler(savedOldCommentWithDownVote);
   });
 
   afterEach(async () => {
     // Delete mocks from the database.
     await CommentModel.findByIdAndDelete(oldComment.commentId);
+    await CommentModel.findByIdAndDelete(oldCommentWithUpVote.commentId);
 
     // Delete cache.
     oldComment = null;
+    oldCommentWithUpVote = null;
   });
 
-  it("Should add or remove a downvote to a comment (toggle)", async () => {
+  it("Should add a downvote (new vote) to a comment (toggle)", async () => {
     const url = `/v1/comments/${oldComment.commentId}/votes/downvote`;
     const bearerToken = `bearer ${global.appToken}`;
     const ownerIdUpdate = "voter@gmail.com";
 
-    // Run test matchers to verify that the comment votes hav not been updated in the database.
+    // Run test matchers to verify that the comment votes have not been updated in the database.
     await CommentModel.findById(oldComment.commentId).then((comment) => {
       expect(comment).toBeTruthy();
       expect(comment.upVotes.length).toEqual(oldComment.numOfUpVotes);
@@ -76,6 +104,83 @@ describe("PATCH /comments/:commentId/votes/downvote", () => {
         oldComment.numOfVotes + 1
       );
     });
+  });
+
+  it("Should add a downvote (upvote exists) to a comment (toggle)", async () => {
+    const url = `/v1/comments/${oldCommentWithUpVote.commentId}/votes/downvote`;
+    const bearerToken = `bearer ${global.appToken}`;
+    const ownerIdUpdate = "voter@gmail.com";
+
+    // Run test matchers to verify that the comment votes have not been updated in the database.
+    await CommentModel.findById(oldCommentWithUpVote.commentId).then(
+      (comment) => {
+        expect(comment).toBeTruthy();
+        expect(comment.upVotes.length).toEqual(
+          oldCommentWithUpVote.numOfUpVotes
+        );
+        expect(comment.downVotes.length).toEqual(
+          oldCommentWithUpVote.numOfDownVotes
+        );
+        expect(comment.downVotes.length + comment.upVotes.length).toEqual(
+          oldCommentWithUpVote.numOfVotes
+        );
+      }
+    );
+
+    // Run test matchers to verify that the comment votes addition produced the correct success response.
+    const addRes = await request
+      .patch(url)
+      .set("Authorization", bearerToken)
+      .send({
+        ownerId: ownerIdUpdate,
+      });
+
+    expect(addRes.status).toEqual(200);
+    expect(addRes.body.status).toEqual("success");
+    expect(addRes.body.data).toEqual({
+      commentId: oldCommentWithUpVote.commentId,
+      numOfVotes: oldCommentWithUpVote.numOfVotes,
+      numOfUpVotes: oldCommentWithUpVote.numOfUpVotes - 1,
+      numOfDownVotes: oldCommentWithUpVote.numOfDownVotes + 1,
+    });
+
+    // Run test matchers to verify that the comment votes have been added in the database.
+    await CommentModel.findById(oldCommentWithUpVote.commentId).then(
+      (comment) => {
+        expect(comment).toBeTruthy();
+        expect(comment.upVotes.length).toEqual(
+          oldCommentWithUpVote.numOfUpVotes - 1
+        );
+        expect(comment.downVotes.length).toEqual(
+          oldCommentWithUpVote.numOfDownVotes + 1
+        );
+        expect(comment.downVotes.length + comment.upVotes.length).toEqual(
+          oldCommentWithUpVote.numOfVotes
+        );
+      }
+    );
+  });
+
+  it("Should remove a downvote from a comment (toggle)", async () => {
+    const url = `/v1/comments/${oldCommentWithDownVote.commentId}/votes/downvote`;
+    const bearerToken = `bearer ${global.appToken}`;
+    const ownerIdUpdate = "voter@gmail.com";
+
+    // Run test matchers to verify that the comment votes have not been removed in the database.
+    await CommentModel.findById(oldCommentWithDownVote.commentId).then(
+      (comment) => {
+        expect(comment).toBeTruthy();
+        expect(comment.upVotes.length).toEqual(
+          oldCommentWithDownVote.numOfUpVotes
+        );
+        expect(comment.downVotes.length).toEqual(
+          oldCommentWithDownVote.numOfDownVotes
+        );
+        expect(comment.downVotes.length + comment.upVotes.length).toEqual(
+          oldCommentWithDownVote.numOfVotes
+        );
+      }
+    );
 
     // Run test matchers to verify that the comment votes removal produced the correct success response.
     const removeRes = await request
@@ -88,21 +193,27 @@ describe("PATCH /comments/:commentId/votes/downvote", () => {
     expect(removeRes.status).toEqual(200);
     expect(removeRes.body.status).toEqual("success");
     expect(removeRes.body.data).toEqual({
-      commentId: oldComment.commentId,
-      numOfVotes: oldComment.numOfVotes,
-      numOfUpVotes: oldComment.numOfUpVotes,
-      numOfDownVotes: oldComment.numOfDownVotes,
+      commentId: oldCommentWithDownVote.commentId,
+      numOfVotes: oldCommentWithDownVote.numOfVotes - 1,
+      numOfUpVotes: oldCommentWithDownVote.numOfUpVotes,
+      numOfDownVotes: oldCommentWithDownVote.numOfDownVotes - 1,
     });
 
     // Run test matchers to verify that the comment vote has been removed in the database.
-    await CommentModel.findById(oldComment.commentId).then((comment) => {
-      expect(comment).toBeTruthy();
-      expect(comment.upVotes.length).toEqual(oldComment.numOfUpVotes);
-      expect(comment.downVotes.length).toEqual(oldComment.numOfDownVotes);
-      expect(comment.downVotes.length + comment.upVotes.length).toEqual(
-        oldComment.numOfVotes
-      );
-    });
+    await CommentModel.findById(oldCommentWithDownVote.commentId).then(
+      (comment) => {
+        expect(comment).toBeTruthy();
+        expect(comment.upVotes.length).toEqual(
+          oldCommentWithDownVote.numOfUpVotes
+        );
+        expect(comment.downVotes.length).toEqual(
+          oldCommentWithDownVote.numOfDownVotes - 1
+        );
+        expect(comment.downVotes.length + comment.upVotes.length).toEqual(
+          oldCommentWithDownVote.numOfVotes - 1
+        );
+      }
+    );
   });
 
   it("Should return a 401 error when the authorization header's token is unauthorized", async () => {
