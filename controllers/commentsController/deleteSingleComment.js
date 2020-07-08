@@ -1,8 +1,10 @@
 const Comments = require("../../models/comments");
+const { ObjectId } = require("mongoose").Types;
 
 // Utilities
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
+const commentHandler = require("../../utils/commentHandler");
 
 /**
  * @author Adepoju Adeyemi Joshua <adepojuadeyemi11@gmail.com>
@@ -18,36 +20,28 @@ const deleteSingleComment = async (req, res, next) => {
   const ownerId = req.body.ownerId;
   const { applicationId } = req.token;
 
+  if (!ObjectId.isValid(applicationId))
+    return next(new CustomError(401, "unauthorised request"));
+  if (!ObjectId.isValid(commentId))
+    return next(new CustomError(404, "Comment not found"));
+  if (!ownerId) return next(new CustomError(422, "invalid reply id"));
+
   try {
     //find comment in application
-    const comment = await Comments.findOne({
+    const comment = await Comments.findOneAndDelete({
       _id: commentId,
       applicationId: applicationId,
     });
     if (!comment) {
-      return next(new CustomError(400, "Comment not found"));
+      return next(new CustomError(404, "Comment not found"));
     }
-    if (comment.ownerId === ownerId) {
-      const deleting = await Comments.findByIdAndDelete(commentId);
-      if (deleting) {
-        responseHandler(res, 200, deleting, "Comment deleted successfully");
-        return;
-      } else {
-        return next(
-          new CustomError(
-            400,
-            "Cannot delete your comment at this time. Please try again"
-          )
-        );
-      }
-    } else {
-      return next(
-        new CustomError(
-          400,
-          "Comment cannot be deleted because you are not the owner of this comment."
-        )
-      );
-    }
+    //const deleting = await Comments.findByIdAndDelete(commentId);
+    return responseHandler(
+      res,
+      200,
+      commentHandler(comment),
+      "Comment successfully deleted"
+    );
   } catch (error) {
     return next(error);
   }

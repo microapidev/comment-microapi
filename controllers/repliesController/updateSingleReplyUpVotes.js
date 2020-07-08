@@ -20,12 +20,24 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
   const commentId = req.params.commentId;
   const replyId = req.params.replyId;
   const ownerId = req.body.ownerId;
+  const { applicationId } = req.token;
 
   try {
-    let comment = await Comments.findById(commentId);
-    if (!comment) {
-      return next(new CustomError(404, "Comment not found or deleted"));
+    //confirm reply belongs to a comment in the same application
+    const parentComment = await Comments.findOne({
+      _id: commentId,
+      applicationId,
+    });
+    if (!parentComment) {
+      next(
+        new CustomError(
+          404,
+          `Comment with the ID ${commentId} does not exist or has been deleted`
+        )
+      );
+      return;
     }
+
     let reply = await Replies.findById(replyId);
     if (!reply) {
       return next(new CustomError(404, "Reply not found or deleted"));
