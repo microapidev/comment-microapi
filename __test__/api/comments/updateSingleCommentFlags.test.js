@@ -16,9 +16,9 @@ describe("PATCH /comments/:commentId/flag", () => {
     const comment = new CommentModel({
       refId: "4edd40c86762e0fb12000003",
       applicationId: global.application._id,
-      ownerId: "useremail@email.com",
+      ownerId: "myuseremail@email.com",
       content: "this is a comment",
-      origin: "useremail@email.com",
+      origin: "myuseremail@email.com",
     });
     await comment.save();
     sampleComment = comment;
@@ -26,7 +26,7 @@ describe("PATCH /comments/:commentId/flag", () => {
       .patch(`/v1/comments/${comment._id}/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
       .send({
-        ownerId: "offendeduser@email.com",
+        ownerId: "anotheruser@email.com",
       });
     expect(res.status).toBe(200);
     expect(res.body.status).toEqual("success");
@@ -38,9 +38,9 @@ describe("PATCH /comments/:commentId/flag", () => {
     const comment = new CommentModel({
       refId: "4edd40c86762e0fb12000003",
       applicationId: global.application._id,
-      ownerId: "useremail@email.com",
-      content: "this is a comment",
-      origin: "useremail@email.com",
+      ownerId: "myemail@email.com",
+      content: "this is a new comment",
+      origin: "myemail@email.com",
     });
     await comment.save();
     sampleComment = comment;
@@ -57,15 +57,15 @@ describe("PATCH /comments/:commentId/flag", () => {
   });
 
   test("Should return 422 validation", async () => {
-      const comment = new CommentModel({
-        refId: "4edd40c86762e0fb12000003",
-        applicationId: global.application._id,
-        ownerId: "useremail@email.com",
-        content: "this is a comment",
-        origin: "useremail@email.com",
-      });
-      await comment.save();
-      sampleComment = comment;
+    const comment = new CommentModel({
+      refId: "4edd40c86762e0fb12000003",
+      applicationId: global.application._id,
+      ownerId: "useremail@email.com",
+      content: "this is a comment",
+      origin: "useremail@email.com",
+    });
+    await comment.save();
+    sampleComment = comment;
     const res = await request
       .patch(`/v1/comments/56574/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
@@ -82,7 +82,7 @@ describe("PATCH /comments/:commentId/flag", () => {
     const comment = new CommentModel({
       refId: "4edd40c86762e0fb12000003",
       applicationId: global.application._id,
-      ownerId: 958584,
+      ownerId: " marx@ gmail.com",
       content: "this is a comment",
       origin: "useremail@email.com",
     });
@@ -92,7 +92,7 @@ describe("PATCH /comments/:commentId/flag", () => {
       .patch(`/v1/comments/${comment._id}/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
       .send({
-        ownerId: "offendeduser@email.com",
+        ownerId: comment.ownerId,
       });
 
     expect(res.status).toBe(404);

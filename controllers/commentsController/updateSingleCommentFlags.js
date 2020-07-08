@@ -42,7 +42,11 @@ const updateSingleCommentFlags = async (req, res, next) => {
       );
     }
 
-    if (!ownerId) {
+    if (
+      !ownerId.match(/\S+@\S+\.\S+/) ||
+      ownerId.indexOf(" ") != -1 ||
+      0 === ownerId.length
+    ) {
       return next(new CustomError(404, "Invalid ID Error"));
     }
 
