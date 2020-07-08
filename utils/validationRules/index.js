@@ -1,7 +1,7 @@
 const getAllCommentsSchema = require("./comments/getAllCommentsSchema");
 const createCommentSchema = require("./comments/createCommentSchema");
 const getSingleCommentSchema = require("./comments/getSingleCommentSchema");
-const updateCommentSchema = require("./comments/updateCommentSchema");
+const updateSingleCommentSchema = require("./comments/updateSingleCommentSchema");
 const deleteCommentSchema = require("./comments/deleteCommentSchema");
 const getCommentVotesSchema = require("./comments/getCommentVotesSchema");
 const updateCommentUpAndDownVoteSchema = require("./comments/updateCommentUpAndDownVoteSchema");
@@ -13,6 +13,7 @@ const updateReplySchema = require("./replies/updateReplySchema");
 const deleteReplySchema = require("./replies/deleteReplySchema");
 const getReplyVotesSchema = require("./replies/getReplyVotesSchema");
 const updateReplyUpAndDownVoteSchema = require("./replies/updateReplyUpAndDownVoteSchema");
+const updateReplyFlagSchema = require("./replies/updateReplyFlagSchema");
 
 const createOrganizationSchema = require("./organizations/createOrganizationSchema");
 const getOrganizationTokenSchema = require("./organizations/getOrganizationTokenSchema");
@@ -39,7 +40,7 @@ module.exports = {
   getAllCommentsSchema,
   createCommentSchema,
   getSingleCommentSchema,
-  updateCommentSchema,
+  updateSingleCommentSchema,
   deleteCommentSchema,
   getCommentVotesSchema,
   updateCommentUpAndDownVoteSchema,
@@ -52,6 +53,7 @@ module.exports = {
   deleteReplySchema,
   getReplyVotesSchema,
   updateReplyUpAndDownVoteSchema,
+  updateReplyFlagSchema,
 
   //Organization Endpoints validation schemas
   createOrganizationSchema,

@@ -1033,9 +1033,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/UpdateComment"
+                    $ref: "#/components/schemas/UpdateComment"
 
         "400":
           description: Bad request error
@@ -1657,13 +1655,6 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/UpdateReply"
-
-        "400":
-          description: Bad request error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
 
         "401":
           description: Authentication error
