@@ -1316,9 +1316,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/VotedComment"
+                    $ref: "#/components/schemas/VotedComment"
 
         "400":
           description: Bad request error
@@ -1652,9 +1650,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/UpdateReply"
+                    $ref: "#/components/schemas/UpdateReply"
 
         "401":
           description: Authentication error
