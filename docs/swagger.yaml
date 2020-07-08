@@ -1656,13 +1656,6 @@ paths:
                     items:
                       $ref: "#/components/schemas/UpdateReply"
 
-        "400":
-          description: Bad request error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
         "401":
           description: Authentication error
           content:
