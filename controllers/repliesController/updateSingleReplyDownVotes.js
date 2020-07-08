@@ -23,7 +23,6 @@ const updateSingleReplyDownVotes = async (req, res, next) => {
 
   try {
     let isDownvoted = false;
-    let comment = await Comments.findById(commentId);
     //confirm reply belongs to a comment in the same application
     const comment = await Comments.findOne({
       _id: commentId,
