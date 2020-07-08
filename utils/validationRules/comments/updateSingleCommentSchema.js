@@ -3,7 +3,7 @@ const Joi = require("@hapi/joi");
 /**
  * Schema validation for PATCH '/comments/{commentId}'
  */
-const updateCommentSchema = {
+const updateSingleCommentSchema = {
   headers: Joi.object({
     authorization: Joi.string().required(),
   }),
@@ -13,9 +13,9 @@ const updateCommentSchema = {
   }),
 
   body: Joi.object().keys({
-    content: Joi.string().min(1),
+    content: Joi.string().min(1).required(),
     ownerId: Joi.string().required(),
   }),
 };
 
-module.exports = updateCommentSchema;
+module.exports = updateSingleCommentSchema;

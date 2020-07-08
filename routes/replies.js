@@ -1,60 +1,68 @@
 const router = require("express").Router({ mergeParams: true });
 const validationMiddleware = require("../middleware/validation");
 const validationRules = require("../utils/validationRules");
-const repliesController = require("../controller/repliesController");
+const repliesController = require("../controllers/repliesController");
 
-// gets all replies of a comment
-router.get(
-  "/",
-  validationMiddleware(validationRules.getAllRepliesSchema),
-  repliesController.getCommentReplies
-);
-
-//upvotes a reply
-router.patch("/:replyId/votes/upvote", repliesController.upvoteReply);
-// gets a single reply of a comment
-router.get(
-  "/:replyId",
-  validationMiddleware(validationRules.getSinlgeReplySchema),
-  repliesController.getASingleReply
-);
-
-// updates a reply of a comment
-router.patch(
-  "/:replyId",
-  validationMiddleware(validationRules.updateReplySchema),
-  repliesController.updateReply
-);
-
-// creates a reply to a comment
+/**
+ * POST routes
+ */
 router.post(
   "/",
   validationMiddleware(validationRules.createReplySchema),
-  repliesController.createReply
+  repliesController.createSingleReply
 );
 
-// downvote a reply
-router.patch(
-  "/:replyId/votes/downvote",
-  validationMiddleware(validationRules.updateCommentUpAndDownVoteSchema),
-  repliesController.downvoteReply
+/**
+ * GET routes
+ */
+router.get(
+  "/",
+  validationMiddleware(validationRules.getAllRepliesSchema),
+  repliesController.getAllReplies
 );
 
-// gets all votes of a reply
+router.get(
+  "/:replyId",
+  validationMiddleware(validationRules.getSingleReplySchema),
+  repliesController.getSingleReply
+);
+
 router.get(
   "/:replyId/votes",
   validationMiddleware(validationRules.getReplyVotesSchema),
-  repliesController.getReplyVotes
+  repliesController.getSingleReplyVotes
 );
 
-/// updates the flags of a reply
-router.patch("/:replyId/flag", repliesController.flagCommentReplies);
+/**
+ * PATCH routes
+ */
+router.patch(
+  "/:replyId",
+  validationMiddleware(validationRules.updateReplySchema),
+  repliesController.updateSingleReply
+);
 
-// delete a reply
+router.patch(
+  "/:replyId/votes/upvote",
+  validationMiddleware(validationRules.updateReplyUpAndDownVoteSchema),
+  repliesController.updateSingleReplyUpVotes
+);
+
+router.patch(
+  "/:replyId/votes/downvote",
+  validationMiddleware(validationRules.updateCommentUpAndDownVoteSchema),
+  repliesController.updateSingleReplyDownVotes
+);
+
+router.patch("/:replyId/flag", repliesController.updateSingleReplyFlags);
+
+/**
+ * DELETE routes
+ */
 router.delete(
   "/:replyId",
   validationMiddleware(validationRules.deleteReplySchema),
-  repliesController.deleteCommentReply
+  repliesController.deleteSingleReply
 );
 
 module.exports = router;

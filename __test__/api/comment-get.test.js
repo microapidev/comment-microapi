@@ -24,40 +24,6 @@ describeIfEndpoint("GET", "/v1/comments", "GET '/comments' ", () => {
 
 describeIfEndpoint(
   "GET",
-  "/v1/comments/:commentId/replies",
-  "GET /v1/comments/:commentId/replies",
-  () => {
-    it("Return all replies for a comment", async () => {
-      const comment = new CommentModel({
-        content: "this is a comment",
-        ownerId: "useremail@email.com",
-        origin: "123123",
-        refId: 2,
-        applicationId: global.application._id,
-      });
-      await comment.save();
-
-      const commentId = comment._id;
-
-      const res = await request
-        .get(`/v1/comments/${commentId}/replies`)
-        .set("Authorization", `bearer ${global.appToken}`);
-
-      if (res.status === 404) {
-        console.log(
-          `/v1/comments/:commentId/replies, Route Not Implemented Yet`
-        );
-        return true;
-      }
-      expect(res.status).toBe(200);
-      expect(res.body.status).toBe("success");
-      expect(res.body.data).toBeTruthy();
-    });
-  }
-);
-
-describeIfEndpoint(
-  "GET",
   "/v1/comments/:commentId/votes",
   "GET /v1/comments/:commentId/votes",
   () => {
