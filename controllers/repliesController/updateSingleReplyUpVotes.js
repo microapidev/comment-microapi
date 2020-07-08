@@ -52,13 +52,12 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
       }
     }
     if (reply.upVotes.includes(ownerId)) {
-      const ownerIdx = reply.upVotes.indexOf(ownerId);
-      if (ownerIdx > -1) {
-        reply.upVotes.splice(ownerIdx, 1);
-      }
-    } else {
-      // add user to the top of the upvotes array
-      reply.upVotes.unshift(ownerId);
+      return next(
+        new CustomError(409, "You've upvoted this reply already")
+      );
+    }
+    if (reply.downVotes.includes(ownerId)) {
+      return next(new CustomError(409, "You've already downvoted this reply,You can't upvote"));
     }
     await reply.updateOne({
       _id: replyId,
