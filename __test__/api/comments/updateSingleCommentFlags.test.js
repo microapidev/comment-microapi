@@ -14,7 +14,7 @@ describe("PATCH /comments/:commentId/flag", () => {
 
   test("200 - Flag a single comment", async () => {
     const comment = new CommentModel({
-      refId: "4edd40c86762e0fb12000003",
+      refId: "5edd40c86762e0fb1287503",
       applicationId: global.application._id,
       ownerId: "myuseremail@email.com",
       content: "this is a comment",
