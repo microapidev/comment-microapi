@@ -97,5 +97,4 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
   }
 };
 
-
 module.exports = updateSingleReplyUpVotes;
