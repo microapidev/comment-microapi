@@ -7,6 +7,8 @@ const Replies = require("../../models/replies");
 // Utilities
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
+const replyHandler = require("../../utils/replyHandler");
+
 
 /**
  * @author
@@ -51,17 +53,18 @@ const deleteSingleReply = async (req, res, next) => {
     if (!reply) {
       return next(new CustomError(404, "reply not found"));
     }
-    await Comments.findByIdAndUpdate(commentId, {
-      // it doesn't matter if the parent exist or not
-      $pull: { replies: replyId },
-    });
+    // await Comments.findByIdAndUpdate(commentId, {
+    //   // it doesn't matter if the parent exist or not
+    //   $pull: { replies: replyId },
+    // });
 
-    const { _id: dbReplyId, ...rest } = reply.toObject();
+    // const { _id: dbReplyId, ...rest } = reply.toObject();
 
     return responseHandler(
       res,
       200,
-      { replyId: dbReplyId, ...rest },
+      // { replyId: dbReplyId, ...rest },
+      replyHandler(reply),
       "Reply successfully deleted"
     );
   } catch (err) {

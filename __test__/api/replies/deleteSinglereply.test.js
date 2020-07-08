@@ -52,7 +52,10 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
   test("should delete a single reply", async () => {
     const url = `/v1/comments/${comment.commentId}/replies/${reply.replyId}`;
     const bearerToken = `bearer ${global.appToken}`;
-
+    ReplyModel.findById(reply.replyId).then((item) => {
+        expect(replyHandler(item)).toMatchObject(reply);
+      });
+  
     const res = await request
       .delete(url)
       .set("Authorization", bearerToken)
