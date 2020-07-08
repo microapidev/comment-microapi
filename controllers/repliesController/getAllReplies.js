@@ -20,13 +20,14 @@ const responseHandler = require("../../utils/responseHandler");
 const getAllReplies = async (req, res, next) => {
   const { commentId } = req.params;
   const { isFlagged, ownerId } = req.query;
+  const { applicationId } = req.token;
 
   if (!ObjectId.isValid(commentId)) {
     return next(new CustomError(400, " Invalid comment Id "));
   }
   try {
     //check if such comment exists
-    const comment = await Comments.findById(commentId);
+    const comment = await Comments.findOne({ _id: commentId, applicationId });
     // If the comment does not exist,send an error msg
     if (!comment) {
       return next(new CustomError(404, " Comment not found "));

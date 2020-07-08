@@ -19,14 +19,26 @@ const updateSingleReplyDownVotes = async (req, res, next) => {
   const commentId = req.params.commentId;
   const replyId = req.params.replyId;
   const ownerId = req.body.ownerId;
+  const { applicationId } = req.token;
 
   try {
     let isDownvoted = false;
     let comment = await Comments.findById(commentId);
-
+    //confirm reply belongs to a comment in the same application
+    const comment = await Comments.findOne({
+      _id: commentId,
+      applicationId,
+    });
     if (!comment) {
-      return next(new CustomError(404, "Comment not found or deleted"));
+      next(
+        new CustomError(
+          404,
+          `Comment with the ID ${commentId} does not exist or has been deleted`
+        )
+      );
+      return;
     }
+
     let reply = await Replies.findById(replyId);
 
     if (!reply) {
