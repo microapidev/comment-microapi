@@ -53,9 +53,9 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
     const url = `/v1/comments/${comment.commentId}/replies/${reply.replyId}`;
     const bearerToken = `bearer ${global.appToken}`;
     ReplyModel.findById(reply.replyId).then((item) => {
-        expect(replyHandler(item)).toMatchObject(reply);
-      });
-  
+      expect(replyHandler(item)).toMatchObject(reply);
+    });
+
     const res = await request
       .delete(url)
       .set("Authorization", bearerToken)
@@ -64,7 +64,7 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
       });
     expect(res.status).toEqual(200);
     expect(res.body.status).toEqual("success");
-   expect(res.body.data).toMatchObject(reply);
+    expect(res.body.data).toMatchObject(reply);
 
     //add matchers to check db that comment no longer has deleted replies
     // const comms = await CommentModel.findById(comment.commentId);
