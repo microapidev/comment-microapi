@@ -26,8 +26,8 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
     });
 
     //save dummy comment
-    dcomment = await dummyComment.save();
-    dreply1 = await dummyReply.save();
+    const dcomment = await dummyComment.save();
+    const dreply1 = await dummyReply.save();
 
     // Add replies to the dummy comment
     await CommentModel.findByIdAndUpdate(dcomment.id, { replies: dreply1.id });
@@ -76,7 +76,7 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
       .delete(url)
       .set("Authorization", bearerToken)
       .send({
-        ownerId:reply.ownerId,
+        ownerId: reply.ownerId,
       });
 
     expect(res.status).toBe(404);
