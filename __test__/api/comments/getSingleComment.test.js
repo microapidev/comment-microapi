@@ -72,6 +72,7 @@ describe("GET /comments/:commentId", () => {
       .set("Authorization", bearerToken);
 
     expect(res.status).toBe(404);
-    expect(res.body.message).toEqual("invalid ID");
+    expect(res.body.status).toEqual("error");
+    expect(res.body.data).toBeTruthy();
   });
 });
