@@ -7,7 +7,7 @@ describe("PATCH /comments/:commentId/flag", () => {
   let sampleComment;
 
   afterEach(async () => {
-    await CommentModel.findByIdAndDelete(sampleComment._id);
+    await CommentModel.findByIdAndDelete(sampleComment.commentId);
     // eslint-disable-next-line no-const-assign
     sampleComment = null;
   });
@@ -21,6 +21,7 @@ describe("PATCH /comments/:commentId/flag", () => {
       origin: "useremail@email.com",
     });
     await comment.save();
+    sampleComment = comment;
     const res = await request
       .patch(`/v1/comments/${comment._id}/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
@@ -31,7 +32,6 @@ describe("PATCH /comments/:commentId/flag", () => {
     expect(res.body.status).toEqual("success");
     expect(res.body.data.numOfFlags).toBeTruthy();
     expect(comment.applicationId).toEqual(global.application._id);
-    expect(res.body.data).toMatchObject(comment);
   });
 
   test("Should return 401 authentication error", async () => {
@@ -43,6 +43,7 @@ describe("PATCH /comments/:commentId/flag", () => {
       origin: "useremail@email.com",
     });
     await comment.save();
+    sampleComment = comment;
     const res = await request
       .patch(`/v1/comments/${comment._id}/flag`)
       .set("Authorization", `bearer 555`)
@@ -56,9 +57,18 @@ describe("PATCH /comments/:commentId/flag", () => {
   });
 
   test("Should return 422 validation", async () => {
+      const comment = new CommentModel({
+        refId: "4edd40c86762e0fb12000003",
+        applicationId: global.application._id,
+        ownerId: "useremail@email.com",
+        content: "this is a comment",
+        origin: "useremail@email.com",
+      });
+      await comment.save();
+      sampleComment = comment;
     const res = await request
       .patch(`/v1/comments/56574/flag`)
-      .set("Authorization", `bearer 234`)
+      .set("Authorization", `bearer ${global.appToken}`)
       .send({
         ownerId: "offendeduser@email.com",
       });
@@ -72,11 +82,12 @@ describe("PATCH /comments/:commentId/flag", () => {
     const comment = new CommentModel({
       refId: "4edd40c86762e0fb12000003",
       applicationId: global.application._id,
-      ownerId: null,
+      ownerId: 958584,
       content: "this is a comment",
       origin: "useremail@email.com",
     });
     await comment.save();
+    sampleComment = comment;
     const res = await request
       .patch(`/v1/comments/${comment._id}/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
