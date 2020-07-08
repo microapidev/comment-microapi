@@ -40,7 +40,6 @@ describe("POST /comments", () => {
     };
     expect(res.status).toBe(201);
     expect(res.body.status).toEqual("success");
-    expect(expected.applicationId).toEqual(global.application._id);
     expect(res.body.data).toMatchObject(comment);
   });
 
