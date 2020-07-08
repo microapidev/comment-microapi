@@ -21,6 +21,7 @@ const getSingleReplyVotes = async (req, res, next) => {
   try {
     const { commentId, replyId } = req.params;
     const { voteType } = req.query;
+    const { applicationId } = req.token;
 
     if (!ObjectId.isValid(commentId)) {
       return next(new CustomError(404, "Invalid ID"));
@@ -30,16 +31,19 @@ const getSingleReplyVotes = async (req, res, next) => {
       return next(new CustomError(404, "Invalid ID"));
     }
 
-    const parentComment = await Comments.findById(commentId);
-
-    // Check to see if the parent comment exists.
+    //confirm reply belongs to a comment in the same application
+    const parentComment = await Comments.findOne({
+      _id: commentId,
+      applicationId,
+    });
     if (!parentComment) {
-      return next(
+      next(
         new CustomError(
           404,
           `Comment with the ID ${commentId} does not exist or has been deleted`
         )
       );
+      return;
     }
 
     const reply = await Replies.findById(replyId);
