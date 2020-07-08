@@ -25,7 +25,7 @@ describe("PATCH /comments/:commentId/flag", () => {
       .patch(`/v1/comments/${comment._id}/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
       .send({
-        ownerId: "anotheruser@email.com",
+        ownerId: "felixbrown@gmail.com",
       });
     expect(res.status).toBe(200);
     expect(res.body.status).toEqual("success");
@@ -47,7 +47,7 @@ describe("PATCH /comments/:commentId/flag", () => {
       .patch(`/v1/comments/${comment._id}/flag`)
       .set("Authorization", `bearer 555`)
       .send({
-        ownerId: "offendeduser@email.com",
+        ownerId: "angrydude@yahoo.com",
       });
 
     expect(res.status).toBe(401);
@@ -81,7 +81,7 @@ describe("PATCH /comments/:commentId/flag", () => {
     const comment = new CommentModel({
       refId: "4edd40c86762e0fb12000003",
       applicationId: global.application._id,
-      ownerId: " marx@ gmail.com",
+      ownerId: "marx@gmail.com",
       content: "this is a comment",
       origin: "useremail@email.com",
     });
@@ -91,7 +91,7 @@ describe("PATCH /comments/:commentId/flag", () => {
       .patch(`/v1/comments/${comment._id}/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
       .send({
-        ownerId: comment.ownerId,
+        ownerId: " michymich@ gmail.com",
       });
 
     expect(res.status).toBe(404);
