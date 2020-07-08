@@ -11,6 +11,7 @@ const AdminSchema = new Schema(
       type: String,
       lowercase: true,
       required: true,
+      unique:true
     },
     password: {
       type: String,
