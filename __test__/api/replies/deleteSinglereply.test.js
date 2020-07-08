@@ -11,36 +11,37 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
   let reply;
 
   beforeEach(async () => {
-    comment = new CommentModel({
+    //dummy comment document
+    const dummyComment = new CommentModel({
       content: "A comment from user 1",
       ownerId: "user1@email.com",
       origin: "123123",
       refId: 2,
       applicationId: global.application._id,
     });
-
-     reply= new ReplyModel({
+    //dummy replies document
+    const dummyReply = new ReplyModel({
       content: "A reply from user 2",
       ownerId: "user2@email.com",
-      commentId: comment.id,
+      commentId: dummyComment.id,
     });
 
-    //save dummy comment
-    await comment.save();
-    await reply.save();
+    //save dummy comment,reply
+    const savedC = await dummyComment.save();
+    const savedR = await dummyReply.save();
 
     // Add replies to the dummy comment
-    await CommentModel.findByIdAndUpdate(comment.id, {replies: reply.id});
+    await CommentModel.findByIdAndUpdate(savedC.id, { replies: savedR.id });
 
-    // Cache response objects
-    // comment = commentHandler(dcomment);
-    // reply = replyHandler(dreply1);
+    //Cache response objects
+    comment = commentHandler(savedC);
+    reply = replyHandler(savedR);
   });
 
   afterEach(async () => {
     // Delete mocks from the database.
-    await CommentModel.findByIdAndDelete(comment.id);
-    await ReplyModel.findByIdAndDelete(reply.id);
+    await CommentModel.findByIdAndDelete(comment.commentId);
+    await ReplyModel.findByIdAndDelete(reply.replyId);
 
     // Delete cache.
     comment = null;
@@ -49,72 +50,25 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
 
   //200 success
   test("should delete a single reply", async () => {
-    const expectedC = commentHandler(comment);
-    const expectedR = replyHandler(reply);
-    const url = `/v1/comments/${expectedC.commentId}/replies/${expectedR.replyId}`;
+    const url = `/v1/comments/${comment.commentId}/replies/${reply.replyId}`;
     const bearerToken = `bearer ${global.appToken}`;
 
     const res = await request
       .delete(url)
       .set("Authorization", bearerToken)
       .send({
-        ownerId: expectedR.ownerId,
+        ownerId: reply.ownerId,
       });
-    expect(res.status).toBe(200);
+    expect(res.status).toEqual(200);
     expect(res.body.status).toEqual("success");
-    expect(res.body.data).toEqual({
-      ownerId: expectedR.ownerId,
-    });
-    ReplyModel.findById(expectedR.replyId).then((item) => {
+   expect(res.body.data).toMatchObject(reply);
+
+    //add matchers to check db that comment no longer has deleted replies
+    // const comms = await CommentModel.findById(comment.commentId);
+    //  expect(comms.replies).notContains(reply.replyId)
+
+    await ReplyModel.findById(reply.replyId).then((item) => {
       expect(item).toBeNull();
     });
-  });
-  //404 not found
-  test("Should return not found error when replyId not in db", async () => {
-    const url = `/v1/comments/${comment.commentId}/replies/${reply.replyId}`;
-    const bearerToken = `bearer ${global.appToken}`;
-
-    const res = await request
-      .delete(url)
-      .set("Authorization", bearerToken)
-      .send({
-        ownerId: reply.ownerId,
-      });
-
-    expect(res.status).toBe(404);
-    expect(res.body.status).toEqual("error");
-    expect(res.body.error).toBeTruthy();
-  });
-
-  // 422 validation error
-  test("Should return validation error when ownerId is missing", async () => {
-    const url = `/v1/comments/${comment.commentId}/replies/${reply.replyId}`;
-    const bearerToken = `bearer ${global.appToken}`;
-
-    const res = await request
-      .delete(url)
-      .set("Authorization", bearerToken)
-      .send({
-        ownerId: reply.ownerId,
-      });
-
-    expect(res.status).toBe(422);
-    expect(res.body.status).toEqual("error");
-    expect(res.body.error).toBeTruthy();
-  });
-
-  // 401 unauthorized requests
-  test("Should return authentication error when invalid token", async () => {
-    const bearerToken = `bearer ${global.appToken}`;
-    const res = await request
-      .delete(`/v1/comments/${comment.commentId}/replies/${reply.replyId}`)
-      .set("Authorization", bearerToken)
-      .send({
-        ownerId: reply.ownerId,
-      });
-
-    expect(res.status).toBe(401);
-    expect(res.body.status).toEqual("error");
-    expect(res.body.error).toBeTruthy();
   });
 });
