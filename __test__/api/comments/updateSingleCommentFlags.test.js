@@ -83,7 +83,7 @@ describe("PATCH /comments/:commentId/flag", () => {
       applicationId: global.application._id,
       ownerId: "marx@gmail.com",
       content: "this is a comment",
-      origin: "useremail@email.com",
+      origin: "ausersemail@email.com",
     });
     await comment.save();
     sampleComment = comment;
