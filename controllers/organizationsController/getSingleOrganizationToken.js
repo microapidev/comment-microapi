@@ -22,7 +22,7 @@ const getSingleOrganizationToken = async (req, res, next) => {
 
   // if not found return error
   if (!admin) {
-    next(new CustomError(400, "Invalid email and/or password"));
+    next(new CustomError(401, "Invalid email and/or password"));
     return;
   }
 
@@ -37,7 +37,7 @@ const getSingleOrganizationToken = async (req, res, next) => {
 
   //if not password matched return error
   if (!passwordMatched) {
-    next(new CustomError(400, "Invalid email and/or password"));
+    next(new CustomError(401, "Invalid email and/or password"));
     return;
   }
 
