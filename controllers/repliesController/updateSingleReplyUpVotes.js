@@ -42,22 +42,14 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
     if (!reply) {
       return next(new CustomError(404, "Reply not found or deleted"));
     }
-
-    if (reply.downVotes.includes(ownerId)) {
-      const voterIndex = reply.downVotes.indexOf(ownerId);
-      //if index exists
-      if (voterIndex > -1) {
-        //delete that index
-        reply.downVotes.splice(voterIndex, 1);
-      }
-    }
+    
     if (reply.upVotes.includes(ownerId)) {
       return next(
         new CustomError(409, "You've upvoted this reply already")
       );
     }
     if (reply.downVotes.includes(ownerId)) {
-      return next(new CustomError(409, "You've already downvoted this reply,You can't upvote"));
+      return next(new CustomError(409, "You've already downvoted this reply, You can't upvote"));
     }
     await reply.updateOne({
       _id: replyId,
