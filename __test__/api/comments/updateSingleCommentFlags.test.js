@@ -54,7 +54,7 @@ describe("PATCH /comments/:commentId/flag", () => {
     await CommentModel.findById(sampleComment.commentId).then((comment) => {
       expect(comment).toBeTruthy();
       expect(comment.flags).toBeTruthy();
-      expect(comment.commentId).toEqual(sampleComment.commentId);
+      expect(comment.ownerId).toEqual(sampleComment.ownerId);
     });
   });
 
