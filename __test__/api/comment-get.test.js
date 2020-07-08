@@ -6,22 +6,6 @@ const supertest = require("supertest");
 const request = supertest(app);
 const { describeIfEndpoint } = require("../helpers/conditionalTests");
 
-describeIfEndpoint("GET", "/v1/comments", "GET '/comments' ", () => {
-  it("Return all comments from the db", async () => {
-    const res = await request
-      .get("/v1/comments")
-      .set("Authorization", `bearer ${global.appToken}`);
-    if (res.status === 404) {
-      console.log("GET /v1/comments Not Implemented Yet");
-      return true;
-    }
-
-    expect(res.status).toBe(200);
-    expect(res.body.status).toBe("success");
-    expect(res.body.data).toBeTruthy();
-  });
-});
-
 describeIfEndpoint(
   "GET",
   "/v1/comments/:commentId/votes",
