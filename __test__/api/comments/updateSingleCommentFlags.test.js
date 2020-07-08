@@ -8,7 +8,6 @@ describe("PATCH /comments/:commentId/flag", () => {
 
   afterEach(async () => {
     await CommentModel.findByIdAndDelete(sampleComment.commentId);
-    // eslint-disable-next-line no-const-assign
     sampleComment = null;
   });
 
