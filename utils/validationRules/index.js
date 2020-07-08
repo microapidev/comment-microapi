@@ -1,7 +1,7 @@
 const getAllCommentsSchema = require("./comments/getAllCommentsSchema");
 const createCommentSchema = require("./comments/createCommentSchema");
 const getSingleCommentSchema = require("./comments/getSingleCommentSchema");
-const updateCommentSchema = require("./comments/updateCommentSchema");
+const updateSingleCommentSchema = require("./comments/updateSingleCommentSchema");
 const deleteCommentSchema = require("./comments/deleteCommentSchema");
 const getCommentVotesSchema = require("./comments/getCommentVotesSchema");
 const updateCommentUpAndDownVoteSchema = require("./comments/updateCommentUpAndDownVoteSchema");
@@ -24,6 +24,13 @@ const deleteApplicationSchema = require("./applications/deleteApplicationSchema"
 const getSingleApplicationSchema = require("./applications/getSingleApplicationSchema");
 const updateApplicationSchema = require("./applications/updateApplicationSchema");
 
+const createSingleAdminSchema = require("./admins/createSingleAdminSchema");
+const deleteSingleAdminSchema = require("./admins/deleteSingleAdminSchema");
+const getAllAdminsSchema = require("./admins/getAllAdminsSchema");
+const getSingleAdminSchema = require("./admins/getSingleAdminSchema");
+const updateSingleAdminSchema = require("./admins/updateSingleAdminSchema");
+const changeAdminPasswordSchema = require("./admins/changeAdminPasswordSchema");
+
 /**
  * Object containing schema validations for the endpoints.
  */
@@ -32,7 +39,7 @@ module.exports = {
   getAllCommentsSchema,
   createCommentSchema,
   getSingleCommentSchema,
-  updateCommentSchema,
+  updateSingleCommentSchema,
   deleteCommentSchema,
   getCommentVotesSchema,
   updateCommentUpAndDownVoteSchema,
@@ -50,11 +57,19 @@ module.exports = {
   createOrganizationSchema,
   getOrganizationTokenSchema,
 
-  // Applicaions Endpoints validation schemas
+  // Applications Endpoints validation schemas
   createApplicationSchema,
   getAllApplicationsSchema,
   getApplicationTokenSchema,
   deleteApplicationSchema,
   getSingleApplicationSchema,
   updateApplicationSchema,
+
+  // Admins Endpoints validation schemas
+  changeAdminPasswordSchema,
+  createSingleAdminSchema,
+  deleteSingleAdminSchema,
+  getAllAdminsSchema,
+  getSingleAdminSchema,
+  updateSingleAdminSchema,
 };

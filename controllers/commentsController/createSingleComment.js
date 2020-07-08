@@ -5,6 +5,7 @@ const Comments = require("../../models/comments");
 // Utilities
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
+const commentHandler = require("../../utils/commentHandler");
 
 /**
  * @author Clish Illa
@@ -17,16 +18,17 @@ const responseHandler = require("../../utils/responseHandler");
  */
 const createSingleComment = async (req, res, next) => {
   //validate request
+  const { applicationId } = req.token;
   //extra check to make sure the application id exists in the db
   try {
-    await Applications.findById(req.body.applicationId);
+    await Applications.findById(applicationId);
   } catch (err) {
     return next(new CustomError(400, "Invalid application id"));
   }
   //create a new comment
   const comment = new Comments({
     refId: req.body.refId,
-    applicationId: req.body.applicationId,
+    applicationId: applicationId,
     ownerId: req.body.ownerId,
     content: req.body.content,
     origin: req.body.origin,
@@ -34,7 +36,12 @@ const createSingleComment = async (req, res, next) => {
   //save comment
   try {
     const savedComment = await comment.save();
-    return responseHandler(res, 200, savedComment);
+    return responseHandler(
+      res,
+      201,
+      commentHandler(savedComment),
+      "Comment created successfully"
+    );
   } catch (err) {
     return next(
       new CustomError(

@@ -45,7 +45,7 @@ const updateSingleReply = async (req, res, next) => {
     if (ownerId !== reply.ownerId) {
       return next(new CustomError(401, "Unauthorized ID"));
     }
-    await reply.updateOne(
+    await Replies.updateOne(
       { _id: replyId },
       { $set: { content: content, isEdited: true } }
     );
