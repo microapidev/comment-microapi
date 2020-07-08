@@ -22,13 +22,7 @@ describe("POST /comments", () => {
     const res = await request
       .post("/v1/comments")
       .set("Authorization", `bearer ${global.appToken}`)
-      .send({
-        refId: "4edd40c86762e0fb12000003",
-        applicationId: global.application._id,
-        ownerId: "useremail@email.com",
-        content: "this is a comment",
-        origin: "useremail@email.com",
-      });
+      .send(comment);
     let [expected] = await CommentModel.find({
       refId: "4edd40c86762e0fb12000003",
     });
@@ -44,8 +38,6 @@ describe("POST /comments", () => {
       numOfDownVotes: expected.downVotes.length,
       numOfFlags: expected.flags.length,
     };
-    // console.log("Comment", comment);
-    // console.log(global.application._id, "Body Data", res.body.data);
     expect(res.status).toBe(201);
     expect(res.body.status).toEqual("success");
     expect(expected.applicationId).toEqual(global.application._id);
