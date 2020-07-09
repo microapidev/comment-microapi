@@ -5,6 +5,7 @@ const updateSingleCommentSchema = require("./comments/updateSingleCommentSchema"
 const deleteCommentSchema = require("./comments/deleteCommentSchema");
 const getCommentVotesSchema = require("./comments/getCommentVotesSchema");
 const updateCommentUpAndDownVoteSchema = require("./comments/updateCommentUpAndDownVoteSchema");
+const updateSingleCommentFlagSchema = require("./comments/updateSingleCommentFlagSchema");
 
 const getAllRepliesSchema = require("./replies/getAllRepliesSchema");
 const createReplySchema = require("./replies/createReplySchema");
@@ -31,6 +32,7 @@ const getAllAdminsSchema = require("./admins/getAllAdminsSchema");
 const getSingleAdminSchema = require("./admins/getSingleAdminSchema");
 const updateSingleAdminSchema = require("./admins/updateSingleAdminSchema");
 const changeAdminPasswordSchema = require("./admins/changeAdminPasswordSchema");
+const adminDeleteCommentSchema = require("./admins/adminDeleteCommentSchema");
 
 /**
  * Object containing schema validations for the endpoints.
@@ -44,6 +46,7 @@ module.exports = {
   deleteCommentSchema,
   getCommentVotesSchema,
   updateCommentUpAndDownVoteSchema,
+  updateSingleCommentFlagSchema,
 
   // Reply Endpoints validation schemas
   getAllRepliesSchema,
@@ -74,4 +77,5 @@ module.exports = {
   getAllAdminsSchema,
   getSingleAdminSchema,
   updateSingleAdminSchema,
+  adminDeleteCommentSchema,
 };
