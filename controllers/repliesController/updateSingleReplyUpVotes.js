@@ -75,12 +75,7 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
       ? "Reply upvoted successfully!"
       : "Reply upvote removed successfully!";
 
-    return responseHandler(
-      res,
-      200,
-      replyHandler(savedReply),
-      message
-    );
+    return responseHandler(res, 200, replyHandler(savedReply), message);
   } catch (error) {
     return next(
       new CustomError(
