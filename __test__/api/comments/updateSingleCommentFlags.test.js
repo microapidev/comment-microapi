@@ -14,6 +14,8 @@ describe("PATCH /comments/:commentId/flag", () => {
       ownerId: "myuseremail@email.com",
       content: "this is a very bad comment",
       origin: "myuseremail@email.com",
+      upVotes: ["sally@gmail.com", "shully@gmail.com", "kelly@gmail.com"],
+      downVotes: ["rally@gmail.com", "molly@gmail.com"],
     });
 
     const comment2 = new CommentModel({
@@ -22,6 +24,8 @@ describe("PATCH /comments/:commentId/flag", () => {
       ownerId: "anotheruseremail@email.com",
       content: "this is another comment ",
       origin: "myuseremail@email.com",
+      upVotes: ["pally@gmail.com"],
+      downVotes: ["tally@gmail.com"],
     });
 
     const commentOne = await comment.save();
@@ -40,15 +44,13 @@ describe("PATCH /comments/:commentId/flag", () => {
   });
 
   test("Flag a single comment. Should return 200", async () => {
-    const res = await request
-      .patch(`/v1/comments/${sampleComment.commentId}/flag`)
-      .set("Authorization", `bearer ${global.appToken}`)
-      .send({
-        ownerId: sampleComment2.ownerId,
-      });
+    //check that the db has not been updated
+    await CommentModel.findById(sampleComment.commentId).then((comment) => {
+      expect(comment.flags.length).toEqual(sampleComment.numOfFlags);
+      expect(comment.ownerId).toEqual(sampleComment.ownerId);
+    });
 
-    //mock request by same user
-    const res2 = await request
+    const res = await request
       .patch(`/v1/comments/${sampleComment.commentId}/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
       .send({
@@ -57,15 +59,38 @@ describe("PATCH /comments/:commentId/flag", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.status).toEqual("success");
-    expect(res.body.data.numOfFlags).toEqual(1);
-
-    //number of flags should be same for both requests
-    expect(res2.body.data.numOfFlags).toEqual(res.body.data.numOfFlags);
 
     //Match db records to verify test mockup
     await CommentModel.findById(sampleComment.commentId).then((comment) => {
-      expect(comment.flags.length).toEqual(sampleComment.numOfFlags);
+      expect(comment.flags.length).toEqual(sampleComment.numOfFlags + 1);
       expect(comment.ownerId).toEqual(sampleComment.ownerId);
+      const updatedComment = commentHandler(comment);
+
+      expect(updatedComment).toEqual({
+        ...sampleComment,
+        numOfFlags: sampleComment.numOfFlags + 1,
+      });
+    });
+  });
+
+  it("It should return same number of flags if user has already flagged the comment", async () => {
+    const res2 = await request
+      .patch(`/v1/comments/${sampleComment.commentId}/flag`)
+      .set("Authorization", `bearer ${global.appToken}`)
+      .send({
+        ownerId: sampleComment2.ownerId,
+      });
+    //number of flags in db should be same for both requests by same ownerId
+    await CommentModel.findById(res2.body.data.commentId).then((comment) => {
+      console.log(comment);
+      expect(comment.flags.length).toEqual(res2.body.data.numOfFlags);
+      expect(comment.ownerId).toEqual(sampleComment.ownerId);
+      const updatedComment = commentHandler(comment);
+
+      expect(updatedComment).toEqual({
+        ...sampleComment,
+        numOfFlags: sampleComment.numOfFlags + 1,
+      });
     });
   });
 
@@ -82,6 +107,17 @@ describe("PATCH /comments/:commentId/flag", () => {
     expect(res.body.data).toEqual([]);
   });
 
+  test("Should return a 422 Validation Error if ownerId is missing or incorrect", async () => {
+    const res = await request
+      .patch(`/v1/comments/${sampleComment.commentId}/flag`)
+      .set("Authorization", `bearer ${global.appToken}`)
+      .send({ ownerId: "" });
+
+    expect(res.status).toBe(422);
+    expect(res.body.status).toEqual("error");
+    expect(res.body.data).toEqual([]);
+  });
+
   test("Should return a 422 Validation Error", async () => {
     const res = await request
       .patch(`/v1/comments/56574/flag`)
@@ -91,19 +127,6 @@ describe("PATCH /comments/:commentId/flag", () => {
       });
 
     expect(res.status).toBe(422);
-    expect(res.body.status).toEqual("error");
-    expect(res.body.data).toEqual([]);
-  });
-
-  test("Should return a 404 Not Found Error", async () => {
-    const res = await request
-      .patch(`/v1/comments/${sampleComment.commentId}/flag`)
-      .set("Authorization", `bearer ${global.appToken}`)
-      .send({
-        ownerId: " michymich@ gmail.com",
-      });
-
-    expect(res.status).toBe(404);
     expect(res.body.status).toEqual("error");
     expect(res.body.data).toEqual([]);
   });
