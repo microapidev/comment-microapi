@@ -117,6 +117,9 @@ describe("PATCH /comments/:commentId/replies/:replyId/votes/upvote", () => {
     expect(addRes.body.data).toEqual({
       commentId: oldComment.commentId,
       replyId: oldReply.replyId,
+      content: oldReply.content,
+      ownerId: oldReply.ownerId,
+      numOfFlags: oldReply.numOfFlags,
       numOfVotes: oldReply.numOfVotes + 1,
       numOfUpVotes: oldReply.numOfUpVotes + 1,
       numOfDownVotes: oldReply.numOfDownVotes,
@@ -163,6 +166,9 @@ describe("PATCH /comments/:commentId/replies/:replyId/votes/upvote", () => {
     expect(addRes.body.data).toEqual({
       commentId: oldComment.commentId,
       replyId: oldReplyWithDownVote.replyId,
+      content: oldReplyWithDownVote.content,
+      ownerId: oldReplyWithDownVote.ownerId,
+      numOfFlags: oldReplyWithDownVote.numOfFlags,
       numOfVotes: oldReplyWithDownVote.numOfVotes,
       numOfUpVotes: oldReplyWithDownVote.numOfUpVotes + 1,
       numOfDownVotes: oldReplyWithDownVote.numOfDownVotes - 1,
@@ -211,6 +217,9 @@ describe("PATCH /comments/:commentId/replies/:replyId/votes/upvote", () => {
     expect(removeRes.body.data).toEqual({
       commentId: oldComment.commentId,
       replyId: oldReplyWithUpVote.replyId,
+      content: oldReplyWithUpVote.content,
+      ownerId: oldReplyWithUpVote.ownerId,
+      numOfFlags: oldReplyWithUpVote.numOfFlags,
       numOfVotes: oldReplyWithUpVote.numOfVotes - 1,
       numOfUpVotes: oldReplyWithUpVote.numOfUpVotes - 1,
       numOfDownVotes: oldReplyWithUpVote.numOfDownVotes,
