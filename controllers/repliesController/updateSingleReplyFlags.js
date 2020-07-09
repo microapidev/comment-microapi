@@ -73,6 +73,9 @@ const updateSingleReplyFlags = async (req, res, next) => {
       reply.flags.splice(index, 1);
     }
 
+    //save updated reply
+  await reply.save();
+  
     const data = {
       replyId: reply._id,
       commentId: reply.commentId,
