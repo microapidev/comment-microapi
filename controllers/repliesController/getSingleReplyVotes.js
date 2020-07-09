@@ -20,7 +20,7 @@ const responseHandler = require("../../utils/responseHandler");
 const getSingleReplyVotes = async (req, res, next) => {
   try {
     const { commentId, replyId } = req.params;
-    const { voteType } = req.query;
+    // const { voteType } = req.query;
     const { applicationId } = req.token;
 
     if (!ObjectId.isValid(commentId)) {
@@ -56,35 +56,18 @@ const getSingleReplyVotes = async (req, res, next) => {
           `Reply with the ID ${replyId} does not exist or has been deleted`
         )
       );
-    }
-
-    // A list of all the votes
-    const votes = [];
-
-    if (!voteType) {
-      // Add all votes
-      votes.push(...reply.upVotes);
-      votes.push(...reply.downVotes);
-    } else {
-      if (voteType.toString() === "upvote") {
-        // Add upvotes only
-        votes.push(...reply.upVotes);
-      }
-
-      if (voteType.toString() === "downvote") {
-        // Add downvotes only
-        votes.push(...reply.downVotes);
-      }
-    }
+    }   
 
     // The data object to be returned in the response
     const data = {
       replyId,
       commentId,
-      votes,
+      totalVotes: reply.upVotes.length + reply.downVotes.length,
+      numOfUpVotes: reply.upVotes.length,
+      numOfDownVotes: reply.downVotes.length
     };
 
-    return responseHandler(res, 200, data, "OK");
+    return responseHandler(res, 200, data, "Reply Votes Retrieved Successfully");
   } catch (error) {
     return next(
       new CustomError(
