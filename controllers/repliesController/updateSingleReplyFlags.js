@@ -69,6 +69,7 @@ const updateSingleReplyFlags = async (req, res, next) => {
       const index = reply.flags.indexOf(ownerId);
       reply.flags.splice(index, 1);
     }
+    reply.save();
 
     const data = {
       replyId: reply._id,
