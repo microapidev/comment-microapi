@@ -55,6 +55,19 @@ describe("POST /comments", () => {
       });
   });
 
+  test("Should return 404 error when 'commentId' not in db", async () => {
+    const res = await request
+      .post("/v1/comments/4edd40c86762e0fb12000003/replies")
+      .set("Authorization", `bearer ${global.appToken}`)
+      .send({
+        ownerId: "user1@email.com",
+        content: "this is a bad reply",
+      });
+    expect(res.status).toBe(404);
+    expect(res.body.status).toEqual("error");
+    expect(res.body.error).toBeTruthy();
+  });
+
   test("Should return 422 error when 'content' parameter missing", async () => {
     const res = await request
       .post(`/v1/comments/${comment.commentId}/replies`)
