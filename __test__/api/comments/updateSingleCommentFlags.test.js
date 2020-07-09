@@ -69,7 +69,7 @@ describe("PATCH /comments/:commentId/flag", () => {
     });
   });
 
-  test("Should return 401 authentication error", async () => {
+  test("Should return a 401 Authentication Error", async () => {
     const res = await request
       .patch(`/v1/comments/${sampleComment.commentId}/flag`)
       .set("Authorization", `bearer 555`)
@@ -82,7 +82,7 @@ describe("PATCH /comments/:commentId/flag", () => {
     expect(res.body.data).toEqual([]);
   });
 
-  test("Should return 422 Invalid ID Error", async () => {
+  test("Should return a 422 Validation Error", async () => {
     const res = await request
       .patch(`/v1/comments/56574/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
@@ -95,7 +95,7 @@ describe("PATCH /comments/:commentId/flag", () => {
     expect(res.body.data).toEqual([]);
   });
 
-  test("Should return 404 validation error", async () => {
+  test("Should return a 404 Not Found Error", async () => {
     const res = await request
       .patch(`/v1/comments/${sampleComment.commentId}/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
