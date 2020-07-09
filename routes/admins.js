@@ -2,14 +2,7 @@ const router = require("express").Router();
 const { orgAuthMW } = require("../middleware/auth");
 const adminController = require("../controllers/adminsController");
 const validMW = require("../middleware/validation");
-const {
-  changeAdminPasswordSchema,
-  createSingleAdminSchema,
-  updateSingleAdminSchema,
-  deleteSingleAdminSchema,
-  getAllAdminsSchema,
-  getSingleAdminSchema,
-} = require("../utils/validationRules");
+const validationRules = require("../utils/validationRules");
 
 //--- DO NOT TOUCH ---
 //Must always be at the top to decode/guard routes
@@ -20,22 +13,26 @@ router.use(orgAuthMW);
  */
 router.post(
   "/",
-  validMW(createSingleAdminSchema),
+  validMW(validationRules.createSingleAdminSchema),
   adminController.createSingleAdmin
 );
 router.post(
   "/change-password",
-  validMW(changeAdminPasswordSchema),
+  validMW(validationRules.changeAdminPasswordSchema),
   adminController.changeAdminPassword
 );
 
 /**
  * GET routes
  */
-router.get("/", validMW(getAllAdminsSchema), adminController.getAllAdmins);
+router.get(
+  "/",
+  validMW(validationRules.getAllAdminsSchema),
+  adminController.getAllAdmins
+);
 router.get(
   "/:adminId",
-  validMW(getSingleAdminSchema),
+  validMW(validationRules.getSingleAdminSchema),
   adminController.getSingleAdmin
 );
 
@@ -44,16 +41,23 @@ router.get(
  */
 router.patch(
   "/",
-  validMW(updateSingleAdminSchema),
+  validMW(validationRules.updateSingleAdminSchema),
   adminController.updateSingleAdmin
 );
 
 /**
  * DELETE routes
  */
+
+router.delete(
+  "/comments",
+  validMW(validationRules.adminDeleteCommentSchema),
+  adminController.adminDeleteComment
+);
+
 router.delete(
   "/:adminId",
-  validMW(deleteSingleAdminSchema),
+  validMW(validationRules.deleteSingleAdminSchema),
   adminController.deleteSingleAdmin
 );
 
