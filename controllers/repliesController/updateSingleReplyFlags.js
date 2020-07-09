@@ -63,7 +63,7 @@ const updateSingleReplyFlags = async (req, res, next) => {
     }
 
     //flag comment reply by pushing ownerId into flags array
-    if(reply.flags.includes(ownerId)){
+    if (reply.flags.includes(ownerId)) {
       return next(new CustomError(409, "You've already flagged this reply!"));
     }
     if (!reply.flags.includes(ownerId)) {
