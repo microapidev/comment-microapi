@@ -47,6 +47,8 @@ const updateSingleCommentFlags = async (req, res, next) => {
       comment.flags.push(ownerId);
     }
 
+    await comment.save();
+
     const data = {
       commentId: comment._id,
       numOfFlags: comment.flags.length,
