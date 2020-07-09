@@ -110,14 +110,14 @@ describe("PATCH /comments/:commentId/flag", () => {
     const res = await request
       .patch(`/v1/comments/${sampleComment.commentId}/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
-      .send({ ownerId: "" });
+      .send({ ownerId: 365537 });
 
     expect(res.status).toBe(422);
     expect(res.body.status).toEqual("error");
-    expect(res.body.data).toEqual([]);
+    expect(res.body.data).toBeTruthy();
   });
 
-  test("Should return a 422 Validation Error", async () => {
+  test("Should return a 422 Validation Error if commentId is invalid", async () => {
     const res = await request
       .patch(`/v1/comments/56574/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
@@ -127,6 +127,6 @@ describe("PATCH /comments/:commentId/flag", () => {
 
     expect(res.status).toBe(422);
     expect(res.body.status).toEqual("error");
-    expect(res.body.data).toEqual([]);
+    expect(res.body.data).toBeTruthy();
   });
 });
