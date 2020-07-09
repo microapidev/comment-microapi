@@ -20,10 +20,27 @@ const responseHandler = require("../../utils/responseHandler");
 const deleteSingleReply = async (req, res, next) => {
   const { commentId, replyId } = req.params;
   const { ownerId } = req.body;
+  const { applicationId } = req.token;
+
   if (!ObjectId.isValid(commentId))
     return next(new CustomError(422, "invalid comment id"));
   if (!ObjectId.isValid(replyId))
     return next(new CustomError(422, "invalid reply id"));
+
+  //confirm comment belongs in the same application
+  const parentComment = await Comments.findOne({
+    _id: commentId,
+    applicationId,
+  });
+  if (!parentComment) {
+    next(
+      new CustomError(
+        404,
+        `Comment with the ID ${commentId} does not exist or has been deleted`
+      )
+    );
+    return;
+  }
 
   try {
     const reply = await Replies.findOneAndDelete({

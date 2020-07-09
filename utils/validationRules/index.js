@@ -13,6 +13,7 @@ const updateReplySchema = require("./replies/updateReplySchema");
 const deleteReplySchema = require("./replies/deleteReplySchema");
 const getReplyVotesSchema = require("./replies/getReplyVotesSchema");
 const updateReplyUpAndDownVoteSchema = require("./replies/updateReplyUpAndDownVoteSchema");
+const updateReplyFlagSchema = require("./replies/updateReplyFlagSchema");
 
 const createOrganizationSchema = require("./organizations/createOrganizationSchema");
 const getOrganizationTokenSchema = require("./organizations/getOrganizationTokenSchema");
@@ -52,6 +53,7 @@ module.exports = {
   deleteReplySchema,
   getReplyVotesSchema,
   updateReplyUpAndDownVoteSchema,
+  updateReplyFlagSchema,
 
   //Organization Endpoints validation schemas
   createOrganizationSchema,

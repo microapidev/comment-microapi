@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Replies = require("./replies");
 
 const CommentSchema = new Schema(
   {
@@ -45,5 +46,14 @@ const CommentSchema = new Schema(
   },
   { timestamps: true }
 );
+
+CommentSchema.post("findOneAndDelete", async (comment) => {
+  if (comment) {
+    //delete any existing replies
+    await Replies.deleteMany({ commentId: comment._id });
+    // console.log(`Deleted ${replies.deletedCount} replies`);
+  }
+});
+
 const Comment = mongoose.model("Comments", CommentSchema);
 module.exports = Comment;
