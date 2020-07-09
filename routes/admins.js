@@ -57,4 +57,16 @@ router.delete(
   adminController.deleteSingleAdmin
 );
 
+router.delete(
+  "/comments/:commentId",
+  validMW(deleteSingleCommentSchema),
+  adminController.deleteSingleComment
+);
+
+router.delete(
+  "/comments/:commentId/replies/:replyId",
+  validMW(deleteSingleReplySchema),
+  adminController.deleteSingleReply
+);
+
 module.exports = router;
