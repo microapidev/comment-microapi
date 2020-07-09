@@ -69,7 +69,6 @@ const updateSingleReplyFlags = async (req, res, next) => {
       const index = reply.flags.indexOf(ownerId);
       reply.flags.splice(index, 1);
     }
-    reply.save();
 
     //save updated reply
     await reply.save();
@@ -90,7 +89,7 @@ const updateSingleReplyFlags = async (req, res, next) => {
     return next(
       new CustomError(
         500,
-        "Something went wrong, please try again later",
+        "Something went wrong, please try again later" + error.stack,
         error
       )
     );
