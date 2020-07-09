@@ -31,9 +31,10 @@ const deleteSingleComment = async (req, res, next) => {
     const comment = await Comments.findOneAndDelete({
       _id: commentId,
       applicationId: applicationId,
+      ownerId: ownerId,
     });
     if (!comment) {
-      return next(new CustomError(404, "Comment not found"));
+      return next(new CustomError(404, "Comment not found or unauthorized"));
     }
     //const deleting = await Comments.findByIdAndDelete(commentId);
     return responseHandler(
