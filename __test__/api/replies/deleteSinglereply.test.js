@@ -74,4 +74,76 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
       expect(item).toBeNull();
     });
   });
+
+  //401 error
+  test("Should return error when the authorization header's token is unauthorized", async () => {
+    const url = `/v1/comments/${comment.commentId}/replies/${reply.replyId}`;
+    const bearerToken = `bearer `;
+
+    const res = await request
+      .delete(url)
+      .set("Authorization", bearerToken)
+      .send({
+        ownerId: reply.ownerId,
+      });
+
+    expect(res.status).toEqual(401);
+    expect(res.body.status).toEqual("error");
+    expect(res.body.data).toEqual([]);
+  });
+
+  //404 error
+  test("Should return a 404 error when the commentId or replyId path parameter is invalid", async () => {
+    const invalidCommentUrl = `/v1/comments/4edd30e86762e0fb12000003/replies/${reply.replyId}`;
+    const invalidReplyUrl = `/v1/comments/${comment.commentId}/replies/4edd30e86762e0fb12000003`;
+    const bearerToken = `bearer ${global.appToken}`;
+
+    const invalidCommentRes = await request
+      .delete(invalidCommentUrl)
+      .set("Authorization", bearerToken)
+      .send({
+        ownerId: reply.ownerId,
+      });
+
+    expect(invalidCommentRes.status).toEqual(404);
+    expect(invalidCommentRes.body.status).toEqual("error");
+    expect(invalidCommentRes.body.data).toEqual([]);
+
+    const invalidReplyRes = await request
+      .delete(invalidReplyUrl)
+      .set("Authorization", bearerToken)
+      .send({
+        ownerId: reply.ownerId,
+      });
+
+    expect(invalidReplyRes.status).toEqual(404);
+    expect(invalidReplyRes.body.status).toEqual("error");
+    expect(invalidReplyRes.body.data).toEqual([]);
+  });
+
+  //422 error
+  test("Should return a 422 error when the ownerId body property is missing or invalid", async () => {
+    const url = `/v1/comments/${comment.commentId}/replies/${reply.replyId}`;
+    const bearerToken = `bearer ${global.appToken}`;
+
+    const mRes = await request
+      .delete(url)
+      .set("Authorization", bearerToken)
+      .send({});
+
+    expect(mRes.status).toEqual(422);
+    expect(mRes.body.status).toEqual("error");
+    expect(mRes.body.data).toBeTruthy();
+
+    const invalidRes = await request
+      .delete(url)
+      .set("Authorization", bearerToken)
+      .send({
+        ownerId: 7,
+      });
+
+    expect(invalidRes.status).toEqual(422);
+    expect(invalidRes.body.status).toEqual("error");
+    expect(invalidRes.body.data).toBeTruthy();
+  });
 });
