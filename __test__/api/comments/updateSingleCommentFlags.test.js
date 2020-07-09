@@ -82,7 +82,6 @@ describe("PATCH /comments/:commentId/flag", () => {
       });
     //number of flags in db should be same for both requests by same ownerId
     await CommentModel.findById(res2.body.data.commentId).then((comment) => {
-      console.log(comment);
       expect(comment.flags.length).toEqual(res2.body.data.numOfFlags);
       expect(comment.ownerId).toEqual(sampleComment.ownerId);
       const updatedComment = commentHandler(comment);
