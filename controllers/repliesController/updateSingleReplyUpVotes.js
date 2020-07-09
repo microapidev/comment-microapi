@@ -1,10 +1,10 @@
 // Models
-const Comments = require('../../models/comments');
-const Replies = require('../../models/replies');
+const Comments = require("../../models/comments");
+const Replies = require("../../models/replies");
 
 // Utilities
-const CustomError = require('../../utils/customError');
-const responseHandler = require('../../utils/responseHandler');
+const CustomError = require("../../utils/customError");
+const responseHandler = require("../../utils/responseHandler");
 
 /**
  * @author
@@ -27,7 +27,7 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
     //confirm reply belongs to a comment in the same application
     const parentComment = await Comments.findOne({
       _id: commentId,
-      applicationId
+      applicationId,
     });
     if (!parentComment) {
       next(
@@ -41,7 +41,7 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
 
     let reply = await Replies.findById(replyId);
     if (!reply) {
-      return next(new CustomError(404, 'Reply not found or deleted'));
+      return next(new CustomError(404, "Reply not found or deleted"));
     }
 
     if (reply.downVotes.includes(ownerId)) {
@@ -71,8 +71,8 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
 
     //Check the reply vote state
     const message = isUpvoted
-      ? 'Reply upvoted successfully!'
-      : 'Reply upvote removed successfully!';
+      ? "Reply upvoted successfully!"
+      : "Reply upvote removed successfully!";
 
     return responseHandler(
       res,
@@ -90,7 +90,7 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
     return next(
       new CustomError(
         500,
-        'Something went wrong, try again ' + error.stack,
+        "Something went wrong, try again " + error.stack,
         error
       )
     );

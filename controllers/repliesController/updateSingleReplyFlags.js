@@ -74,8 +74,8 @@ const updateSingleReplyFlags = async (req, res, next) => {
     }
 
     //save updated reply
-  await reply.save();
-  
+    await reply.save();
+
     const data = {
       replyId: reply._id,
       commentId: reply.commentId,

@@ -56,7 +56,7 @@ const getSingleReplyVotes = async (req, res, next) => {
           `Reply with the ID ${replyId} does not exist or has been deleted`
         )
       );
-    }   
+    }
 
     // The data object to be returned in the response
     const data = {
@@ -64,10 +64,15 @@ const getSingleReplyVotes = async (req, res, next) => {
       commentId,
       totalVotes: reply.upVotes.length + reply.downVotes.length,
       numOfUpVotes: reply.upVotes.length,
-      numOfDownVotes: reply.downVotes.length
+      numOfDownVotes: reply.downVotes.length,
     };
 
-    return responseHandler(res, 200, data, "Reply Votes Retrieved Successfully");
+    return responseHandler(
+      res,
+      200,
+      data,
+      "Reply Votes Retrieved Successfully"
+    );
   } catch (error) {
     return next(
       new CustomError(
