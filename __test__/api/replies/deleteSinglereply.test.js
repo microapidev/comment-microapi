@@ -23,15 +23,16 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
     const dummyReply = new ReplyModel({
       content: "A reply from user 2",
       ownerId: "user2@email.com",
-      commentId: dummyComment.id,
+      commentId: dummyComment._id,
     });
 
-    //save dummy comment,reply
-    const savedC = await dummyComment.save();
-    const savedR = await dummyReply.save();
 
-    // Add replies to the dummy comment
-    await CommentModel.findByIdAndUpdate(savedC.id, { replies: savedR.id });
+
+const savedR = await dummyReply.save();
+dummyComment.replies.push(savedR.id);
+const savedC = await dummyComment.save();
+
+
 
     //Cache response objects
     comment = commentHandler(savedC);
@@ -52,9 +53,16 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
   test("should delete a single reply", async () => {
     const url = `/v1/comments/${comment.commentId}/replies/${reply.replyId}`;
     const bearerToken = `bearer ${global.appToken}`;
-    ReplyModel.findById(reply.replyId).then((item) => {
+    await ReplyModel.findById(reply.replyId).then((item) => {
       expect(replyHandler(item)).toMatchObject(reply);
     });
+ 
+    await CommentModel.findById(comment.commentId).then(item => {
+        console.log(item)
+        //console.log(commentHandler(item))
+        console.log(comment)
+        expect(item.replies).toHaveLength(comment.numOfReplies)
+});
 
     const res = await request
       .delete(url)
@@ -66,6 +74,9 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
     expect(res.body.status).toEqual("success");
     expect(res.body.data).toMatchObject(reply);
 
+    await CommentModel.findById(comment.commentId).then(item => {
+    expect(commentHandler(item).numOfReplies).toBe(comment.numOfReplies-1)
+});
     //add matchers to check db that comment no longer has deleted replies
     // const comms = await CommentModel.findById(comment.commentId);
     //  expect(comms.replies).notContains(reply.replyId)
