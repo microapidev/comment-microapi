@@ -2,13 +2,24 @@ const swaggerJSDoc = require("swagger-jsdoc");
 
 // Swagger definition
 const swaggerDefinition = {
-  openapi: "3.0.0", // Version of swagger
+  openapi: "3.0.21", // Version of swagger
   basePath: "/v1", // the basepath of your endpoint
   info: {
-    title: "REST API for Comments MicroAPI", // Title of the documentation
+    title: "Comment MicroAPI", // Title of the documentation
     version: "1.0.0", // Version of the app
+    termsOfService: "https://microapi.dev/terms-of-service",
+    contact: {
+      name: "API Support",
+      url: "https://microapi.dev/contact",
+      email: "api@comment.microapi.dev",
+    },
+    license: {
+      name: "MIT",
+      url:
+        "https://github.com/microapidev/comment-microapi/blob/develop/LICENSE",
+    },
     description:
-      "This is the REST API Documentation for the Comments MicroAPI." +
+      "### Overview" +
       "\n\n" +
       "The API gives the developer access to built-in functionalities for when they want to " +
       "implement comments and replies within their own application." +
@@ -20,11 +31,7 @@ const swaggerDefinition = {
       "Additionally, there are extra features such as filtering, sorting, voting, and " +
       "flagging available." +
       "\n\n\n\n" +
-      "Created by the MicroAPI team." +
-      "\n" +
-      "Find the team on [GitHub](https://github.com/microapidev)." +
-      "\n" +
-      "License: [MIT](https://github.com/microapidev/comment-microapi/blob/develop/LICENSE)",
+      "Created by the MicroAPI team.",
   },
   servers: [
     {
