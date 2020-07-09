@@ -5,6 +5,7 @@ const Replies = require("../../models/replies");
 // Utilities
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
+const replyHandler = require("../../utils/replyHandler");
 
 /**
  * @author
@@ -21,6 +22,7 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
   const replyId = req.params.replyId;
   const ownerId = req.body.ownerId;
   const { applicationId } = req.token;
+  let isUpvoted = false;
 
   try {
     //confirm reply belongs to a comment in the same application
@@ -44,6 +46,7 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
     }
 
     if (reply.downVotes.includes(ownerId)) {
+      //get index of user in downvotes array
       const voterIndex = reply.downVotes.indexOf(ownerId);
       //if index exists
       if (voterIndex > -1) {
@@ -51,33 +54,36 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
         reply.downVotes.splice(voterIndex, 1);
       }
     }
+
+    //same as above for upvotes
     if (reply.upVotes.includes(ownerId)) {
-      const ownerIdx = reply.upVotes.indexOf(ownerId);
-      if (ownerIdx > -1) {
-        reply.upVotes.splice(ownerIdx, 1);
+      const voterIndex = reply.upVotes.indexOf(ownerId);
+      if (voterIndex > -1) {
+        reply.upVotes.splice(voterIndex, 1);
       }
     } else {
-      // add user to the top of the upvotes array
-      reply.upVotes.unshift(ownerId);
+      // add user to the upvotes array
+      reply.upVotes.push(ownerId);
+      isUpvoted = true;
     }
-    await reply.updateOne({
-      _id: replyId,
-      $push: { upVotes: ownerId },
-    });
-    return responseHandler(
-      res,
-      200,
-      {
-        commentId: commentId,
-        replyId: replyId,
-        numOfVotes: reply.downVotes.length + reply.upVotes.length + 1,
-        numOfdownVotes: reply.downVotes.length,
-        numOfupVotes: reply.upVotes.length + 1,
-      },
-      "Reply Upvoted successfully"
-    );
+
+    //save the reply vote
+    const savedReply = await reply.save();
+
+    //Check the reply vote state
+    const message = isUpvoted
+      ? "Reply upvoted successfully!"
+      : "Reply upvote removed successfully!";
+
+    return responseHandler(res, 200, replyHandler(savedReply), message);
   } catch (error) {
-    return next(new CustomError(500, "Something went wrong, try again", error));
+    return next(
+      new CustomError(
+        500,
+        "Something went wrong, try again " + error.stack,
+        error
+      )
+    );
   }
 };
 
