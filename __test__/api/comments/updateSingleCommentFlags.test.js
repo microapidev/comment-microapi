@@ -59,11 +59,10 @@ describe("PATCH /comments/:commentId/flag", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.status).toEqual("success");
+    expect(res.body.data).toBeTruthy();
 
     //Match db records to verify test mockup
     await CommentModel.findById(sampleComment.commentId).then((comment) => {
-      expect(comment.flags.length).toEqual(sampleComment.numOfFlags + 1);
-      expect(comment.ownerId).toEqual(sampleComment.ownerId);
       const updatedComment = commentHandler(comment);
 
       expect(updatedComment).toEqual({
@@ -74,16 +73,23 @@ describe("PATCH /comments/:commentId/flag", () => {
   });
 
   it("It should return same number of flags if user has already flagged the comment", async () => {
+    await CommentModel.findById(sampleComment.commentId).then((comment) => {
+      expect(comment.flags.length).toEqual(sampleComment.numOfFlags);
+      expect(comment.ownerId).toEqual(sampleComment.ownerId);
+    });
+
     const res2 = await request
       .patch(`/v1/comments/${sampleComment.commentId}/flag`)
       .set("Authorization", `bearer ${global.appToken}`)
       .send({
-        ownerId: sampleComment2.ownerId,
+        ownerId: sampleComment.ownerId,
       });
+    expect(res2.status).toBe(200);
+    expect(res2.body.status).toEqual("success");
+    expect(res2.body.data).toBeTruthy();
+
     //number of flags in db should be same for both requests by same ownerId
-    await CommentModel.findById(res2.body.data.commentId).then((comment) => {
-      expect(comment.flags.length).toEqual(res2.body.data.numOfFlags);
-      expect(comment.ownerId).toEqual(sampleComment.ownerId);
+    await CommentModel.findById(sampleComment.commentId).then((comment) => {
       const updatedComment = commentHandler(comment);
 
       expect(updatedComment).toEqual({
