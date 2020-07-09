@@ -5,6 +5,7 @@ const updateSingleCommentSchema = require("./comments/updateSingleCommentSchema"
 const deleteCommentSchema = require("./comments/deleteCommentSchema");
 const getCommentVotesSchema = require("./comments/getCommentVotesSchema");
 const updateCommentUpAndDownVoteSchema = require("./comments/updateCommentUpAndDownVoteSchema");
+const updateSingleCommentFlagSchema = require("./comments/updateSingleCommentFlagSchema");
 
 const getAllRepliesSchema = require("./replies/getAllRepliesSchema");
 const createReplySchema = require("./replies/createReplySchema");
@@ -13,6 +14,7 @@ const updateReplySchema = require("./replies/updateReplySchema");
 const deleteReplySchema = require("./replies/deleteReplySchema");
 const getReplyVotesSchema = require("./replies/getReplyVotesSchema");
 const updateReplyUpAndDownVoteSchema = require("./replies/updateReplyUpAndDownVoteSchema");
+const updateReplyFlagSchema = require("./replies/updateReplyFlagSchema");
 
 const createOrganizationSchema = require("./organizations/createOrganizationSchema");
 const getOrganizationTokenSchema = require("./organizations/getOrganizationTokenSchema");
@@ -30,6 +32,7 @@ const getAllAdminsSchema = require("./admins/getAllAdminsSchema");
 const getSingleAdminSchema = require("./admins/getSingleAdminSchema");
 const updateSingleAdminSchema = require("./admins/updateSingleAdminSchema");
 const changeAdminPasswordSchema = require("./admins/changeAdminPasswordSchema");
+const adminDeleteCommentSchema = require("./admins/adminDeleteCommentSchema");
 
 /**
  * Object containing schema validations for the endpoints.
@@ -43,6 +46,7 @@ module.exports = {
   deleteCommentSchema,
   getCommentVotesSchema,
   updateCommentUpAndDownVoteSchema,
+  updateSingleCommentFlagSchema,
 
   // Reply Endpoints validation schemas
   getAllRepliesSchema,
@@ -52,6 +56,7 @@ module.exports = {
   deleteReplySchema,
   getReplyVotesSchema,
   updateReplyUpAndDownVoteSchema,
+  updateReplyFlagSchema,
 
   //Organization Endpoints validation schemas
   createOrganizationSchema,
@@ -72,4 +77,5 @@ module.exports = {
   getAllAdminsSchema,
   getSingleAdminSchema,
   updateSingleAdminSchema,
+  adminDeleteCommentSchema,
 };

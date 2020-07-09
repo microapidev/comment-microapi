@@ -20,7 +20,8 @@ const responseHandler = require("../../utils/responseHandler");
 const getSingleReplyVotes = async (req, res, next) => {
   try {
     const { commentId, replyId } = req.params;
-    const { voteType } = req.query;
+    // const { voteType } = req.query;
+    const { applicationId } = req.token;
 
     if (!ObjectId.isValid(commentId)) {
       return next(new CustomError(404, "Invalid ID"));
@@ -30,16 +31,19 @@ const getSingleReplyVotes = async (req, res, next) => {
       return next(new CustomError(404, "Invalid ID"));
     }
 
-    const parentComment = await Comments.findById(commentId);
-
-    // Check to see if the parent comment exists.
+    //confirm reply belongs to a comment in the same application
+    const parentComment = await Comments.findOne({
+      _id: commentId,
+      applicationId,
+    });
     if (!parentComment) {
-      return next(
+      next(
         new CustomError(
           404,
           `Comment with the ID ${commentId} does not exist or has been deleted`
         )
       );
+      return;
     }
 
     const reply = await Replies.findById(replyId);
@@ -54,33 +58,21 @@ const getSingleReplyVotes = async (req, res, next) => {
       );
     }
 
-    // A list of all the votes
-    const votes = [];
-
-    if (!voteType) {
-      // Add all votes
-      votes.push(...reply.upVotes);
-      votes.push(...reply.downVotes);
-    } else {
-      if (voteType.toString() === "upvote") {
-        // Add upvotes only
-        votes.push(...reply.upVotes);
-      }
-
-      if (voteType.toString() === "downvote") {
-        // Add downvotes only
-        votes.push(...reply.downVotes);
-      }
-    }
-
     // The data object to be returned in the response
     const data = {
       replyId,
       commentId,
-      votes,
+      totalVotes: reply.upVotes.length + reply.downVotes.length,
+      numOfUpVotes: reply.upVotes.length,
+      numOfDownVotes: reply.downVotes.length,
     };
 
-    return responseHandler(res, 200, data, "OK");
+    return responseHandler(
+      res,
+      200,
+      data,
+      "Reply Votes Retrieved Successfully"
+    );
   } catch (error) {
     return next(
       new CustomError(

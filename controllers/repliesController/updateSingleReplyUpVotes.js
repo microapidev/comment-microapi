@@ -20,18 +20,32 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
   const commentId = req.params.commentId;
   const replyId = req.params.replyId;
   const ownerId = req.body.ownerId;
+  const { applicationId } = req.token;
+  let isUpvoted = false;
 
   try {
-    let comment = await Comments.findById(commentId);
-    if (!comment) {
-      return next(new CustomError(404, "Comment not found or deleted"));
+    //confirm reply belongs to a comment in the same application
+    const parentComment = await Comments.findOne({
+      _id: commentId,
+      applicationId,
+    });
+    if (!parentComment) {
+      next(
+        new CustomError(
+          404,
+          `Comment with the ID ${commentId} does not exist or has been deleted`
+        )
+      );
+      return;
     }
+
     let reply = await Replies.findById(replyId);
     if (!reply) {
       return next(new CustomError(404, "Reply not found or deleted"));
     }
 
     if (reply.downVotes.includes(ownerId)) {
+      //get index of user in downvotes array
       const voterIndex = reply.downVotes.indexOf(ownerId);
       //if index exists
       if (voterIndex > -1) {
@@ -39,19 +53,27 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
         reply.downVotes.splice(voterIndex, 1);
       }
     }
+
+    //same as above for upvotes
     if (reply.upVotes.includes(ownerId)) {
-      const ownerIdx = reply.upVotes.indexOf(ownerId);
-      if (ownerIdx > -1) {
-        reply.upVotes.splice(ownerIdx, 1);
+      const voterIndex = reply.upVotes.indexOf(ownerId);
+      if (voterIndex > -1) {
+        reply.upVotes.splice(voterIndex, 1);
       }
     } else {
-      // add user to the top of the upvotes array
-      reply.upVotes.unshift(ownerId);
+      // add user to the upvotes array
+      reply.upVotes.push(ownerId);
+      isUpvoted = true;
     }
-    await reply.updateOne({
-      _id: replyId,
-      $push: { upVotes: ownerId },
-    });
+
+    //save the reply vote
+    reply.save();
+
+    //Check the reply vote state
+    const message = isUpvoted
+      ? "Reply upvoted successfully!"
+      : "Reply upvote removed successfully!";
+
     return responseHandler(
       res,
       200,
@@ -62,10 +84,16 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
         numOfdownVotes: reply.downVotes.length,
         numOfupVotes: reply.upVotes.length + 1,
       },
-      "Reply downvoted successfully"
+      message
     );
   } catch (error) {
-    return next(new CustomError(500, "Something went wrong, try again", error));
+    return next(
+      new CustomError(
+        500,
+        "Something went wrong, try again " + error.stack,
+        error
+      )
+    );
   }
 };
 

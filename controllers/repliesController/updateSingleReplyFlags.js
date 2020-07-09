@@ -2,6 +2,7 @@ const { ObjectId } = require("mongoose").Types;
 
 // Models
 const Replies = require("../../models/replies");
+const Comments = require("../../models/comments");
 
 // Utilities
 const CustomError = require("../../utils/customError");
@@ -23,6 +24,7 @@ const updateSingleReplyFlags = async (req, res, next) => {
 
     const { commentId, replyId } = req.params;
     const { ownerId } = req.body;
+    const { applicationId } = req.token;
 
     if (!ObjectId.isValid(commentId)) {
       return next(new CustomError(422, " Invalid comment Id "));
@@ -30,6 +32,20 @@ const updateSingleReplyFlags = async (req, res, next) => {
 
     if (!ObjectId.isValid(replyId)) {
       return next(new CustomError(422, " Invalid reply Id "));
+    }
+    //confirm reply belongs to a comment in the same application
+    const parentComment = await Comments.findOne({
+      _id: commentId,
+      applicationId,
+    });
+    if (!parentComment) {
+      next(
+        new CustomError(
+          404,
+          `Comment with the ID ${commentId} does not exist or has been deleted`
+        )
+      );
+      return;
     }
     const reply = await Replies.findOne({
       _id: replyId,
@@ -54,6 +70,9 @@ const updateSingleReplyFlags = async (req, res, next) => {
       reply.flags.splice(index, 1);
     }
 
+    //save updated reply
+    await reply.save();
+
     const data = {
       replyId: reply._id,
       commentId: reply.commentId,
@@ -70,7 +89,7 @@ const updateSingleReplyFlags = async (req, res, next) => {
     return next(
       new CustomError(
         500,
-        "Something went wrong, please try again later",
+        "Something went wrong, please try again later" + error.stack,
         error
       )
     );

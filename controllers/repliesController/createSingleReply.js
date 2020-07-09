@@ -24,6 +24,7 @@ const createSingleReply = async (req, res, next) => {
 
     const { ownerId, content } = req.body;
     const { commentId } = req.params;
+    const { applicationId } = req.token;
 
     if (!ObjectId.isValid(commentId)) {
       next(new CustomError(404, "invalid ID"));
@@ -34,24 +35,12 @@ const createSingleReply = async (req, res, next) => {
       next(new CustomError(422, `Enter the required fields`));
       return;
     }
-    const reply = new Replies({
-      content,
-      ownerId,
-      commentId,
-    });
 
-    const savedReply = await reply.save();
-    const parentComment = await Comments.findByIdAndUpdate(
-      commentId,
-      {
-        $push: {
-          replies: savedReply._id,
-        },
-      },
-      {
-        new: true,
-      }
-    );
+    //confirm reply belongs to a comment in the same application
+    const parentComment = await Comments.findOne({
+      _id: commentId,
+      applicationId,
+    });
     if (!parentComment) {
       next(
         new CustomError(
@@ -61,14 +50,27 @@ const createSingleReply = async (req, res, next) => {
       );
       return;
     }
+
+    const reply = new Replies({
+      content,
+      ownerId,
+      commentId,
+    });
+
+    const savedReply = await reply.save();
+
+    //add reply to comment
+    parentComment.replies.push(reply);
+    await parentComment.save();
+
     const data = {
       replyId: savedReply._id,
       commentId: savedReply.commentId,
       content: savedReply.content,
       ownerId: savedReply.ownerId,
-      upVotes: savedReply.upVotes,
-      downVotes: savedReply.downVotes,
-      flags: savedReply.flags,
+      upVotes: savedReply.upVotes.length,
+      downVotes: savedReply.downVotes.length,
+      flags: savedReply.flags.length,
     };
 
     responseHandler(res, 201, data, "Reply added successfully");
