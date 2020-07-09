@@ -68,9 +68,9 @@ const createSingleReply = async (req, res, next) => {
       commentId: savedReply.commentId,
       content: savedReply.content,
       ownerId: savedReply.ownerId,
-      upVotes: savedReply.upVotes,
-      downVotes: savedReply.downVotes,
-      flags: savedReply.flags,
+      upVotes: savedReply.upVotes.length,
+      downVotes: savedReply.downVotes.length,
+      flags: savedReply.flags.length,
     };
 
     responseHandler(res, 201, data, "Reply added successfully");
