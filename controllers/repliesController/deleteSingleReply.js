@@ -57,12 +57,12 @@ const deleteSingleReply = async (req, res, next) => {
       $pull: { replies: replyId },
     });
 
-    const { _id: dbReplyId, ...rest } = reply.toObject();
+    //const { _id: dbReplyId, ...rest } = reply.toObject();
 
     return responseHandler(
       res,
       200,
-       //{ replyId: dbReplyId, ...rest },
+      //{ replyId: dbReplyId, ...rest },
       replyHandler(reply),
       "Reply successfully deleted"
     );

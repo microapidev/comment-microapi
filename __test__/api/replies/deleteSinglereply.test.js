@@ -26,13 +26,9 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
       commentId: dummyComment._id,
     });
 
-
-
-const savedR = await dummyReply.save();
-dummyComment.replies.push(savedR.id);
-const savedC = await dummyComment.save();
-
-
+    const savedR = await dummyReply.save();
+    dummyComment.replies.push(savedR.id);
+    const savedC = await dummyComment.save();
 
     //Cache response objects
     comment = commentHandler(savedC);
@@ -56,13 +52,13 @@ const savedC = await dummyComment.save();
     await ReplyModel.findById(reply.replyId).then((item) => {
       expect(replyHandler(item)).toMatchObject(reply);
     });
- 
-    await CommentModel.findById(comment.commentId).then(item => {
-        console.log(item)
-        //console.log(commentHandler(item))
-        console.log(comment)
-        expect(item.replies).toHaveLength(comment.numOfReplies)
-});
+
+    await CommentModel.findById(comment.commentId).then((item) => {
+      console.log(item);
+      //console.log(commentHandler(item))
+      console.log(comment);
+      expect(item.replies).toHaveLength(comment.numOfReplies);
+    });
 
     const res = await request
       .delete(url)
@@ -74,9 +70,9 @@ const savedC = await dummyComment.save();
     expect(res.body.status).toEqual("success");
     expect(res.body.data).toMatchObject(reply);
 
-    await CommentModel.findById(comment.commentId).then(item => {
-    expect(commentHandler(item).numOfReplies).toBe(comment.numOfReplies-1)
-});
+    await CommentModel.findById(comment.commentId).then((item) => {
+      expect(commentHandler(item).numOfReplies).toBe(comment.numOfReplies - 1);
+    });
     //add matchers to check db that comment no longer has deleted replies
     // const comms = await CommentModel.findById(comment.commentId);
     //  expect(comms.replies).notContains(reply.replyId)
