@@ -36,37 +36,6 @@ describeIfEndpoint(
 
 describeIfEndpoint(
   "PATCH",
-  "/v1/comments/:commentId/votes/upvote",
-  "PATCH /v1/comments/:commentId/votes/upvote",
-  () => {
-    // It should update a single comment vote using the app token and  status of 200 success
-    it("should update a single comment upvote", async () => {
-      const comment = new CommentModel({
-        content: "this is a comment",
-        ownerId: "useremail@email.com",
-        origin: "123123",
-        applicationId: global.application._id,
-      });
-      await comment.save();
-
-      const res = await request
-        .patch(`/v1/comments/${comment._id}/votes/upvote`)
-        .set("Authorization", `Bearer ${global.appToken}`)
-        .send({
-          ownerId: "offendeduser@email.com",
-        });
-
-      expect(res.status).toBe(200);
-      expect(res.body.data.commentId).not.toBeNull();
-      expect(res.body.data.numOfVotes).toEqual();
-      expect(res.body.data.numOfUpVotes).toBeTruthy();
-      expect(res.body.data.numOfDownvotes).toBeTruthy();
-    });
-  }
-);
-
-describeIfEndpoint(
-  "PATCH",
   "/v1/comments/:commentId/replies/:replyId/flag",
   "PATCH /v1/comments/:commentId/replies/:replyId/flag",
   () => {
