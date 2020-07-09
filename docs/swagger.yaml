@@ -1494,7 +1494,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/OwnerID"
+              $ref: "#/components/schemas/CreateReply"
 
       responses:
         "201":
