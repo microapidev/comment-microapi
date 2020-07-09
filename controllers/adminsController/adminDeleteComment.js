@@ -54,7 +54,7 @@ const adminDeleteComment = async (req, res, next) => {
       "Comment successfully deleted"
     );
   } catch (error) {
-    return next(error);
+    return next(new CustomError(500, "A server error has occured"));
   }
 };
 
