@@ -5,7 +5,6 @@ const { hashPassword } = require("../../../utils/auth/passwordUtils");
 const supertest = require("supertest");
 const request = supertest(app);
 
-//const bearerToken = `bearer ${global.appToken}`;
 describe("Get a single Admin", () => {
   let savedAdmin;
   beforeAll(async () => {
@@ -43,13 +42,12 @@ describe("Get a single Admin", () => {
 
   it("Should get a single Admin for an organisation", async () => {
     const url = `/v1/admins/${savedAdmin._id}`;
-    const bearerToken = `bearer ${global.appToken}`;
+    const bearerToken = `bearer ${global.orgToken}`;
     const res = await request.get(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(200);
     expect(res.body.status).toEqual("success");
-    expect(res.body.data.fullname).toEqual(savedAdmin.adminName);
-    expect(res.body.data.email).toEqual(savedAdmin.adminEmail);
-    expect(res.body.data._id).toEqual(savedAdmin._id);
+    expect(res.body.data.fullname).toEqual(savedAdmin.fullname);
+    expect(res.body.data.email).toEqual(savedAdmin.email);
   });
 
   it("Should return a 401 error if Authentication fails", async () => {
@@ -61,9 +59,9 @@ describe("Get a single Admin", () => {
     expect(res.body.data).toBeTruthy();
   });
 
-  it("Should return a 404 error if ID is wrong or missing", async () => {
-    const url = `/v1/admins/53aec977449ku86300083`; //wrong id
-    const bearerToken = `bearer ${global.appToken}`;
+  it("Should return a 404 error if admin is not found", async () => {
+    const url = `/v1/admins/5f08a075b9319514ecc35280`; //id non-existent
+    const bearerToken = `bearer ${global.orgToken}`;
     const res = await request.get(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(404);
     expect(res.body.status).toEqual("error");
@@ -71,8 +69,8 @@ describe("Get a single Admin", () => {
   });
 
   it("Should return a 422 error if validation fails", async () => {
-    const url = `/v1/admins/${savedAdmin._id}`;
-    const bearerToken = `bearer ${global.appToken}`;
+    const url = `/v1/admins/53aec977449ku86300083`; //wrong id
+    const bearerToken = `bearer ${global.orgToken}`;
     const res = await request.get(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(422);
     expect(res.body.status).toEqual("error");
