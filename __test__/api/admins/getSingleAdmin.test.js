@@ -72,7 +72,7 @@ describe("Get a single Admin", () => {
 
   it("Should return a 422 error if validation fails", async () => {
     const url = `/v1/admins/${savedAdmin._id}`;
-    const bearerToken = `bearer ${global.appToken}`; //an invalid token
+    const bearerToken = `bearer ${global.appToken}`;
     const res = await request.get(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(422);
     expect(res.body.status).toEqual("error");
