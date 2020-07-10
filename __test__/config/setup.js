@@ -2,7 +2,8 @@ const { connect, disconnect } = require("./db");
 const Organization = require("../../models/organizations");
 const Application = require("../../models/applications");
 const Admin = require("../../models/admins");
-const { getAppToken } = require("../../utils/auth/tokenGenerator");
+const { hashPassword } = require("../../utils/auth/passwordUtils");
+const { getAppToken, getOrgToken } = require("../../utils/auth/tokenGenerator");
 
 beforeAll(async () => {
   await connect();
@@ -22,10 +23,11 @@ beforeAll(async () => {
 
   await organization.save();
 
+  let hashedPassword = await hashPassword("password");
   const admin = new Admin({
     fullname: "admin",
     email: `admin${randNum}@email.com`,
-    password: "password",
+    password: hashedPassword,
     organizationId: organization._id,
   });
 
@@ -43,6 +45,11 @@ beforeAll(async () => {
   const appToken = await getAppToken(application._id, admin._id);
 
   global.appToken = appToken;
+
+  // create a valid token to test routes that require organization token
+  const orgToken = await getOrgToken(organization._id, admin._id);
+
+  global.orgToken = orgToken;
 
   // save variables globally
   global.application = application;

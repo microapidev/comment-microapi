@@ -7,6 +7,7 @@ const Replies = require("../../models/replies");
 // Utilities
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
+const replyHandler = require("../../utils/replyHandler");
 
 /**
  * @author
@@ -63,17 +64,12 @@ const createSingleReply = async (req, res, next) => {
     parentComment.replies.push(reply);
     await parentComment.save();
 
-    const data = {
-      replyId: savedReply._id,
-      commentId: savedReply.commentId,
-      content: savedReply.content,
-      ownerId: savedReply.ownerId,
-      upVotes: savedReply.upVotes.length,
-      downVotes: savedReply.downVotes.length,
-      flags: savedReply.flags.length,
-    };
-
-    responseHandler(res, 201, data, "Reply added successfully");
+    responseHandler(
+      res,
+      201,
+      replyHandler(savedReply),
+      "Reply added successfully"
+    );
     return;
   } catch (error) {
     next(
