@@ -26,7 +26,7 @@ const updateSingleCommentFlags = async (req, res, next) => {
     const { applicationId } = req.token;
 
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
-      return next(new CustomError(422, "invalid ID"));
+      return next(new CustomError(422, "Validation Error"));
     }
     const comment = await Comments.findOne({
       _id: commentId,
@@ -46,6 +46,8 @@ const updateSingleCommentFlags = async (req, res, next) => {
     if (!comment.flags.includes(ownerId)) {
       comment.flags.push(ownerId);
     }
+
+    await comment.save();
 
     const data = {
       commentId: comment._id,
