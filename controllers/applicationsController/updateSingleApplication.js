@@ -45,7 +45,12 @@ const updateSingleApplication = async (req, res, next) => {
       return;
     }
 
-    return responseHandler(res, 200, {}, "Application updated successfully");
+    return responseHandler(
+      res,
+      200,
+      { applicationId: application._id, name: application.name },
+      "Application updated successfully"
+    );
   } catch (err) {
     return next(new CustomError(500, "Something went wrong, Try again later"));
   }
