@@ -6,7 +6,7 @@ const commentHandler = require("../../../utils/commentHandler");
 const replyHandler = require("../../../utils/replyHandler");
 const request = supertest(app);
 
-describe("POST /comments", () => {
+describe("POST /comments/:commentId/replies", () => {
   let comment;
 
   beforeEach(async () => {
