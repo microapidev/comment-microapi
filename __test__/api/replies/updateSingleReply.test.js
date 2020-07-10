@@ -110,9 +110,8 @@ describe("PATCH /comments/:commentId/replies/:replyId", () => {
     expect(res.body.data).toEqual([]);
   });
 
-  it("Should return a 404 error when the commentId or replyId path parameter is invalid", async () => {
+  it("Should return a 404 error when the commentId path parameter is invalid", async () => {
     const invalidCommentUrl = `/v1/comments/4edd30e86762e0fb12000003/replies/${oldReply.replyId}`;
-    const invalidReplyUrl = `/v1/comments/${oldComment.commentId}/replies/4edd30e86762e0fb12000003`;
     const bearerToken = `bearer ${global.appToken}`;
 
     const invalidCommentRes = await request
@@ -126,6 +125,11 @@ describe("PATCH /comments/:commentId/replies/:replyId", () => {
     expect(invalidCommentRes.status).toEqual(404);
     expect(invalidCommentRes.body.status).toEqual("error");
     expect(invalidCommentRes.body.data).toEqual([]);
+  });
+
+  it("Should return a 404 error when the commentId path parameter is invalid", async () => {
+    const invalidReplyUrl = `/v1/comments/${oldComment.commentId}/replies/4edd30e86762e0fb12000003`;
+    const bearerToken = `bearer ${global.appToken}`;
 
     const invalidReplyRes = await request
       .patch(invalidReplyUrl)
