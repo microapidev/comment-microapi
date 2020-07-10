@@ -15,7 +15,6 @@ const ApplicationSchema = new Schema(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "Admins",
-      required: true,
     },
   },
   { timestamps: true }

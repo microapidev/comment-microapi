@@ -32,7 +32,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: "https://comments.microapi.dev/v1",
+      url: "https://comment.microapi.dev/v1",
       description: "Production server (uses live data)",
     },
     {
