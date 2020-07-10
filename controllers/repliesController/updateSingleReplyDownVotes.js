@@ -68,7 +68,7 @@ const updateSingleReplyDownVotes = async (req, res, next) => {
     }
 
     //save the reply vote
-    reply.save();
+    await reply.save();
 
     //get total number of elements in array
     const totalUpVotes = reply.upVotes.length;
