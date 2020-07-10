@@ -276,9 +276,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Admin"
+                    $ref: "#/components/schemas/Admin"
 
         "401":
           description: Authentication error
@@ -336,9 +334,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Admin"
+                    $ref: "#/components/schemas/Admin"
 
         "401":
           description: Authentication error
@@ -388,9 +384,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Admin"
+                    $ref: "#/components/schemas/Admin"
 
         "401":
           description: Authentication error
@@ -629,9 +623,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Application"
+                    $ref: "#/components/schemas/Application"
 
         "401":
           description: Authentication error
@@ -693,9 +685,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Application"
+                    $ref: "#/components/schemas/Application"
 
         "401":
           description: Authentication error
@@ -749,9 +739,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Application"
+                    $ref: "#/components/schemas/Application"
 
         "401":
           description: Authentication error
@@ -928,9 +916,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Comment"
+                    $ref: "#/components/schemas/Comment"
 
         "400":
           description: Bad request error
@@ -986,9 +972,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Comment"
+                    $ref: "#/components/schemas/Comment"
 
         "401":
           description: Authentication error
@@ -1119,9 +1103,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Comment"
+                    $ref: "#/components/schemas/Comment"
 
         "400":
           description: Bad request error
@@ -1187,16 +1169,14 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        commentId:
+                    type: object
+                    properties:
+                      commentId:
+                        type: string
+                      votes:
+                        type: array
+                        items:
                           type: string
-                        votes:
-                          type: array
-                          items:
-                            type: string
 
         "401":
           description: Authentication error
@@ -1260,9 +1240,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/VotedComment"
+                    $ref: "#/components/schemas/VotedComment"
 
         "400":
           description: Bad request error
@@ -1530,9 +1508,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Reply"
+                    $ref: "#/components/schemas/Reply"
 
         "400":
           description: Bad request error
@@ -1797,18 +1773,16 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        replyId:
+                    type: object
+                    properties:
+                      replyId:
+                        type: string
+                      commentId:
+                        type: string
+                      votes:
+                        type: array
+                        items:
                           type: string
-                        commentId:
-                          type: string
-                        votes:
-                          type: array
-                          items:
-                            type: string
 
         "401":
           description: Authentication error
@@ -1875,9 +1849,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/VotedReply"
+                    $ref: "#/components/schemas/VotedReply"
 
         "400":
           description: Bad request error
@@ -1951,9 +1923,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/VotedReply"
+                    $ref: "#/components/schemas/VotedReply"
 
         "400":
           description: Bad request error
@@ -2027,9 +1997,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/FlaggedReply"
+                    $ref: "#/components/schemas/FlaggedReply"
 
         "401":
           description: Authentication error
@@ -2198,13 +2166,10 @@ components:
       required:
         - name
         - organizationId
-        - createdBy
       properties:
         name:
           type: string
         organizationId:
-          type: string
-        createdBy:
           type: string
 
     UpdateApplication: # Can be referenced as '#/components/schemas/UpdateApplication'

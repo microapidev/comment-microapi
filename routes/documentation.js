@@ -3,6 +3,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("../utils/swaggerSpec");
 
 const swaggerUiOptions = {
+  customSiteTitle: "MicroAPI | Comment API Documentation",
   customCss: ".swagger-ui .topbar { display: none }",
 };
 

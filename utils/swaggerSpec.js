@@ -29,9 +29,7 @@ const swaggerDefinition = {
       "to use such functionalities." +
       "\n\n" +
       "Additionally, there are extra features such as filtering, sorting, voting, and " +
-      "flagging available." +
-      "\n\n\n\n" +
-      "Created by the MicroAPI team.",
+      "flagging available.",
   },
   servers: [
     {
