@@ -16,27 +16,7 @@ describe("PATCH /comments/:commentId/flag", () => {
       origin: "myuseremail@email.com",
     });
 
-    const comment2Flagged = new CommentModel({
-      refId: "576897564",
-      applicationId: global.application._id,
-      ownerId: "user1@email.com",
-      content: "this is comment from user1",
-      origin: "user1@email.com",
-    });
-    comment2Flagged.flags.push("user1@email.com");
-
-    const comment3Flagged = new CommentModel({
-      refId: "576897565",
-      applicationId: global.application._id,
-      ownerId: "user2@email.com",
-      content: "this is comment from user2",
-      origin: "user2@email.com",
-    });
-    comment3Flagged.flags.push("user2@email.com");
-
-    await comment1
-      .save()
-      .then((item) => (comment = commentHandler(item)));
+    await comment1.save().then((item) => (comment = commentHandler(item)));
   });
 
   afterEach(async () => {
