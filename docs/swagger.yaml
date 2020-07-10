@@ -2151,11 +2151,8 @@ components:
       type: object
       required:
         - name
-        - organizationId
       properties:
         name:
-          type: string
-        organizationId:
           type: string
 
     UpdateApplication: # Can be referenced as '#/components/schemas/UpdateApplication'
