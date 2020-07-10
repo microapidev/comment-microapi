@@ -9,7 +9,7 @@ const deleteSingleApplication = async (req, res, next) => {
   try {
     const application = await Applications.findById(applicationId);
     if (!application) {
-      return next(new CustomError(400, "Application not found"));
+      return next(new CustomError(404, "Application not found"));
     }
     if (
       !mongoose.Types.ObjectId(application.organizationId).equals(
@@ -17,7 +17,7 @@ const deleteSingleApplication = async (req, res, next) => {
       )
     ) {
       return next(
-        new CustomError(403, "You're not allowed to access this resource")
+        new CustomError(401, "You're not allowed to access this resource")
       );
     }
   } catch (err) {
