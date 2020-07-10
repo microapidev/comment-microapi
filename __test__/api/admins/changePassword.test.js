@@ -7,23 +7,17 @@ const { comparePassword } = require("../../../utils/auth/passwordUtils");
 
 const request = supertest(app);
 
-describe("PATCH /v1/admins/:adminId/change-password", () => {
+describe("PATCH /v1/admins/change-password", () => {
   let passwordChangeInfo = {
     oldPassword: "password",
     newPassword: "passcode",
   };
   let url = `/v1/admins/change-password`;
 
-  let orgToken;
-
-  beforeAll(async () => {
-    orgToken = await getOrgToken(global.organization._id, global.admin._id);
-  });
-
   it("updates admin password", async () => {
     const res = await request
       .post(url)
-      .set("Authorization", `bearer ${orgToken}`)
+      .set("Authorization", `bearer ${global.orgToken}`)
       .send(passwordChangeInfo);
     expect(res.status).toEqual(201);
     expect(res.body.message).toBeTruthy();
@@ -39,7 +33,7 @@ describe("PATCH /v1/admins/:adminId/change-password", () => {
   it("returns 400 when old password is wrong", async () => {
     const res = await request
       .post(url)
-      .set("Authorization", `bearer ${orgToken}`)
+      .set("Authorization", `bearer ${global.orgToken}`)
       .send({ oldPassword: "lol wut wrong!", ...passwordChangeInfo });
     expect(res.status).toEqual(400);
     expect(res.body.status).toEqual("error");
@@ -63,7 +57,7 @@ describe("PATCH /v1/admins/:adminId/change-password", () => {
   it("returns validation error on invalid inputs", async () => {
     const res = await request
       .post(url)
-      .set("Authorization", `bearer ${orgToken}`);
+      .set("Authorization", `bearer ${global.orgToken}`);
     expect(res.status).toEqual(422);
     expect(res.body.status).toEqual("error");
     expect(res.body.error).toBeTruthy();
