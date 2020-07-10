@@ -234,7 +234,7 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
   });
 
   it("Should return a 404 error when the commentId path parameter is invalid", async () => {
-    const url = `/v1/comments/4edd30e86762e0fb12000003`;
+    const url = `/v1/comments/4edd30e86762e0fb12000003/votes/upvote`;
     const bearerToken = `bearer ${global.appToken}`;
 
     const res = await request
@@ -242,7 +242,6 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
       .set("Authorization", bearerToken)
       .send({
         ownerId: oldComment.ownerId,
-        content: "content",
       });
 
     expect(res.status).toEqual(404);
