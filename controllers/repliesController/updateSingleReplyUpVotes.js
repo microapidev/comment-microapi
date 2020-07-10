@@ -5,6 +5,7 @@ const Replies = require("../../models/replies");
 // Utilities
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
+const replyHandler = require("../../utils/replyHandler");
 
 /**
  * @author
@@ -67,25 +68,14 @@ const updateSingleReplyUpVotes = async (req, res, next) => {
     }
 
     //save the reply vote
-    reply.save();
+    const savedReply = await reply.save();
 
     //Check the reply vote state
     const message = isUpvoted
       ? "Reply upvoted successfully!"
       : "Reply upvote removed successfully!";
 
-    return responseHandler(
-      res,
-      200,
-      {
-        commentId: commentId,
-        replyId: replyId,
-        numOfVotes: reply.downVotes.length + reply.upVotes.length + 1,
-        numOfdownVotes: reply.downVotes.length,
-        numOfupVotes: reply.upVotes.length + 1,
-      },
-      message
-    );
+    return responseHandler(res, 200, replyHandler(savedReply), message);
   } catch (error) {
     return next(
       new CustomError(
