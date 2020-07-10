@@ -28,8 +28,8 @@ describeIfEndpoint(
         });
 
       expect(res.status).toBe(200);
-      expect(res.body.data.commentId).toBeTruthy();
-      expect(res.body.data.numOfFlags).toBeTruthy();
+      expect(res.body.data.commentId).toEqual(String(comment._id));
+      expect(res.body.data.numOfFlags).toEqual(1);
     });
   }
 );
