@@ -506,13 +506,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-        "404":
-          description: Invalid ID error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
         "422":
           description: Validation error
           content:
@@ -571,13 +564,6 @@ paths:
 
         "401":
           description: Authentication error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-        "404":
-          description: Invalid ID error
           content:
             application/json:
               schema:
