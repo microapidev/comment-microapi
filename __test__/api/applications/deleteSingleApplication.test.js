@@ -25,14 +25,11 @@ describe("Delete /applications/:applicationId", () => {
       .delete(`/v1/applications/${application._id}`)
       .set("Authorization", `bearer ${global.orgToken}`);
     expect(res.status).toEqual(200);
-    expect(res.body.data._id).toEqual(String(application._id));
+    expect(res.body.data.applicationId).toEqual(String(application._id));
     expect(res.body.data.name).toEqual(application.name);
-    expect(res.body.data.organizationId).toEqual(
-      String(application.organizationId)
-    );
   });
 
-  it("returns 400 for application not found", async () => {
+  it("returns 404 for application not found", async () => {
     let wrongId = mongoose.Types.ObjectId();
     let res = await request
       .delete(`/v1/application/${wrongId}`)

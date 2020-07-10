@@ -27,7 +27,11 @@ const deleteSingleApplication = async (req, res, next) => {
   }
   Applications.findByIdAndDelete(applicationId)
     .then((app) => {
-      responseHandler(res, 200, app, "Application deleted successfully");
+      const data ={
+        applicationId: app._id,
+        name:app.name,
+      }
+      responseHandler(res, 200, data, "Application deleted successfully");
     })
     .catch((err) => {
       return next(
