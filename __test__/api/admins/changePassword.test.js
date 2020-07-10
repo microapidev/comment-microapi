@@ -8,15 +8,16 @@ const { comparePassword } = require("../../../utils/auth/passwordUtils");
 const request = supertest(app);
 
 describe("PATCH /v1/admins/:adminId/change-password", () => {
-  let orgToken, url, passwordChangeInfo;
+  let passwordChangeInfo = {
+    oldPassword: "password",
+    newPassword: "passcode",
+  };
+  let url = `/v1/admins/change-password`;
+
+  let orgToken;
 
   beforeAll(async () => {
-    passwordChangeInfo = {
-      oldPassword: "password",
-      newPassword: "passcode",
-    };
     orgToken = await getOrgToken(global.organization._id, global.admin._id);
-    url = `/v1/admins/change-password`;
   });
 
   it("updates admin password", async () => {
