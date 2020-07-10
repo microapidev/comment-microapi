@@ -506,13 +506,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-        "404":
-          description: Invalid ID error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
         "422":
           description: Validation error
           content:
@@ -571,13 +564,6 @@ paths:
 
         "401":
           description: Authentication error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-        "404":
-          description: Invalid ID error
           content:
             application/json:
               schema:
@@ -2165,11 +2151,8 @@ components:
       type: object
       required:
         - name
-        - organizationId
       properties:
         name:
-          type: string
-        organizationId:
           type: string
 
     UpdateApplication: # Can be referenced as '#/components/schemas/UpdateApplication'

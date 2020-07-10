@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
 const Applications = require("../../models/applications");
-const Organizations = require("../../models/organizations");
 
 /**
  * @author David Okanlawon
@@ -17,12 +16,7 @@ const getAllApplications = async (req, res, next) => {
   try {
     const { organizationId } = req.token;
     if (!mongoose.Types.ObjectId.isValid(organizationId)) {
-      return next(new CustomError(400, "Invalid OrganizationID"));
-    }
-
-    const organization = await Organizations.find({ _id: organizationId });
-    if (!organization) {
-      return next(new CustomError(400, "Invalid organization"));
+      return next(new CustomError(422, "Invalid OrganizationID"));
     }
 
     const applications = await Applications.find({ organizationId });
@@ -30,7 +24,6 @@ const getAllApplications = async (req, res, next) => {
       return {
         applicationId: app._id,
         name: app.name,
-        organizationId: app.organizationId,
       };
     });
 
