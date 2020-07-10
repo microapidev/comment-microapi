@@ -42,14 +42,6 @@ const updateSingleCommentFlags = async (req, res, next) => {
       );
     }
 
-    if (
-      !ownerId.match(/\S+@\S+\.\S+/) ||
-      ownerId.indexOf(" ") != -1 ||
-      0 === ownerId.length
-    ) {
-      return next(new CustomError(422, "Validation Error"));
-    }
-
     //flag comment by pushing ownerId into flags array
     if (!comment.flags.includes(ownerId)) {
       comment.flags.push(ownerId);
