@@ -56,6 +56,7 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
   afterEach(async () => {
     // Delete mocks from the database.
     await CommentModel.findByIdAndDelete(oldComment.commentId);
+    await CommentModel.findByIdAndDelete(oldCommentWithUpVote.commentId);
     await CommentModel.findByIdAndDelete(oldCommentWithDownVote.commentId);
 
     // Delete cache.
