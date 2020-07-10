@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
 const Applications = require("../../models/applications");
@@ -10,7 +11,11 @@ const deleteSingleApplication = async (req, res, next) => {
     if (!application) {
       return next(new CustomError(400, "Application not found"));
     }
-    if (application.organizationId !== organizationId) {
+    if (
+      !mongoose.Types.ObjectId(application.organizationId).equals(
+        mongoose.Types.ObjectId(organizationId)
+      )
+    ) {
       return next(
         new CustomError(403, "You're not allowed to access this resource")
       );
