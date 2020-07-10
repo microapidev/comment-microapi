@@ -3,7 +3,6 @@ const swaggerJSDoc = require("swagger-jsdoc");
 // Swagger definition
 const swaggerDefinition = {
   openapi: "3.0.21", // Version of swagger
-  basePath: "/v1", // the basepath of your endpoint
   info: {
     title: "Comment MicroAPI", // Title of the documentation
     version: "1.0.0", // Version of the app
