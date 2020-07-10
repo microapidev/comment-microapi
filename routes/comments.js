@@ -68,7 +68,11 @@ router.patch(
   commentsController.updateSingleComment
 );
 
-router.patch("/:commentId/flag", commentsController.updateSingleCommentFlags);
+router.patch(
+  "/:commentId/flag",
+  validationMiddleware(validationRules.updateSingleCommentFlagSchema),
+  commentsController.updateSingleCommentFlags
+);
 
 router.patch(
   "/:commentId/votes/upvote",
