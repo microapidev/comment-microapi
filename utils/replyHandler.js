@@ -1,6 +1,6 @@
 module.exports = (reply) => {
   return {
-    replyId: reply.id,
+    replyId: reply._id.toString(),
     commentId: reply.commentId.toString(),
     ownerId: reply.ownerId,
     content: reply.content,
