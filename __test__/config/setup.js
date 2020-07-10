@@ -12,12 +12,12 @@ beforeAll(async () => {
   await truncate(Admin);
   await truncate(Organization); */
 
-  const randNum = Math.floor(Math.random() * 8000) + 1000;
+  const date = Date.now();
 
   //create organization, application and admin objects for use by all tests
   const organization = new Organization({
     name: "HNG",
-    email: `hngorg${randNum}@email.com`,
+    email: `hngorg${date}@email.com`,
     secret: "shhhh!",
   });
 
@@ -26,7 +26,7 @@ beforeAll(async () => {
   let hashedPassword = await hashPassword("password");
   const admin = new Admin({
     fullname: "admin",
-    email: `admin${randNum}@email.com`,
+    email: `admin${date}@email.com`,
     password: hashedPassword,
     organizationId: organization._id,
   });
