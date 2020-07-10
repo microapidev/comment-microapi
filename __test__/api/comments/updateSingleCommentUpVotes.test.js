@@ -91,8 +91,8 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
     expect(addRes.body.data).toEqual({
       commentId: oldComment.commentId,
       numOfVotes: oldComment.numOfVotes + 1,
-      numOfUpVotes: oldComment.numOfUpVotes,
-      numOfDownVotes: oldComment.numOfDownVotes + 1,
+      numOfUpVotes: oldComment.numOfUpVotes + 1,
+      numOfDownVotes: oldComment.numOfDownVotes,
     });
 
     // Run test matchers to verify that the comment votes have been added in the database.
@@ -195,8 +195,8 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
     expect(removeRes.body.data).toEqual({
       commentId: oldCommentWithUpVote.commentId,
       numOfVotes: oldCommentWithUpVote.numOfVotes - 1,
-      numOfUpVotes: oldCommentWithUpVote.numOfUpVotes,
-      numOfDownVotes: oldCommentWithUpVote.numOfDownVotes - 1,
+      numOfUpVotes: oldCommentWithUpVote.numOfUpVotes - 1,
+      numOfDownVotes: oldCommentWithUpVote.numOfDownVotes,
     });
 
     // Run test matchers to verify that the comment vote has been removed in the database.
@@ -204,10 +204,10 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
       (comment) => {
         expect(comment).toBeTruthy();
         expect(comment.upVotes.length).toEqual(
-          oldCommentWithUpVote.numOfUpVotes
+          oldCommentWithUpVote.numOfUpVotes - 1
         );
         expect(comment.downVotes.length).toEqual(
-          oldCommentWithUpVote.numOfDownVotes - 1
+          oldCommentWithUpVote.numOfDownVotes
         );
         expect(comment.downVotes.length + comment.upVotes.length).toEqual(
           oldCommentWithUpVote.numOfVotes - 1
@@ -233,7 +233,7 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
   });
 
   it("Should return a 404 error when the commentId path parameter is invalid", async () => {
-    const url = `/v1/comments/4edd30e86762e0fb12000003/votes/upvote`;
+    const url = `/v1/comments/4edd30e86762e0fb12000003`;
     const bearerToken = `bearer ${global.appToken}`;
 
     const res = await request
