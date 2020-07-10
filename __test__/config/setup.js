@@ -2,6 +2,7 @@ const { connect, disconnect } = require("./db");
 const Organization = require("../../models/organizations");
 const Application = require("../../models/applications");
 const Admin = require("../../models/admins");
+const { hashPassword } = require("../../utils/auth/passwordUtils");
 const { getAppToken } = require("../../utils/auth/tokenGenerator");
 
 beforeAll(async () => {
@@ -22,10 +23,11 @@ beforeAll(async () => {
 
   await organization.save();
 
+  let hashedPassword = await hashPassword("password");
   const admin = new Admin({
     fullname: "admin",
     email: `admin${randNum}@email.com`,
-    password: "password",
+    password: hashedPassword,
     organizationId: organization._id,
   });
 
