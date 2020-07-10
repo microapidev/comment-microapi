@@ -32,6 +32,10 @@ const updateSingleCommentUpVotes = async (req, res, next) => {
       applicationId: applicationId,
     });
 
+    if (!comment) {
+      return next(new CustomError(404, "Comment Id not found"));
+    }
+
     //if user exists in downvotes array
     if (comment.downVotes.includes(ownerId)) {
       //get index of user in downvotes array
