@@ -1,24 +1,24 @@
 const app = require("../../../server");
 const supertest = require("supertest");
-//const applicationHandler = require("../../../utils/responseHandler");
-const { getOrgToken } = require("../../../utils/auth/tokenGenerator");
 const request = supertest(app);
 
 describe("POST /applications", () => {
-  let orgToken, url;
+  let url;
   let invalidToken = "5f08err3e9dced1ad07err48b9b57a";
 
   beforeAll(async () => {
-    orgToken = await getOrgToken(global.organization._id, global.admin._id);
     url = "/v1/applications";
   });
 
   it("Should successfully create an application", async () => {
     let res = await request
       .post(url)
-      .set("Authorization", `bearer ${orgToken}`)
+      .set("Authorization", `bearer ${global.orgToken}`)
       .send({ name: "test_app" });
+
     expect(res.status).toEqual(201);
+    expect(res.body.data.applicationId).toBeTruthy();
+    expect(res.body.data.applicationToken).toBeTruthy();
     expect(res.body.status).toEqual("success");
   });
 
@@ -29,6 +29,7 @@ describe("POST /applications", () => {
       .send({ name: "test_app" });
 
     expect(res.status).toEqual(401);
+    expect(res.body.data).toEqual([]);
     expect(res.body.status).toEqual("error");
   });
 });
