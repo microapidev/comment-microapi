@@ -23,10 +23,10 @@ const getSingleReply = async (req, res, next) => {
   const { applicationId } = req.token;
 
   if (!ObjectId.isValid(commentId)) {
-    return next(new CustomError(400, " Invalid comment Id "));
+    return next(new CustomError(422, " Invalid comment Id "));
   }
   if (!ObjectId.isValid(replyId)) {
-    return next(new CustomError(400, " Invalid reply Id "));
+    return next(new CustomError(422, " Invalid reply Id "));
   }
   try {
     //check if such comment exists
