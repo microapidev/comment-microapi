@@ -127,7 +127,7 @@ describe("PATCH /comments/:commentId/replies/:replyId", () => {
     expect(invalidCommentRes.body.data).toEqual([]);
   });
 
-  it("Should return a 404 error when the commentId path parameter is invalid", async () => {
+  it("Should return a 404 error when the replyId path parameter is invalid", async () => {
     const invalidReplyUrl = `/v1/comments/${oldComment.commentId}/replies/4edd30e86762e0fb12000003`;
     const bearerToken = `bearer ${global.appToken}`;
 
