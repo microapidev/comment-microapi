@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
 const Applications = require("../../models/applications");
-const Organizations = require("../../models/organizations");
 
 /**
  * @author David Okanlawon
