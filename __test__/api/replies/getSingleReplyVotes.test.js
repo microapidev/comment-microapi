@@ -25,6 +25,8 @@ describe("GET /comments/:commentId/replies/:replyid/votes", () => {
       content: "A reply from user 2",
       ownerId: "user2@email.com",
       commentId: mockedCommentDoc.id,
+      upVotes: ["voter1@gmail.com", "voter2@gmail.com"],
+      downVotes: ["voter3@gmail.com"],
     });
 
     // Save mocked comment document to the database and cache.
