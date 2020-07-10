@@ -54,9 +54,6 @@ describe("DELETE /comments/:commentId/replies/:replyId", () => {
     });
 
     await CommentModel.findById(comment.commentId).then((item) => {
-      console.log(item);
-      //console.log(commentHandler(item))
-      console.log(comment);
       expect(item.replies).toHaveLength(comment.numOfReplies);
     });
 
