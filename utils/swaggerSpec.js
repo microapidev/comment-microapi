@@ -20,7 +20,7 @@ const swaggerDefinition = {
     description:
       "### Overview" +
       "\n\n" +
-      "The API gives the developer access to built-in functionalities for when they want to " +
+      "The Comment API gives the developer access to built-in functionalities for when they want to " +
       "implement comments and replies within their own application." +
       "\n\n" +
       "Basic functionalities are available for creation, update, and deletion of " +
