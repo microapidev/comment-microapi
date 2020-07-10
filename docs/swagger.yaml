@@ -1,10 +1,27 @@
+tags:
+  - name: Organizations
+    description: |
+      Create and manage organizations.
+
+  - name: Admins
+    description: |
+      Create and manage admins.
+
+  - name: Applications
+    description: |
+      Create and manage applications.
+
+  - name: Comments and replies
+    description: |
+      Create and manage comments and replies.
+
 paths:
   # Endpoint to create an organization
   /organizations:
     # POST operation
     post:
       tags:
-        - organizations
+        - Organizations
 
       summary: Creates an organization
 
@@ -56,7 +73,7 @@ paths:
     # POST operation
     post:
       tags:
-        - organizations
+        - Organizations
 
       summary: Gets an organization token after successful login
 
@@ -116,7 +133,7 @@ paths:
     # GET operation
     get:
       tags:
-        - admins
+        - Admins
 
       summary: Gets all of an organization's admins
 
@@ -168,7 +185,7 @@ paths:
     # POST operation
     post:
       tags:
-        - admins
+        - Admins
 
       summary: Creates an organization's admin
 
@@ -231,7 +248,7 @@ paths:
     # GET operation
     get:
       tags:
-        - admins
+        - Admins
 
       summary: Gets an organization's admin
 
@@ -259,9 +276,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Admin"
+                    $ref: "#/components/schemas/Admin"
 
         "401":
           description: Authentication error
@@ -287,7 +302,7 @@ paths:
     # PATCH operation
     patch:
       tags:
-        - admins
+        - Admins
 
       summary: Updates an organization's admin
 
@@ -319,9 +334,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Admin"
+                    $ref: "#/components/schemas/Admin"
 
         "401":
           description: Authentication error
@@ -347,7 +360,7 @@ paths:
     # DELETE operation
     delete:
       tags:
-        - admins
+        - Admins
 
       summary: Deletes an organization's admin
 
@@ -371,9 +384,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Admin"
+                    $ref: "#/components/schemas/Admin"
 
         "401":
           description: Authentication error
@@ -401,7 +412,7 @@ paths:
     # PATCH operation
     patch:
       tags:
-        - admins
+        - Admins
 
       summary: Updates an organization admin's password
 
@@ -460,7 +471,7 @@ paths:
     # GET operation
     get:
       tags:
-        - applications
+        - Applications
 
       summary: Gets all of an organization's applications
 
@@ -512,7 +523,7 @@ paths:
     # POST operation
     post:
       tags:
-        - applications
+        - Applications
 
       summary: Creates an organization's application
 
@@ -584,7 +595,7 @@ paths:
     # GET operation
     get:
       tags:
-        - applications
+        - Applications
 
       summary: Gets an organization's application
 
@@ -612,9 +623,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Application"
+                    $ref: "#/components/schemas/Application"
 
         "401":
           description: Authentication error
@@ -640,7 +649,7 @@ paths:
     # PATCH operation
     patch:
       tags:
-        - applications
+        - Applications
 
       summary: Updates an organization's application
 
@@ -676,9 +685,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Application"
+                    $ref: "#/components/schemas/Application"
 
         "401":
           description: Authentication error
@@ -704,7 +711,7 @@ paths:
     # DELETE operation
     delete:
       tags:
-        - applications
+        - Applications
 
       summary: Deletes an organization's application
 
@@ -732,9 +739,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Application"
+                    $ref: "#/components/schemas/Application"
 
         "401":
           description: Authentication error
@@ -762,7 +767,7 @@ paths:
     # POST operation
     post:
       tags:
-        - applications
+        - Applications
 
       summary: Gets an organization's application token
 
@@ -821,7 +826,7 @@ paths:
     # GET operation
     get:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Gets all comments
 
@@ -879,7 +884,7 @@ paths:
     # POST operation
     post:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Creates a new comment
 
@@ -911,9 +916,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Comment"
+                    $ref: "#/components/schemas/Comment"
 
         "400":
           description: Bad request error
@@ -941,7 +944,7 @@ paths:
     # GET operation
     get:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Gets a comment
 
@@ -969,9 +972,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Comment"
+                    $ref: "#/components/schemas/Comment"
 
         "401":
           description: Authentication error
@@ -997,7 +998,7 @@ paths:
     # PATCH operation
     patch:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Updates a comment
 
@@ -1066,7 +1067,7 @@ paths:
     # DELETE operation
     delete:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Deletes a comment
 
@@ -1102,9 +1103,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Comment"
+                    $ref: "#/components/schemas/Comment"
 
         "400":
           description: Bad request error
@@ -1139,7 +1138,7 @@ paths:
     # GET operation
     get:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Gets all the votes of a comment
 
@@ -1170,16 +1169,14 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        commentId:
+                    type: object
+                    properties:
+                      commentId:
+                        type: string
+                      votes:
+                        type: array
+                        items:
                           type: string
-                        votes:
-                          type: array
-                          items:
-                            type: string
 
         "401":
           description: Authentication error
@@ -1207,7 +1204,7 @@ paths:
     # PATCH operation
     patch:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Updates the upvotes of a comment
 
@@ -1243,9 +1240,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/VotedComment"
+                    $ref: "#/components/schemas/VotedComment"
 
         "400":
           description: Bad request error
@@ -1280,7 +1275,7 @@ paths:
     # PATCH operation
     patch:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Updates the downvotes of a comment
 
@@ -1316,9 +1311,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/VotedComment"
+                    $ref: "#/components/schemas/VotedComment"
 
         "400":
           description: Bad request error
@@ -1353,7 +1346,7 @@ paths:
     # PATCH operation
     patch:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Updates the flag status of the comment
 
@@ -1389,9 +1382,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/FlaggedComment"
+                    $ref: "#/components/schemas/FlaggedComment"
 
         "401":
           description: Authentication error
@@ -1419,7 +1410,7 @@ paths:
     # GET operation
     get:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Gets all replies of a comment
 
@@ -1481,7 +1472,7 @@ paths:
     # POST operation
     post:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Creates a new reply to a comment
 
@@ -1498,7 +1489,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/OwnerID"
+              $ref: "#/components/schemas/CreateReply"
 
       responses:
         "201":
@@ -1517,9 +1508,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Reply"
+                    $ref: "#/components/schemas/Reply"
 
         "400":
           description: Bad request error
@@ -1554,7 +1543,7 @@ paths:
     # GET operation
     get:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Gets a reply of a comment
 
@@ -1585,9 +1574,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Reply"
+                    $ref: "#/components/schemas/Reply"
 
         "400":
           description: Bad request error
@@ -1613,7 +1600,7 @@ paths:
     # PATCH operation
     patch:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Updates a reply of a comment
 
@@ -1652,9 +1639,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/UpdateReply"
+                    $ref: "#/components/schemas/UpdateReply"
 
         "401":
           description: Authentication error
@@ -1680,7 +1665,7 @@ paths:
     # DELETE operation
     delete:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Deletes a reply of a comment
 
@@ -1719,9 +1704,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Reply"
+                    $ref: "#/components/schemas/Reply"
 
         "400":
           description: Bad request error
@@ -1756,7 +1739,7 @@ paths:
     # GET operation
     get:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Gets all votes of a comment's reply
 
@@ -1790,18 +1773,16 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        replyId:
+                    type: object
+                    properties:
+                      replyId:
+                        type: string
+                      commentId:
+                        type: string
+                      votes:
+                        type: array
+                        items:
                           type: string
-                        commentId:
-                          type: string
-                        votes:
-                          type: array
-                          items:
-                            type: string
 
         "401":
           description: Authentication error
@@ -1829,7 +1810,7 @@ paths:
     # PATCH operation
     patch:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Updates the upvotes of a comment's reply
 
@@ -1868,9 +1849,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/VotedReply"
+                    $ref: "#/components/schemas/VotedReply"
 
         "400":
           description: Bad request error
@@ -1905,7 +1884,7 @@ paths:
     # PATCH operation
     patch:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Updates the downvotes of a comment's reply
 
@@ -1944,9 +1923,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/VotedReply"
+                    $ref: "#/components/schemas/VotedReply"
 
         "400":
           description: Bad request error
@@ -1981,7 +1958,7 @@ paths:
     # PATCH operation
     patch:
       tags:
-        - comments
+        - Comments and replies
 
       summary: Updates the flag status of the reply of comment
 
@@ -2020,9 +1997,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/FlaggedReply"
+                    $ref: "#/components/schemas/FlaggedReply"
 
         "401":
           description: Authentication error
@@ -2108,11 +2083,11 @@ components:
     LoginOrganization: # Can be referenced as '#/components/schemas/LoginOrganization'
       type: object
       required:
-        - organizationEmail
+        - email
         - password
         - organizationId
       properties:
-        organizationEmail:
+        email:
           type: string
           format: email
         password:
@@ -2191,13 +2166,10 @@ components:
       required:
         - name
         - organizationId
-        - createdBy
       properties:
         name:
           type: string
         organizationId:
-          type: string
-        createdBy:
           type: string
 
     UpdateApplication: # Can be referenced as '#/components/schemas/UpdateApplication'
@@ -2409,6 +2381,14 @@ components:
       in: path
       name: organizationId
       description: String ID of the organization
+      required: true
+      schema:
+        type: string
+
+    applicationIdParam: # Can be referenced via '#/components/parameters/applicationIdParam'
+      in: path
+      name: applicationId
+      description: String ID of the application
       required: true
       schema:
         type: string

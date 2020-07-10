@@ -22,12 +22,13 @@ const updateSingleReplyDownVotes = async (req, res, next) => {
   const { applicationId } = req.token;
 
   try {
+    let isDownvoted = false;
     //confirm reply belongs to a comment in the same application
-    const parentComment = await Comments.findOne({
+    const comment = await Comments.findOne({
       _id: commentId,
       applicationId,
     });
-    if (!parentComment) {
+    if (!comment) {
       next(
         new CustomError(
           404,
@@ -38,33 +39,58 @@ const updateSingleReplyDownVotes = async (req, res, next) => {
     }
 
     let reply = await Replies.findById(replyId);
+
     if (!reply) {
       return next(new CustomError(404, "Reply not found or deleted"));
     }
+
+    //if user exists in upvotes array
     if (reply.upVotes.includes(ownerId)) {
-      return next(
-        new CustomError(409, "You've upvoted this reply, you can't downvote")
-      );
+      //get index of user in upvotes array
+      const voterIndex = reply.upVotes.indexOf(ownerId);
+      //if index exists
+      if (voterIndex > -1) {
+        //delete that index
+        reply.upVotes.splice(voterIndex, 1);
+      }
     }
+
+    //same as above for downvotes
     if (reply.downVotes.includes(ownerId)) {
-      return next(new CustomError(409, "You've already downvoted this reply"));
+      const voterIdx = reply.downVotes.indexOf(ownerId);
+      if (voterIdx > -1) {
+        reply.downVotes.splice(voterIdx, 1);
+      }
+    } else {
+      // add user to the top of the downvotes array
+      reply.downVotes.unshift(ownerId);
+      isDownvoted = true;
     }
-    await reply.updateOne({
-      _id: replyId,
-      $push: { downVotes: ownerId },
-    });
-    return responseHandler(
-      res,
-      200,
-      {
-        commentId: commentId,
-        replyId: replyId,
-        numOfVotes: reply.downVotes.length + reply.upVotes.length + 1,
-        numOfUpvotes: reply.upVotes.length,
-        numOfDownvotes: reply.downVotes.length + 1,
-      },
-      "Reply downvoted successfully"
-    );
+
+    //save the reply vote
+    await reply.save();
+
+    //get total number of elements in array
+    const totalUpVotes = reply.upVotes.length;
+    const totalDownVotes = reply.downVotes.length;
+
+    //get total number of votes
+    const totalVotes = totalUpVotes + totalDownVotes;
+
+    //Check the reply vote state
+    const message = isDownvoted
+      ? "Reply downvote added successfully!"
+      : "Reply downvote removed successfully!";
+
+    const data = {
+      commentId,
+      replyId,
+      numOfVotes: totalVotes,
+      numOfUpVotes: totalUpVotes,
+      numOfDownVotes: totalDownVotes,
+    };
+
+    return responseHandler(res, 200, data, message);
   } catch (error) {
     return next(new CustomError(500, "Something went wrong, try again", error));
   }

@@ -70,6 +70,9 @@ const updateSingleReplyFlags = async (req, res, next) => {
       reply.flags.splice(index, 1);
     }
 
+    //save updated reply
+    await reply.save();
+
     const data = {
       replyId: reply._id,
       commentId: reply.commentId,
@@ -86,7 +89,7 @@ const updateSingleReplyFlags = async (req, res, next) => {
     return next(
       new CustomError(
         500,
-        "Something went wrong, please try again later",
+        "Something went wrong, please try again later" + error.stack,
         error
       )
     );
