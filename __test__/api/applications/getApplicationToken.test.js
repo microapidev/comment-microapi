@@ -44,7 +44,7 @@ describe("GET /applications", () => {
 
     expect(res.status).toEqual(401);
     expect(res.body.status).toEqual("error");
-    expect(res.body.data).toEqual({});
+    expect(res.body.data).toEqual([]);
   });
 
   it("Should return a 404 error when the applicationId doesn't exist in the database", async () => {
