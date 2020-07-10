@@ -111,7 +111,7 @@ describe("GET /comments/:commentId/replies/:replyid/votes", () => {
     expect(res.body.data).toEqual([]);
   });
 
-  it("Should return a 404 error when the commentId path parameter is invalid", async () => {
+  it("Should return a 404 error when the commentId  does not exist in database", async () => {
     const invalidCommentUrl = `/v1/comments/4edd30e86762e0fb12000003/replies/${reply1.replyId}/votes`;
     const bearerToken = `bearer ${global.appToken}`;
 
@@ -124,7 +124,7 @@ describe("GET /comments/:commentId/replies/:replyid/votes", () => {
     expect(invalidCommentRes.body.data).toEqual([]);
   });
 
-  it("Should return a 404 error when the replyId path parameter is invalid", async () => {
+  it("Should return a 404 error when the replyId does not exist in database", async () => {
     const invalidReplyUrl = `/v1/comments/${comment.commentId}/replies/4edd30e86762e0fb12000003/votes`;
     const bearerToken = `bearer ${global.appToken}`;
 
