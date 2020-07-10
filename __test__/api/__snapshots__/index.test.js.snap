@@ -7,7 +7,7 @@ exports[`GET / Should return status 200 and render Swagger docs 1`] = `
 <html lang=\\"en\\">
 <head>
   <meta charset=\\"UTF-8\\">
-  <title>Swagger UI</title>
+  <title>MicroAPI | Comment API Documentation</title>
   <link rel=\\"stylesheet\\" type=\\"text/css\\" href=\\"./swagger-ui.css\\" >
   <link rel=\\"icon\\" type=\\"image/png\\" href=\\"./favicon-32x32.png\\" sizes=\\"32x32\\" /><link rel=\\"icon\\" type=\\"image/png\\" href=\\"./favicon-16x16.png\\" sizes=\\"16x16\\" />
   
@@ -75,7 +75,7 @@ exports[`GET / Should return status 200 and render Swagger docs 1`] = `
 <script src=\\"./swagger-ui-init.js\\"> </script>
 
 <style>
-  .swagger-ui .topbar .download-url-wrapper { display: none } undefined
+  .swagger-ui .topbar .download-url-wrapper { display: none } .swagger-ui .topbar { display: none }
 </style>
 </body>
 
