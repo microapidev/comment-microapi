@@ -19,7 +19,7 @@ const createSingleApplication = async (req, res, next) => {
   try {
     const { organizationId, adminId } = req.token;
     const { name } = req.body;
-z
+
     //validate organization
     if (!mongoose.Types.ObjectId.isValid(organizationId)) {
       return next(new CustomError(400, "Invalid OrganizationID"));
