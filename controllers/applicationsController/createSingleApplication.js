@@ -20,6 +20,12 @@ const createSingleApplication = async (req, res, next) => {
     const { organizationId, adminId } = req.token;
     const { name } = req.body;
 
+    //input validation
+    if (!name) {
+      next(new CustomError(422, `Enter the name of the application`));
+      return;
+    }
+
     //validate organization
     if (!mongoose.Types.ObjectId.isValid(organizationId)) {
       return next(new CustomError(400, "Invalid OrganizationID"));
