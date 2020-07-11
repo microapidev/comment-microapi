@@ -22,6 +22,17 @@ describe("POST /applications", () => {
     expect(res.body.status).toEqual("success");
   });
 
+  it("Should return a 422 error for invalid input", async () => {
+    let res = await request
+      .post(url)
+      .set("Authorization", `bearer ${global.orgToken}`)
+      .send();
+
+    expect(res.status).toEqual(422);
+    expect(res.body.data).toEqual(['"name" is required in body']);
+    expect(res.body.status).toEqual("error");
+  });
+
   it("Should return a 401 error for invalid Token", async () => {
     let res = await request
       .post(url)
