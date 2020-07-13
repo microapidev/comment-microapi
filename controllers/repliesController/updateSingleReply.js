@@ -63,7 +63,11 @@ const updateSingleReply = async (req, res, next) => {
     return responseHandler(
       res,
       200,
-      { content: content, ownerId: ownerId },
+      {
+        content: content,
+        ownerId: ownerId,
+        updatedAt: reply.updatedAt.toString(),
+      },
       "Updated sucessfully"
     );
   } catch (error) {

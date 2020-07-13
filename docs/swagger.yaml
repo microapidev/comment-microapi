@@ -2198,9 +2198,9 @@ components:
         numOfReplies:
           type: integer
         createdAt:
-          type: timestamp
+          type: string
         updatedAt:
-          type: timestamp
+          type: string
 
     CreateComment: # Can be referenced as '#/components/schemas/CreateComment'
       type: object
@@ -2286,9 +2286,9 @@ components:
         numOfFlags:
           type: integer
         createdAt:
-          type: timestamp
+          type: string
         updatedAt:
-          type: timestamp
+          type: string
 
     CreateReply: # Can be referenced as '#/components/schemas/CreateReply'
       type: object
