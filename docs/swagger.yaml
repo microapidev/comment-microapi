@@ -2174,6 +2174,8 @@ components:
         - numOfDownVotes
         - numOfFlags
         - numOfReplies
+        - createdAt
+        - updatedAt
       properties:
         commentId:
           type: string
@@ -2195,6 +2197,10 @@ components:
           type: integer
         numOfReplies:
           type: integer
+        createdAt:
+          type: timestamp
+        updatedAt:
+          type: timestamp
 
     CreateComment: # Can be referenced as '#/components/schemas/CreateComment'
       type: object
@@ -2260,6 +2266,8 @@ components:
         - numOfUpVotes
         - numOfDownVotes
         - numOfFlags
+        - createdAt
+        - updatedAt
       properties:
         replyId:
           type: string
@@ -2277,6 +2285,10 @@ components:
           type: integer
         numOfFlags:
           type: integer
+        createdAt:
+          type: timestamp
+        updatedAt:
+          type: timestamp
 
     CreateReply: # Can be referenced as '#/components/schemas/CreateReply'
       type: object

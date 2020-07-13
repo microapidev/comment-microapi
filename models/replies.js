@@ -38,7 +38,7 @@ const ReplySchema = new Schema({
     ref: "Comments",
     required: true,
   },
-});
+},{timestamps:true});
 
 const Reply = mongoose.model("Replies", ReplySchema);
 module.exports = Reply;
