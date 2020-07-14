@@ -51,19 +51,14 @@ const getAllComments = async (req, res, next) => {
             numOfDownVotes: comment.downVotes.length,
             numOfFlags: comment.flags.length,
             numOfReplies: comment.replies.length,
-            // createdAt: comment.createdAt,
-            // updatedAt: comment.updatedAt,
+            createdAt: comment.createdAt.toString(),
+            updatedAt: comment.updatedAt.toString(),
           };
         });
 
         let data = allComments;
 
-        responseHandler(
-          res,
-          200,
-          data,
-          `Comments Retrieved Successfully, query: ${JSON.stringify(req.query)}`
-        );
+        responseHandler(res, 200, data, `Comments Retrieved Successfully`);
       })
       .catch(next);
   } catch (err) {

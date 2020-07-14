@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 // Utilities
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
+const commentHandler = require("../../utils/commentHandler");
 
 /**
  * @author
@@ -35,21 +36,13 @@ const getSingleComment = async (req, res, next) => {
         )
       );
     }
-    const data = {
-      commentId: comment._id,
-      refId: comment.refId,
-      applicationId: comment.applicationId,
-      ownerId: comment.ownerId,
-      content: comment.content,
-      origin: comment.origin,
-      numOfVotes: comment.upVotes.length + comment.downVotes.length,
-      numOfUpVotes: comment.upVotes.length,
-      numOfDownVotes: comment.downVotes.length,
-      numOfFlags: comment.flags.length,
-      numOfReplies: comment.replies.length,
-    };
 
-    return responseHandler(res, 200, data, `Comment Retrieved Successfully`);
+    return responseHandler(
+      res,
+      200,
+      commentHandler(comment),
+      `Comment Retrieved Successfully`
+    );
   } catch (err) {
     return next(new CustomError(500, `Something went wrong ${err}`));
   }
