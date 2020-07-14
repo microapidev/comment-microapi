@@ -36,10 +36,10 @@ const getAllAdmins = async (req, res, next) => {
     return;
   }
 
-  //return array
-  if (!allAdmins.length) {
-    return responseHandler(res, 404, allAdmins, "No admin accounts found");
-  }
+  // highly improbable commenting out for now
+  // if (!allAdmins.length) {
+  //   return responseHandler(res, 404, allAdmins, "No admin accounts found");
+  // }
 
   return responseHandler(
     res,

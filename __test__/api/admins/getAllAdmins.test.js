@@ -1,54 +1,57 @@
 const app = require("../../../server");
 const supertest = require("supertest");
-const ApplicationModel = require("../../../models/applications");
+const Admin = require("../../../models/admins");
 const request = supertest(app);
 
-// Cached application.
-let application;
+// Cached admin.
+let admin;
 
-describe("GET /applications", () => {
+describe("GET /admins", () => {
   beforeEach(async () => {
-    // Mock an application document.
-    const mockedApplicationDoc = new ApplicationModel({
-      name: "App",
+    // Mock an admin document.
+    admin = new Admin({
+      fullname: "IAmAdmin",
+      email: "iamadmin@email.org",
+      password: "let me in please",
       organizationId: global.organization._id,
-      createdBy: global.admin._id,
     });
 
-    // Save mocked application document to the database and cache it.
-    application = await mockedApplicationDoc.save();
+    // Save mocked admin document to the database and cache it.
+    await admin.save();
   });
 
   afterEach(async () => {
     // Delete mock from the database.
-    await ApplicationModel.findByIdAndDelete(application._id);
+    await Admin.findByIdAndDelete(admin._id);
 
     // Delete cache.
-    application = null;
+    admin = null;
   });
 
-  it("Should get all applications", async () => {
+  it("Should get all admins", async () => {
     let res = await request
-      .get(`/v1/applications`)
+      .get(`/v1/admins`)
       .set("Authorization", `bearer ${global.orgToken}`);
 
     expect(res.status).toEqual(200);
     expect(res.body.data).toEqual(
       expect.arrayContaining([
         {
-          applicationId: String(global.application._id),
-          name: global.application.name,
+          adminId: global.admin.id,
+          fullname: global.admin.fullname,
+          email: global.admin.email,
         },
         {
-          applicationId: String(application._id),
-          name: application.name,
+          adminId: admin.id,
+          fullname: admin.fullname,
+          email: admin.email,
         },
       ])
     );
   });
 
   it("Should return a 401 error when authorization token is unauthorized", async () => {
-    const url = `/v1/applications`;
+    const url = `/v1/admins`;
     const bearerToken = `bearer `;
 
     const res = await request.get(url).set("Authorization", bearerToken);
