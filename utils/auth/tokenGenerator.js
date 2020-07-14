@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const Application = require("../../models/applications");
 const Admin = require("../../models/admins");
 const Organization = require("../../models/organizations");
+const MsAdmin = require("../../models/msadmins");
 require("dotenv").config();
 
 // token generator
@@ -92,8 +93,35 @@ const getOrgToken = async (organizationId, adminId) => {
   );
 };
 
+// sysToken generator
+const getSysToken = async (msAdminId) => {
+  if (!mongoose.Types.ObjectId.isValid(msAdminId)) {
+    throw new CustomError(400, "Invalid msAdmin ID");
+  }
+
+  // confirm adminId belongs to organization
+  const msAdmin = await MsAdmin.find({
+    _id: msAdminId,
+  });
+  if (!msAdmin) {
+    throw new CustomError(
+      401,
+      "You are not authorized to access this resource"
+    );
+  }
+
+  return generateToken(
+    {
+      msAdminId,
+      role: msAdmin.role,
+    },
+    process.env.SYSTEM_SECRET
+  );
+};
+
 module.exports = {
   generateToken,
   getAppToken,
   getOrgToken,
+  getSysToken,
 };
