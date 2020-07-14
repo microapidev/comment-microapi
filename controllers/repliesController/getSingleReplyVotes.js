@@ -65,6 +65,7 @@ const getSingleReplyVotes = async (req, res, next) => {
       totalVotes: reply.upVotes.length + reply.downVotes.length,
       numOfUpVotes: reply.upVotes.length,
       numOfDownVotes: reply.downVotes.length,
+      updatedAt: reply.updatedAt.toString(),
     };
 
     return responseHandler(

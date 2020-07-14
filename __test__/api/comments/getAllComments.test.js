@@ -1,5 +1,6 @@
 const app = require("../../../server");
 const CommentModel = require("../../../models/comments");
+const commentHandler = require("../../../utils/commentHandler");
 // const mongoose = require("mongoose");
 const supertest = require("supertest");
 const request = supertest(app);
@@ -33,33 +34,8 @@ describe("GET /comments", () => {
     const savedComment2 = await mockedComment2Doc.save();
 
     // Cache response objects
-    comment1 = {
-      commentId: savedComment1.id,
-      applicationId: savedComment1.applicationId.toString(),
-      refId: savedComment1.refId,
-      ownerId: savedComment1.ownerId,
-      content: savedComment1.content,
-      origin: savedComment1.origin,
-      numOfReplies: savedComment1.replies.length,
-      numOfVotes: savedComment1.upVotes.length + savedComment1.downVotes.length,
-      numOfUpVotes: savedComment1.upVotes.length,
-      numOfDownVotes: savedComment1.downVotes.length,
-      numOfFlags: savedComment1.flags.length,
-    };
-
-    comment2 = {
-      commentId: savedComment2.id,
-      applicationId: savedComment2.applicationId.toString(),
-      refId: savedComment2.refId,
-      ownerId: savedComment2.ownerId,
-      content: savedComment2.content,
-      origin: savedComment2.origin,
-      numOfReplies: savedComment2.replies.length,
-      numOfVotes: savedComment2.upVotes.length + savedComment2.downVotes.length,
-      numOfUpVotes: savedComment2.upVotes.length,
-      numOfDownVotes: savedComment2.downVotes.length,
-      numOfFlags: savedComment2.flags.length,
-    };
+    comment1 = commentHandler(savedComment1);
+    comment2 = commentHandler(savedComment2);
   });
 
   afterEach(async () => {
