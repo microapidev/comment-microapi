@@ -16,3 +16,10 @@ exports.orgAuthMW = jwtMW({
   algorithms: ["HS256"],
   credentialsRequired: credsRequired,
 });
+
+exports.sysAuthMW = jwtMW({
+  secret: Buffer.from(process.env.SYSTEM_SECRET, "base64"),
+  requestProperty: "token",
+  algorithms: ["HS256"],
+  credentialsRequired: credsRequired,
+});

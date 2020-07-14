@@ -34,6 +34,8 @@ const updateSingleAdminSchema = require("./admins/updateSingleAdminSchema");
 const changeAdminPasswordSchema = require("./admins/changeAdminPasswordSchema");
 const adminDeleteCommentSchema = require("./admins/adminDeleteCommentSchema");
 
+const createSingleMsAdminSchema = require("./msadmins/createSingleMsAdminSchema");
+
 /**
  * Object containing schema validations for the endpoints.
  */
@@ -78,4 +80,7 @@ module.exports = {
   getSingleAdminSchema,
   updateSingleAdminSchema,
   adminDeleteCommentSchema,
+
+  // MsAdmins Endpoints validation schemas
+  createSingleMsAdminSchema,
 };
