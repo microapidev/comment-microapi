@@ -1,6 +1,6 @@
 const app = require("../../../server");
 const supertest = require("supertest");
-const AdminModel = require("../../../models/admins");
+const MsAdminModel = require("../../../models/msadmins");
 
 const request = supertest(app);
 
@@ -28,7 +28,7 @@ describe("POST /v1/msadmins/create", () => {
     expect(res.body.status).toEqual("success");
     expect(res.body.data.msAdminId).toBeTruthy();
 
-    const savedAdmin = await AdminModel.findById(res.body.data.msAdminId);
+    const savedAdmin = await MsAdminModel.findById(res.body.data.msAdminId);
     expect(savedAdmin.fullname).toEqual(adminInfo.fullname);
     expect(savedAdmin.role).toEqual("admin");
   });
@@ -54,9 +54,9 @@ describe("POST /v1/msadmins/create", () => {
     expect(res.body.status).toEqual("success");
     expect(res.body.data.msAdminId).toBeTruthy();
 
-    const savedAdmin = await AdminModel.findById(res.body.data.msAdminId);
-    expect(savedAdmin.fullname).toEqual(adminInfo.fullname);
-    expect(savedAdmin.email).toEqual(adminInfo.email);
+    const savedAdmin = await MsAdminModel.findById(res.body.data.msAdminId);
+    expect(savedAdmin.fullname).toEqual(admin2Info.fullname);
+    expect(savedAdmin.email).toEqual(admin2Info.email);
     expect(savedAdmin.role).toEqual("superadmin");
   });
 
