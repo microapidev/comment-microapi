@@ -21,7 +21,7 @@ beforeAll(async () => {
   const date = Date.now();
 
   //create default super sysadmin
-  process.env.SUPER_ADMIN_EMAIL = "default@email.com";
+  process.env.SUPER_ADMIN_EMAIL = `default${date}@email.com`;
   process.env.SUPER_ADMIN_PASSWORD = "password";
 
   const msSuperAdminId = await createDefaultAdmin();
@@ -29,7 +29,7 @@ beforeAll(async () => {
   //create regular sysadmin
   const msAdmin = new MsAdmin({
     fullname: "Test Admin",
-    email: "regularadmin@hotels.ng",
+    email: `regularadmin${date}@hotels.ng`,
     password: "password",
   });
 
