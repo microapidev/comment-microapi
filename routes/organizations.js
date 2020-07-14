@@ -4,6 +4,7 @@ const validMW = require("../middleware/validation");
 const {
   createOrganizationSchema,
   getOrganizationTokenSchema,
+  deleteOrganizationSchema,
 } = require("../utils/validationRules");
 
 /**
@@ -22,6 +23,10 @@ router.post(
 /**
  * DELETE ROUTE
  */
-router.delete("/:organizationId",validMW(deleteOrganizationSchema),organizationsController.deleteSingleOrganization);
+router.delete(
+  "/:organizationId",
+  validMW(deleteOrganizationSchema),
+  organizationsController.deleteSingleOrganization
+);
 
 module.exports = router;
