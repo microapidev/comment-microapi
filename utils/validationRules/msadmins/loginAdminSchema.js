@@ -1,7 +1,7 @@
 const Joi = require("@hapi/joi");
 
 /**
- * Schema validation for POST '/organizations/token'
+ * Schema validation for POST '/msadmins/login'
  */
 const loginAdminSchema = {
   body: Joi.object().keys({
