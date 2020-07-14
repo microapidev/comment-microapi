@@ -19,5 +19,15 @@ const ApplicationSchema = new Schema(
   },
   { timestamps: true }
 );
+
+ApplicationSchema.index(
+  {
+    organizationId: 1,
+    name: 1,
+  },
+  {
+    unique: true,
+  }
+);
 const Application = mongoose.model("Applications", ApplicationSchema);
 module.exports = Application;

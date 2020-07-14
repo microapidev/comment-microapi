@@ -42,7 +42,11 @@ const updateSingleComment = async (req, res, next) => {
           return responseHandler(
             res,
             200,
-            { content: content, ownerId: ownerId },
+            {
+              content: content,
+              ownerId: ownerId,
+              updatedAt: comment.updatedAt.toString(),
+            },
             "Updated sucessfully"
           );
         })

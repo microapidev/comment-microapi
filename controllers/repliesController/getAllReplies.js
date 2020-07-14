@@ -19,11 +19,11 @@ const responseHandler = require("../../utils/responseHandler");
  */
 const getAllReplies = async (req, res, next) => {
   const { commentId } = req.params;
-  const { isFlagged, ownerId } = req.query;
+  const { isFlagged, ownerId, limit, page, sort } = req.query;
   const { applicationId } = req.token;
 
   if (!ObjectId.isValid(commentId)) {
-    return next(new CustomError(400, " Invalid comment Id "));
+    return next(new CustomError(400, "Invalid comment Id "));
   }
   try {
     //check if such comment exists
@@ -35,10 +35,34 @@ const getAllReplies = async (req, res, next) => {
 
     // Create query for replies.
     let query = {};
+    // Create paginiation options
+    let paginateOptions = {};
 
     query.commentId = commentId;
     if (ownerId) query.ownerId = ownerId;
+    /**
+     * Pagingation starts here
+     */
 
+    //set record limit if available
+    limit
+      ? (paginateOptions.limit = parseInt(limit, 10))
+      : (paginateOptions.limit = 20);
+
+    //set skip to next page if available
+    paginateOptions.skip = (page - 1) * limit;
+
+    //set page option if available
+    page
+      ? (paginateOptions.page = parseInt(page, 10))
+      : (paginateOptions.page = 1);
+
+    //set sort if available
+    sort
+      ? (paginateOptions.sort = { createdAt: sort })
+      : (paginateOptions.sort = { createdAt: "asc" });
+
+    //flag check
     if (typeof isFlagged === "string") {
       if (isFlagged === "true") {
         query["flags.0"] = { $exists: true };
@@ -47,13 +71,9 @@ const getAllReplies = async (req, res, next) => {
       }
     }
 
-    const replies = await Replies.find(query);
-    let message = " Replies found. ";
-    if (!replies.length) {
-      message = " No replies found. ";
-    }
+    const replies = await Replies.paginate(query, paginateOptions);
 
-    const data = replies.map((reply) => {
+    const allReplies = replies.docs.map((reply) => {
       return {
         replyId: reply._id,
         commentId: reply.commentId,
@@ -63,10 +83,44 @@ const getAllReplies = async (req, res, next) => {
         numOfUpVotes: reply.upVotes.length,
         numOfDownVotes: reply.downVotes.length,
         numOfFlags: reply.flags.length,
+        createdAt: reply.createdAt.toString(),
+        updatedAt: reply.updatedAt.toString(),
       };
     });
 
-    return responseHandler(res, 200, data, message);
+    //set page info
+    let pageInfo = {
+      currentPage: replies.page,
+      totalPages: replies.totalPages,
+      hasNext: replies.hasNextPage,
+      hasPrev: replies.hasPrevPage,
+      nextPage: replies.nextPage,
+      prevPage: replies.prevPage,
+      pageRecordCount: replies.docs.length,
+      totalRecord: replies.totalDocs,
+    };
+
+    //set response message
+    let message = " Replies found. ";
+    if (!allReplies.length) {
+      message = " No replies found. ";
+    }
+    //set data properties
+    let data = {
+      records: allReplies,
+      pageInfo: pageInfo,
+    };
+    if (data.pageInfo.currentPage > data.pageInfo.totalPages) {
+      return next(
+        new CustomError(
+          "404",
+          "Page limit exceeded, No records found!",
+          data.pageInfo
+        )
+      );
+    } else {
+      responseHandler(res, 200, data, message);
+    }
   } catch (err) {
     next(err);
   }

@@ -80,7 +80,7 @@ describe("GET /comments/:commentId/replies", () => {
     return getAllRepliesRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
@@ -98,7 +98,7 @@ describe("GET /comments/:commentId/replies", () => {
     return getAllRepliesRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
@@ -114,10 +114,10 @@ describe("GET /comments/:commentId/replies", () => {
     const expectedValue = [reply2];
 
     return getAllRepliesRequest.then((res) => {
-      // console.log(res.body.data);
+      // console.log(res.body.data.records);
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
@@ -135,7 +135,79 @@ describe("GET /comments/:commentId/replies", () => {
     return getAllRepliesRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
+    });
+  });
+
+  it("Should get all replies with set limit", () => {
+    const url = `/v1/comments/${comment.id}/replies`;
+    const bearerToken = `bearer ${global.appToken}`;
+
+    const getAllRepliesRequest = request
+      .get(url)
+      .query({ limit: 1 })
+      .set("Authorization", bearerToken);
+
+    const expectedValue = [reply1];
+
+    return getAllRepliesRequest.then((res) => {
+      expect(res.status).toEqual(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body.data.records).toEqual(expectedValue);
+    });
+  });
+
+  it("Should get all replies with set page", () => {
+    const url = `/v1/comments/${comment.id}/replies`;
+    const bearerToken = `bearer ${global.appToken}`;
+
+    const getAllRepliesRequest = request
+      .get(url)
+      .query({ page: 1 })
+      .set("Authorization", bearerToken);
+
+    const expectedValue = [reply1, reply2];
+
+    return getAllRepliesRequest.then((res) => {
+      expect(res.status).toEqual(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body.data.records).toEqual(expectedValue);
+    });
+  });
+
+  it("Should get all replies with set sort type", () => {
+    const url = `/v1/comments/${comment.id}/replies`;
+    const bearerToken = `bearer ${global.appToken}`;
+
+    const getAllRepliesRequest = request
+      .get(url)
+      .query({ sort: "asc" })
+      .set("Authorization", bearerToken);
+
+    const expectedValue = [reply1, reply2];
+
+    return getAllRepliesRequest.then((res) => {
+      expect(res.status).toEqual(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body.data.records).toEqual(expectedValue);
+    });
+  });
+
+  it("Should get all replies with all pagination params set", () => {
+    const url = `/v1/comments/${comment.id}/replies`;
+    const bearerToken = `bearer ${global.appToken}`;
+
+    const getAllRepliesRequest = request
+      .get(url)
+      .query({ limit: 1, page: 1, sort: "asc" })
+      .set("Authorization", bearerToken);
+
+    const expectedValue = [reply1];
+
+    return getAllRepliesRequest.then((res) => {
+      expect(res.status).toEqual(200);
+      expect(res.body.status).toEqual("success");
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 

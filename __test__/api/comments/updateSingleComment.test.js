@@ -60,6 +60,7 @@ describe("PATCH /comments/:commentId", () => {
     expect(res.body.data).toEqual({
       ownerId: oldComment.ownerId,
       content: contentUpdate,
+      updatedAt: oldComment.updatedAt,
     });
 
     // Run test matchers to verify that the comment has been updated in the database.

@@ -83,6 +83,7 @@ describe("PATCH /comments/:commentId/replies/:replyId", () => {
     expect(res.body.data).toEqual({
       ownerId: oldReply.ownerId,
       content: contentUpdate,
+      updatedAt: oldReply.updatedAt,
     });
 
     // Run test matchers to verify that the reply has been updated in the database.

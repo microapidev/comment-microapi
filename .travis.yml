@@ -9,7 +9,7 @@ env:
   global:
     - APP_SECRET=app secret
     - ORG_SECRET=org secret
-    - JWT_SECRET=system secret
+    - SYSTEM_SECRET=system secret
     - DISABLE_AUTH=true
 deploy:
   provider: heroku

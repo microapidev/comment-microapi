@@ -7,6 +7,7 @@ const responseHandler = require("../../utils/responseHandler");
 
 /**
  * @author Airon <airondev@gmail.com>
+ * @author Ekeyekwu Oscar
  *
  * Gets all comments.
  *
@@ -16,15 +17,38 @@ const responseHandler = require("../../utils/responseHandler");
  */
 const getAllComments = async (req, res, next) => {
   const { applicationId } = req.token; //this will be retrieved from decoded api token after full auth implementation
-  const { refId, origin, ownerId, isFlagged } = req.query;
+  const { refId, origin, ownerId, isFlagged, limit, sort, page } = req.query;
 
   let query = {};
+  let paginateOptions = {};
 
   query.applicationId = applicationId;
 
   if (refId) query.refId = refId;
   if (origin) query.origin = origin;
   if (ownerId) query.ownerId = ownerId;
+
+  /**
+   * Pagingation starts here
+   */
+
+  //set record limit if available
+  limit
+    ? (paginateOptions.limit = parseInt(limit, 10))
+    : (paginateOptions.limit = 20);
+
+  //set skip to next page if available
+  paginateOptions.skip = (page - 1) * limit;
+
+  //set page option if available
+  page
+    ? (paginateOptions.page = parseInt(page, 10))
+    : (paginateOptions.page = 1);
+
+  //set sort if available
+  sort
+    ? (paginateOptions.sort = { createdAt: sort })
+    : (paginateOptions.sort = { createdAt: "asc" });
 
   if (typeof isFlagged === "string") {
     if (isFlagged === "true") {
@@ -35,10 +59,10 @@ const getAllComments = async (req, res, next) => {
   }
 
   try {
-    await Comments.find(query)
-      .populate("replies")
+    //paginate model
+    await Comments.paginate(query, paginateOptions)
       .then((comments) => {
-        const allComments = comments.map((comment) => {
+        const allComments = comments.docs.map((comment) => {
           return {
             commentId: comment._id,
             refId: comment.refId,
@@ -51,19 +75,38 @@ const getAllComments = async (req, res, next) => {
             numOfDownVotes: comment.downVotes.length,
             numOfFlags: comment.flags.length,
             numOfReplies: comment.replies.length,
-            // createdAt: comment.createdAt,
-            // updatedAt: comment.updatedAt,
+            createdAt: comment.createdAt.toString(),
+            updatedAt: comment.updatedAt.toString(),
           };
         });
 
-        let data = allComments;
+        //set page info
+        let pageInfo = {
+          currentPage: comments.page,
+          totalPages: comments.totalPages,
+          hasNext: comments.hasNextPage,
+          hasPrev: comments.hasPrevPage,
+          nextPage: comments.nextPage,
+          prevPage: comments.prevPage,
+          pageRecordCount: comments.docs.length,
+          totalRecord: comments.totalDocs,
+        };
 
-        responseHandler(
-          res,
-          200,
-          data,
-          `Comments Retrieved Successfully, query: ${JSON.stringify(req.query)}`
-        );
+        let data = {
+          records: allComments,
+          pageInfo: pageInfo,
+        };
+        if (data.pageInfo.currentPage > data.pageInfo.totalPages) {
+          return next(
+            new CustomError(
+              "404",
+              "Page limit exceeded, No records found!",
+              data.pageInfo
+            )
+          );
+        } else {
+          responseHandler(res, 200, data, `Comments Retrieved Successfully`);
+        }
       })
       .catch(next);
   } catch (err) {

@@ -5,6 +5,7 @@
 var app = require("../server");
 var debug = require("debug")("fblog:server");
 var http = require("http");
+const { createDefaultAdmin } = require("../utils/auth/msadmin");
 
 /**
  * Module to allow usage of process.env
@@ -16,9 +17,13 @@ console.log("\n \t Attempting to connect to database...");
 
 //connect to mongodb
 const database = require("../db/database");
-database.connect();
-
-console.log("\n \t Database connected successfully");
+database.connect().then(() => {
+  console.log("\n \t Database connected successfully");
+  createDefaultAdmin().catch((error) => {
+    console.log(`\n \t ${error.message}`);
+    process.exit(1);
+  });
+});
 
 /**
  * Get port from environment and store in Express.
