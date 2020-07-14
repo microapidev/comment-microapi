@@ -1,17 +1,17 @@
-const CommentModel = require('../../models/comments');
-const ReplyModel = require('../../models/replies');
-const replyHandler = require('../../utils/replyHandler');
-const app = require('../../server');
-const request = require('supertest');
+const CommentModel = require("../../models/comments");
+const ReplyModel = require("../../models/replies");
+const replyHandler = require("../../utils/replyHandler");
+const app = require("../../server");
+const request = require("supertest");
 
-describe('GET /comments', () => {
-  let comment, savedReply,reply;
+describe("GET /comments", () => {
+  let comment, savedReply, reply;
   beforeEach(async () => {
     // Mock a comment document
     const mockedCommentDoc = new CommentModel({
-      content: 'A comment from user 1',
-      ownerId: 'user1@email.com',
-      origin: '123123',
+      content: "A comment from user 1",
+      ownerId: "user1@email.com",
+      origin: "123123",
       refId: 2,
       applicationId: global.application._id,
     });
@@ -21,8 +21,8 @@ describe('GET /comments', () => {
 
     // Mock a reply document.
     const mockedReply1Doc = new ReplyModel({
-      content: 'A reply from user 2',
-      ownerId: 'user2@email.com',
+      content: "A reply from user 2",
+      ownerId: "user2@email.com",
       commentId: comment.id,
     });
 
@@ -50,23 +50,23 @@ describe('GET /comments', () => {
     reply = null;
   });
 
-  test('Should return error on limit exceeded on GET /comments', async () => {
+  test("Should return error on limit exceeded on GET /comments", async () => {
     const res = await request(app)
-      .get('/v1/comments')
+      .get("/v1/comments")
       .query({ limit: 60 })
-      .set('Authorization', `Bearer ${global.appToken}`);
+      .set("Authorization", `Bearer ${global.appToken}`);
     expect(res.status).toBe(422);
-    expect(res.body.status).toEqual('error');
+    expect(res.body.status).toEqual("error");
     expect(res.body.data).toEqual([]);
   });
 
-  test('Should return error on limit exceeded on GET ../replies', async () => {
+  test("Should return error on limit exceeded on GET ../replies", async () => {
     const res = await request(app)
       .get(`/v1/comments/${comment.commentId}/replies`)
       .query({ limit: 60 })
-      .set('Authorization', `Bearer ${global.appToken}`);
+      .set("Authorization", `Bearer ${global.appToken}`);
     expect(res.status).toBe(422);
-    expect(res.body.status).toEqual('error');
+    expect(res.body.status).toEqual("error");
     expect(res.body.data).toEqual([]);
   });
 });

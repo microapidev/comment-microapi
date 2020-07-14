@@ -1,9 +1,9 @@
 // Models
-const Comments = require('../../models/comments');
+const Comments = require("../../models/comments");
 
 // Utilities
-const CustomError = require('../../utils/customError');
-const responseHandler = require('../../utils/responseHandler');
+const CustomError = require("../../utils/customError");
+const responseHandler = require("../../utils/responseHandler");
 
 /**
  * @author Airon <airondev@gmail.com>
@@ -48,13 +48,13 @@ const getAllComments = async (req, res, next) => {
   //set sort if available
   sort
     ? (paginateOptions.sort = { createdAt: sort })
-    : (paginateOptions.sort = { createdAt: 'asc' });
+    : (paginateOptions.sort = { createdAt: "asc" });
 
-  if (typeof isFlagged === 'string') {
-    if (isFlagged === 'true') {
-      query['flags.0'] = { $exists: true };
-    } else if (isFlagged === 'false') {
-      query['flags.0'] = { $exists: false };
+  if (typeof isFlagged === "string") {
+    if (isFlagged === "true") {
+      query["flags.0"] = { $exists: true };
+    } else if (isFlagged === "false") {
+      query["flags.0"] = { $exists: false };
     }
   }
 
@@ -99,8 +99,8 @@ const getAllComments = async (req, res, next) => {
         if (data.pageInfo.currentPage > data.pageInfo.totalPages) {
           return next(
             new CustomError(
-              '404',
-              'Page limit exceeded, No records found!',
+              "404",
+              "Page limit exceeded, No records found!",
               data.pageInfo
             )
           );

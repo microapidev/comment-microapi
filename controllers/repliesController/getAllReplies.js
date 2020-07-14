@@ -1,12 +1,12 @@
-const { ObjectId } = require('mongoose').Types;
+const { ObjectId } = require("mongoose").Types;
 
 // Models
-const Comments = require('../../models/comments');
-const Replies = require('../../models/replies');
+const Comments = require("../../models/comments");
+const Replies = require("../../models/replies");
 
 // Utilities
-const CustomError = require('../../utils/customError');
-const responseHandler = require('../../utils/responseHandler');
+const CustomError = require("../../utils/customError");
+const responseHandler = require("../../utils/responseHandler");
 
 /**
  * @author
@@ -23,14 +23,14 @@ const getAllReplies = async (req, res, next) => {
   const { applicationId } = req.token;
 
   if (!ObjectId.isValid(commentId)) {
-    return next(new CustomError(400, 'Invalid comment Id '));
+    return next(new CustomError(400, "Invalid comment Id "));
   }
   try {
     //check if such comment exists
     const comment = await Comments.findOne({ _id: commentId, applicationId });
     // If the comment does not exist,send an error msg
     if (!comment) {
-      return next(new CustomError(404, ' Comment not found '));
+      return next(new CustomError(404, " Comment not found "));
     }
 
     // Create query for replies.
@@ -60,14 +60,14 @@ const getAllReplies = async (req, res, next) => {
     //set sort if available
     sort
       ? (paginateOptions.sort = { createdAt: sort })
-      : (paginateOptions.sort = { createdAt: 'asc' });
+      : (paginateOptions.sort = { createdAt: "asc" });
 
     //flag check
-    if (typeof isFlagged === 'string') {
-      if (isFlagged === 'true') {
-        query['flags.0'] = { $exists: true };
-      } else if (isFlagged === 'false') {
-        query['flags.0'] = { $exists: false };
+    if (typeof isFlagged === "string") {
+      if (isFlagged === "true") {
+        query["flags.0"] = { $exists: true };
+      } else if (isFlagged === "false") {
+        query["flags.0"] = { $exists: false };
       }
     }
 
@@ -101,9 +101,9 @@ const getAllReplies = async (req, res, next) => {
     };
 
     //set response message
-    let message = ' Replies found. ';
+    let message = " Replies found. ";
     if (!allReplies.length) {
-      message = ' No replies found. ';
+      message = " No replies found. ";
     }
     //set data properties
     let data = {
@@ -113,8 +113,8 @@ const getAllReplies = async (req, res, next) => {
     if (data.pageInfo.currentPage > data.pageInfo.totalPages) {
       return next(
         new CustomError(
-          '404',
-          'Page limit exceeded, No records found!',
+          "404",
+          "Page limit exceeded, No records found!",
           data.pageInfo
         )
       );

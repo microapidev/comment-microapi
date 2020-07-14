@@ -882,6 +882,15 @@ paths:
 
         - in: query
           $ref: "#/components/parameters/originParam"
+        
+        - in: query
+          $ref: "#/components/parameters/limitParam"
+
+        - in: query
+          $ref: "#/components/parameters/sortParam"
+        
+        - in: query
+          $ref: "#/components/parameters/pageParam"
 
       responses:
         "200":
@@ -900,9 +909,14 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Comment"
+                    type: object
+                    properties:
+                      records:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Comment"
+                      pageInfo:
+                          $ref: "#/components/schemas/pageInfo"
 
         "401":
           description: Authentication error
@@ -1464,6 +1478,15 @@ paths:
         - in: query
           $ref: "#/components/parameters/ownerIdParam"
 
+        - in: query
+          $ref: "#/components/parameters/limitParam"
+
+        - in: query
+          $ref: "#/components/parameters/sortParam"
+        
+        - in: query
+          $ref: "#/components/parameters/pageParam"
+
       responses:
         "200":
           description: Successful operation
@@ -1481,9 +1504,14 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Reply"
+                    type: object
+                    properties:
+                      records:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Reply"
+                      pageInfo:
+                        $ref: "#/components/schemas/pageInfo"
 
         "401":
           description: Authentication error
@@ -2151,7 +2179,7 @@ components:
           type: string
         organizationToken:
           type: string
-
+ 
     Admin: # Can be referenced as '#/components/schemas/Admin'
       type: object
       required:
@@ -2261,6 +2289,35 @@ components:
         updatedAt:
           type: string
 
+    pageInfo: # Can be referenced as '#/components/schemas/pageInfo'  
+      type: object
+      required:
+        - currentPage
+        - totalPages
+        - hasNext
+        - hasPrev
+        - nextPage
+        - prevPage
+        - pageRecordCount
+        - totalRecord
+      properties:        
+        currentPage:
+          type: number
+        totalPages:
+          type: number
+        hasNext:
+          type: boolean
+        hasPrev:
+          type: boolean
+        nextPage:
+          type: number
+        prevPage:
+          type: number
+        pageRecordCount:
+          type: number
+        totalRecord:
+          type: number
+    
     CreateComment: # Can be referenced as '#/components/schemas/CreateComment'
       type: object
       required:
@@ -2506,5 +2563,26 @@ components:
       in: query
       name: origin
       description: Filters comments, or replies, by origin. If omitted, the response includes all comments, or replies, regardless of its origin.
+      schema:
+        type: string
+
+    limitParam: # Can be referenced via '#/components/parameters/limitParam'
+      in: query
+      name: limit
+      description: Returns set number of comments, or replies perPage. If omitted, the response includes all comments, or replies, regardless of its limits.
+      schema:
+        type: string
+
+    sortParam: # Can be referenced via '#/components/parameters/limitParam'
+      in: query
+      name: sort
+      description: Sorts comments, or replies and returns in ascending or descending order. If omitted, the response includes all comments, or replies in ascending order.
+      schema:
+        type: string
+
+    pageParam: # Can be referenced via '#/components/parameters/limitParam'
+      in: query
+      name: page
+      description: Paginates comments, or replies. If omitted, the response includes all comments, or replies in one page.
       schema:
         type: string

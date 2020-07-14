@@ -182,7 +182,7 @@ describe("GET /comments", () => {
       .query({ page: 1 })
       .set("Authorization", bearerToken);
 
-    const expectedValue = [comment1,comment2];
+    const expectedValue = [comment1, comment2];
 
     return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
