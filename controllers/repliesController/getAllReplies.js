@@ -19,11 +19,11 @@ const responseHandler = require("../../utils/responseHandler");
  */
 const getAllReplies = async (req, res, next) => {
   const { commentId } = req.params;
-  const { isFlagged, ownerId } = req.query;
+  const { isFlagged, ownerId, limit, offset, sort } = req.query;
   const { applicationId } = req.token;
 
   if (!ObjectId.isValid(commentId)) {
-    return next(new CustomError(400, " Invalid comment Id "));
+    return next(new CustomError(400, "Invalid comment Id "));
   }
   try {
     //check if such comment exists
@@ -35,9 +35,25 @@ const getAllReplies = async (req, res, next) => {
 
     // Create query for replies.
     let query = {};
+    // Create paginiation options
+    let paginateOption = {};
 
     query.commentId = commentId;
     if (ownerId) query.ownerId = ownerId;
+
+    //set limit query
+    if (limit) {
+      paginateOption.limit = parseInt(limit, 10);
+    }
+    //set offset query
+    offset
+      ? (paginateOption.offset = parseInt(offset, 10))
+      : (paginateOption.offset = 0);
+
+    //set sort query
+    sort
+      ? (paginateOption.sort = { createdAt: sort })
+      : (paginateOption.sort = { createdAt: "asc" });
 
     if (typeof isFlagged === "string") {
       if (isFlagged === "true") {
@@ -47,13 +63,13 @@ const getAllReplies = async (req, res, next) => {
       }
     }
 
-    const replies = await Replies.find(query);
+    const replies = await Replies.paginate(query, paginateOption);
     let message = " Replies found. ";
     if (!replies.length) {
       message = " No replies found. ";
     }
 
-    const data = replies.map((reply) => {
+    const data = replies.docs.map((reply) => {
       return {
         replyId: reply._id,
         commentId: reply.commentId,

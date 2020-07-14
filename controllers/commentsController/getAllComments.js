@@ -36,7 +36,7 @@ const getAllComments = async (req, res, next) => {
 
   sort
     ? (paginateOption.sort = { createdAt: sort })
-    : (paginateOption.sort = { createdAt: "desc" });
+    : (paginateOption.sort = { createdAt: "asc" });
 
   if (typeof isFlagged === "string") {
     if (isFlagged === "true") {
