@@ -1,21 +1,20 @@
-const CustomError = require("../utils/customError");
+const CustomError = require('../utils/customError');
 
 exports.queryLimitMW = (req, res, next) => {
   //get limit peck config
   const limitPeck = 50;
   //check if GET request
-  if (req.method === "GET") {
+  if (req.method === 'GET') {
     //check if req.limit is set
-    if (req.params.limit) {
-      try {
-        if (parseInt(req.params.limit, 10) > limitPeck) {
-          req.params.limit = limitPeck.toString();
-          res.json({
-            message: `Limit Pecked at ${limitPeck}`,
-          });
-        }
-      } catch (error) {
-        next(CustomError(422, "Invalid limit specified"));
+    if (req.query.limit) {
+      if (parseInt(req.query.limit, 10) > limitPeck) {
+        req.query.limit = limitPeck.toString();
+        return next(
+          new CustomError(
+            422,
+            `Invalid limit specified. Query Limit Pecked at ${limitPeck}`
+          )
+        );
       }
     }
   }

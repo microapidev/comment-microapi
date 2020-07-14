@@ -61,7 +61,7 @@ describe("GET /comments", () => {
     return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
@@ -79,7 +79,7 @@ describe("GET /comments", () => {
     return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
@@ -97,7 +97,7 @@ describe("GET /comments", () => {
     return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
@@ -115,7 +115,7 @@ describe("GET /comments", () => {
     return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
@@ -133,7 +133,7 @@ describe("GET /comments", () => {
     return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
@@ -151,7 +151,7 @@ describe("GET /comments", () => {
     return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
@@ -161,33 +161,33 @@ describe("GET /comments", () => {
 
     const getAllCommentsRequest = request
       .get(url)
-      .query({ limit: 2 })
+      .query({ limit: 1 })
       .set("Authorization", bearerToken);
 
-    const expectedValue = [comment1, comment2];
+    const expectedValue = [comment1];
 
     return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
-  it("Should get all comments with set offset", () => {
+  it("Should get all comments with set page", () => {
     const url = `/v1/comments`;
     const bearerToken = `bearer ${global.appToken}`;
 
     const getAllCommentsRequest = request
       .get(url)
-      .query({ offset: 0 })
+      .query({ page: 1 })
       .set("Authorization", bearerToken);
 
-    const expectedValue = [comment1, comment2];
+    const expectedValue = [comment1,comment2];
 
     return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
@@ -205,7 +205,7 @@ describe("GET /comments", () => {
     return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
@@ -215,7 +215,7 @@ describe("GET /comments", () => {
 
     const getAllCommentsRequest = request
       .get(url)
-      .query({ limit: 2, offset: 0, sort: "asc" })
+      .query({ limit: 2, page: 1, sort: "asc" })
       .set("Authorization", bearerToken);
 
     const expectedValue = [comment1, comment2];
@@ -223,7 +223,7 @@ describe("GET /comments", () => {
     return getAllCommentsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(expectedValue);
     });
   });
 
