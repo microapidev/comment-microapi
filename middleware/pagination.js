@@ -1,6 +1,6 @@
 const CustomError = require("../utils/customError");
 
-const queryLimitMW = (req, res, next) => {
+exports.queryLimitMW = (req, res, next) => {
   //get limit peck config
   const limitPeck = 50;
   //check if GET request
@@ -21,5 +21,3 @@ const queryLimitMW = (req, res, next) => {
   }
   next();
 };
-
-module.exports = queryLimitMW;

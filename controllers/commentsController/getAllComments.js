@@ -16,15 +16,27 @@ const responseHandler = require("../../utils/responseHandler");
  */
 const getAllComments = async (req, res, next) => {
   const { applicationId } = req.token; //this will be retrieved from decoded api token after full auth implementation
-  const { refId, origin, ownerId, isFlagged } = req.query;
+  const { refId, origin, ownerId, isFlagged, limit, offset, sort } = req.query;
 
   let query = {};
+  let paginateOption = {};
 
   query.applicationId = applicationId;
 
   if (refId) query.refId = refId;
   if (origin) query.origin = origin;
   if (ownerId) query.ownerId = ownerId;
+  if (limit) {
+    paginateOption.limit = parseInt(limit, 10);
+  }
+  //set offset query condition
+  offset
+    ? (paginateOption.offset = parseInt(offset, 10))
+    : (paginateOption.offset = 0);
+
+  sort
+    ? (paginateOption.sort = { createdAt: sort })
+    : (paginateOption.sort = { createdAt: "desc" });
 
   if (typeof isFlagged === "string") {
     if (isFlagged === "true") {
@@ -35,10 +47,10 @@ const getAllComments = async (req, res, next) => {
   }
 
   try {
-    await Comments.find(query)
-      .populate("replies")
+    paginateOption.populate = "replies";
+    await Comments.paginate(query, paginateOption)
       .then((comments) => {
-        const allComments = comments.map((comment) => {
+        const allComments = comments.docs.map((comment) => {
           return {
             commentId: comment._id,
             refId: comment.refId,
