@@ -99,10 +99,8 @@ const getSysToken = async (msAdminId) => {
     throw new CustomError(400, "Invalid msAdmin ID");
   }
 
-  // confirm adminId belongs to organization
-  const msAdmin = await MsAdmin.find({
-    _id: msAdminId,
-  });
+  // confirm adminId exists
+  const msAdmin = await MsAdmin.findById(msAdminId);
   if (!msAdmin) {
     throw new CustomError(
       401,

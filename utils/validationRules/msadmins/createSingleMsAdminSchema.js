@@ -1,10 +1,9 @@
 const Joi = require("@hapi/joi");
-const mongoIdSchema = require("../mongoIdSchema");
 
 /**
  * Schema validation for POST '/admins'
  */
-const createSingleAdminSchema = {
+const createApplicationSchema = {
   headers: Joi.object({
     authorization: Joi.string().required(),
   }),
@@ -13,8 +12,8 @@ const createSingleAdminSchema = {
     fullname: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
-    organizationId: Joi.custom(mongoIdSchema, "mongo ObjectId").required(),
+    role: Joi.string(),
   }),
 };
 
-module.exports = createSingleAdminSchema;
+module.exports = createApplicationSchema;
