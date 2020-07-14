@@ -128,6 +128,57 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+  # Endpoint to delete an organization
+  /organizations/{organizationId}:
+    # DELETE operation
+    delete:
+      tags:
+        - Organizations
+
+      summary: Delete an Organization
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/DeleteOrganization"
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   # Endpoint to create an organization's admin
   /admins:
     # GET operation
@@ -2064,6 +2115,14 @@ components:
           type: string
           format: email
         secret:
+          type: string
+
+    DeleteOrganization: # Can be referenced as '#/components/schemas/DeleteOrganization'
+      type: object
+      properties:
+        organizationId:
+          type: string
+        organizationName:
           type: string
 
     LoginOrganization: # Can be referenced as '#/components/schemas/LoginOrganization'

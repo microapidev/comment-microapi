@@ -19,5 +19,9 @@ router.post(
   validMW(getOrganizationTokenSchema),
   organizationsController.getSingleOrganizationToken
 );
+/**
+ * DELETE ROUTE
+ */
+router.delete("/:organizationId",validMW(deleteOrganizationSchema),organizationsController.deleteSingleOrganization);
 
 module.exports = router;
