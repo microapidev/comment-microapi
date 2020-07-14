@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 const Schema = mongoose.Schema;
 const Replies = require("./replies");
 
@@ -54,6 +55,9 @@ CommentSchema.post("findOneAndDelete", async (comment) => {
     // console.log(`Deleted ${replies.deletedCount} replies`);
   }
 });
+
+//plug in the pagination package
+CommentSchema.plugin(mongoosePaginate);
 
 const Comment = mongoose.model("Comments", CommentSchema);
 module.exports = Comment;

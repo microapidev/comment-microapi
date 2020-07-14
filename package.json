@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node ./bin/www",
-    "startDev": "NODE_ENV=dev nodemon --exec babel-node ./bin/www",
+    "startDev": "nodemon --exec babel-node ./bin/www",
     "test": "cross-env NODE_ENV=test jest --verbose",
     "test:debug": "cross-env NODE_ENV=test jest --detectOpenHandles --verbose",
     "test:watch": "cross-env NODE_ENV=test jest --watch --verbose",
@@ -41,6 +41,7 @@
     "express-jwt": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.20",
+    "mongoose-paginate-v2": "^1.3.9",
     "morgan": "^1.10.0",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4"

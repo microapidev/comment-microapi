@@ -2,6 +2,7 @@ const router = require("express").Router({ mergeParams: true });
 const validationMiddleware = require("../middleware/validation");
 const validationRules = require("../utils/validationRules");
 const repliesController = require("../controllers/repliesController");
+const { queryLimitMW } = require("../middleware/pagination");
 
 /**
  * POST routes
@@ -18,6 +19,7 @@ router.post(
 router.get(
   "/",
   validationMiddleware(validationRules.getAllRepliesSchema),
+  queryLimitMW,
   repliesController.getAllReplies
 );
 

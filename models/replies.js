@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 const Schema = mongoose.Schema;
 
 const ReplySchema = new Schema(
@@ -42,6 +43,9 @@ const ReplySchema = new Schema(
   },
   { timestamps: true }
 );
+
+//plug in the pagination package
+ReplySchema.plugin(mongoosePaginate);
 
 const Reply = mongoose.model("Replies", ReplySchema);
 module.exports = Reply;
