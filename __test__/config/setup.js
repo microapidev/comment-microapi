@@ -2,8 +2,14 @@ const { connect, disconnect } = require("./db");
 const Organization = require("../../models/organizations");
 const Application = require("../../models/applications");
 const Admin = require("../../models/admins");
+const MsAdmin = require("../../models/msadmins");
 const { hashPassword } = require("../../utils/auth/passwordUtils");
-const { getAppToken, getOrgToken } = require("../../utils/auth/tokenGenerator");
+const { createDefaultAdmin } = require("../../utils/auth/msadmin");
+const {
+  getAppToken,
+  getOrgToken,
+  getSysToken,
+} = require("../../utils/auth/tokenGenerator");
 
 beforeAll(async () => {
   await connect();
@@ -13,6 +19,21 @@ beforeAll(async () => {
   await truncate(Organization); */
 
   const date = Date.now();
+
+  //create default super sysadmin
+  process.env.SUPER_ADMIN_EMAIL = "default@email.com";
+  process.env.SUPER_ADMIN_PASSWORD = "password";
+
+  const msSuperAdminId = await createDefaultAdmin();
+
+  //create regular sysadmin
+  const msAdmin = new MsAdmin({
+    fullname: "Test Admin",
+    email: "regularadmin@hotels.ng",
+    password: "password",
+  });
+
+  await msAdmin.save();
 
   //create organization, application and admin objects for use by all tests
   const organization = new Organization({
@@ -51,10 +72,19 @@ beforeAll(async () => {
 
   global.orgToken = orgToken;
 
+  // create a valid token to test routes that require system token
+  const superSysToken = await getSysToken(msSuperAdminId);
+  const sysToken = await getSysToken(msAdmin.id);
+
+  global.sysToken = sysToken;
+  global.superSysToken = superSysToken;
+
   // save variables globally
   global.application = application;
   global.organization = organization;
   global.admin = admin;
+  global.msSuperAdminId = msSuperAdminId;
+  global.msAdmin = msAdmin;
 });
 
 afterAll(async () => {
