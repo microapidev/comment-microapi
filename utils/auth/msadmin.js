@@ -56,6 +56,8 @@ exports.createDefaultAdmin = async () => {
 
     await newAdmin.save();
     console.log("\n \t Minimal account created successfully");
+
+    //TO-DO wipe details from .env file after successful creation
     return newAdmin.id;
   } catch (error) {
     console.log(error.message);
