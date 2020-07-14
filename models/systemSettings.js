@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const { updateEnvSystemSettings } = require("../utils/settings");
 
 const SystemSettingsSchema = new Schema(
   {
@@ -24,5 +25,12 @@ const SystemSettingsSchema = new Schema(
     capped: { size: 10000, max: 1 },
   }
 );
+
+SystemSettingsSchema.post("save", function (setting) {
+  if (setting) {
+    updateEnvSystemSettings(setting);
+  }
+});
+
 const SystemSetting = mongoose.model("SystemSettings", SystemSettingsSchema);
 module.exports = SystemSetting;
