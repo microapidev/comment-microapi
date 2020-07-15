@@ -40,6 +40,11 @@ router.use(superAdminMW);
 /**
  * GET routes
  */
+router.get(
+  "/",
+  validMW(validationRules.getAllMsAdminsSchema),
+  msAdminsCtrl.getAllMsAdmins
+);
 
 /**
  * PATCH routes
