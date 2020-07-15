@@ -27,6 +27,12 @@ router.post(
   msAdminsCtrl.createSingleMsAdmin
 );
 
+router.post(
+  "/change-password",
+  validMW(validationRules.changeMsAdminPasswordSchema),
+  msAdminsCtrl.changeMsAdminPassword
+);
+
 /**
  * GET routes
  */

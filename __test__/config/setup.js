@@ -86,9 +86,6 @@ beforeAll(async () => {
   global.admin = admin;
   global.msSuperAdminId = msSuperAdminId;
   global.msAdmin = msAdmin;
-
-  console.log(`global msAdmin: ${global.msAdmin}`);
-  console.log(`global msSuperAdminId: ${global.msSuperAdminId}`);
 });
 
 afterAll(async () => {
