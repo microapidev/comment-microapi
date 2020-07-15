@@ -45,7 +45,7 @@ const changeMsAdminPassword = async (req, res, next) => {
 
   //if not password matched return error
   if (!passwordMatched) {
-    next(new CustomError(401, "Incorrect old password provided"));
+    next(new CustomError(400, "Incorrect old password provided"));
     return;
   }
 
