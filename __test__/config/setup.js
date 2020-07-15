@@ -27,10 +27,11 @@ beforeAll(async () => {
   const msSuperAdminId = await createDefaultAdmin();
 
   //create regular sysadmin
+  let hashedAdminPassword = await hashPassword("password");
   const msAdmin = new MsAdmin({
     fullname: "Test Admin",
     email: `regularadmin${date}@hotels.ng`,
-    password: "password",
+    password: hashedAdminPassword,
   });
 
   await msAdmin.save();
@@ -85,6 +86,9 @@ beforeAll(async () => {
   global.admin = admin;
   global.msSuperAdminId = msSuperAdminId;
   global.msAdmin = msAdmin;
+
+  console.log(`global msAdmin: ${global.msAdmin}`);
+  console.log(`global msSuperAdminId: ${global.msSuperAdminId}`);
 });
 
 afterAll(async () => {
