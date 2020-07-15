@@ -1,12 +1,12 @@
 const express = require("express");
-const { sysAuthMW } = require("../middleware/auth");
+const { sysAuthMW, superAdminMW } = require("../middleware/auth");
 const msAdminsCtrl = require("../controllers/msAdminsController");
 const validMW = require("../middleware/validation");
 const validationRules = require("../utils/validationRules").msAdmins;
 
 const router = express.Router();
 
-// ------- Unguarded routes ----------
+// ------- Unguarded/open routes ----------
 router.post(
   "/login",
   validMW(validationRules.loginAdminSchema),
@@ -33,9 +33,18 @@ router.post(
   msAdminsCtrl.changeMsAdminPassword
 );
 
+//------------SUPERADMIN Routes---------------
+//middleware to block non-superadmin roles
+router.use(superAdminMW);
+
 /**
  * GET routes
  */
+router.get(
+  "/",
+  validMW(validationRules.getAllMsAdminsSchema),
+  msAdminsCtrl.getAllMsAdmins
+);
 
 /**
  * PATCH routes
