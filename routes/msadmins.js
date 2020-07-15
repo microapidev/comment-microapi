@@ -47,7 +47,7 @@ router.get(
 );
 
 router.get(
-  "/",
+  "/:msAdminId",
   validMW(validationRules.getSingleMsAdminSchema),
   msAdminsCtrl.getSingleMsAdmin
 );
