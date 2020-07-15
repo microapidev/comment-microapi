@@ -18,7 +18,7 @@ const getAllMsAdmins = async (req, res, next) => {
     const admins = await MsAdmin.find();
     allMsAdmins = admins.map((admin) => {
       return {
-        adminId: admin._id,
+        msAdminId: admin._id,
         fullname: admin.fullname,
         email: admin.email,
         role: admin.role,

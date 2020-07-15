@@ -84,7 +84,7 @@ beforeAll(async () => {
   global.application = application;
   global.organization = organization;
   global.admin = admin;
-  global.msSuperAdminId = msSuperAdminId;
+  global.msSuperAdmin = await MsAdmin.findById(msSuperAdminId);
   global.msAdmin = msAdmin;
 });
 
