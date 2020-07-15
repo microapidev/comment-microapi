@@ -1,9 +1,8 @@
 const express = require("express");
-const { sysAuthMW } = require("../middleware/auth");
+const { sysAuthMW, superAdminMW } = require("../middleware/auth");
 const msAdminsCtrl = require("../controllers/msAdminsController");
 const validMW = require("../middleware/validation");
 const validationRules = require("../utils/validationRules").msAdmins;
-const CustomError = require("../utils/customError");
 
 const router = express.Router();
 
@@ -35,15 +34,8 @@ router.post(
 );
 
 //------------SUPERADMIN Routes---------------
-
-//middleware to prevent non-superadmins to the routes below
-router.use((req, res, next) => {
-  if (req.token.role !== "superadmin") {
-    return next(new CustomError(401, "Unauthorized access. Access denied!"));
-  }
-
-  next();
-});
+//middleware to block non-superadmin roles
+router.use(superAdminMW);
 
 /**
  * GET routes
