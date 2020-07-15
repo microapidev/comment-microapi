@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "cross-env DEBUG=log node ./bin/www",
-    "startDev": "cros-env DEBUG=log nodemon --exec babel-node ./bin/www",
+    "startDev": "cross-env DEBUG=log nodemon --exec babel-node ./bin/www",
     "test": "cross-env NODE_ENV=test jest --verbose",
     "test:debug": "cross-env NODE_ENV=test jest --detectOpenHandles --verbose",
     "test:watch": "cross-env NODE_ENV=test jest --watch --verbose",
