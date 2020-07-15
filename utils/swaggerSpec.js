@@ -28,7 +28,17 @@ const swaggerDefinition = {
       "to use such functionalities." +
       "\n\n" +
       "Additionally, there are extra features such as filtering, sorting, voting, and " +
-      "flagging available.",
+      "flagging available." +
+      "\n\n" +
+      "## HOW TO USE" +
+      "\n\n" +
+      "- Create new Organization to get token. (On creating a new organization, a new admin account is created)." +
+      "\n\n" +
+      "- All Administration related endpoints requires the `orgToken` (i.e organziations,admins & application endpoints)." +
+      "\n\n" +
+      "- Create a new Application that Comments and Replies will be tied to." +
+      "\n" +
+      "- Use `appToken` generated when creating application on all Comments and Repies endpoints",
   },
   servers: [
     {
