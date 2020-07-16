@@ -44,4 +44,10 @@ router.patch(
  * DELETE routes
  */
 
+router.delete(
+  "/:msAdminId",
+  validMW(validationRules.deleteSingleMsAdminSchema),
+  msAdminsCtrl.deleteSingleMsAdmin
+);
+
 module.exports = router;

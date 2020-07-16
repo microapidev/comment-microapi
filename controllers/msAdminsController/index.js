@@ -6,3 +6,4 @@ exports.getAllMsAdmins = require("./getAllMsAdmins");
 exports.getSingleMsAdmin = require("./getSingleMsAdmin");
 exports.updateSingleMsAdmin = require("./updateSingleMsAdmin");
 exports.enableDisableMsAdmin = require("./enableDisableMsAdmin");
+exports.deleteSingleMsAdmin = require("./deleteSingleMsAdmin");
