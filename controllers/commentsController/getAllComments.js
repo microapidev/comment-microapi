@@ -75,8 +75,8 @@ const getAllComments = async (req, res, next) => {
             numOfDownVotes: comment.downVotes.length,
             numOfFlags: comment.flags.length,
             numOfReplies: comment.replies.length,
-            createdAt: comment.createdAt.toString(),
-            updatedAt: comment.updatedAt.toString(),
+            createdAt: comment.createdAt,
+            updatedAt: comment.updatedAt,
           };
         });
 
