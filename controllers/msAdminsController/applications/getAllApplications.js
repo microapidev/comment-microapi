@@ -1,7 +1,7 @@
-const Applications = require('../../../models/applications');
-const MsAdmin = require('../../../models/msadmins');
-const CustomError = require('../../../utils/customError');
-const responseHandler = require('../../../utils/responseHandler');
+const Applications = require("../../../models/applications");
+const MsAdmin = require("../../../models/msadmins");
+const CustomError = require("../../../utils/customError");
+const responseHandler = require("../../../utils/responseHandler");
 
 /**
  * @author Ekeyekwu Oscar
@@ -22,12 +22,12 @@ const getAllApplications = async (req, res, next) => {
     //check if msAdmin exists
     const msAdmin = await MsAdmin.findById(msAdminId);
     if (!msAdmin) {
-      next(new CustomError(404, 'MsAdmin account not found'));
+      next(new CustomError(404, "MsAdmin account not found"));
       return;
     }
 
     //get all applications
-    const applications = await Applications.find().populate('organizationId');
+    const applications = await Applications.find().populate("organizationId");
     allApplications = applications.map((application) => {
       return {
         applicationId: application._id,
@@ -37,7 +37,7 @@ const getAllApplications = async (req, res, next) => {
       };
     });
   } catch (error) {
-    next(new CustomError(400, 'An error occured retrieving All Applications'));
+    next(new CustomError(400, "An error occured retrieving All Applications"));
     return;
   }
 
@@ -45,7 +45,7 @@ const getAllApplications = async (req, res, next) => {
     res,
     200,
     allApplications,
-    'All Applications retrieved successfully'
+    "All Applications retrieved successfully"
   );
 };
 

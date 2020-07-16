@@ -1,23 +1,22 @@
-const app = require('../../../../server');
-const supertest = require('supertest');
+const app = require("../../../../server");
+const supertest = require("supertest");
 const request = supertest(app);
 
-describe('GET All Applications', () => {
-  it('Should get all applications using the microservice', async () => {
+describe("GET All Applications", () => {
+  it("Should get all applications using the microservice", async () => {
     const url = `/v1/msadmins/applications`;
     const bearerToken = `bearer ${global.superSysToken}`;
-    const res = await request.get(url).set('Authorization', bearerToken);
+    const res = await request.get(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(200);
-    expect(res.body.status).toEqual('success');
+    expect(res.body.status).toEqual("success");
   });
 
-  it('Should return a 401 error if Authentication fails', async () => {
+  it("Should return a 401 error if Authentication fails", async () => {
     const url = `/v1/msadmins/applications`;
     const bearerToken = `bearer ${global}`; //an invalid token
-    const res = await request.get(url).set('Authorization', bearerToken);
+    const res = await request.get(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(401);
-    expect(res.body.status).toEqual('error');
+    expect(res.body.status).toEqual("error");
     expect(res.body.data).toBeTruthy();
   });
-
 });
