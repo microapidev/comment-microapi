@@ -1,7 +1,6 @@
 const MsAdmin = require("../../models/msadmins");
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
-const { promisify } = require("util");
 
 /**
  * @author David Okanlawon
@@ -31,23 +30,42 @@ const enableDisableAdmin = (disabled = true) => {
       //if disable then soft-delete msAdmin
       if (disabled) {
         //promisify the callback
-        msAdmin = await promisify(MsAdmin.deleteById(targetAdminId, msAdminId));
-        /*  msAdmin = await (async () => {
-          new Promise((resolve) => {
-            MsAdmin.deleteById(targetAdminId, msAdminId, (doc) => {
+        //const deleteByIdPromise = promisify(MsAdmin.deleteById);
+        // msAdmin = await deleteByIdPromise(targetAdminId, msAdminId);
+        msAdmin = await MsAdmin.findById(targetAdminId);
+
+        if (!msAdmin) {
+          next(new CustomError(404, "MsAdmin account not found"));
+          return;
+        }
+
+        //promisify it!
+        msAdmin = await (async () => {
+          return new Promise((resolve) => {
+            msAdmin.delete(msAdminId, (err, doc) => {
               resolve(doc);
             });
           });
-        })();*/
+        })();
       }
       //if enable restore msAdmin
       else {
-        msAdmin = await promisify(MsAdmin.restore({ id: targetAdminId }));
-      }
+        msAdmin = await MsAdmin.findOneDeleted({ _id: targetAdminId });
 
-      if (!msAdmin) {
-        next(new CustomError(404, "MsAdmin account not found"));
-        return;
+        if (!msAdmin) {
+          next(new CustomError(404, "MsAdmin account not found"));
+          return;
+        }
+
+        //promisify it!
+        msAdmin = await (async () => {
+          return new Promise((resolve) => {
+            msAdmin.restore((err, doc) => {
+              console.log(doc);
+              resolve(doc);
+            });
+          });
+        })();
       }
 
       return responseHandler(
@@ -60,14 +78,8 @@ const enableDisableAdmin = (disabled = true) => {
         `MsAdmin account ${disabled ? "disabled" : "enabled"} successfully`
       );
     } catch (error) {
-      next(
-        new CustomError(
-          400,
-          `An error occured ${
-            disabled ? "disabling" : "enabling"
-          } msAdmin account`
-        )
-      );
+      console.log(error.message);
+      next(error);
       return;
     }
   };
