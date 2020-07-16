@@ -62,7 +62,7 @@ router.get(
 );
 
 // GET Applications
-router.get("/applications",validMW(validationRules.msGetAllApplicationSchema),msAdminsCtrl.applications);
+router.get("/applications",validMW(validationRules.getAllApplicationsSchema),msAdminsCtrl.applications);
 
 /**
  * PATCH routes
