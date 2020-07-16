@@ -36,7 +36,11 @@ const deleteMsAdmin = async (req, res, next) => {
     return responseHandler(
       res,
       200,
-      { msAdminId: msAdmin.id },
+      {
+        msAdminId: msAdmin.id,
+        fullname: msAdmin.fullname,
+        email: msAdmin.email,
+      },
       "msAdmin account deleted successfully"
     );
   } catch (error) {
