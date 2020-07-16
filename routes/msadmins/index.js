@@ -1,4 +1,5 @@
 const express = require("express");
+const applicationsRoute = require("./applications");
 const msAdminsCtrl = require("../../controllers/msAdminsController");
 const validMW = require("../../middleware/validation");
 const validationRules = require("../../utils/validationRules").msAdmins;
@@ -43,6 +44,7 @@ router.patch(
   validMW(validationRules.updateSingleMsAdminSchema),
   msAdminsCtrl.updateSingleMsAdmin
 );
+router.use(applicationsRoute);
 
 router.use("/settings", systemSettingsRoutes);
 router.use(superAdminRoutes);
