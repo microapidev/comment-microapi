@@ -3,6 +3,7 @@ const supertest = require("supertest");
 const mongoose = require("mongoose");
 const MsAdmin = require("../../../models/msadmins");
 const request = supertest(app);
+const softDelete = require("../../../utils/softDelete");
 
 describe("PATCH /msAdmins/:msAdminId/disable", () => {
   let msAdmin;
@@ -69,17 +70,7 @@ describe("PATCH /msAdmins/:msAdminId/enable", () => {
 
   it("Enables msAdmin with provided ID", async () => {
     //confirm doc exists
-    let admin = await MsAdmin.findById(msAdmin.id);
-    expect(admin.id).toEqual(msAdmin.id);
-
-    //promisify it! disable record
-    await (async () => {
-      return new Promise((resolve) => {
-        msAdmin.delete(global.msAdmin.id, (err, doc) => {
-          resolve(doc);
-        });
-      });
-    })();
+    await softDelete.deleteById(MsAdmin, msAdmin.id, global.msAdmin.id);
 
     //confirm document is disabled
     const deletedAdmin = await MsAdmin.findById(msAdmin.id);

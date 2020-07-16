@@ -1,6 +1,7 @@
 const MsAdmin = require("../../models/msadmins");
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
+const softDelete = require("../../utils/softDelete");
 
 /**
  * @author David Okanlawon
@@ -29,43 +30,20 @@ const enableDisableAdmin = (disabled = true) => {
 
       //if disable then soft-delete msAdmin
       if (disabled) {
-        //promisify the callback
-        //const deleteByIdPromise = promisify(MsAdmin.deleteById);
-        // msAdmin = await deleteByIdPromise(targetAdminId, msAdminId);
-        msAdmin = await MsAdmin.findById(targetAdminId);
-
-        if (!msAdmin) {
-          next(new CustomError(404, "MsAdmin account not found"));
-          return;
-        }
-
-        //promisify it!
-        msAdmin = await (async () => {
-          return new Promise((resolve) => {
-            msAdmin.delete(msAdminId, (err, doc) => {
-              resolve(doc);
-            });
-          });
-        })();
+        msAdmin = await softDelete.deleteById(
+          MsAdmin,
+          targetAdminId,
+          msAdminId
+        );
       }
       //if enable restore msAdmin
       else {
-        msAdmin = await MsAdmin.findOneDeleted({ _id: targetAdminId });
+        msAdmin = await softDelete.restoreById(MsAdmin, targetAdminId);
+      }
 
-        if (!msAdmin) {
-          next(new CustomError(404, "MsAdmin account not found"));
-          return;
-        }
-
-        //promisify it!
-        msAdmin = await (async () => {
-          return new Promise((resolve) => {
-            msAdmin.restore((err, doc) => {
-              console.log(doc);
-              resolve(doc);
-            });
-          });
-        })();
+      if (!msAdmin) {
+        next(new CustomError(404, "MsAdmin account not found"));
+        return;
       }
 
       return responseHandler(
