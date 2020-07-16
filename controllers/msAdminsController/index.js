@@ -4,3 +4,4 @@ exports.loginSysAdmin = require("./loginSysAdmin");
 exports.changeMsAdminPassword = require("./changeMsAdminPassword");
 exports.getAllMsAdmins = require("./getAllMsAdmins");
 exports.getSingleMsAdmin = require("./getSingleMsAdmin");
+exports.updateSingleMsAdmin = require("./updateSingleMsAdmin");
