@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const mongooseDelete = require("mongoose-delete");
 
 //static roles for now will be dynamic in future iterations
 const ROLES = ["admin", "superadmin"];
@@ -35,5 +36,9 @@ const MsAdminSchema = new Schema(
   { timestamps: true }
 );
 
+//Add soft delete plugin
+MsAdminSchema.plugin(mongooseDelete, { overrideMethods: "all" });
+
+//create model
 const MsAdmin = mongoose.model("MsAdmins", MsAdminSchema);
 module.exports = MsAdmin;
