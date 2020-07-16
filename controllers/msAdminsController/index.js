@@ -5,3 +5,6 @@ exports.changeMsAdminPassword = require("./changeMsAdminPassword");
 exports.getAllMsAdmins = require("./getAllMsAdmins");
 exports.getSingleMsAdmin = require("./getSingleMsAdmin");
 exports.updateSingleMsAdmin = require("./updateSingleMsAdmin");
+
+//APPLICATION CONTROLLERS
+exports.applications = require("./applications")

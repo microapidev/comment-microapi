@@ -61,6 +61,9 @@ router.get(
   msAdminsCtrl.getSingleMsAdmin
 );
 
+// GET Applications
+router.get("/applications",validMW(validationRules.msGetAllApplicationSchema),msAdminsCtrl.applications);
+
 /**
  * PATCH routes
  */

@@ -12,7 +12,7 @@ const responseHandler = require('../../utils/responseHandler');
  * @param {*} res - The response object
  * @param {*} next - The function executed to call the next middleware
  */
-const msGetAllApplications = async (req, res, next) => {
+const getAllApplications = async (req, res, next) => {
   //get msAdminId from token
   const { msAdminId } = req.token;
 
@@ -49,4 +49,4 @@ const msGetAllApplications = async (req, res, next) => {
   );
 };
 
-module.exports = msGetAllApplications;
+module.exports = getAllApplications;
