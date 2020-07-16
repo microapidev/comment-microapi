@@ -33,6 +33,15 @@ router.post(
   msAdminsCtrl.changeMsAdminPassword
 );
 
+/**
+ * PATCH routes
+ */
+router.patch(
+  "/",
+  validMW(validationRules.updateSingleMsAdminSchema),
+  msAdminsCtrl.updateSingleMsAdmin
+);
+
 //------------SUPERADMIN Routes---------------
 //middleware to block non-superadmin roles
 router.use(superAdminMW);
