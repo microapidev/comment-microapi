@@ -45,7 +45,7 @@ const updateSingleComment = async (req, res, next) => {
             {
               content: content,
               ownerId: ownerId,
-              updatedAt: comment.updatedAt.toString(),
+              updatedAt: comment.updatedAt,
             },
             "Updated sucessfully"
           );

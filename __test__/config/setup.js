@@ -19,18 +19,19 @@ beforeAll(async () => {
   await truncate(Organization); */
 
   const date = Date.now();
+  const randNum = Math.floor(Math.random() * 99999 + 11111);
 
   //create default super sysadmin
-  process.env.SUPER_ADMIN_EMAIL = `default${date}@email.com`;
+  process.env.SUPER_ADMIN_EMAIL = `default${date}${randNum}@email.com`;
   process.env.SUPER_ADMIN_PASSWORD = "password";
 
-  const msSuperAdminId = await createDefaultAdmin();
+  const msSuperAdmin = await createDefaultAdmin();
 
   //create regular sysadmin
   let hashedAdminPassword = await hashPassword("password");
   const msAdmin = new MsAdmin({
     fullname: "Test Admin",
-    email: `regularadmin${date}@hotels.ng`,
+    email: `regularadmin${date}${randNum}@hotels.ng`,
     password: hashedAdminPassword,
   });
 
@@ -39,7 +40,7 @@ beforeAll(async () => {
   //create organization, application and admin objects for use by all tests
   const organization = new Organization({
     name: "HNG",
-    email: `hngorg${date}@email.com`,
+    email: `hngorg${date}${randNum}@email.com`,
     secret: "shhhh!",
   });
 
@@ -48,7 +49,7 @@ beforeAll(async () => {
   let hashedPassword = await hashPassword("password");
   const admin = new Admin({
     fullname: "admin",
-    email: `admin${date}@email.com`,
+    email: `admin${date}${randNum}@email.com`,
     password: hashedPassword,
     organizationId: organization._id,
   });
@@ -74,7 +75,7 @@ beforeAll(async () => {
   global.orgToken = orgToken;
 
   // create a valid token to test routes that require system token
-  const superSysToken = await getSysToken(msSuperAdminId);
+  const superSysToken = await getSysToken(msSuperAdmin.id);
   const sysToken = await getSysToken(msAdmin.id);
 
   global.sysToken = sysToken;
@@ -84,7 +85,7 @@ beforeAll(async () => {
   global.application = application;
   global.organization = organization;
   global.admin = admin;
-  global.msSuperAdmin = await MsAdmin.findById(msSuperAdminId);
+  global.msSuperAdmin = msSuperAdmin;
   global.msAdmin = msAdmin;
 });
 

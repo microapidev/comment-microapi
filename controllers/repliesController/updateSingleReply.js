@@ -66,7 +66,7 @@ const updateSingleReply = async (req, res, next) => {
       {
         content: content,
         ownerId: ownerId,
-        updatedAt: reply.updatedAt.toString(),
+        updatedAt: reply.updatedAt,
       },
       "Updated sucessfully"
     );

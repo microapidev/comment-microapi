@@ -13,7 +13,7 @@ exports.createDefaultAdmin = async () => {
 
     if (msAdmin) {
       log("\n \t Minimal account found");
-      return msAdmin.id;
+      return msAdmin;
     }
   } catch (error) {
     throw new Error(`Error getting minimal account: ${error.message}`);
@@ -59,7 +59,7 @@ exports.createDefaultAdmin = async () => {
     log("\n \t Minimal account created successfully");
 
     //TO-DO wipe details from .env file after successful creation
-    return newAdmin.id;
+    return newAdmin;
   } catch (error) {
     //log(error.message);
     throw new Error(`An error occured creating account ${error.message}`);
