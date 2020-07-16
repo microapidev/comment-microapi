@@ -1,1 +1,1 @@
-exports.getSystemSettings = require("../../msAdminsController/settings");
+exports.getSystemSettings = require("../../msAdminsController/settings/getSystemSettings");

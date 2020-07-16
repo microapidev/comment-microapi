@@ -4,10 +4,7 @@ const responseHandler = require("../../../utils/responseHandler");
 const getSystemSettings = async (req, res, next) => {
   try {
     const systemSettings = await SystemSettings.findOne({}).select(
-      "_-id",
-      "-createdAt",
-      "-updatedAt",
-      "-__v"
+      "-_id -createdAt -updatedAt -__v"
     ); // exclude fields above from doc
 
     return responseHandler(
