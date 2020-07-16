@@ -3,7 +3,7 @@ const Joi = require("@hapi/joi");
 /**
  * Schema validation for POST '/admins'
  */
-const createApplicationSchema = {
+const createSingleMsAdminSchema = {
   headers: Joi.object({
     authorization: Joi.string().required(),
   }),
@@ -16,4 +16,4 @@ const createApplicationSchema = {
   }),
 };
 
-module.exports = createApplicationSchema;
+module.exports = createSingleMsAdminSchema;

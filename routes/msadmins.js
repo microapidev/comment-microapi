@@ -65,6 +65,18 @@ router.get(
  * PATCH routes
  */
 
+router.patch(
+  "/:msAdminId/enable",
+  validMW(validationRules.enableDisableMsAdminSchema),
+  msAdminsCtrl.enableDisableMsAdmin(false)
+);
+
+router.patch(
+  "/:msAdminId/disable",
+  validMW(validationRules.enableDisableMsAdminSchema),
+  msAdminsCtrl.enableDisableMsAdmin(true)
+);
+
 /**
  * DELETE routes
  */
