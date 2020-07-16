@@ -4,6 +4,7 @@ const validMW = require("../../middleware/validation");
 const validationRules = require("../../utils/validationRules").msAdmins;
 const { sysAuthMW } = require("../../middleware/auth");
 const superAdminRoutes = require("./superadmin");
+const systemSettingsRoutes = require("./settings");
 
 const router = express.Router();
 
@@ -43,6 +44,7 @@ router.patch(
   msAdminsCtrl.updateSingleMsAdmin
 );
 
+router.use("/settings", systemSettingsRoutes);
 router.use(superAdminRoutes);
 
 module.exports = router;
