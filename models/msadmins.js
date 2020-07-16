@@ -37,7 +37,11 @@ const MsAdminSchema = new Schema(
 );
 
 //Add soft delete plugin
-MsAdminSchema.plugin(mongooseDelete, { overrideMethods: "all" });
+MsAdminSchema.plugin(mongooseDelete, {
+  overrideMethods: true,
+  deletedAt: true,
+  deletedBy: true,
+});
 
 //create model
 const MsAdmin = mongoose.model("MsAdmins", MsAdminSchema);
