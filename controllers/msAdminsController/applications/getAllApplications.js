@@ -1,7 +1,7 @@
-const Applications = require('../../models/applications');
-const MsAdmin = require('../../models/msadmins');
-const CustomError = require('../../utils/customError');
-const responseHandler = require('../../utils/responseHandler');
+const Applications = require('../../../models/applications');
+const MsAdmin = require('../../../models/msadmins');
+const CustomError = require('../../../utils/customError');
+const responseHandler = require('../../../utils/responseHandler');
 
 /**
  * @author Ekeyekwu Oscar
@@ -26,14 +26,14 @@ const getAllApplications = async (req, res, next) => {
       return;
     }
 
-    //get all applications 
-    const applications = await Applications.find().populate("Organizations");
+    //get all applications
+    const applications = await Applications.find().populate('organizationId');
     allApplications = applications.map((application) => {
       return {
         applicationId: application._id,
         applicationName: application.name,
         organizationId: application.organizationId,
-        organizationName: applications.Organizations.name
+        organizationName: application.organizationId.name,
       };
     });
   } catch (error) {

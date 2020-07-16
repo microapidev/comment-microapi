@@ -1,6 +1,7 @@
 const express = require("express");
 const { sysAuthMW, superAdminMW } = require("../middleware/auth");
 const msAdminsCtrl = require("../controllers/msAdminsController");
+const msAdminsAppCtrl = require("../controllers/msAdminsController/applications")
 const validMW = require("../middleware/validation");
 const validationRules = require("../utils/validationRules").msAdmins;
 
@@ -55,14 +56,16 @@ router.get(
   msAdminsCtrl.getAllMsAdmins
 );
 
+// GET Applications
+router.get("/applications",validMW(validationRules.getAllApplicationsSchema),msAdminsAppCtrl.getAllApplications);
+
 router.get(
   "/:msAdminId",
   validMW(validationRules.getSingleMsAdminSchema),
   msAdminsCtrl.getSingleMsAdmin
 );
 
-// GET Applications
-router.get("/applications",validMW(validationRules.getAllApplicationsSchema),msAdminsCtrl.applications);
+
 
 /**
  * PATCH routes
