@@ -49,5 +49,4 @@ router.use(applicationsRoute);
 router.use("/settings", systemSettingsRoutes);
 router.use(superAdminRoutes);
 
-
 module.exports = router;
