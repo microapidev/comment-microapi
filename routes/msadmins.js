@@ -46,6 +46,12 @@ router.get(
   msAdminsCtrl.getAllMsAdmins
 );
 
+router.get(
+  "/:msAdminId",
+  validMW(validationRules.getSingleMsAdminSchema),
+  msAdminsCtrl.getSingleMsAdmin
+);
+
 /**
  * PATCH routes
  */

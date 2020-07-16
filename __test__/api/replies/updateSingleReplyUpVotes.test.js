@@ -124,7 +124,7 @@ describe("PATCH /comments/:commentId/replies/:replyId/votes/upvote", () => {
       numOfUpVotes: oldReply.numOfUpVotes + 1,
       numOfDownVotes: oldReply.numOfDownVotes,
       createdAt: oldReply.createdAt,
-      updatedAt: oldReply.updatedAt,
+      updatedAt: addRes.body.data.updatedAt, // hack: updated so value can't stay same
     });
 
     // Run test matchers to verify that the reply votes have been added in the database.
@@ -175,7 +175,7 @@ describe("PATCH /comments/:commentId/replies/:replyId/votes/upvote", () => {
       numOfUpVotes: oldReplyWithDownVote.numOfUpVotes + 1,
       numOfDownVotes: oldReplyWithDownVote.numOfDownVotes - 1,
       createdAt: oldReplyWithDownVote.createdAt,
-      updatedAt: oldReplyWithDownVote.updatedAt,
+      updatedAt: addRes.body.data.updatedAt, // hack: updated so value can't stay same
     });
 
     // Run test matchers to verify that the reply votes have been added in the database.
@@ -228,7 +228,7 @@ describe("PATCH /comments/:commentId/replies/:replyId/votes/upvote", () => {
       numOfUpVotes: oldReplyWithUpVote.numOfUpVotes - 1,
       numOfDownVotes: oldReplyWithUpVote.numOfDownVotes,
       createdAt: oldReplyWithUpVote.createdAt,
-      updatedAt: oldReplyWithUpVote.updatedAt,
+      updatedAt: removeRes.body.data.updatedAt, // hack: updated so value can't stay same
     });
 
     // Run test matchers to verify that the reply vote has been removed in the database.
