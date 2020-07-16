@@ -35,7 +35,16 @@ const updateSingleMsAdmin = async (req, res, next) => {
     msAdmin.fullname = fullname;
     await msAdmin.save();
 
-    return responseHandler(res, 200, "MsAdmin account updated successfully");
+    const data = {
+      fullname: msAdmin.fullname,
+    };
+
+    return responseHandler(
+      res,
+      200,
+      data,
+      "MsAdmin account updated successfully"
+    );
   } catch (error) {
     next(new CustomError(400, "An error occured updating msAdmin account"));
     return;
