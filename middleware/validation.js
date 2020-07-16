@@ -9,6 +9,10 @@ const options = {
 
 const validationMiddleware = (requestSchema) => {
   return (req, res, next) => {
+    //allow to specify allowUnknown
+    options.allowUnknown =
+      requestSchema.options.allowUnknown === false ? false : true;
+
     const validations = schemaKeys.map((key) => {
       const schema = requestSchema[key];
       const value = req[key];
