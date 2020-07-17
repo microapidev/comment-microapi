@@ -24,7 +24,9 @@ database.connect().then(() => {
     .then(async () => {
       //Initialize system settings by triggering dummy update with empty values
       //if any setting is not set defaults kick in
+      console.log(`\n \t Updating system settings ....`);
       await SystemSettings.findOneAndUpdate({}, {}, { upsert: true });
+      console.log(`\n \t Systems updated`);
     })
     .catch((error) => {
       console.log(`\n \t ${error.message}`);
