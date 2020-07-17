@@ -5,12 +5,12 @@ const validationRules = require("../../utils/validationRules").msAdmins;
 
 // GET Applications
 router.get(
-  "/applications",
+  "/",
   validMW(validationRules.getAllApplicationsSchema),
   msAdminsAppCtrl.getAllApplications
 );
 router.get(
-  "/applications/:applicationId",
+  "/:applicationId",
   validMW(validationRules.getSingleApplicationSchema),
   msAdminsAppCtrl.getSingleApplication
 );
