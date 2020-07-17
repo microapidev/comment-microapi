@@ -37,7 +37,7 @@ const getAllApplications = async (req, res, next) => {
       };
     });
   } catch (error) {
-    next(new CustomError(400, "An error occured retrieving All Applications"));
+    next(error);
     return;
   }
 

@@ -23,14 +23,12 @@ const unblockSingleOrganization = async (req, res, next) => {
       next(new CustomError(404, "Organization not found or deleted"));
       return;
     }
-    console.log(organization);
 
     //unblock organization using softDelete
     const unblockedOrg = await softDelete.restoreById(
       OrganizationModel,
       organization._id
     );
-    console.log(unblockedOrg);
     // const data = {
     //   organizationId: unblockedOrg._id,
     //   organizationName: unblockedOrg.name,

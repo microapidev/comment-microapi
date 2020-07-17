@@ -18,7 +18,6 @@ const blockSingleOrganization = async (req, res, next) => {
   const { msAdminId } = req.token;
 
   try {
-    console.log(organizationId);
     //check if organization exists
     const organization = await OrganizationModel.findById(organizationId);
     if (!organization) {
@@ -42,7 +41,7 @@ const blockSingleOrganization = async (req, res, next) => {
     };
     responseHandler(res, 200, data, "Organization Blocked Successfully");
   } catch (error) {
-    next(new CustomError(400, "An error occured blocking this Organization!"));
+    next(error);
   }
 };
 
