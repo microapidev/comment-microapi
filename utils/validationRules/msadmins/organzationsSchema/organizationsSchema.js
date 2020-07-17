@@ -1,9 +1,9 @@
 const Joi = require("@hapi/joi");
 
 /**
- * Schema validation for GET '/applicatoions/{applicationId}'
+ * Schema validation organization process by msadmin'
  */
-const getOrganizationsAppsSchema = {
+const organizationsSchema = {
   headers: Joi.object({
     authorization: Joi.string().required(),
   }),
@@ -12,4 +12,4 @@ const getOrganizationsAppsSchema = {
     organizationId: Joi.string().required(),
   }),
 };
-module.exports = getOrganizationsAppsSchema;
+module.exports = organizationsSchema;

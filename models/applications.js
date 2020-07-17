@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const mongooseDelete = require("mongoose-delete");
 
 const ApplicationSchema = new Schema(
   {
@@ -30,5 +31,12 @@ ApplicationSchema.index(
     unique: true,
   }
 );
+
+ApplicationSchema.plugin(mongooseDelete, {
+  overrideMethods: true,
+  deletedAt: true,
+  deletedBy: true,
+});
+
 const Application = mongoose.model("Applications", ApplicationSchema);
 module.exports = Application;
