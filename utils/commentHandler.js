@@ -11,7 +11,7 @@ module.exports = (comment) => {
     numOfDownVotes: comment.downVotes.length,
     numOfFlags: comment.flags.length,
     numOfReplies: comment.replies.length,
-    createdAt: comment.createdAt.toString(),
-    updatedAt: comment.updatedAt.toString(),
+    createdAt: comment.createdAt.toISOString(),
+    updatedAt: comment.updatedAt.toISOString(),
   };
 };

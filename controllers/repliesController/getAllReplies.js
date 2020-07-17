@@ -83,8 +83,8 @@ const getAllReplies = async (req, res, next) => {
         numOfUpVotes: reply.upVotes.length,
         numOfDownVotes: reply.downVotes.length,
         numOfFlags: reply.flags.length,
-        createdAt: reply.createdAt.toString(),
-        updatedAt: reply.updatedAt.toString(),
+        createdAt: reply.createdAt,
+        updatedAt: reply.updatedAt,
       };
     });
 

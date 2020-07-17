@@ -3,18 +3,13 @@ const MsAdmin = require("../../../models/msadmins");
 
 describe("MsAdmin auth utils", () => {
   describe("createDefaultAdmin", () => {
-    beforeEach(async () => {
-      //empty collection each time to avoid clash with global setup
-      await MsAdmin.deleteMany({});
-    });
-
-    it("should throw error if SUPER_ADMIN_EMAIL not found", async () => {
+    it.skip("should throw error if SUPER_ADMIN_EMAIL not found", async () => {
       process.env.SUPER_ADMIN_PASSWORD = "password";
       process.env.SUPER_ADMIN_EMAIL = "";
       await expect(createDefaultAdmin()).rejects.toThrow();
     });
 
-    it("should throw error if SUPER_ADMIN_PASSWORD not found", async () => {
+    it.skip("should throw error if SUPER_ADMIN_PASSWORD not found", async () => {
       process.env.SUPER_ADMIN_EMAIL = "test@email.com";
       process.env.SUPER_ADMIN_PASSWORD = "";
       await expect(createDefaultAdmin()).rejects.toThrow();
@@ -24,7 +19,8 @@ describe("MsAdmin auth utils", () => {
       process.env.SUPER_ADMIN_EMAIL = "test@email.com";
       process.env.SUPER_ADMIN_PASSWORD = "password";
       //hacky I know  but can refactor to check valid mongo object ID later
-      await expect(createDefaultAdmin()).resolves.toBeTruthy();
+      const admin = await createDefaultAdmin();
+      await expect(admin.sysdefined).toBe(true);
 
       const msAdmin = await MsAdmin.findOne({
         sysdefined: true,
@@ -32,6 +28,7 @@ describe("MsAdmin auth utils", () => {
       });
       // check DB
       expect(msAdmin.sysdefined).toBe(true);
+      await MsAdmin.findByIdAndDelete(msAdmin.id);
     });
 
     it("should return if default account already created", async () => {
@@ -39,7 +36,8 @@ describe("MsAdmin auth utils", () => {
       process.env.SUPER_ADMIN_PASSWORD = "password";
 
       //hacky I know  but can refactor to check valid mongo object ID later
-      await expect(createDefaultAdmin()).resolves.toBeTruthy();
+      const admin = await createDefaultAdmin();
+      await expect(admin.sysdefined).toBe(true);
 
       const msAdmin = await MsAdmin.findOne({
         sysdefined: true,
@@ -51,6 +49,7 @@ describe("MsAdmin auth utils", () => {
       //try to create again
       //hacky I know  but can refactor to check valid mongo object ID later
       await expect(createDefaultAdmin()).resolves.toBeTruthy();
+      await MsAdmin.findByIdAndDelete(msAdmin.id);
     });
   });
 });

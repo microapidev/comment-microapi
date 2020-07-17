@@ -1,5 +1,6 @@
 const MsAdmin = require("../../models/msadmins");
 const { hashPassword } = require("./passwordUtils");
+const log = require("debug")("log");
 
 //create default super-admin if not exists
 exports.createDefaultAdmin = async () => {
@@ -11,8 +12,8 @@ exports.createDefaultAdmin = async () => {
     });
 
     if (msAdmin) {
-      console.log("\n \t Minimal account found");
-      return msAdmin.id;
+      log("\n \t Minimal account found");
+      return msAdmin;
     }
   } catch (error) {
     throw new Error(`Error getting minimal account: ${error.message}`);
@@ -20,10 +21,12 @@ exports.createDefaultAdmin = async () => {
 
   try {
     //if not found read in SUPER_ADMIN_PASSWORD, SUPER_ADMIN_EMAIL from env
-    console.log("\n \t Minimal account not found ... creating");
+    log("\n \t Minimal account not found ... creating");
 
     //check email
-    const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
+    //putting a temp default email and password in production future this has to be r
+    const superAdminEmail =
+      process.env.SUPER_ADMIN_EMAIL || "superadmin@microapi.dev";
 
     //if no password found exit requesting the variable
     if (!superAdminEmail) {
@@ -33,7 +36,7 @@ exports.createDefaultAdmin = async () => {
     }
 
     //check password
-    const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD;
+    const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD || "superadmin";
 
     //if no password found exit requesting the variable
     if (!superAdminPassword) {
@@ -55,12 +58,12 @@ exports.createDefaultAdmin = async () => {
     });
 
     await newAdmin.save();
-    console.log("\n \t Minimal account created successfully");
+    log("\n \t Minimal account created successfully");
 
     //TO-DO wipe details from .env file after successful creation
-    return newAdmin.id;
+    return newAdmin;
   } catch (error) {
-    console.log(error.message);
+    //log(error.message);
     throw new Error(`An error occured creating account ${error.message}`);
   }
 };
