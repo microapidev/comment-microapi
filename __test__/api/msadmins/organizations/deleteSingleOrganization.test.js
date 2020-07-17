@@ -13,7 +13,7 @@ describe("Delete /organizations/:organizationId", () => {
       secret: "hithere",
     });
     await organization.save();
-    const bearerToken = `bearer ${global.superSysToken}`;
+    const bearerToken = `bearer ${global.sysToken}`;
     let res = await request
       .delete(`/v1/msadmins/organizations/${organization._id}`)
       .set("Authorization", bearerToken);
@@ -23,7 +23,7 @@ describe("Delete /organizations/:organizationId", () => {
 
   it("returns 404 for organization not found", async () => {
     let wrongId = mongoose.Types.ObjectId();
-    const bearerToken = `bearer ${global.superSysToken}`;
+    const bearerToken = `bearer ${global.sysToken}`;
     let res = await request
       .delete(`/v1/msadmins/organizations/${wrongId}`)
       .set("Authorization", bearerToken);

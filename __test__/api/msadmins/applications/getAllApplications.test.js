@@ -5,7 +5,7 @@ const request = supertest(app);
 describe("GET All Applications", () => {
   it("Should get all applications using the microservice", async () => {
     const url = `/v1/msadmins/applications`;
-    const bearerToken = `bearer ${global.superSysToken}`;
+    const bearerToken = `bearer ${global.sysToken}`;
     const res = await request.get(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(200);
     expect(res.body.status).toEqual("success");
