@@ -62,6 +62,7 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
     // Delete cache.
     oldComment = null;
     oldCommentWithDownVote = null;
+    oldCommentWithUpVote = null;
   });
 
   it("Should add a upvote (new vote) to a comment (toggle)", async () => {
@@ -72,11 +73,9 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
     // Run test matchers to verify that the comment votes have not been updated in the database.
     await CommentModel.findById(oldComment.commentId).then((comment) => {
       expect(comment).toBeTruthy();
-      expect(comment.upVotes.length).toEqual(oldComment.numOfUpVotes);
-      expect(comment.downVotes.length).toEqual(oldComment.numOfDownVotes);
-      expect(comment.downVotes.length + comment.upVotes.length).toEqual(
-        oldComment.numOfVotes
-      );
+      expect(comment.upVotes.length).toEqual(0);
+      expect(comment.downVotes.length).toEqual(0);
+      expect(comment.downVotes.length + comment.upVotes.length).toEqual(0);
     });
 
     // Run test matchers to verify that the comment votes addition produced the correct success response.
@@ -91,19 +90,17 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
     expect(addRes.body.status).toEqual("success");
     expect(addRes.body.data).toEqual({
       commentId: oldComment.commentId,
-      numOfVotes: oldComment.numOfVotes + 1,
-      numOfUpVotes: oldComment.numOfUpVotes + 1,
-      numOfDownVotes: oldComment.numOfDownVotes,
+      numOfVotes: 1,
+      numOfUpVotes: 1,
+      numOfDownVotes: 0,
     });
 
     // Run test matchers to verify that the comment votes have been added in the database.
     await CommentModel.findById(oldComment.commentId).then((comment) => {
       expect(comment).toBeTruthy();
-      expect(comment.upVotes.length).toEqual(oldComment.numOfUpVotes + 1);
-      expect(comment.downVotes.length).toEqual(oldComment.numOfDownVotes);
-      expect(comment.downVotes.length + comment.upVotes.length).toEqual(
-        oldComment.numOfVotes + 1
-      );
+      expect(comment.upVotes.length).toEqual(1);
+      expect(comment.downVotes.length).toEqual(0);
+      expect(comment.downVotes.length + comment.upVotes.length).toEqual(1);
     });
   });
 
