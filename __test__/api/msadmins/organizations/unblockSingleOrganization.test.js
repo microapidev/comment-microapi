@@ -1,11 +1,29 @@
 const app = require("../../../../server");
 const supertest = require("supertest");
 const request = supertest(app);
+const softDelete = require("../../../../utils/softDelete");
+const OrganizationModel = require("../../../models/organizations");
 
 describe("unblock an Organization ", () => {
   it("Should unblock organizations ", async () => {
+    //create sample org
+    const rand = Math.floor(Math.random() * 100 + 1);
+    const organization = await new OrganizationModel({
+      name: "hng",
+      email: `newOrg${rand}@email.com`,
+      secret: "hithere",
+    });
+    await organization.save();
+
+    //block it
+    await softDelete.deleteById(
+      OrganizationModel,
+      organization.Id,
+      global.msSuperAdmin.id
+    );
+
     //unblock organization using softDelete
-    const url = `/v1/msadmins/organizations/${global.organization._id}/unblock`;
+    const url = `/v1/msadmins/organizations/${organization._id}/unblock`;
     const bearerToken = `bearer ${global.sysToken}`;
     const res = await request.patch(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(200);

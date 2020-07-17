@@ -1,10 +1,21 @@
 const app = require("../../../../server");
 const supertest = require("supertest");
 const request = supertest(app);
+const OrganizationModel = require("../../../../models/organizations");
 
 describe("Block an Organization ", () => {
   it("Should block an organization ", async () => {
-    const url = `/v1/msadmins/organizations/${global.organization._id}/block`;
+    //create mock organization
+    const rand = Math.floor(Math.random() * 100 + 1);
+    const organization = await new OrganizationModel({
+      name: "hng",
+      email: `newOrg${rand}@email.com`,
+      secret: "hithere",
+    });
+    await organization.save();
+
+    //block it
+    const url = `/v1/msadmins/organizations/${organization._id}/block`;
     const bearerToken = `bearer ${global.sysToken}`;
     const res = await request.patch(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(200);
