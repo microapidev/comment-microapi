@@ -3,18 +3,18 @@ const MsAdmin = require("../../../models/msadmins");
 
 describe("MsAdmin auth utils", () => {
   describe("createDefaultAdmin", () => {
-    /* it("should throw error if SUPER_ADMIN_EMAIL not found", async () => {
+    it.skip("should throw error if SUPER_ADMIN_EMAIL not found", async () => {
       process.env.SUPER_ADMIN_PASSWORD = "password";
       process.env.SUPER_ADMIN_EMAIL = "";
       await expect(createDefaultAdmin()).rejects.toThrow();
     });
 
-    it("should throw error if SUPER_ADMIN_PASSWORD not found", async () => {
+    it.skip("should throw error if SUPER_ADMIN_PASSWORD not found", async () => {
       process.env.SUPER_ADMIN_EMAIL = "test@email.com";
       process.env.SUPER_ADMIN_PASSWORD = "";
       await expect(createDefaultAdmin()).rejects.toThrow();
     });
- */
+
     it("should create default admin", async () => {
       process.env.SUPER_ADMIN_EMAIL = "test@email.com";
       process.env.SUPER_ADMIN_PASSWORD = "password";
