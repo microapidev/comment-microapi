@@ -10,3 +10,5 @@ exports.deleteSingleMsAdminSchema = require("./deleteSingleMsAdminSchema");
 exports.getAllApplicationsSchema = require("./applicationsSchema/getAllApplicationsSchema");
 exports.getSingleApplicationSchema = require("./applicationsSchema/getSingleApplicationSchema");
 exports.getSystemSettingsSchema = require("./settings/getSystemSettingsSchema");
+//Organzation Schema
+exports.getOrganizationsApps = require("./organzationsSchema/getOrganizationsApps");

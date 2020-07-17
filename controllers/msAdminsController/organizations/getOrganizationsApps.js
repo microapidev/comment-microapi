@@ -45,7 +45,6 @@ const getOrganizationsApps = async (req, res, next) => {
         createdAt: application.createdAt,
       };
     });
-    console.log(allOrgApps)
   } catch (error) {
     next(new CustomError(400, 'An error occured retrieving Organization Applications'));
     return;
