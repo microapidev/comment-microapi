@@ -2,7 +2,7 @@ const app = require("../../../../server");
 const supertest = require("supertest");
 const request = supertest(app);
 const softDelete = require("../../../../utils/softDelete");
-const OrganizationModel = require("../../../models/organizations");
+const OrganizationModel = require("../../../../models/organizations");
 
 describe("unblock an Organization ", () => {
   it("Should unblock organizations ", async () => {
