@@ -1,4 +1,5 @@
 const Applications = require('../../../models/applications');
+const Organizations = require('../../../models/organizations');
 const MsAdmin = require('../../../models/msadmins');
 const CustomError = require('../../../utils/customError');
 const responseHandler = require('../../../utils/responseHandler');
@@ -27,6 +28,11 @@ const getOrganizationsApps = async (req, res, next) => {
       return;
     }
 
+    const organization = await Organizations.findById(organizationId);
+    if (!organization) {
+        next(new CustomError(404, 'Organization not found'));
+        return;
+      }
     //get all applications
     const applications = await Applications.find({
       organizationId: organizationId,
@@ -35,10 +41,11 @@ const getOrganizationsApps = async (req, res, next) => {
       return {
         applicationId: application._id,
         applicationName: application.name,
-        createdBy: application.createdBy.name,
+        createdBy: application.createdBy.fullname,
         createdAt: application.createdAt,
       };
     });
+    console.log(allOrgApps)
   } catch (error) {
     next(new CustomError(400, 'An error occured retrieving Organization Applications'));
     return;

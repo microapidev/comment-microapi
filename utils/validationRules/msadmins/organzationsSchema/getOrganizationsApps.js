@@ -1,4 +1,4 @@
-const Joi = require("@hapi/joi");
+const Joi = require('@hapi/joi');
 
 /**
  * Schema validation for GET '/applicatoions/{applicationId}'
@@ -12,5 +12,4 @@ const getOrganizationsAppsSchema = {
     organizationId: Joi.string().required(),
   }),
 };
-
 module.exports = getOrganizationsAppsSchema;
