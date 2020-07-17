@@ -22,7 +22,6 @@ const SystemSettingsSchema = new Schema(
   },
   {
     timestamps: true,
-    capped: { size: 10000, max: 1 },
   }
 );
 
