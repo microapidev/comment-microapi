@@ -8,4 +8,5 @@ exports.enableDisableMsAdminSchema = require("./enableDisableMsAdminSchema");
 exports.deleteSingleMsAdminSchema = require("./deleteSingleMsAdminSchema");
 //Application Schema
 exports.getAllApplicationsSchema = require("./applicationsSchema/getAllApplicationsSchema");
+exports.getSingleApplicationSchema = require("./applicationsSchema/getSingleApplicationSchema");
 exports.getSystemSettingsSchema = require("./settings/getSystemSettingsSchema");

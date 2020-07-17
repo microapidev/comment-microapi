@@ -44,8 +44,8 @@ router.patch(
   validMW(validationRules.updateSingleMsAdminSchema),
   msAdminsCtrl.updateSingleMsAdmin
 );
-router.use(applicationsRoute);
 
+router.use(applicationsRoute);
 router.use("/settings", systemSettingsRoutes);
 router.use(superAdminRoutes);
 
