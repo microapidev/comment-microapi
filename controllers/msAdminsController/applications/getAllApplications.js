@@ -29,6 +29,7 @@ const getAllApplications = async (req, res, next) => {
     //get all applications
     const applications = await Applications.find().populate("organizationId");
     allApplications = applications.map((application) => {
+      console.log(application);
       return {
         applicationId: application._id,
         applicationName: application.name,
