@@ -1,0 +1,1 @@
+exports.getOrganizationsApps = require("./getOrganizationsApps");
