@@ -24,7 +24,9 @@ exports.createDefaultAdmin = async () => {
     log("\n \t Minimal account not found ... creating");
 
     //check email
-    const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
+    //putting a temp default email and password in production future this has to be r
+    const superAdminEmail =
+      process.env.SUPER_ADMIN_EMAIL || "superadmin@microapi.dev";
 
     //if no password found exit requesting the variable
     if (!superAdminEmail) {
@@ -34,7 +36,7 @@ exports.createDefaultAdmin = async () => {
     }
 
     //check password
-    const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD;
+    const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD || "superadmin";
 
     //if no password found exit requesting the variable
     if (!superAdminPassword) {
