@@ -3,7 +3,7 @@ const Joi = require("@hapi/joi");
 /**
  * Schema validation for GET '/msadmins/settings'
  */
-const getSystemSettingsSchema = {
+const updateSystemSettingsSchema = {
   allowUnknowns: false,
   body: Joi.object().keys({
     maxRequestsPerMin: Joi.number(),
@@ -12,4 +12,4 @@ const getSystemSettingsSchema = {
   }),
 };
 
-module.exports = getSystemSettingsSchema;
+module.exports = updateSystemSettingsSchema;

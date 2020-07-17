@@ -7,3 +7,4 @@ exports.updateSingleMsAdminSchema = require("./updateSingleMsAdminSchema");
 exports.enableDisableMsAdminSchema = require("./enableDisableMsAdminSchema");
 exports.deleteSingleMsAdminSchema = require("./deleteSingleMsAdminSchema");
 exports.getSystemSettingsSchema = require("./settings/getSystemSettingsSchema");
+exports.updateSystemSettingsSchema = require("./settings/updateSystemSettingsSchema");

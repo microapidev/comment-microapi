@@ -17,4 +17,11 @@ router.get(
   settingsCtrl.getSystemSettings
 );
 
+//PATCH
+router.patch(
+  "/",
+  validMW(validationRules.updateSystemSettingsSchema),
+  settingsCtrl.updateSystemSettings
+);
+
 module.exports = router;
