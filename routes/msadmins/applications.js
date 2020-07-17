@@ -9,5 +9,6 @@ router.get(
   validMW(validationRules.getAllApplicationsSchema),
   msAdminsAppCtrl.getAllApplications
 );
+router.get("/:applicationId",validMW(validationRules.getSingleApplicationSchema,msAdminsAppCtrl.getSingleApplication))
 
 module.exports = router;

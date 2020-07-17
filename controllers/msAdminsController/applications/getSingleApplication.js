@@ -15,6 +15,7 @@ const responseHandler = require("../../../utils/responseHandler");
 const getSingleApplication = async (req, res, next) => {
   //get msAdminId from token
   const { msAdminId } = req.token;
+  const {applicationId} = req.params;
 
   //get single application, map field names appropriately
   let application;
@@ -26,13 +27,17 @@ const getSingleApplication = async (req, res, next) => {
       return;
     }
 
-    //get all applications
-    const applications = await Applications.find().populate("organizationId");
+    //get  applications
+    const singleApplication = await Applications.findById(applicationId).populate("organizationId");
+    if(!singleApplication){
+        next(new CustomError(404,"Application not Found"));
+        return
+    }
     application = {
-        applicationId: applications._id,
-        applicationName: applications.name,
-        organizationId: applications.organizationId,
-        organizationName: applications.organizationId.name,
+        applicationId: singleApplication._id,
+        applicationName: singleApplication.name,
+        organizationId: singleApplication.organizationId,
+        organizationName: singleApplication.organizationId.name,
     }
   } catch (error) {
     next(new CustomError(400, "An error occured retrieving Application"));
