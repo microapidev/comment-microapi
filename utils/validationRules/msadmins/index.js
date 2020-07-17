@@ -16,3 +16,4 @@ exports.getOrganizationsApps = require("./organzationsSchema/getOrganizationsApp
 //Settings Schema
 exports.updateSystemSettingsSchema = require("./settings/updateSystemSettingsSchema");
 exports.getSystemSettingsSchema = require("./settings/getSystemSettingsSchema");
+exports.updateSystemSettingsSchema = require("./settings/updateSystemSettingsSchema");
