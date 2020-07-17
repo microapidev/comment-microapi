@@ -28,6 +28,5 @@ OrganizationSchema.plugin(mongooseDelete, {
   deletedBy: true,
 });
 
-
 const Organization = mongoose.model("Organizations", OrganizationSchema);
 module.exports = Organization;

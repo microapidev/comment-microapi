@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const mongooseDelete = require("mongoose-delete");
+const comments = require("./comments");
 
 const ApplicationSchema = new Schema(
   {
@@ -31,6 +32,14 @@ ApplicationSchema.index(
     unique: true,
   }
 );
+
+ApplicationSchema.post("findOneAndDelete", async (application) => {
+  if (application) {
+    //delete any existing replies
+    await comments.deleteMany({ applicationId: application._id });
+    // console.log(`Deleted ${replies.deletedCount} replies`);
+  }
+});
 
 ApplicationSchema.plugin(mongooseDelete, {
   overrideMethods: true,

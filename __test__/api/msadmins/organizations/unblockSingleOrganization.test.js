@@ -2,9 +2,10 @@ const app = require("../../../../server");
 const supertest = require("supertest");
 const request = supertest(app);
 
-describe("Block an Organization ", () => {
-  it("Should block an organization ", async () => {
-    const url = `/v1/msadmins/organizations/${global.organization._id}/block`;
+describe("unblock an Organization ", () => {
+  it("Should unblock organizations ", async () => {
+    //unblock organization using softDelete
+    const url = `/v1/msadmins/organizations/${global.organization._id}/unblock`;
     const bearerToken = `bearer ${global.superSysToken}`;
     const res = await request.patch(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(200);
@@ -12,7 +13,7 @@ describe("Block an Organization ", () => {
   });
 
   it("Should return a 401 error if Authentication fails", async () => {
-    const url = `/v1/msadmins/organizations/${global.organization._id}/block`;
+    const url = `/v1/msadmins/organizations/${global.organization._id}/unblock`;
     const bearerToken = `bearer ${global}`; //an invalid token
     const res = await request.patch(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(401);
@@ -21,7 +22,7 @@ describe("Block an Organization ", () => {
   });
 
   it("Should return a 404 error if Organization is not found", async () => {
-    const url = `/v1/msadmins/organizations/5f08a075b9319514ecc35546/block`;
+    const url = `/v1/msadmins/organizations/5f08a075b9319514ecc35546/unblock`;
     const bearerToken = `bearer ${global.superSysToken}`; //an invalid token
     const res = await request.patch(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(404);

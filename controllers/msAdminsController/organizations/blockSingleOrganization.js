@@ -1,7 +1,7 @@
-const OrganizationModel = require('../../../models/organizations');
-const CustomError = require('../../../utils/customError');
-const responseHandler = require('../../../utils/responseHandler');
-const softDelete = require('../../../utils/softDelete');
+const OrganizationModel = require("../../../models/organizations");
+const CustomError = require("../../../utils/customError");
+const responseHandler = require("../../../utils/responseHandler");
+const softDelete = require("../../../utils/softDelete");
 
 /**
  * @author Ekeyekwu Oscar
@@ -22,7 +22,7 @@ const blockSingleOrganization = async (req, res, next) => {
     //check if organization exists
     const organization = await OrganizationModel.findById(organizationId);
     if (!organization) {
-      next(new CustomError(404, 'Organization not found or deleted'));
+      next(new CustomError(404, "Organization not found or deleted"));
       return;
     }
 
@@ -40,9 +40,9 @@ const blockSingleOrganization = async (req, res, next) => {
       blockedAt: blockedOrg.deletedAt,
       blockedBy: blockedOrg.deletedBy,
     };
-    responseHandler(res, 200, data, 'Organization Blocked Successfully');
+    responseHandler(res, 200, data, "Organization Blocked Successfully");
   } catch (error) {
-    next(new CustomError(400, 'An error occured blocking this Organization!'));
+    next(new CustomError(400, "An error occured blocking this Organization!"));
   }
 };
 
