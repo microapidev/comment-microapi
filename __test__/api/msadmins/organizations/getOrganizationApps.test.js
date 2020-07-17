@@ -7,9 +7,9 @@ describe("GET Organization Applications", () => {
     const url = `/v1/msadmins/organizations/${global.organization._id}/applications`;
     const bearerToken = `bearer ${global.superSysToken}`;
     const res = await request.get(url).set("Authorization", bearerToken);
- 
+
     expect(res.status).toEqual(200);
-    expect(res.body.status).toEqual("success");   
+    expect(res.body.status).toEqual("success");
   });
 
   it("Should return a 401 error if Authentication fails", async () => {

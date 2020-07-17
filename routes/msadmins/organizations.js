@@ -5,7 +5,7 @@ const validationRules = require("../../utils/validationRules").msAdmins;
 
 // GET Applications
 router.get(
-  "/organizations/:organizationId/applications",
+  "/:organizationId/applications",
   validMW(validationRules.getOrganizationsApps),
   msAdminsOrgsCtrl.getOrganizationsApps
 );

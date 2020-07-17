@@ -1,8 +1,8 @@
-const Applications = require('../../../models/applications');
-const Organizations = require('../../../models/organizations');
-const MsAdmin = require('../../../models/msadmins');
-const CustomError = require('../../../utils/customError');
-const responseHandler = require('../../../utils/responseHandler');
+const Applications = require("../../../models/applications");
+const Organizations = require("../../../models/organizations");
+const MsAdmin = require("../../../models/msadmins");
+const CustomError = require("../../../utils/customError");
+const responseHandler = require("../../../utils/responseHandler");
 
 /**
  * @author Ekeyekwu Oscar
@@ -24,19 +24,19 @@ const getOrganizationsApps = async (req, res, next) => {
     //check if msAdmin exists
     const msAdmin = await MsAdmin.findById(msAdminId);
     if (!msAdmin) {
-      next(new CustomError(404, 'MsAdmin account not found'));
+      next(new CustomError(404, "MsAdmin account not found"));
       return;
     }
 
     const organization = await Organizations.findById(organizationId);
     if (!organization) {
-        next(new CustomError(404, 'Organization not found'));
-        return;
-      }
+      next(new CustomError(404, "Organization not found"));
+      return;
+    }
     //get all applications
     const applications = await Applications.find({
       organizationId: organizationId,
-    }).populate('createdBy');
+    }).populate("createdBy");
     allOrgApps = applications.map((application) => {
       return {
         applicationId: application._id,
@@ -46,7 +46,12 @@ const getOrganizationsApps = async (req, res, next) => {
       };
     });
   } catch (error) {
-    next(new CustomError(400, 'An error occured retrieving Organization Applications'));
+    next(
+      new CustomError(
+        400,
+        "An error occured retrieving Organization Applications"
+      )
+    );
     return;
   }
 
@@ -54,7 +59,7 @@ const getOrganizationsApps = async (req, res, next) => {
     res,
     200,
     allOrgApps,
-    'All Applications retrieved successfully'
+    "All Applications retrieved successfully"
   );
 };
 
