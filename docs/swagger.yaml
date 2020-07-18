@@ -203,6 +203,9 @@ paths:
 
       summary: Creates a new Microservice Admin
 
+      security:
+        - Bearer: []
+
       requestBody:
         description: A JSON object containing the MS Admin information
         required: true
@@ -483,6 +486,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
         "422":
           description: Validation error
@@ -538,12 +548,737 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
         "422":
           description: Validation error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to manage system settings
+  /msadmins/settings:
+    #Get Operation
+    get:
+      tags:
+        - Microservice Admins
+
+      summary: Get System settings
+
+      security:
+        - Bearer: []
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      maxRequestsPerMin:
+                        type: number
+                      maxItemsPerPage:
+                        type: number
+                      defaultItemsPerPage:
+                        type: number
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    patch:
+      tags:
+        - Microservice Admins
+        
+      summary: Update System settings
+
+      security:
+        - Bearer: []
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      maxRequestsPerMin:
+                        type: number
+                      maxItemsPerPage:
+                        type: number
+                      defaultItemsPerPage:
+                        type: number
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      
+  # Endpoints to manage organizations using the microservice
+  /msadmins/organizations:
+    #Get operation
+    get:
+      tags:
+        - Microservice Admins
+
+      summary: Get all organization using the microservice
+
+      security:
+        - Bearer: []
+      
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        organizationId:
+                          type: string
+                        organizationName:
+                          type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to manage organizations
+  /msadmins/organizations/{organizationId}:
+    #Get operation
+    get:
+      tags:
+        - Microservice Admins
+
+      summary: Get Single organization
+
+      security: 
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      organizationId:
+                        type: string
+                      organizationName:
+                        type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      tags:
+        - Microservice Admins
+
+      summary: Delete Single organization
+
+      security: 
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      organizationId:
+                        type: string
+                      organizationName:
+                        type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  # Endpoint to  unblock organization
+  /msadmins/organizations/{organizationId}/block:     
+    #Patch operation
+    patch:
+      tags:
+        - Microservice Admins
+
+      summary: Block Single organization
+
+      security: 
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      organizationId:
+                        type: string
+                      organizationName:
+                        type: string
+                      organizationEmail:
+                        type: string
+                      blocked: 
+                        type: boolean
+                      blockedAt:
+                        type: string
+                      blockedBy:
+                        type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  # Endpoint to  unblock organization
+  /msadmins/organizations/{organizationId}/unblock:
+    #patch operation
+    patch:
+      tags:
+        - Microservice Admins
+
+      summary: Unblock Single organization
+
+      security: 
+        - Bearer: []
+      
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      organizationId:
+                        type: string
+                      organizationName:
+                        type: string
+                      organizationEmail:
+                        type: string
+                      unblocked: 
+                        type: boolean
+                      unblockedAt:
+                        type: string
+                      unblockedBy:
+                        type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+# Endpoints to manage organizations using the microservice
+  /msadmins/applications:
+    #Get operation
+    get:
+      tags:
+        - Microservice Admins
+
+      summary: Get all applications using the microservice
+
+      security:
+        - Bearer: []
+      
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        applicationId:
+                          type: string
+                        applicationName:
+                          type: string
+                        organizationId:
+                          type: string
+                        organizationName:
+                          type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to manage organizations
+  /msadmins/applications/{applicationId}:
+    #Get operation
+    get:
+      tags:
+        - Microservice Admins
+
+      summary: Get Single Application
+
+      security: 
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object                   
+                    properties:
+                      applicationId:
+                        type: string
+                      applicationName:
+                        type: string
+                      organizationId:
+                        type: string
+                      organizationName:
+                        type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      tags:
+        - Microservice Admins
+
+      summary: Delete Single Application
+
+      security: 
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      applicationId:
+                        type: string
+                      applicationName:
+                        type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  # Endpoint to  unblock organization
+  /msadmins/applications/{applicationId}/block:     
+    #Patch operation
+    patch:
+      tags:
+        - Microservice Admins
+
+      summary: Block Single Application
+
+      security: 
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/organizationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      applicationId:
+                        type: string
+                      applicationName:
+                        type: string
+                      blocked: 
+                        type: boolean
+                      blockedAt:
+                        type: string
+                      blockedBy:
+                        type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  # Endpoint to  unblock organization
+  /msadmins/applications/{applicationId}/unblock:
+    #patch operation
+    patch:
+      tags:
+        - Microservice Admins
+
+      summary: Unblock Single Application
+
+      security: 
+        - Bearer: []
+      
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      applicationId:
+                        type: string
+                      applicationName:
+                        type: string
+                      unblocked: 
+                        type: boolean
+                      unblockedAt:
+                        type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
   # Endpoint to create an organization
   /organizations:
     # POST operation
@@ -656,58 +1391,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  # Endpoint to delete an organization
-  /organizations/{organizationId}:
-    # DELETE operation
-    delete:
-      tags:
-        - Organizations
-
-      summary: Delete an Organization
-
-      parameters:
-        - in: path
-          $ref: "#/components/parameters/organizationIdParam"
-
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - message
-                  - status
-                  - data
-                properties:
-                  message:
-                    type: string
-                  status:
-                    type: string
-                  data:
-                    $ref: "#/components/schemas/DeleteOrganization"
-        "401":
-          description: Authentication error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-        "404":
-          description: Invalid ID error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-        "422":
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-  # Endpoint to create an organization's admin
+    # Endpoint to create an organization's admin
   /admins:
     # GET operation
     get:
