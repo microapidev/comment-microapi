@@ -16,6 +16,10 @@ router.get(
 );
 
 //Block Application
-router.patch("/:applicationId/block",validMW(validationRules.blockApplicationSchema),msAdminsAppCtrl.blockSingleApplication);
+router.patch(
+  "/:applicationId/block",
+  validMW(validationRules.blockApplicationSchema),
+  msAdminsAppCtrl.blockSingleApplication
+);
 
 module.exports = router;
