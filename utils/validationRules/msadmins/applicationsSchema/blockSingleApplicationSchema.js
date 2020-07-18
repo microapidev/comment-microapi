@@ -3,7 +3,7 @@ const Joi = require("@hapi/joi");
 /**
  * Schema validation for block '/applicatoions/{applicationId}/block'
  */
-const blockApplicationSchema = {
+const blockSingleApplicationSchema = {
   headers: Joi.object({
     authorization: Joi.string().required(),
   }),
@@ -13,4 +13,4 @@ const blockApplicationSchema = {
   }),
 };
 
-module.exports = blockApplicationSchema;
+module.exports = blockSingleApplicationSchema;
