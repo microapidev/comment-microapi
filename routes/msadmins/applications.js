@@ -28,4 +28,10 @@ router.patch(
   msAdminsAppCtrl.unblockSingleApplication
 );
 
+//delete applicationId
+router.delete(
+  "/:applicationId",
+  validMW(validationRules.getSingleApplication),
+  msAdminsAppCtrl.deleteSingleApplication
+);
 module.exports = router;
