@@ -14,6 +14,7 @@ exports.blockApplicationSchema = require("./applicationsSchema/blockSingleApplic
 
 //Organization Schema
 exports.organizationsSchema = require("./organzationsSchema/organizationsSchema");
+exports.getAllOrganizationsSchema = require("./organzationsSchema/getAllOrganizationsSchema");
 
 //Settings Schema
 exports.updateSystemSettingsSchema = require("./settings/updateSystemSettingsSchema");

@@ -10,6 +10,13 @@ router.get(
   msAdminsOrgsCtrl.getOrganizationsApps
 );
 
+//get all organizations
+router.get(
+  "/",
+  validMW(validationRules.getAllOrganizationsSchema),
+  msAdminsOrgsCtrl.getAllOrganizations
+);
+
 //soft delete routes
 router.patch(
   "/:organizationId/block",
