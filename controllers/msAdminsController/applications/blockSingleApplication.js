@@ -34,7 +34,6 @@ const blockSingleApplication = async (req, res, next) => {
     const data = {
       applicationId: blockedApp._id,
       applicationName: blockedApp.name,
-      applicationEmail: blockedApp.email,
       blocked: blockedApp.deleted,
       blockedAt: blockedApp.deletedAt,
       blockedBy: blockedApp.deletedBy,
