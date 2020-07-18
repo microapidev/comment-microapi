@@ -203,6 +203,9 @@ paths:
 
       summary: Creates a new Microservice Admin
 
+      security:
+        - Bearer: []
+
       requestBody:
         description: A JSON object containing the MS Admin information
         required: true
@@ -558,6 +561,86 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to manage system settings
+  /msadmins/settings:
+    #Get Operation
+    get:
+      tags:
+        - Microservice Admins
+      summary: Get System settings
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      maxRequestsPerMin:
+                        type: number
+                      maxItemsPerPage:
+                        type: number
+                      defaultItemsPerPage:
+                        type: number
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    patch:
+      tags:
+        - Microservice Admins
+      summary: Update System settings
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      maxRequestsPerMin:
+                        type: number
+                      maxItemsPerPage:
+                        type: number
+                      defaultItemsPerPage:
+                        type: number
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      
   # Endpoints to manage organizations using the microservice
   /msadmins/organizations:
     #Get operation
@@ -1300,58 +1383,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  # Endpoint to delete an organization
-  /organizations/{organizationId}:
-    # DELETE operation
-    delete:
-      tags:
-        - Organizations
-
-      summary: Delete an Organization
-
-      parameters:
-        - in: path
-          $ref: "#/components/parameters/organizationIdParam"
-
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - message
-                  - status
-                  - data
-                properties:
-                  message:
-                    type: string
-                  status:
-                    type: string
-                  data:
-                    $ref: "#/components/schemas/DeleteOrganization"
-        "401":
-          description: Authentication error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-        "404":
-          description: Invalid ID error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-        "422":
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-  # Endpoint to create an organization's admin
+    # Endpoint to create an organization's admin
   /admins:
     # GET operation
     get:
