@@ -1,4 +1,8 @@
 tags:
+  - name: Microservice Admins
+    description: |
+      Manage Microservice Operations
+
   - name: Organizations
     description: |
       Create and manage organizations.
@@ -16,6 +20,530 @@ tags:
       Create and manage comments and replies.
 
 paths:
+  #Endpoints to Microservice admin Operations
+  /msadmins:
+    #Post Operation
+    post:
+      tags:
+        - Microservice Admins
+
+      summary: Login a Microservice Admin to get token
+
+      requestBody:
+        description: A JSON object Containing login information
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      systemToken:
+                        type: string
+      "400":
+        description: Bad request error
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ErrorResponse"
+
+      "422":
+        description: Validation error
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ErrorResponse"
+
+    #GET Operation
+    get:
+      tags:
+        - Microservice Admins
+
+      summary: Get all Microservice Admins
+
+      security:
+        - Bearer: []
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MsAdmins"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # Patch operation
+    patch:
+      tags:
+        - Microservice Admins
+
+      summary: Microservice Admin Update Details
+
+      security:
+        - Bearer: []
+
+      requestBody:
+        description: A JSON object containing the MS Admin information
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullname:
+                  type: string
+
+      responses:
+        responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      fullname:
+                        type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  #Endpoint to create new ms admin
+  /msadmins/create:
+    #POST operation
+    post:
+      tags:
+        - Microservice Admins
+
+      summary: Creates a new Microservice Admin
+
+      requestBody:
+        description: A JSON object containing the MS Admin information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMSAdmin"
+
+        responses:
+          "201":
+            description: Successful operation
+            content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      fullname:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+          "401":
+            description: Authorization Error
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ErrorResponse"
+
+          "400":
+            description: Bad request error
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ErrorResponse"
+
+          "422":
+            description: Validation error
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ErrorResponse"
+
+  #Endpoint to change password
+  /msadmins/change-password:
+    #POST operation
+    post:
+      tags:
+        - Microservice Admins
+
+      summary: Changes MS Admin Password
+
+      security:
+        - Bearer: []
+
+      requestBody:
+        description: A JSON objcet containing old and new password
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
+
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /msadmins/{msAdminId}:
+    #GET operation
+    get:
+      tags:
+        - Microservice Admins
+
+      summary: Get a single Microservice Admin
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/msAdminIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/MsAdmin"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    #delete operation
+    delete:
+      tags:
+        - Microservice Admins
+
+      summary: Delete a Microservice Admin
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/msAdminIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      fullname:
+                        type: string
+                      email:
+                        type: string
+                      msAdminId:
+                        type: string
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "404":
+          description: Invalid ID error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  #Endpoint to enable admin
+  /msadmins/{msAdminId}/enable:
+    # Patch Operation
+    patch:
+      tags:
+        - Microservice Admins
+
+      summary: Enables a Microservice Admin
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/msAdminIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      fullname:
+                        type: string
+                      email:
+                        type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to disable admin
+  /msadmins/{msAdminId}/disable:
+    # Patch Operation
+    patch:
+      tags:
+        - Microservice Admins
+
+      summary: Disables a Microservice Admin
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/msAdminIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      fullname:
+                        type: string
+                      email:
+                        type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   # Endpoint to create an organization
   /organizations:
     # POST operation
@@ -882,13 +1410,13 @@ paths:
 
         - in: query
           $ref: "#/components/parameters/originParam"
-        
+
         - in: query
           $ref: "#/components/parameters/limitParam"
 
         - in: query
           $ref: "#/components/parameters/sortParam"
-        
+
         - in: query
           $ref: "#/components/parameters/pageParam"
 
@@ -916,7 +1444,7 @@ paths:
                         items:
                           $ref: "#/components/schemas/Comment"
                       pageInfo:
-                          $ref: "#/components/schemas/pageInfo"
+                        $ref: "#/components/schemas/pageInfo"
 
         "401":
           description: Authentication error
@@ -1483,7 +2011,7 @@ paths:
 
         - in: query
           $ref: "#/components/parameters/sortParam"
-        
+
         - in: query
           $ref: "#/components/parameters/pageParam"
 
@@ -2090,6 +2618,37 @@ components:
   # Reusable schemas (data models)
   #-------------------------------
   schemas:
+    MsAdmin:
+      type: object
+      required:
+        - fullname
+        - email
+        - msAdminId
+      properties:
+        fullname:
+          type: string
+        email:
+          type: string
+        msAdminId:
+          type: string
+
+    CreateMSAdmin:
+      type: object
+      required:
+        - fullname
+        - email
+        - password
+        - role
+      properties:
+        fullname:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+
     Organization: # Can be referenced as '#/components/schemas/Organization'
       type: object
       required:
@@ -2179,7 +2738,7 @@ components:
           type: string
         organizationToken:
           type: string
- 
+
     Admin: # Can be referenced as '#/components/schemas/Admin'
       type: object
       required:
@@ -2289,7 +2848,7 @@ components:
         updatedAt:
           type: string
 
-    pageInfo: # Can be referenced as '#/components/schemas/pageInfo'  
+    pageInfo: # Can be referenced as '#/components/schemas/pageInfo'
       type: object
       required:
         - currentPage
@@ -2300,7 +2859,7 @@ components:
         - prevPage
         - pageRecordCount
         - totalRecord
-      properties:        
+      properties:
         currentPage:
           type: number
         totalPages:
@@ -2317,7 +2876,7 @@ components:
           type: number
         totalRecord:
           type: number
-    
+
     CreateComment: # Can be referenced as '#/components/schemas/CreateComment'
       type: object
       required:
@@ -2492,6 +3051,14 @@ components:
       in: path
       name: organizationId
       description: String ID of the organization
+      required: true
+      schema:
+        type: string
+
+    msAdminIdParam: # Can be referenced via '#/components/parameters/msAdminIdParam'
+      in: path
+      name: msAdminId
+      description: String ID of the Microservice Admin
       required: true
       schema:
         type: string

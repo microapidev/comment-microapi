@@ -62,7 +62,11 @@ const createSingleAdmin = async (req, res, next) => {
   return responseHandler(
     res,
     201,
-    { msAdminId: newAdmin._id },
+    {
+      msAdminId: newAdmin._id,
+      fullname: newAdmin.fullname,
+      role: newAdmin.role,
+    },
     "Admin account created successfully"
   );
 };
