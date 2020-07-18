@@ -568,7 +568,11 @@ paths:
     get:
       tags:
         - Microservice Admins
+
       summary: Get System settings
+
+      security:
+        - Bearer: []
 
       responses:
         "200":
@@ -606,7 +610,11 @@ paths:
     patch:
       tags:
         - Microservice Admins
+        
       summary: Update System settings
+
+      security:
+        - Bearer: []
 
       responses:
         "200":
