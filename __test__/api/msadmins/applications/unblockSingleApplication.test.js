@@ -23,7 +23,6 @@ describe("unblock an Application ", () => {
       createdBy: global.msAdmin._id,
     });
     await application.save();
-    console.log(application);
 
     //block the application
     const blockedApp = await softDelete.deleteById(

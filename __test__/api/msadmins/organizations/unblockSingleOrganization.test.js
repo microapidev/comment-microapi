@@ -19,7 +19,7 @@ describe("unblock an Organization ", () => {
     await softDelete.deleteById(
       OrganizationModel,
       organization._id,
-      global.msSuperAdmin.id
+      global.msSuperAdmin._id
     );
 
     //unblock organization using softDelete
@@ -40,6 +40,22 @@ describe("unblock an Organization ", () => {
   });
 
   it("Should return a 404 error if Organization is not found", async () => {
+    //create sample org
+    const rand = Math.floor(Math.random() * 100 + 1);
+    const organization = await new OrganizationModel({
+      name: "hng",
+      email: `newOrg${rand}@email.com`,
+      secret: "hithere",
+    });
+    await organization.save();
+
+    //block it
+    await softDelete.deleteById(
+      OrganizationModel,
+      organization._id,
+      global.msSuperAdmin._id
+    );
+
     const url = `/v1/msadmins/organizations/5f08a075b9319514ecc35546/unblock`;
     const bearerToken = `bearer ${global.sysToken}`; //an invalid token
     const res = await request.patch(url).set("Authorization", bearerToken);
