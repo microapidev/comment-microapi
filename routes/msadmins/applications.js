@@ -31,7 +31,7 @@ router.patch(
 //delete applicationId
 router.delete(
   "/:applicationId",
-  validMW(validationRules.getSingleApplication),
+  validMW(validationRules.deleteApplicationSchema),
   msAdminsAppCtrl.deleteSingleApplication
 );
 module.exports = router;

@@ -13,6 +13,7 @@ const deleteSingleApplication = async (req, res, next) => {
     }
     const data = {
       applicationName: application.name,
+      applicationId: application._id,
     };
     responseHandler(res, 200, data, "Application Deleted Successfully");
   } catch (err) {
