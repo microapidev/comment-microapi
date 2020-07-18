@@ -7,7 +7,7 @@ const OrganizationModel = require("../../../../models/organizations");
 describe("Block an Application ", () => {
   it("Should block an Application ", async () => {
     //create mock organiztion
-    const rand = Math.floor(Math.random() * 100 + 1);
+    const rand = Math.floor(Math.random() * 1000 + 1);
     const organization = await new OrganizationModel({
       name: "hng",
       email: `newOrg${rand}@email.com`,
