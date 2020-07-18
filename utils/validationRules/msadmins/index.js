@@ -11,7 +11,7 @@ exports.getAllApplicationsSchema = require("./applicationsSchema/getAllApplicati
 exports.getSingleApplicationSchema = require("./applicationsSchema/getSingleApplicationSchema");
 
 //Organization Schema
-exports.getOrganizationsApps = require("./organzationsSchema/getOrganizationsApps");
+exports.organizationsSchema = require("./organzationsSchema/organizationsSchema");
 
 //Settings Schema
 exports.updateSystemSettingsSchema = require("./settings/updateSystemSettingsSchema");

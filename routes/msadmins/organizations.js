@@ -6,8 +6,28 @@ const validationRules = require("../../utils/validationRules").msAdmins;
 // GET Applications
 router.get(
   "/:organizationId/applications",
-  validMW(validationRules.getOrganizationsApps),
+  validMW(validationRules.organizationsSchema),
   msAdminsOrgsCtrl.getOrganizationsApps
+);
+
+//soft delete routes
+router.patch(
+  "/:organizationId/block",
+  validMW(validationRules.organizationsSchema),
+  msAdminsOrgsCtrl.blockSingleOrganization
+);
+//restore blocked organization
+router.patch(
+  "/:organizationId/unblock",
+  validMW(validationRules.organizationsSchema),
+  msAdminsOrgsCtrl.unblockSingleOrganization
+);
+
+//delete organization
+router.delete(
+  "/:organizationId",
+  validMW(validationRules.organizationsSchema),
+  msAdminsOrgsCtrl.deleteSingleOrganization
 );
 
 module.exports = router;
