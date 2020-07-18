@@ -6,6 +6,7 @@ var app = require("../server");
 var debug = require("debug")("fblog:server");
 var http = require("http");
 const { createDefaultAdmin } = require("../utils/auth/msadmin");
+const SystemSettings = require("../models/systemSettings");
 
 /**
  * Module to allow usage of process.env
@@ -19,10 +20,18 @@ console.log("\n \t Attempting to connect to database...");
 const database = require("../db/database");
 database.connect().then(() => {
   console.log("\n \t Database connected successfully");
-  createDefaultAdmin().catch((error) => {
-    console.log(`\n \t ${error.message}`);
-    process.exit(1);
-  });
+  createDefaultAdmin()
+    .then(async () => {
+      //Initialize system settings by triggering dummy update with empty values
+      //if any setting is not set defaults kick in
+      console.log(`\n \t Updating system settings ....`);
+      await SystemSettings.findOneAndUpdate({}, {}, { upsert: true });
+      console.log(`\n \t Systems updated`);
+    })
+    .catch((error) => {
+      console.log(`\n \t ${error.message}`);
+      process.exit(1);
+    });
 });
 
 /**

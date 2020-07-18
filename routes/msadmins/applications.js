@@ -5,14 +5,33 @@ const validationRules = require("../../utils/validationRules").msAdmins;
 
 // GET Applications
 router.get(
-  "/applications",
+  "/",
   validMW(validationRules.getAllApplicationsSchema),
   msAdminsAppCtrl.getAllApplications
 );
 router.get(
-  "/applications/:applicationId",
+  "/:applicationId",
   validMW(validationRules.getSingleApplicationSchema),
   msAdminsAppCtrl.getSingleApplication
 );
 
+//Block & Unblock Application
+router.patch(
+  "/:applicationId/block",
+  validMW(validationRules.blockApplicationSchema),
+  msAdminsAppCtrl.blockSingleApplication
+);
+
+router.patch(
+  "/:applicationId/unblock",
+  validMW(validationRules.blockApplicationSchema),
+  msAdminsAppCtrl.unblockSingleApplication
+);
+
+//delete applicationId
+router.delete(
+  "/:applicationId",
+  validMW(validationRules.deleteApplicationSchema),
+  msAdminsAppCtrl.deleteSingleApplication
+);
 module.exports = router;

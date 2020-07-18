@@ -1,4 +1,5 @@
 const Applications = require("../../../models/applications");
+const Organizations = require("../../../models/organizations");
 const MsAdmin = require("../../../models/msadmins");
 const CustomError = require("../../../utils/customError");
 const responseHandler = require("../../../utils/responseHandler");
@@ -12,12 +13,13 @@ const responseHandler = require("../../../utils/responseHandler");
  * @param {*} res - The response object
  * @param {*} next - The function executed to call the next middleware
  */
-const getAllApplications = async (req, res, next) => {
+const getOrganizationsApps = async (req, res, next) => {
   //get msAdminId from token
   const { msAdminId } = req.token;
+  const { organizationId } = req.params;
 
   //get all applications and map field names appropriately
-  let allApplications;
+  let allOrgApps;
   try {
     //check if msAdmin exists
     const msAdmin = await MsAdmin.findById(msAdminId);
@@ -26,27 +28,39 @@ const getAllApplications = async (req, res, next) => {
       return;
     }
 
+    const organization = await Organizations.findById(organizationId);
+    if (!organization) {
+      next(new CustomError(404, "Organization not found"));
+      return;
+    }
     //get all applications
-    const applications = await Applications.find().populate("organizationId");
-    allApplications = applications.map((application) => {
+    const applications = await Applications.find({
+      organizationId: organizationId,
+    }).populate("createdBy");
+    allOrgApps = applications.map((application) => {
       return {
         applicationId: application._id,
         applicationName: application.name,
-        organizationId: application.organizationId,
-        organizationName: application.organizationId.name,
+        createdBy: application.createdBy.fullname,
+        createdAt: application.createdAt,
       };
     });
   } catch (error) {
-    next(error);
+    next(
+      new CustomError(
+        400,
+        "An error occured retrieving Organization Applications"
+      )
+    );
     return;
   }
 
   return responseHandler(
     res,
     200,
-    allApplications,
+    allOrgApps,
     "All Applications retrieved successfully"
   );
 };
 
-module.exports = getAllApplications;
+module.exports = getOrganizationsApps;

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const mongooseDelete = require("mongoose-delete");
 
 const OrganizationSchema = new Schema(
   {
@@ -20,5 +21,12 @@ const OrganizationSchema = new Schema(
   },
   { timestamps: true }
 );
+
+OrganizationSchema.plugin(mongooseDelete, {
+  overrideMethods: true,
+  deletedAt: true,
+  deletedBy: true,
+});
+
 const Organization = mongoose.model("Organizations", OrganizationSchema);
 module.exports = Organization;
