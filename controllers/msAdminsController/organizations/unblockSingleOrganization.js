@@ -29,20 +29,15 @@ const unblockSingleOrganization = async (req, res, next) => {
       OrganizationModel,
       organization._id
     );
-    // const data = {
-    //   organizationId: unblockedOrg._id,
-    //   organizationName: unblockedOrg.name,
-    //   organizationEmail: unblockedOrg.email,
-    //   unblocked: unblockedOrg.deleted,
-    //   unblockedAt: unblockedOrg.deletedAt,
-    //   unblockedBy: unblockedOrg.deletedBy,
-    // };
-    responseHandler(
-      res,
-      200,
-      unblockedOrg,
-      "Organization unblocked Successfully"
-    );
+    const data = {
+      organizationId: unblockedOrg._id,
+      organizationName: unblockedOrg.name,
+      organizationEmail: unblockedOrg.email,
+      unblocked: unblockedOrg.deleted,
+      unblockedAt: unblockedOrg.deletedAt,
+      unblockedBy: unblockedOrg.deletedBy,
+    };
+    responseHandler(res, 200, data, "Organization unblocked Successfully");
   } catch (error) {
     next(
       new CustomError(400, "An error occured unblocking this Organization!")
