@@ -17,6 +17,13 @@ router.get(
   msAdminsOrgsCtrl.getAllOrganizations
 );
 
+//get single organization
+router.get(
+  "/:organizationId",
+  validMW(validationRules.organizationsSchema),
+  msAdminsOrgsCtrl.getSingleOrganization
+);
+
 //soft delete routes
 router.patch(
   "/:organizationId/block",
