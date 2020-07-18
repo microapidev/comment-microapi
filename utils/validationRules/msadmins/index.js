@@ -9,6 +9,7 @@ exports.deleteSingleMsAdminSchema = require("./deleteSingleMsAdminSchema");
 //Application Schema
 exports.getAllApplicationsSchema = require("./applicationsSchema/getAllApplicationsSchema");
 exports.getSingleApplicationSchema = require("./applicationsSchema/getSingleApplicationSchema");
+exports.blockApplicationSchema = require("./applicationsSchema/blockSingleApplicationSchema");
 
 //Organization Schema
 exports.organizationsSchema = require("./organzationsSchema/organizationsSchema");

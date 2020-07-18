@@ -35,9 +35,8 @@ ApplicationSchema.index(
 
 ApplicationSchema.post("findOneAndDelete", async (application) => {
   if (application) {
-    //delete any existing replies
+    //delete any existing comment
     await comments.deleteMany({ applicationId: application._id });
-    // console.log(`Deleted ${replies.deletedCount} replies`);
   }
 });
 
