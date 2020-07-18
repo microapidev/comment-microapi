@@ -18,7 +18,9 @@ const unblockSingleOrganization = async (req, res, next) => {
 
   try {
     //check if organization exists
-    const organization = await OrganizationModel.findById(organizationId);
+    const organization = await OrganizationModel.findOneDeleted({
+      _id: organizationId,
+    });
     if (!organization) {
       next(new CustomError(404, "Organization not found or deleted"));
       return;

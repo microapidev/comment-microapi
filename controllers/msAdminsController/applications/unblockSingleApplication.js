@@ -15,25 +15,26 @@ const softDelete = require("../../../utils/softDelete");
 
 const unblockSingleApplication = async (req, res, next) => {
   const { applicationId } = req.params;
-
   try {
     //check if Application exists
-    const application = await ApplicationModel.findById(applicationId);
+    const application = await ApplicationModel.findOneDeleted({
+      _id: applicationId,
+    });
     if (!application) {
       next(new CustomError(404, "Application not found or deleted"));
       return;
     }
 
     //unblock Application using softDelete
-    const unblockedOrg = await softDelete.restoreById(
+    const unblockedApp = await softDelete.restoreById(
       ApplicationModel,
       application._id
     );
     const data = {
-      applicationId: unblockedOrg._id,
-      applicationName: unblockedOrg.name,
-      unblocked: !unblockedOrg.deleted ? true : false,
-      unblockedAt: unblockedOrg.deletedAt,
+      applicationId: unblockedApp._id,
+      applicationName: unblockedApp.name,
+      unblocked: !unblockedApp.deleted ? true : false,
+      unblockedAt: unblockedApp.deletedAt,
     };
     responseHandler(res, 200, data, "Application unblocked Successfully");
   } catch (error) {
