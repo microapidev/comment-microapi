@@ -68,7 +68,7 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
   it("Should add a upvote (new vote) to a comment (toggle)", async () => {
     const url = `/v1/comments/${oldComment.commentId}/votes/upvote`;
     const bearerToken = `bearer ${global.appToken}`;
-    const ownerIdUpdate = "voter@gmail.com";
+    const ownerIdUpdate = "voter1@gmail.com";
 
     // Run test matchers to verify that the comment votes have not been updated in the database.
     await CommentModel.findById(oldComment.commentId).then((comment) => {

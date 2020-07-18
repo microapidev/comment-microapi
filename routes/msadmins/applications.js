@@ -15,11 +15,17 @@ router.get(
   msAdminsAppCtrl.getSingleApplication
 );
 
-//Block Application
+//Block & Unblock Application
 router.patch(
   "/:applicationId/block",
   validMW(validationRules.blockApplicationSchema),
   msAdminsAppCtrl.blockSingleApplication
+);
+
+router.patch(
+  "/:applicationId/unblock",
+  validMW(validationRules.blockApplicationSchema),
+  msAdminsAppCtrl.unblockSingleApplication
 );
 
 module.exports = router;

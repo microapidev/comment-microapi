@@ -6,43 +6,40 @@ const softDelete = require("../../../utils/softDelete");
 /**
  * @author Ekeyekwu Oscar
  *
- * Block Application from using service
+ * unblock Application from using service
  *
  * @param {*} req - The request object
  * @param {*} res - The response object
  * @param {*} next - The function executed to call the next middleware
  */
 
-const blockSingleApplication = async (req, res, next) => {
+const unblockSingleApplication = async (req, res, next) => {
   const { applicationId } = req.params;
-  const { msAdminId } = req.token;
-
   try {
     //check if Application exists
-    const application = await ApplicationModel.findById(applicationId);
+    const application = await ApplicationModel.findOneDeleted({
+      _id: applicationId,
+    });
     if (!application) {
       next(new CustomError(404, "Application not found or deleted"));
       return;
     }
 
-    //block Application using softDelete
-    const blockedApp = await softDelete.deleteById(
+    //unblock Application using softDelete
+    const unblockedApp = await softDelete.restoreById(
       ApplicationModel,
-      applicationId,
-      msAdminId
+      application._id
     );
     const data = {
-      applicationId: blockedApp._id,
-      applicationName: blockedApp.name,
-      applicationEmail: blockedApp.email,
-      blocked: blockedApp.deleted,
-      blockedAt: blockedApp.deletedAt,
-      blockedBy: blockedApp.deletedBy,
+      applicationId: unblockedApp._id,
+      applicationName: unblockedApp.name,
+      unblocked: !unblockedApp.deleted ? true : false,
+      unblockedAt: unblockedApp.deletedAt,
     };
-    responseHandler(res, 200, data, "Application Blocked Successfully");
+    responseHandler(res, 200, data, "Application unblocked Successfully");
   } catch (error) {
-    next(error);
+    next(new CustomError(400, "An error occured unblocking this Application!"));
   }
 };
 
-module.exports = blockSingleApplication;
+module.exports = unblockSingleApplication;
