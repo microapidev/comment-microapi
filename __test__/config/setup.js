@@ -23,8 +23,6 @@ beforeAll(async () => {
   //update system settings
   await SystemSettings.findOneAndUpdate({}, {}, { upsert: true, new: true });
 
-  console.log(process.env.maxRequestsPerMin);
-
   const date = Date.now();
   const randNum = Math.floor(Math.random() * 99999 + 11111);
 
