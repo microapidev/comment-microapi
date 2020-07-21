@@ -19,6 +19,11 @@ const SystemSettingsSchema = new Schema(
       required: true,
       default: 20,
     },
+    defaultMaxRequestsPerDay: {
+      type: Number,
+      required: true,
+      default: 10000,
+    },
   },
   {
     timestamps: true,
