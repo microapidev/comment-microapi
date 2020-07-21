@@ -1,7 +1,7 @@
 const RateLimit = require("express-rate-limit");
 
 const globalRateLimiter = new RateLimit({
-  windowMs: 60 * 1000,
+  windowMs: 60 * 1000, //max requests in 1 min.
   max: () => {
     return process.env.maxRequestsPerMin;
   },
