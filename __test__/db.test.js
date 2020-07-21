@@ -20,7 +20,7 @@ describe("INSERT", () => {
     await mockComment.save();
 
     const insertedComment = await CommentModel.findById(id);
-    expect(insertedComment._id).toEqual(mockComment._id);
+    expect(insertedComment.id).toEqual(mockComment.id);
     expect(insertedComment.ownerId).toEqual(mockComment.ownerId);
   });
 });
