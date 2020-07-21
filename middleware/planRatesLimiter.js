@@ -1,5 +1,6 @@
 const RateLimit = require("express-rate-limit");
 const MongoStore = require("rate-limit-mongo");
+require("../utils/dbParams");
 
 const mongoStore = new MongoStore({
   user: process.env.DB_USER,
@@ -12,7 +13,13 @@ const planRatesLimiter = new RateLimit({
   windowMs: 60 * 1000 * 60 * 24, //max requests duration 24 hours
   max: (req) => {
     //get plan maximum requests from token
-    return req.token.maxRequestsPerDay || process.env.defaultMaxRequestsPerDay;
+    if (req.token) {
+      return (
+        req.token.maxRequestsPerDay || process.env.defaultMaxRequestsPerDay
+      );
+    }
+
+    return process.env.defaultMaxRequestsPerDay;
   },
   message: {
     status: 429,

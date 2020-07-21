@@ -35,7 +35,7 @@ const SystemSettingsSchema = new Schema(
   }
 );
 
-SystemSettingsSchema.post("save", function (setting) {
+SystemSettingsSchema.post("findOneAndUpdate", function (setting) {
   if (setting) {
     updateEnvSystemSettings(setting);
   }
