@@ -23,6 +23,10 @@ const planRatesLimiter = new RateLimit({
     const key = req.token.applicationId;
     return key;
   },
+  skip: () => {
+    //globally disable request limits
+    return process.env.disableRequestLimits.toLowerCase() === "true";
+  },
 });
 
 planRatesLimiter.store = mongoStore;
