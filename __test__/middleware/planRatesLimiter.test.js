@@ -5,7 +5,7 @@ const errorHandler = require("../../utils/errorhandler");
 
 describe("Plan rate limiter", () => {
   let app, request, planRatesLimiter;
-  process.env.maxRequestsPerDay = 50;
+  process.env.defaultMaxRequestsPerDay = 50;
 
   afterAll(async () => {
     const mongoClient = await planRatesLimiter.store.getClient();
@@ -56,6 +56,14 @@ describe("Plan rate limiter", () => {
         expect(res.status).toEqual(429);
         break;
       }
+    }
+  });
+  it("should allow all requests when limits are disabled", async () => {
+    process.env.disableRequestLimits = true;
+    //make 100 requests
+    for (let index = 0; index < 100; index++) {
+      let res = await request.get("/");
+      expect(res.status).toEqual(200);
     }
   });
 });

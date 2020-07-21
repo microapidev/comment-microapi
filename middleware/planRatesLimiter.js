@@ -25,7 +25,12 @@ const planRatesLimiter = new RateLimit({
   },
   skip: () => {
     //globally disable request limits
-    return process.env.disableRequestLimits.toLowerCase() === "true";
+    if (
+      process.env.disableRequestLimits === undefined ||
+      process.env.disableRequestLimits.toLowerCase() === "false"
+    )
+      return false;
+    return true;
   },
 });
 
