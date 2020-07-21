@@ -12,7 +12,7 @@ exports.createDefaultAdmin = async () => {
     });
 
     if (msAdmin) {
-      log("\n \t Minimal account found");
+      log("\t Minimal account found");
       return msAdmin;
     }
   } catch (error) {
