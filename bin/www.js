@@ -1,8 +1,6 @@
 /**
  * Module dependencies.
  */
-
-var app = require("../server");
 var debug = require("debug")("fblog:server");
 var http = require("http");
 const { createDefaultAdmin } = require("../utils/auth/msadmin");
@@ -12,6 +10,8 @@ const SystemSettings = require("../models/systemSettings");
  * Module to allow usage of process.env
  */
 require("dotenv").config();
+
+let server, port;
 
 //connect to mongodb
 console.log("\n \t Attempting to connect to database...");
@@ -32,38 +32,40 @@ database.connect().then(() => {
       console.log(`\n \t ${error.message}`);
       process.exit(1);
     });
+
+  const app = require("../server");
+
+  /**
+   * Get port from environment and store in Express.
+   */
+
+  var port = normalizePort(process.env.PORT || 4000);
+  app.set("port", port);
+
+  /**
+   * Create HTTP server.
+   */
+
+  server = http.createServer(app);
+
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+
+  server.listen(port, () => {
+    console.log(`\n \t Server listening on ${port}`);
+    console.log("\n \t Server Time: " + Date());
+  });
+  server.on("error", onError);
+  server.on("listening", onListening);
 });
-
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || 4000);
-app.set("port", port);
-
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port, () => {
-  console.log(`\n \t Server listening on ${port}`);
-  console.log("\n \t Server Time: " + Date());
-});
-server.on("error", onError);
-server.on("listening", onListening);
 
 /**
  * Normalize a port into a number, string, or false.
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
