@@ -24,6 +24,11 @@ const SystemSettingsSchema = new Schema(
       required: true,
       default: 10000,
     },
+    disableRequestLimits: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: true,
