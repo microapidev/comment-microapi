@@ -1,9 +1,10 @@
 const RateLimit = require("express-rate-limit");
+require("../utils/dbParams");
 
 const globalRateLimiter = new RateLimit({
   windowMs: 60 * 1000, //max requests in 1 min.
-  max: (req) => {
-    return req.token.maxRequestsPerMin || process.env.maxRequestsPerMin;
+  max: () => {
+    return process.env.maxRequestsPerMin;
   },
   message: {
     status: 429,

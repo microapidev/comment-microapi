@@ -3,6 +3,7 @@ const Organization = require("../../models/organizations");
 const Application = require("../../models/applications");
 const Admin = require("../../models/admins");
 const MsAdmin = require("../../models/msadmins");
+const SystemSettings = require("../../models/systemSettings");
 const { hashPassword } = require("../../utils/auth/passwordUtils");
 const { createDefaultAdmin } = require("../../utils/auth/msadmin");
 const {
@@ -12,11 +13,17 @@ const {
 } = require("../../utils/auth/tokenGenerator");
 
 beforeAll(async () => {
+  console.log("runnin setup");
   await connect();
   /* 
   await truncate(Application);
   await truncate(Admin);
   await truncate(Organization); */
+
+  //update system settings
+  await SystemSettings.findOneAndUpdate({}, {}, { upsert: true, new: true });
+
+  console.log(process.env.maxRequestsPerMin);
 
   const date = Date.now();
   const randNum = Math.floor(Math.random() * 99999 + 11111);
@@ -87,6 +94,11 @@ beforeAll(async () => {
   global.admin = admin;
   global.msSuperAdmin = msSuperAdmin;
   global.msAdmin = msAdmin;
+
+  //save DB params for annoying requestLimiter storage
+  global.DB_USER = process.env.DB_USER;
+  global.DB_PASSWORD = process.env.DB_PASSWORD;
+  global.DB_URI = process.env.DB_URI;
 });
 
 afterAll(async () => {

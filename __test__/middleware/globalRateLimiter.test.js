@@ -1,6 +1,7 @@
 const express = require("express");
 const globalRateLimiter = require("../../middleware/globalRateLimiter");
 const supertest = require("supertest");
+const errorHandler = require("../../utils/errorhandler");
 
 describe("Global rate limiter", () => {
   let app, request;
@@ -11,6 +12,10 @@ describe("Global rate limiter", () => {
     app.use(globalRateLimiter);
     app.get("/", (req, res) => {
       res.status(200).send("OK");
+    });
+
+    app.use((err, req, res, next) => {
+      errorHandler(err, req, res, next);
     });
 
     request = supertest(app);
