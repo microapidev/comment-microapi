@@ -71,12 +71,11 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
     const ownerIdUpdate = "voter@gmail.com";
 
     // Run test matchers to verify that the comment votes have not been updated in the database.
-    await CommentModel.findById(oldComment.commentId).then((comment) => {
-      expect(comment).toBeTruthy();
-      expect(comment.upVotes.length).toEqual(0);
-      expect(comment.downVotes.length).toEqual(0);
-      expect(comment.downVotes.length + comment.upVotes.length).toEqual(0);
-    });
+    let comment = await CommentModel.findById(oldComment.commentId);
+    expect(comment).toBeTruthy();
+    expect(comment.upVotes.length).toEqual(0);
+    expect(comment.downVotes.length).toEqual(0);
+    expect(comment.downVotes.length + comment.upVotes.length).toEqual(0);
 
     // Run test matchers to verify that the comment votes addition produced the correct success response.
     const addRes = await request
@@ -96,12 +95,11 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
     });
 
     // Run test matchers to verify that the comment votes have been added in the database.
-    await CommentModel.findById(oldComment.commentId).then((comment) => {
-      expect(comment).toBeTruthy();
-      expect(comment.upVotes.length).toEqual(1);
-      expect(comment.downVotes.length).toEqual(0);
-      expect(comment.downVotes.length + comment.upVotes.length).toEqual(1);
-    });
+    comment = await CommentModel.findById(oldComment.commentId);
+    expect(comment).toBeTruthy();
+    expect(comment.upVotes.length).toEqual(1);
+    expect(comment.downVotes.length).toEqual(0);
+    expect(comment.downVotes.length + comment.upVotes.length).toEqual(1);
   });
 
   it("Should add a upvote (downvote exists) to a comment (toggle)", async () => {
@@ -110,21 +108,15 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
     const ownerIdUpdate = "voter@gmail.com";
 
     // Run test matchers to verify that the comment votes have not been updated in the database.
-    await CommentModel.findById(oldCommentWithDownVote.commentId).then(
-      (comment) => {
-        expect(comment).toBeTruthy();
-        expect(comment.upVotes.length).toEqual(
-          oldCommentWithDownVote.numOfUpVotes
-        );
-        expect(comment.downVotes.length).toEqual(
-          oldCommentWithDownVote.numOfDownVotes
-        );
-        expect(comment.downVotes.length + comment.upVotes.length).toEqual(
-          oldCommentWithDownVote.numOfVotes
-        );
-      }
+    let comment = await CommentModel.findById(oldCommentWithDownVote.commentId);
+    expect(comment).toBeTruthy();
+    expect(comment.upVotes.length).toEqual(oldCommentWithDownVote.numOfUpVotes);
+    expect(comment.downVotes.length).toEqual(
+      oldCommentWithDownVote.numOfDownVotes
     );
-
+    expect(comment.downVotes.length + comment.upVotes.length).toEqual(
+      oldCommentWithDownVote.numOfVotes
+    );
     // Run test matchers to verify that the comment votes addition produced the correct success response.
     const addRes = await request
       .patch(url)
@@ -143,19 +135,16 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
     });
 
     // Run test matchers to verify that the comment votes have been added in the database.
-    await CommentModel.findById(oldCommentWithDownVote.commentId).then(
-      (comment) => {
-        expect(comment).toBeTruthy();
-        expect(comment.upVotes.length).toEqual(
-          oldCommentWithDownVote.numOfUpVotes + 1
-        );
-        expect(comment.downVotes.length).toEqual(
-          oldCommentWithDownVote.numOfDownVotes - 1
-        );
-        expect(comment.downVotes.length + comment.upVotes.length).toEqual(
-          oldCommentWithDownVote.numOfVotes
-        );
-      }
+    comment = await CommentModel.findById(oldCommentWithDownVote.commentId);
+    expect(comment).toBeTruthy();
+    expect(comment.upVotes.length).toEqual(
+      oldCommentWithDownVote.numOfUpVotes + 1
+    );
+    expect(comment.downVotes.length).toEqual(
+      oldCommentWithDownVote.numOfDownVotes - 1
+    );
+    expect(comment.downVotes.length + comment.upVotes.length).toEqual(
+      oldCommentWithDownVote.numOfVotes
     );
   });
 
@@ -165,19 +154,14 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
     const ownerIdUpdate = "voter@gmail.com";
 
     // Run test matchers to verify that the comment votes have not been removed in the database.
-    await CommentModel.findById(oldCommentWithUpVote.commentId).then(
-      (comment) => {
-        expect(comment).toBeTruthy();
-        expect(comment.upVotes.length).toEqual(
-          oldCommentWithUpVote.numOfUpVotes
-        );
-        expect(comment.downVotes.length).toEqual(
-          oldCommentWithUpVote.numOfDownVotes
-        );
-        expect(comment.downVotes.length + comment.upVotes.length).toEqual(
-          oldCommentWithUpVote.numOfVotes
-        );
-      }
+    let comment = await CommentModel.findById(oldCommentWithUpVote.commentId);
+    expect(comment).toBeTruthy();
+    expect(comment.upVotes.length).toEqual(oldCommentWithUpVote.numOfUpVotes);
+    expect(comment.downVotes.length).toEqual(
+      oldCommentWithUpVote.numOfDownVotes
+    );
+    expect(comment.downVotes.length + comment.upVotes.length).toEqual(
+      oldCommentWithUpVote.numOfVotes
     );
 
     // Run test matchers to verify that the comment votes removal produced the correct success response.
@@ -198,19 +182,16 @@ describe("PATCH /comments/:commentId/votes/upvote", () => {
     });
 
     // Run test matchers to verify that the comment vote has been removed in the database.
-    await CommentModel.findById(oldCommentWithUpVote.commentId).then(
-      (comment) => {
-        expect(comment).toBeTruthy();
-        expect(comment.upVotes.length).toEqual(
-          oldCommentWithUpVote.numOfUpVotes - 1
-        );
-        expect(comment.downVotes.length).toEqual(
-          oldCommentWithUpVote.numOfDownVotes
-        );
-        expect(comment.downVotes.length + comment.upVotes.length).toEqual(
-          oldCommentWithUpVote.numOfVotes - 1
-        );
-      }
+    comment = await CommentModel.findById(oldCommentWithUpVote.commentId);
+    expect(comment).toBeTruthy();
+    expect(comment.upVotes.length).toEqual(
+      oldCommentWithUpVote.numOfUpVotes - 1
+    );
+    expect(comment.downVotes.length).toEqual(
+      oldCommentWithUpVote.numOfDownVotes
+    );
+    expect(comment.downVotes.length + comment.upVotes.length).toEqual(
+      oldCommentWithUpVote.numOfVotes - 1
     );
   });
 

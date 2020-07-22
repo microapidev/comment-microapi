@@ -1,11 +1,10 @@
 const RateLimit = require("express-rate-limit");
 const MongoStore = require("rate-limit-mongo");
+const mongoose = require("mongoose");
 require("../utils/dbParams");
 
 const mongoStore = new MongoStore({
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  uri: process.env.DB_URI,
+  collection: mongoose.connection.collection("RateLimits"),
 });
 
 const planRatesLimiter = new RateLimit({
