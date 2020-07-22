@@ -18,6 +18,10 @@ const PlanSchema = new Schema({
   requestPerMin: {
     type: Number,
   },
+  maxRequestPerDay: {
+    type: Number,
+    required: true,
+  },
 });
 PlanSchema.plugin(mongoosePaginate);
 const Plans = mongoose.model("Plans", PlanSchema);
