@@ -41,7 +41,8 @@ describe("POST /v1/admins", () => {
     expect(res.body.error).toBeTruthy();
   });
 
-  it("returns 400 for wrong organization token", async () => {
+  //this test actually needs a dummy org and dummy admin and should not even pass
+  it.skip("returns 400 for wrong organization token", async () => {
     const token = await getOrgToken(
       global.organization._id,
       mongoose.Types.ObjectId()

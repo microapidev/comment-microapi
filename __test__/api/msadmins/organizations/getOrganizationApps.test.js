@@ -13,8 +13,8 @@ describe("GET Organization Applications", () => {
   });
 
   it("Should return a 401 error if Authentication fails", async () => {
-    const url = `/v1/msadmins/applications/${global.application._id}`;
-    const bearerToken = `bearer ${global}`; //an invalid token
+    const url = `/v1/msadmins/organizations/${global.organization._id}`;
+    const bearerToken = `bearer token`; //an invalid token
     const res = await request.get(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(401);
     expect(res.body.status).toEqual("error");

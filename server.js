@@ -8,6 +8,7 @@ const adminsRoutes = require("./routes/admins");
 const msAdminsRoutes = require("./routes/msadmins");
 const CustomError = require("./utils/customError");
 const errorHandler = require("./utils/errorhandler");
+const globalRateLimiter = require("./middleware/globalRateLimiter");
 
 require("dotenv").config();
 const app = express();
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 //setup app routes
+app.use(globalRateLimiter);
 app.use("/v1/comments", commentRoutes);
 app.use("/v1/organizations", organizationsRoutes);
 app.use("/v1/applications", applicationsRoutes);

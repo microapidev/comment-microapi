@@ -1,11 +1,12 @@
-const app = require("../../../../server");
 const supertest = require("supertest");
 const SystemSettings = require("../../../../models/systemSettings");
+const app = require("../../../../server");
 const request = supertest(app);
 
 describe("PATCH /msAdmins/settings", () => {
   it("Should insert/update system settings", async () => {
     //system settings from DB should be empty
+    await SystemSettings.deleteMany({});
     const oldSettings = await SystemSettings.findOne({});
     expect(oldSettings).toBeNull();
 
@@ -18,6 +19,8 @@ describe("PATCH /msAdmins/settings", () => {
       maxRequestsPerMin: 100,
       defaultItemsPerPage: 30,
       maxItemsPerPage: 50,
+      defaultMaxRequestsPerDay: 10000,
+      disableRequestLimits: false,
     };
 
     let res = await request
@@ -41,6 +44,8 @@ describe("PATCH /msAdmins/settings", () => {
       maxRequestsPerMin: 200,
       defaultItemsPerPage: 30,
       maxItemsPerPage: 20,
+      defaultMaxRequestsPerDay: 10000,
+      disableRequestLimits: false,
     };
 
     //check for update also in same process because this is a single document collection

@@ -9,7 +9,7 @@ describe("Block an Organization ", () => {
     const rand = Math.floor(Math.random() * 100 + 1);
     const organization = await new OrganizationModel({
       name: "hng",
-      email: `newOrg${rand}@email.com`,
+      email: `newOrg${rand}${Date.now()}@email.com`,
       secret: "hithere",
     });
     await organization.save();
