@@ -1,12 +1,7 @@
-const { truncate } = require("./config/db");
 const CommentModel = require("../models/comments");
 const mongoose = require("mongoose");
 
 describe("INSERT", () => {
-  beforeEach(async () => {
-    await truncate(CommentModel);
-  });
-
   test("Should confirm jest-mongodb works by adding a record", async () => {
     const id = mongoose.Types.ObjectId();
     const mockComment = new CommentModel({

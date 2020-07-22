@@ -13,7 +13,6 @@ const {
 } = require("../../utils/auth/tokenGenerator");
 
 beforeAll(async () => {
-  console.log("runnin setup");
   await connect();
   /* 
   await truncate(Application);

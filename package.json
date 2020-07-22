@@ -7,7 +7,7 @@
     "start": "cross-env DEBUG=log node ./bin/www",
     "startDev": "cross-env DEBUG=log nodemon --exec babel-node ./bin/www",
     "test": "cross-env NODE_ENV=test jest --verbose",
-    "test:debug": "cross-env NODE_ENV=test jest --detectOpenHandles --verbose",
+    "test:debug": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles --verbose",
     "test:watch": "cross-env NODE_ENV=test jest --watch --verbose",
     "test:cover": "cross-env NODE_ENV=test jest --coverage",
     "test:ci": "cross-env NODE_ENV=test jest --coverage --verbose && cat ./coverage/lcov.info | coveralls",

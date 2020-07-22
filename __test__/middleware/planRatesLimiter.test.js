@@ -1,27 +1,13 @@
 const express = require("express");
 const supertest = require("supertest");
-const { connect, disconnect } = require("../config/db");
 const errorHandler = require("../../utils/errorhandler");
+const planRatesLimiter = require("../../middleware/planRatesLimiter");
 
 describe("Plan rate limiter", () => {
-  let app, request, planRatesLimiter;
+  let app, request;
   process.env.defaultMaxRequestsPerDay = 50;
 
-  afterAll(async () => {
-    const mongoClient = await planRatesLimiter.store.getClient();
-    if (mongoClient) {
-      await mongoClient.close();
-    }
-    await disconnect();
-  });
-
-  beforeAll(async () => {
-    await connect();
-  });
-
   beforeEach(() => {
-    planRatesLimiter = require("../../middleware/planRatesLimiter");
-
     app = express();
     app.use((req, res, next) => {
       //attach dummy token here
