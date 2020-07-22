@@ -12,7 +12,7 @@ exports.createDefaultAdmin = async () => {
     });
 
     if (msAdmin) {
-      log("\n \t Minimal account found");
+      log("Minimal account found");
       return msAdmin;
     }
   } catch (error) {
@@ -21,7 +21,7 @@ exports.createDefaultAdmin = async () => {
 
   try {
     //if not found read in SUPER_ADMIN_PASSWORD, SUPER_ADMIN_EMAIL from env
-    log("\n \t Minimal account not found ... creating");
+    log("Minimal account not found ... creating");
 
     //check email
     //putting a temp default email and password in production future this has to be r
@@ -58,7 +58,7 @@ exports.createDefaultAdmin = async () => {
     });
 
     await newAdmin.save();
-    log("\n \t Minimal account created successfully");
+    log("Minimal account created successfully");
 
     //TO-DO wipe details from .env file after successful creation
     return newAdmin;

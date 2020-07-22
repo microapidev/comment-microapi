@@ -17,10 +17,10 @@ const getAllOrganizations = async (req, res, next) => {
   try {
     //get all organizations
     const organizations = await OrganizationsModel.find();
-    allOrganizations = organizations.map((organizations) => {
+    allOrganizations = organizations.map((organization) => {
       return {
-        organizationId: organizations._id,
-        organizationsName: organizations.name,
+        organizationId: organization._id,
+        organizationName: organization.name,
       };
     });
   } catch (error) {
