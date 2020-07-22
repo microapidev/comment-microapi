@@ -3,6 +3,7 @@ const router = express.Router();
 const { superAdminMW } = require("../../middleware/auth");
 const validMW = require("../../middleware/validation");
 const msAdminsCtrl = require("../../controllers/msAdminsController");
+const { paginateOptionsMW } = require("../../middleware/pagination");
 const validationRules = require("../../utils/validationRules").msAdmins;
 
 //------------SUPERADMIN Routes---------------
@@ -15,6 +16,7 @@ router.use(superAdminMW);
 router.get(
   "/",
   validMW(validationRules.getAllMsAdminsSchema),
+  paginateOptionsMW,
   msAdminsCtrl.getAllMsAdmins
 );
 

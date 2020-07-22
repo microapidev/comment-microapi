@@ -1,12 +1,14 @@
 const router = require("express").Router();
 const msAdminsAppCtrl = require("../../controllers/msAdminsController/applications");
 const validMW = require("../../middleware/validation");
+const { paginateOptionsMW } = require("../../middleware/pagination");
 const validationRules = require("../../utils/validationRules").msAdmins;
 
 // GET Applications
 router.get(
   "/",
   validMW(validationRules.getAllApplicationsSchema),
+  paginateOptionsMW,
   msAdminsAppCtrl.getAllApplications
 );
 router.get(
