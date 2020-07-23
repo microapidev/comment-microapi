@@ -29,16 +29,19 @@ describe("POST /applications/:applicationId/subscribe", () => {
   });
 
   it("should subscribe an application to a plan", async () => {
+    const periodData = { period: "monthly" };
     const url = `/v1/applications/${
-      global.application._id
+      application._id
     }/subscribe/${mongoose.Types.ObjectId()}`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request
       .post(url)
       .set("Authorization", bearerToken)
-      .send({ period: "monthly" });
+      .send(periodData);
     expect(res.status).toEqual(201);
     expect(res.body.status).toEqual("success");
+    expect(res.body.data.applicationId).toEqual(String(application._id));
+    expect(res.body.data.period).toEqual(periodData.period);
   });
   it("should return 404 if application is not found", async () => {
     const url = `/v1/applications/${
@@ -55,7 +58,7 @@ describe("POST /applications/:applicationId/subscribe", () => {
   });
   it("Should return a 401 error when authorization token is unauthorized", async () => {
     const url = `/v1/applications/${
-      global.application._id
+      application._id
     }/subscribe/${mongoose.Types.ObjectId()}`;
     const bearerToken = `bearer `;
     const res = await request.post(url).set("Authorization", bearerToken);
@@ -66,7 +69,7 @@ describe("POST /applications/:applicationId/subscribe", () => {
   });
   it("Should return a 422 error when validation fails", async () => {
     const url = `/v1/applications/${
-      global.application._id
+      application._id
     }/subscribe/${mongoose.Types.ObjectId()}`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request.post(url).set("Authorization", bearerToken);
@@ -77,7 +80,7 @@ describe("POST /applications/:applicationId/subscribe", () => {
   });
 
   it("Should return a 422 error for invalid mongoId", async () => {
-    const url = `/v1/applications/${global.application._id}/subscribe/5ea2134fac`;
+    const url = `/v1/applications/${application._id}/subscribe/5ea2134fac`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request.post(url).set("Authorization", bearerToken);
 

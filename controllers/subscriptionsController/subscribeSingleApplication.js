@@ -39,17 +39,17 @@ const subscribeSingleApplication = async (req, res, next) => {
 
     //calculate subscription expiry date
     const subscriptionDate = new Date();
+    const expireOn = new Date();
     let expiryDate =
       period.toLowerCase() === "monthly"
-        ? new Date(subscriptionDate.setMonth(subscriptionDate.getMonth() + 1))
-        : new Date(
-            subscriptionDate.setYear(subscriptionDate.getFullYear() + 1)
-          );
+        ? new Date(expireOn.setMonth(subscriptionDate.getMonth() + 1))
+        : new Date(expireOn.setYear(subscriptionDate.getFullYear() + 1));
 
     //populate subscriptionData
     const subscriptionData = {
       applicationId: applicationId,
       planId: planId,
+      period: period.toLowerCase(),
       expiresOn: expiryDate,
       subscribedOn: subscriptionDate,
     };
