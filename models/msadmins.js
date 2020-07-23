@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const mongoosePaginate = require("mongoose-paginate-v2");
 const mongooseDelete = require("mongoose-delete");
 
 //static roles for now will be dynamic in future iterations
@@ -42,6 +43,9 @@ MsAdminSchema.plugin(mongooseDelete, {
   deletedAt: true,
   deletedBy: true,
 });
+
+//plug in the pagination package
+MsAdminSchema.plugin(mongoosePaginate);
 
 //create model
 const MsAdmin = mongoose.model("MsAdmins", MsAdminSchema);

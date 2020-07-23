@@ -21,7 +21,7 @@ const swaggerDefinition = {
       "### Overview" +
       "\n\n" +
       "The Comment API gives the developer access to built-in functionalities for when they want to " +
-      "implement comments and replies within their own application." +
+      "implement comments and replies within their own application. " +
       "\n\n" +
       "Basic functionalities are available for creation, update, and deletion of " +
       "comments and replies while ensuring that only users authorized are allowed " +

@@ -17,38 +17,15 @@ const responseHandler = require("../../utils/responseHandler");
  */
 const getAllComments = async (req, res, next) => {
   const { applicationId } = req.token; //this will be retrieved from decoded api token after full auth implementation
-  const { refId, origin, ownerId, isFlagged, limit, sort, page } = req.query;
+  const { refId, origin, ownerId, isFlagged } = req.query;
 
   let query = {};
-  let paginateOptions = {};
 
   query.applicationId = applicationId;
 
   if (refId) query.refId = refId;
   if (origin) query.origin = origin;
   if (ownerId) query.ownerId = ownerId;
-
-  /**
-   * Pagingation starts here
-   */
-
-  //set record limit if available
-  limit
-    ? (paginateOptions.limit = parseInt(limit, 10))
-    : (paginateOptions.limit = 20);
-
-  //set skip to next page if available
-  paginateOptions.skip = (page - 1) * limit;
-
-  //set page option if available
-  page
-    ? (paginateOptions.page = parseInt(page, 10))
-    : (paginateOptions.page = 1);
-
-  //set sort if available
-  sort
-    ? (paginateOptions.sort = { createdAt: sort })
-    : (paginateOptions.sort = { createdAt: "asc" });
 
   if (typeof isFlagged === "string") {
     if (isFlagged === "true") {
@@ -60,7 +37,7 @@ const getAllComments = async (req, res, next) => {
 
   try {
     //paginate model
-    await Comments.paginate(query, paginateOptions)
+    await Comments.paginate(query, req.paginateOptions)
       .then((comments) => {
         const allComments = comments.docs.map((comment) => {
           return {
