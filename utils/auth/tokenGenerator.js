@@ -102,6 +102,7 @@ const getSysToken = async (msAdminId) => {
   // confirm adminId exists
   const msAdmin = await MsAdmin.findById(msAdminId);
   if (!msAdmin) {
+    console.log(msAdminId, msAdmin);
     throw new CustomError(
       401,
       "You are not authorized to access this resource"
