@@ -20,3 +20,6 @@ exports.getAllOrganizationsSchema = require("./organzationsSchema/getAllOrganiza
 exports.updateSystemSettingsSchema = require("./settings/updateSystemSettingsSchema");
 exports.getSystemSettingsSchema = require("./settings/getSystemSettingsSchema");
 exports.updateSystemSettingsSchema = require("./settings/updateSystemSettingsSchema");
+
+//plans Schema
+exports.createNewPlanSchema = require("./planSchema/createNewPlanSchema");
