@@ -9,7 +9,7 @@ describe("Delete /organizations/:organizationId", () => {
     const rand = Math.floor(Math.random() * 100 + 1);
     const organization = await new OrganizationModel({
       name: "hng",
-      email: `new${rand}@email.com`,
+      email: `new${rand}${Date.now()}@email.com`,
       secret: "hithere",
     });
     await organization.save();
