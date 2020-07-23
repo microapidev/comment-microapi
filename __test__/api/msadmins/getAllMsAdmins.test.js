@@ -69,12 +69,14 @@ describe("GET /msAdmins", () => {
       .query({ limit: 1 })
       .set("Authorization", bearerToken);
 
-    const expectedValue = [...allMsAdminsResponse.slice(0, 1)];
+    const expectedValue = allMsAdminsResponse.slice(0, 1);
 
     return getAllMsadminsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data.records).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(
+        expect.arrayContaining(expectedValue)
+      );
     });
   });
 
@@ -87,12 +89,14 @@ describe("GET /msAdmins", () => {
       .query({ page: 1 })
       .set("Authorization", bearerToken);
 
-    const expectedValue = [...allMsAdminsResponse];
+    const expectedValue = allMsAdminsResponse;
 
     return getAllMsadminsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data.records).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(
+        expect.arrayContaining(expectedValue)
+      );
     });
   });
 
@@ -105,12 +109,14 @@ describe("GET /msAdmins", () => {
       .query({ sort: "asc" })
       .set("Authorization", bearerToken);
 
-    const expectedValue = [...allMsAdminsResponse];
+    const expectedValue = allMsAdminsResponse;
 
     return getAllMsadminsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data.records).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(
+        expect.arrayContaining(expectedValue)
+      );
     });
   });
 
@@ -123,12 +129,14 @@ describe("GET /msAdmins", () => {
       .query({ limit: 2, page: 1, sort: "asc" })
       .set("Authorization", bearerToken);
 
-    const expectedValue = [...allMsAdminsResponse.slice(0, 2)];
+    const expectedValue = allMsAdminsResponse.slice(0, 2);
 
     return getAllMsadminsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data.records).toEqual(expectedValue);
+      expect(res.body.data.records).toEqual(
+        expect.arrayContaining(expectedValue)
+      );
     });
   });
 
