@@ -18,6 +18,9 @@ const getAllApplications = async (req, res, next) => {
 
   //get all applications and map field names appropriately
   let allApplications;
+
+  let query = {};
+
   try {
     //check if msAdmin exists
     const msAdmin = await MsAdmin.findById(msAdminId);
@@ -27,8 +30,12 @@ const getAllApplications = async (req, res, next) => {
     }
 
     //get all applications
-    const applications = await Applications.find().populate("organizationId");
-    allApplications = applications.map((application) => {
+    const applications = await Applications.paginate(query, {
+      ...req.paginateOptions,
+      populate: "organizationId",
+    });
+
+    allApplications = applications.docs.map((application) => {
       return {
         applicationId: application._id,
         applicationName: application.name,
@@ -36,17 +43,39 @@ const getAllApplications = async (req, res, next) => {
         organizationName: application.organizationId.name,
       };
     });
+
+    // Set page info.
+    let pageInfo = {
+      currentPage: applications.page,
+      totalPages: applications.totalPages,
+      hasNext: applications.hasNextPage,
+      hasPrev: applications.hasPrevPage,
+      nextPage: applications.nextPage,
+      prevPage: applications.prevPage,
+      pageRecordCount: applications.docs.length,
+      totalRecord: applications.totalDocs,
+    };
+
+    let data = {
+      records: allApplications,
+      pageInfo: pageInfo,
+    };
+
+    if (data.pageInfo.currentPage > data.pageInfo.totalPages) {
+      return next(
+        new CustomError(
+          "404",
+          "Page limit exceeded, No records found!",
+          data.pageInfo
+        )
+      );
+    } else {
+      responseHandler(res, 200, data, `Applications Retrieved Successfully`);
+    }
   } catch (error) {
     next(error);
     return;
   }
-
-  return responseHandler(
-    res,
-    200,
-    allApplications,
-    "All Applications retrieved successfully"
-  );
 };
 
 module.exports = getAllApplications;

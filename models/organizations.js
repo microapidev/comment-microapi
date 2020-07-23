@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const mongoosePaginate = require("mongoose-paginate-v2");
 const mongooseDelete = require("mongoose-delete");
 
 const OrganizationSchema = new Schema(
@@ -27,6 +28,9 @@ OrganizationSchema.plugin(mongooseDelete, {
   deletedAt: true,
   deletedBy: true,
 });
+
+//plug in the pagination package
+OrganizationSchema.plugin(mongoosePaginate);
 
 const Organization = mongoose.model("Organizations", OrganizationSchema);
 module.exports = Organization;
