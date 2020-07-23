@@ -6,6 +6,8 @@ const responseHandler = require("../../utils/responseHandler");
 const OrganizationModel = require("../../models/organizations");
 const ApplicationModel = require("../../models/applications");
 const SubscriptionModel = require("../../models/subscriptions");
+const SubUpgradeHistoryModel = require("../../models/subscriptionUpgradeHistory");
+const PlanModel = require("../../models/plans");
 
 /**
  * @author Ekeyekwu Oscar
@@ -20,7 +22,7 @@ const SubscriptionModel = require("../../models/subscriptions");
 const subscribeSingleApplication = async (req, res, next) => {
   const { applicationId, planId } = req.params;
   const { organizationId } = req.token;
-  const { period } = req.body;
+  const { period, periodCount } = req.body;
 
   try {
     //check if organization exists
@@ -37,18 +39,27 @@ const subscribeSingleApplication = async (req, res, next) => {
       return;
     }
 
+    //check if plan exists
+    const plan = await PlanModel.findById(planId);
+    if (!plan) {
+      next(new CustomError(404, "Plan not found!"));
+      return;
+    }
+
     //calculate subscription expiry date
     const subscriptionDate = new Date();
     const expireOn = new Date();
     let expiryDate =
       period.toLowerCase() === "monthly"
-        ? new Date(expireOn.setMonth(subscriptionDate.getMonth() + 1))
-        : new Date(expireOn.setYear(subscriptionDate.getFullYear() + 1));
+        ? new Date(expireOn.setMonth(subscriptionDate.getMonth() + periodCount))
+        : new Date(
+            expireOn.setYear(subscriptionDate.getFullYear() + periodCount)
+          );
 
     //populate subscriptionData
     const subscriptionData = {
       applicationId: applicationId,
-      planId: planId,
+      plan: planId,
       period: period.toLowerCase(),
       expiresOn: expiryDate,
       subscribedOn: subscriptionDate,
@@ -56,6 +67,27 @@ const subscribeSingleApplication = async (req, res, next) => {
 
     const subscribedApplication = new SubscriptionModel(subscriptionData);
     await subscribedApplication.save();
+
+    //create subscription data for history/upgrade
+    const subDetails = {
+      planName: plan.name,
+      subscriptionId: subscribedApplication._id,
+      applicationId: applicationId,
+      loggingEnabled: Boolean(plan.loggingEnabled),
+      requestPerMin: plan.requestPerMin,
+      logRetentionPeriod: plan.maxLogRetentionPeriod,
+      requestPerDay: plan.requestPerDay,
+      loggingExpiryDate: expiryDate,
+      requestPerMinExpiryDate: expiryDate,
+      logRetentionPeriodExpiryDate: expiryDate,
+      requestPerDayExpiryDate: expiryDate,
+      subscriptionExpiryDate: expiryDate,
+      subscriptionStartDate: subscriptionDate,
+    };
+
+    //add subscription to history
+    const initUpgradeHistory = new SubUpgradeHistoryModel(subDetails);
+    await initUpgradeHistory.save();
 
     if (!subscribedApplication) {
       next(
