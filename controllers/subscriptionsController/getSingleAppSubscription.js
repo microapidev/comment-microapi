@@ -44,6 +44,8 @@ const getSingleAppSubscription = async (req, res, next) => {
       next(new CustomError(404, "No Subscription for this application Yet."));
       return;
     }
+    //populate plan details
+    appSubscription.populate("planId");
     //populate subscriptionData
     const appSubscriptionData = {
       subscriptionId: appSubscription._id,
