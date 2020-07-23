@@ -87,6 +87,16 @@ paths:
       security:
         - Bearer: []
 
+      parameters:
+        - in: query
+          $ref: "#/components/parameters/limitParam"
+
+        - in: query
+          $ref: "#/components/parameters/sortParam"
+
+        - in: query
+          $ref: "#/components/parameters/pageParam"
+
       responses:
         "200":
           description: Successful operation
@@ -104,9 +114,14 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/MsAdmins"
+                    type: object
+                    properties:
+                      records:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/MsAdmin"
+                      pageInfo:
+                        $ref: "#/components/schemas/pageInfo"
 
         "400":
           description: Bad request error
@@ -486,7 +501,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-        
+
         "401":
           description: Authorization Error
           content:
@@ -610,7 +625,7 @@ paths:
     patch:
       tags:
         - Microservice Admins
-        
+
       summary: Update System settings
 
       security:
@@ -648,7 +663,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-      
+
   # Endpoints to manage organizations using the microservice
   /msadmins/organizations:
     #Get operation
@@ -660,7 +675,17 @@ paths:
 
       security:
         - Bearer: []
-      
+
+      parameters:
+        - in: query
+          $ref: "#/components/parameters/limitParam"
+
+        - in: query
+          $ref: "#/components/parameters/sortParam"
+
+        - in: query
+          $ref: "#/components/parameters/pageParam"
+
       responses:
         "200":
           description: Successful operation
@@ -678,14 +703,19 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        organizationId:
-                          type: string
-                        organizationName:
-                          type: string
+                    type: object
+                    properties:
+                      pageInfo:
+                        $ref: "#/components/schemas/pageInfo"
+                      records:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            organizationId:
+                              type: string
+                            organizationName:
+                              type: string
 
         "400":
           description: Bad request error
@@ -717,7 +747,7 @@ paths:
 
       summary: Get Single organization
 
-      security: 
+      security:
         - Bearer: []
 
       parameters:
@@ -775,7 +805,7 @@ paths:
 
       summary: Delete Single organization
 
-      security: 
+      security:
         - Bearer: []
 
       parameters:
@@ -827,7 +857,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
   # Endpoint to  unblock organization
-  /msadmins/organizations/{organizationId}/block:     
+  /msadmins/organizations/{organizationId}/block:
     #Patch operation
     patch:
       tags:
@@ -835,7 +865,7 @@ paths:
 
       summary: Block Single organization
 
-      security: 
+      security:
         - Bearer: []
 
       parameters:
@@ -867,7 +897,7 @@ paths:
                         type: string
                       organizationEmail:
                         type: string
-                      blocked: 
+                      blocked:
                         type: boolean
                       blockedAt:
                         type: string
@@ -903,9 +933,9 @@ paths:
 
       summary: Unblock Single organization
 
-      security: 
+      security:
         - Bearer: []
-      
+
       parameters:
         - in: path
           $ref: "#/components/parameters/organizationIdParam"
@@ -935,7 +965,7 @@ paths:
                         type: string
                       organizationEmail:
                         type: string
-                      unblocked: 
+                      unblocked:
                         type: boolean
                       unblockedAt:
                         type: string
@@ -963,7 +993,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-# Endpoints to manage organizations using the microservice
+  # Endpoints to manage organizations using the microservice
   /msadmins/applications:
     #Get operation
     get:
@@ -974,7 +1004,17 @@ paths:
 
       security:
         - Bearer: []
-      
+
+      parameters:
+        - in: query
+          $ref: "#/components/parameters/limitParam"
+
+        - in: query
+          $ref: "#/components/parameters/sortParam"
+
+        - in: query
+          $ref: "#/components/parameters/pageParam"
+
       responses:
         "200":
           description: Successful operation
@@ -992,18 +1032,23 @@ paths:
                   status:
                     type: string
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        applicationId:
-                          type: string
-                        applicationName:
-                          type: string
-                        organizationId:
-                          type: string
-                        organizationName:
-                          type: string
+                    type: object
+                    properties:
+                      pageInfo:
+                        $ref: "#/components/schemas/pageInfo"
+                      records:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            applicationId:
+                              type: string
+                            applicationName:
+                              type: string
+                            organizationId:
+                              type: string
+                            organizationName:
+                              type: string
 
         "400":
           description: Bad request error
@@ -1035,7 +1080,7 @@ paths:
 
       summary: Get Single Application
 
-      security: 
+      security:
         - Bearer: []
 
       parameters:
@@ -1059,7 +1104,7 @@ paths:
                   status:
                     type: string
                   data:
-                    type: object                   
+                    type: object
                     properties:
                       applicationId:
                         type: string
@@ -1097,7 +1142,7 @@ paths:
 
       summary: Delete Single Application
 
-      security: 
+      security:
         - Bearer: []
 
       parameters:
@@ -1149,7 +1194,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
   # Endpoint to  unblock organization
-  /msadmins/applications/{applicationId}/block:     
+  /msadmins/applications/{applicationId}/block:
     #Patch operation
     patch:
       tags:
@@ -1157,7 +1202,7 @@ paths:
 
       summary: Block Single Application
 
-      security: 
+      security:
         - Bearer: []
 
       parameters:
@@ -1187,7 +1232,7 @@ paths:
                         type: string
                       applicationName:
                         type: string
-                      blocked: 
+                      blocked:
                         type: boolean
                       blockedAt:
                         type: string
@@ -1223,9 +1268,9 @@ paths:
 
       summary: Unblock Single Application
 
-      security: 
+      security:
         - Bearer: []
-      
+
       parameters:
         - in: path
           $ref: "#/components/parameters/applicationIdParam"
@@ -1253,7 +1298,7 @@ paths:
                         type: string
                       applicationName:
                         type: string
-                      unblocked: 
+                      unblocked:
                         type: boolean
                       unblockedAt:
                         type: string
