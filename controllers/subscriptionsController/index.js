@@ -1,0 +1,1 @@
+exports.subscribeSingleApplication = require("./subscribeSingleApplication");

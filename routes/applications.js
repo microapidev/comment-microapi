@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const applicationsController = require("../controllers/applicationsController");
+const subscriptionController = require("../controllers/subscriptionsController");
 const validationRules = require("../utils/validationRules");
 const validMW = require("../middleware/validation");
 const { orgAuthMW } = require("../middleware/auth");
@@ -55,6 +56,15 @@ router.delete(
   "/:applicationId",
   validMW(validationRules.deleteApplicationSchema),
   applicationsController.deleteSingleApplication
+);
+
+/**
+ * Subscription routes
+ */
+router.post(
+  "/:applicationId/subscribe",
+  validMW(validationRules.subscribeSingleApplicationSchema),
+  subscriptionController.subscribeSingleApplication
 );
 
 module.exports = router;
