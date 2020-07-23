@@ -5,10 +5,6 @@ const REQUEST_METHODS = ["GET", "POST", "PATCH", "PUT", "DELETE"];
 
 const RequestLogSchema = new Schema(
   {
-    fullname: {
-      type: String,
-      required: true,
-    },
     applicationId: {
       type: Schema.Types.ObjectId,
       ref: "Applications",
@@ -27,7 +23,7 @@ const RequestLogSchema = new Schema(
       type: Number,
       required: true,
     },
-    responseMessage: {
+    statusMessage: {
       type: String,
       required: true,
     },
