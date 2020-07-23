@@ -36,6 +36,8 @@ const adminDeleteCommentSchema = require("./admins/adminDeleteCommentSchema");
 
 const msAdmins = require("./msadmins");
 
+const subscribeSingleApplicationSchema = require("./subscriptions/subscribeSingleApplication");
+
 /**
  * Object containing schema validations for the endpoints.
  */
@@ -83,4 +85,7 @@ module.exports = {
 
   // MsAdmins Endpoints validation schemas
   msAdmins,
+
+  //application subscriptions endpoints validation schemas
+  subscribeSingleApplicationSchema,
 };

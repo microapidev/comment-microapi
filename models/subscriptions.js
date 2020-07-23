@@ -17,6 +17,16 @@ const SubscriptionSchema = new Schema(
       ref: "Plans",
       required: true,
     },
+
+    expiresOn: {
+      type: String,
+      required: true,
+    },
+
+    subscribedOn: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
