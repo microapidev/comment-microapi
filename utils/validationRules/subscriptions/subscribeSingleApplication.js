@@ -1,7 +1,8 @@
 const Joi = require("@hapi/joi");
+const mongoIdSchema = require("../mongoIdSchema");
 
 /**
- * Schema validation for POST '/comments'
+ * Schema validation for subscribing application'
  */
 const subscribeSingleApplicationSchema = {
   headers: Joi.object({
@@ -9,8 +10,8 @@ const subscribeSingleApplicationSchema = {
   }),
 
   params: Joi.object().keys({
-    applicationId: Joi.string().required(),
-    planId: Joi.string().required(),
+    applicationId: Joi.custom(mongoIdSchema, "ObjectID").required(),
+    planId: Joi.custom(mongoIdSchema, "ObjectID").required(),
   }),
   body: Joi.object().keys({
     period: Joi.string().required(),

@@ -62,7 +62,7 @@ router.delete(
  * Subscription routes
  */
 router.post(
-  "/:applicationId/subscribe",
+  "/:applicationId/subscribe/:planId",
   validMW(validationRules.subscribeSingleApplicationSchema),
   subscriptionController.subscribeSingleApplication
 );

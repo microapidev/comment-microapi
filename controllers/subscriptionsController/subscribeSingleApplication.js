@@ -38,13 +38,13 @@ const subscribeSingleApplication = async (req, res, next) => {
     }
 
     //calculate subscription expiry date
-    const subscriptionDate = Date.now();
-    const expiryDate =
+    const subscriptionDate = new Date();
+    let expiryDate =
       period.toLowerCase() === "monthly"
-        ? subscriptionDate.setMonth(subscriptionDate.getMonth() + 1)
-        : subscriptionDate.setYear(subscriptionDate.getFullYear() + 1);
-
-    console.log(expiryDate);
+        ? new Date(subscriptionDate.setMonth(subscriptionDate.getMonth() + 1))
+        : new Date(
+            subscriptionDate.setYear(subscriptionDate.getFullYear() + 1)
+          );
 
     //populate subscriptionData
     const subscriptionData = {
@@ -69,7 +69,9 @@ const subscribeSingleApplication = async (req, res, next) => {
 
     responseHandler(res, 201, subscriptionData);
   } catch (error) {
-    next(CustomError(500, "Something went wrong, please try again..."));
+    console.log(error.message);
+    next(new CustomError(500, "Something went wrong, please try again..."));
+    return;
   }
 };
 

@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
-const { string } = require("@hapi/joi");
 const Schema = mongoose.Schema;
 
 const SubscriptionSchema = new Schema(
@@ -20,12 +19,12 @@ const SubscriptionSchema = new Schema(
     },
 
     expiresOn: {
-      type: string,
+      type: String,
       required: true,
     },
 
     subscribedOn: {
-      type: string,
+      type: String,
       required: true,
     },
   },
