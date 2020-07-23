@@ -8,7 +8,7 @@ const request = supertest(app);
 // Cached application and subscription
 let application, subscription;
 
-describe("get /applications/:applicationId/subscribe", () => {
+describe("get /applications/:applicationId/subscriptions", () => {
   beforeEach(async () => {
     // Mock an application document.
     const mockedApplicationDoc = new ApplicationModel({
@@ -52,7 +52,7 @@ describe("get /applications/:applicationId/subscribe", () => {
   });
 
   it("should get application subscription", async () => {
-    const url = `/v1/applications/${application._id}/subscription`;
+    const url = `/v1/applications/${application._id}/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request.get(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(200);
@@ -64,7 +64,7 @@ describe("get /applications/:applicationId/subscribe", () => {
     expect(res.body.data.period).toEqual(subscription.period);
   });
   it("should return 404 if application is not found", async () => {
-    const url = `/v1/applications/${global.organization._id}/subscription`;
+    const url = `/v1/applications/${global.organization._id}/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request.get(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(404);
@@ -72,7 +72,7 @@ describe("get /applications/:applicationId/subscribe", () => {
     expect(res.body.data).toEqual([]);
   });
   it("Should return a 401 error when authorization token is unauthorized", async () => {
-    const url = `/v1/applications/${application._id}/subscription`;
+    const url = `/v1/applications/${application._id}/subscriptions`;
     const bearerToken = `bearer `;
     const res = await request.get(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(401);
@@ -80,7 +80,7 @@ describe("get /applications/:applicationId/subscribe", () => {
     expect(res.body.data).toEqual([]);
   });
   it("Should return a 422 error when validation fails", async () => {
-    const url = `/v1/applications/543ae7d6f/subscription`;
+    const url = `/v1/applications/543ae7d6f/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request.get(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(422);
