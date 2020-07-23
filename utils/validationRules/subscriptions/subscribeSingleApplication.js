@@ -11,9 +11,9 @@ const subscribeSingleApplicationSchema = {
 
   params: Joi.object().keys({
     applicationId: Joi.custom(mongoIdSchema, "ObjectID").required(),
-    planId: Joi.custom(mongoIdSchema, "ObjectID").required(),
   }),
   body: Joi.object().keys({
+    planId: Joi.custom(mongoIdSchema, "ObjectID").required(),
     period: Joi.string().required(),
     periodCount: Joi.number().required(),
   }),

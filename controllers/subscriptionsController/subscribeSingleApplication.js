@@ -20,9 +20,9 @@ const PlanModel = require("../../models/plans");
  */
 
 const subscribeSingleApplication = async (req, res, next) => {
-  const { applicationId, planId } = req.params;
+  const { applicationId } = req.params;
   const { organizationId } = req.token;
-  const { period, periodCount } = req.body;
+  const { period, periodCount, planId } = req.body;
 
   try {
     //check if organization exists

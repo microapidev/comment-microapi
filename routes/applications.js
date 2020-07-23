@@ -68,7 +68,7 @@ router.get(
 );
 
 router.post(
-  "/:applicationId/subscribe/:planId",
+  "/:applicationId/subscriptions",
   validMW(validationRules.subscribeSingleApplicationSchema),
   subscriptionController.subscribeSingleApplication
 );

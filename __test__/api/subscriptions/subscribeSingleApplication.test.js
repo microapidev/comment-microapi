@@ -38,32 +38,32 @@ describe("POST /applications/:applicationId/subscribe/:planId", () => {
   });
 
   it("should subscribe an application to a plan", async () => {
-    const periodData = { period: "monthly", periodCount: 3 };
-    const url = `/v1/applications/${application._id}/subscribe/${plan._id}`;
+    const data = { period: "monthly", periodCount: 3, planId: plan._id };
+    const url = `/v1/applications/${application._id}/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request
       .post(url)
       .set("Authorization", bearerToken)
-      .send(periodData);
+      .send(data);
     expect(res.status).toEqual(201);
     expect(res.body.status).toEqual("success");
     expect(res.body.data.applicationId).toEqual(String(application._id));
-    expect(res.body.data.period).toEqual(periodData.period);
-    expect(res.body.data.periodCount).toEqual(periodData.periodCount);
+    expect(res.body.data.period).toEqual(data.period);
+    expect(res.body.data.periodCount).toEqual(data.periodCount);
   });
   it("should return 404 if application is not found", async () => {
-    const url = `/v1/applications/${global.organization._id}/subscribe/${plan._id}`;
+    const url = `/v1/applications/${global.organization._id}/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request
       .post(url)
       .set("Authorization", bearerToken)
-      .send({ period: "monthly", periodCount: 3 });
+      .send({ period: "monthly", periodCount: 3, planId: plan._id });
     expect(res.status).toEqual(404);
     expect(res.body.status).toEqual("error");
     expect(res.body.data).toEqual([]);
   });
   it("Should return a 401 error when authorization token is unauthorized", async () => {
-    const url = `/v1/applications/${application._id}/subscribe/${plan._id}`;
+    const url = `/v1/applications/${application._id}/subscriptions`;
     const bearerToken = `bearer `;
     const res = await request.post(url).set("Authorization", bearerToken);
 
@@ -72,17 +72,7 @@ describe("POST /applications/:applicationId/subscribe/:planId", () => {
     expect(res.body.data).toEqual([]);
   });
   it("Should return a 422 error when validation fails", async () => {
-    const url = `/v1/applications/${application._id}/subscribe/5${plan._id}`;
-    const bearerToken = `bearer ${global.orgToken}`;
-    const res = await request.post(url).set("Authorization", bearerToken);
-
-    expect(res.status).toEqual(422);
-    expect(res.body.status).toEqual("error");
-    expect(res.body.data).toBeTruthy();
-  });
-
-  it("Should return a 422 error for invalid mongoId", async () => {
-    const url = `/v1/applications/${application._id}/subscribe/5ea2134fac`;
+    const url = `/v1/applications/${application._id}/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request.post(url).set("Authorization", bearerToken);
 
