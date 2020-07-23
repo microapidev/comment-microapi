@@ -37,7 +37,7 @@ const getSingleAppSubscription = async (req, res, next) => {
     }
 
     //get application subscription
-    const appSubscription = await SubscriptionModel.findOn({
+    const appSubscription = await SubscriptionModel.findOne({
       applicationId: applicationId,
     }).sort({ createdAt: "desc" });
     if (!appSubscription) {
