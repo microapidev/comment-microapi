@@ -142,7 +142,7 @@ describe("GET /msAdmins", () => {
 
   it("Should return a 401 error when authorization token is unauthorized", async () => {
     const url = `/v1/msAdmins`;
-    const bearerToken = `bearer `;
+    const bearerToken = `bearer`;
 
     const res = await request.get(url).set("Authorization", bearerToken);
 
