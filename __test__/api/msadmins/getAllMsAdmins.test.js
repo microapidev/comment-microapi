@@ -126,10 +126,10 @@ describe("GET /msAdmins", () => {
 
     const getAllMsadminsRequest = request
       .get(url)
-      .query({ limit: 2, page: 1, sort: "asc" })
+      .query({ limit: 1, page: 1, sort: "asc" })
       .set("Authorization", bearerToken);
 
-    const expectedValue = allMsAdminsResponse.slice(0, 2);
+    const expectedValue = allMsAdminsResponse.slice(0, 1);
 
     return getAllMsadminsRequest.then((res) => {
       expect(res.status).toEqual(200);
