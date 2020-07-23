@@ -37,7 +37,7 @@ const createNewPlan = async (req, res, next) => {
     const createdPlan = {
       planId: newPlan._id,
       planName: newPlan.name,
-      loggingEnabled: newPlan.loggingEnabled,
+      loggingEnabled: Boolean(newPlan.loggingEnabled),
       logRetentionPeriod: newPlan.maxLogRetentionPeriod,
       requestPerMinute: newPlan.requestPerMin,
       requestPerDay: newPlan.requestPerDay,
