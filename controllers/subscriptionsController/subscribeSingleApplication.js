@@ -41,6 +41,7 @@ const subscribeSingleApplication = async (req, res, next) => {
 
     //check if plan exists
     const plan = await PlanModel.findById(planId);
+    console.log(plan);
     if (!plan) {
       next(new CustomError(404, "Plan not found!"));
       return;
@@ -59,18 +60,21 @@ const subscribeSingleApplication = async (req, res, next) => {
     //populate subscriptionData
     const subscriptionData = {
       applicationId: applicationId,
-      plan: planId,
+      planId: planId,
       period: period.toLowerCase(),
+      periodCount: periodCount,
       expiresOn: expiryDate,
       subscribedOn: subscriptionDate,
     };
 
+    console.log(subscriptionData);
     const subscribedApplication = new SubscriptionModel(subscriptionData);
     await subscribedApplication.save();
 
     //create subscription data for history/upgrade
     const subDetails = {
       planName: plan.name,
+      planId: plan._id,
       subscriptionId: subscribedApplication._id,
       applicationId: applicationId,
       loggingEnabled: Boolean(plan.loggingEnabled),
@@ -98,10 +102,23 @@ const subscribeSingleApplication = async (req, res, next) => {
       );
       return;
     }
+    //collate subscribedApp Data
+    const subscribedAppData = {
+      subscribtionId: subscribedApplication._id,
+      subUpgradeHistoryId: initUpgradeHistory._id,
+      applicationId: subscribedApplication.applicationId,
+      plan: subscribedApplication.planId,
+      period: subscribedApplication.period,
+      periodCount: subscribedApplication.periodCount,
+      expiresOn: subscribedApplication.expiresOn,
+      subscribedOn: subscribedApplication.subscribedOn,
+    };
 
-    responseHandler(res, 201, subscriptionData);
+    console.log(subscribedAppData);
+    responseHandler(res, 201, subscribedAppData);
   } catch (error) {
     console.log(error.message);
+    console.log(error.stack);
     next(new CustomError(500, "Something went wrong, please try again..."));
     return;
   }

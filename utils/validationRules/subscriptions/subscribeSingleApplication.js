@@ -15,6 +15,7 @@ const subscribeSingleApplicationSchema = {
   }),
   body: Joi.object().keys({
     period: Joi.string().required(),
+    periodCount: Joi.number().required(),
   }),
 };
 

@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
-const { boolean } = require("@hapi/joi");
 const Schema = mongoose.Schema;
 
 const SubUpgradeHistorySchema = new Schema(
@@ -21,7 +20,7 @@ const SubUpgradeHistorySchema = new Schema(
       required: true,
     },
     loggingEnabled: {
-      type: boolean,
+      type: Boolean,
       default: false,
     },
     loggingExpiryDate: {
