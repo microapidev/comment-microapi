@@ -67,4 +67,8 @@ router.post(
   subscriptionController.subscribeSingleApplication
 );
 
+router.get(
+  "/:applicationId/subscription",
+  validMW(validationRules.getSingleAppSubscriptionSchema)
+);
 module.exports = router;
