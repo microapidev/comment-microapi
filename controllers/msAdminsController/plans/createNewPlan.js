@@ -9,7 +9,7 @@ const PlansModel = require("../../../models/plans");
 /**
  * @author Ekeyekwu Oscar
  *
- * Subscribes an application to a plan.
+ * creates a new plan.
  *
  * @param {*} req - The request object
  * @param {*} res - The response object
