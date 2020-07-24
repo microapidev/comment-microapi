@@ -48,8 +48,6 @@ const subscribeSingleApplication = async (req, res, next) => {
       next(new CustomError(404, "Plan not found!"));
       return;
     }
-
-    console.log(plan);
     //calculate subscription expiry date
     const totalPeriod = parseInt(parseInt(plan.periodWeight) * periodCount, 10);
     const subscriptionDate = new Date();
@@ -126,10 +124,8 @@ const subscribeSingleApplication = async (req, res, next) => {
       dailyLimits: appSubscription.dailyLimits,
     };
 
-    console.log(appSubscriptionData);
     responseHandler(res, 201, appSubscriptionData);
   } catch (error) {
-    next(error);
     next(new CustomError(500, "Something went wrong, please try again..."));
     return;
   }

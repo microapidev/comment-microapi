@@ -5,7 +5,7 @@ const responseHandler = require("../../utils/responseHandler");
 //models
 const OrganizationModel = require("../../models/organizations");
 const ApplicationModel = require("../../models/applications");
-const SubscriptionModel = require("../../models/subscriptionsHistory");
+const SubscriptionModel = require("../../models/subscriptions");
 
 /**
  * @author Ekeyekwu Oscar
@@ -31,7 +31,7 @@ const getSingleAppSubscription = async (req, res, next) => {
 
     //check if application exists
     const application = await ApplicationModel.findById({
-      applicationId: applicationId,
+      _id: applicationId,
       organizationId: organizationId,
     });
     if (!application) {
@@ -52,14 +52,15 @@ const getSingleAppSubscription = async (req, res, next) => {
       subscriptionId: appSubscription._id,
       applicationId: appSubscription.applicationId,
       planId: appSubscription.planId,
-      period: appSubscription.period.toLowerCase(),
-      expiresOn: appSubscription.expiryDate,
-      subscribedOn: appSubscription.subscriptionDate,
+      planName: appSubscription.planName,
+      dailyLimits: appSubscription.dailyLimits,
+      perMinuteLimits: appSubscription.perMinuteLimits,
+      logging: appSubscription.logging,
+      subscriptionStartDate: appSubscription.subscriptionStartDate,
     };
 
     responseHandler(res, 200, appSubscriptionData);
   } catch (error) {
-    console.log(error.message);
     next(new CustomError(500, "Something went wrong, please try again..."));
     return;
   }
