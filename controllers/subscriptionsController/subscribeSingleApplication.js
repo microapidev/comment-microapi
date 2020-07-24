@@ -5,8 +5,8 @@ const responseHandler = require("../../utils/responseHandler");
 //models
 const OrganizationModel = require("../../models/organizations");
 const ApplicationModel = require("../../models/applications");
-const SubscriptionModel = require("../../models/subscriptionsHistory");
-const SubUpgradeHistoryModel = require("../../models/subscriptions");
+const SubscriptionHistoryModel = require("../../models/subscriptionsHistory");
+const SubscriptionsModel = require("../../models/subscriptions");
 const PlanModel = require("../../models/plans");
 
 /**
@@ -22,7 +22,7 @@ const PlanModel = require("../../models/plans");
 const subscribeSingleApplication = async (req, res, next) => {
   const { applicationId } = req.params;
   const { organizationId } = req.token;
-  const { period, periodCount, planId } = req.body;
+  const { periodCount, planId } = req.body;
 
   try {
     //check if organization exists
@@ -53,52 +53,66 @@ const subscribeSingleApplication = async (req, res, next) => {
     }
 
     //calculate subscription expiry date
+    const totalPeriod = parseInt(plan.period * periodCount, 10);
     const subscriptionDate = new Date();
-    const expireOn = new Date();
-    let expiryDate =
-      period.toLowerCase() === "monthly"
-        ? new Date(expireOn.setMonth(subscriptionDate.getMonth() + periodCount))
-        : new Date(
-            expireOn.setYear(subscriptionDate.getFullYear() + periodCount)
-          );
+    const expiryDate = new Date().setMonth(
+      subscriptionDate.getMonth() + totalPeriod
+    );
 
-    //populate subscriptionData
-    const subscriptionData = {
+    //populate subscription History Data
+    const subscriptionHistoryData = {
       applicationId: applicationId,
       planId: planId,
-      period: period.toLowerCase(),
-      periodCount: periodCount,
+      periodCount: `${totalPeriod} months`,
       expiresOn: expiryDate,
       subscribedOn: subscriptionDate,
     };
 
-    console.log(subscriptionData);
-    const subscribedApplication = new SubscriptionModel(subscriptionData);
-    await subscribedApplication.save();
+    //save to subscription history
+    const subHistory = new SubscriptionHistoryModel(subscriptionHistoryData);
+    await subHistory.save();
 
-    //create subscription data for history/upgrade
+    //create subscription data & properties objects
+    //logging object
+    const logging = {
+      value: plan.logging.value,
+      expiryDate,
+    };
+
+    //log retention object
+    const logRetentionPeriod = {
+      value: plan.maxLogRetentionPeriod.value,
+      expiryDate,
+    };
+
+    //request per min object
+    const requestPerMin = {
+      value: plan.maxRequestPerMin.value,
+      expiryDate,
+    };
+
+    //request per day object
+    const requestPerDay = {
+      value: plan.maxRequestPerDay.value,
+      expiryDate,
+    };
     const subDetails = {
       planName: plan.name,
       planId: plan._id,
-      subscriptionId: subscribedApplication._id,
-      applicationId: applicationId,
-      loggingEnabled: Boolean(plan.loggingEnabled),
-      requestPerMin: plan.requestPerMin,
-      logRetentionPeriod: plan.maxLogRetentionPeriod,
-      requestPerDay: plan.requestPerDay,
-      loggingExpiryDate: expiryDate,
-      requestPerMinExpiryDate: expiryDate,
-      logRetentionPeriodExpiryDate: expiryDate,
-      requestPerDayExpiryDate: expiryDate,
-      subscriptionExpiryDate: expiryDate,
+      subscriptionHistoryId: subHistory._id,
       subscriptionStartDate: subscriptionDate,
+      applicationId: applicationId,
+      logging: logging,
+      requestPerMin: requestPerMin,
+      logRetentionPeriod: logRetentionPeriod,
+      requestPerDay: requestPerDay,
     };
 
     //add subscription to history
-    const initUpgradeHistory = new SubUpgradeHistoryModel(subDetails);
-    await initUpgradeHistory.save();
+    const appSubscription = new SubscriptionsModel(subDetails);
+    await appSubscription.save();
 
-    if (!subscribedApplication) {
+    if (!appSubscription) {
       next(
         new CustomError(
           400,
@@ -108,22 +122,22 @@ const subscribeSingleApplication = async (req, res, next) => {
       return;
     }
     //collate subscribedApp Data
-    const subscribedAppData = {
-      subscribtionId: subscribedApplication._id,
-      subUpgradeHistoryId: initUpgradeHistory._id,
-      applicationId: subscribedApplication.applicationId,
-      plan: subscribedApplication.planId,
-      period: subscribedApplication.period,
-      periodCount: subscribedApplication.periodCount,
-      expiresOn: subscribedApplication.expiresOn,
-      subscribedOn: subscribedApplication.subscribedOn,
+    const appSubscriptionData = {
+      subscribtionId: appSubscription._id,
+      subscriptionHistoryId: appSubscription.subscriptionHistoryId,
+      applicationId: appSubscription.applicationId,
+      plan: appSubscription.planId,
+      planName: appSubscription.planName,
+      subscriptionStartDate: appSubscription.subscriptionStartDate,
+      logging: appSubscription.logging,
+      requestPerMin: appSubscription.requestPerMin,
+      logRetentionPeriod: appSubscription.logRetentionPeriod,
+      requestPerDay: appSubscription.requestPerDay,
     };
 
-    console.log(subscribedAppData);
-    responseHandler(res, 201, subscribedAppData);
+    console.log(appSubscriptionData);
+    responseHandler(res, 201, appSubscriptionData);
   } catch (error) {
-    console.log(error.message);
-    console.log(error.stack);
     next(new CustomError(500, "Something went wrong, please try again..."));
     return;
   }
