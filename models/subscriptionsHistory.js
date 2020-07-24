@@ -21,10 +21,6 @@ const SubscriptionsHistorySchema = new Schema(
       type: String,
       required: true,
     },
-    periodCount: {
-      type: Number,
-      required: true,
-    },
     expiresOn: {
       type: String,
       required: true,

@@ -14,7 +14,6 @@ const subscribeSingleApplicationSchema = {
   }),
   body: Joi.object().keys({
     planId: Joi.custom(mongoIdSchema, "ObjectID").required(),
-    period: Joi.string().required(),
     periodCount: Joi.number().required(),
   }),
 };

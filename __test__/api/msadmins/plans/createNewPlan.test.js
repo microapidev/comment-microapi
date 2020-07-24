@@ -5,11 +5,12 @@ const request = supertest(app);
 describe("POST /msadmins/plans", () => {
   it("should create a new plan", async () => {
     const mockPlan = {
-      name: "Basic",
-      loggingEnabled: true,
+      name: "Freemium",
+      logging: true,
       maxLogRetentionPeriod: 10,
-      requestPerMin: 100,
+      maxRequestPerMin: 100,
       maxRequestPerDay: 100,
+      period: "monthly".toLowerCase(),
     };
     const url = `/v1/msadmins/plans`;
     const bearerToken = `bearer ${global.sysToken}`;
@@ -17,12 +18,12 @@ describe("POST /msadmins/plans", () => {
       .post(url)
       .set("Authorization", bearerToken)
       .send(mockPlan);
-    expect(res.status).toEqual(200);
+    expect(res.status).toEqual(201);
     console.log(res.body);
     expect(res.body.status).toEqual("success");
     expect(res.body.data.planName).toEqual(mockPlan.name);
-    expect(res.body.data.loggingEnabled).toEqual(mockPlan.loggingEnabled);
-    expect(res.body.data.logRetentionPeriod).toEqual(
+    expect(res.body.data.logging).toEqual(mockPlan.logging);
+    expect(res.body.data.maxLogRetentionPeriod).toEqual(
       mockPlan.maxLogRetentionPeriod
     );
     expect(res.body.data.requestPerMin).toEqual(mockPlan.requestPerDay);

@@ -7,7 +7,7 @@ const request = supertest(app);
 // Cached application.
 let application, plan;
 
-describe("POST /applications/:applicationId/subscribe/:planId", () => {
+describe("POST /applications/:applicationId/subscriptions", () => {
   beforeEach(async () => {
     // Mock an application document.
     const mockedApplicationDoc = new ApplicationModel({
@@ -18,9 +18,9 @@ describe("POST /applications/:applicationId/subscribe/:planId", () => {
 
     const mockPlan = new PlanModel({
       name: "Basic",
-      loggingEnabled: true,
+      logging: true,
       maxLogRetentionPeriod: 10,
-      requestPerMin: 100,
+      maxRequestPerMin: 100,
       maxRequestPerDay: 100,
     });
 
@@ -32,13 +32,15 @@ describe("POST /applications/:applicationId/subscribe/:planId", () => {
   afterEach(async () => {
     // Delete mock from the database.
     await ApplicationModel.findByIdAndDelete(application._id);
+    await PlanModel.findByIdAndDelete(plan._id);
 
     // Delete cache.
     application = null;
+    plan = null;
   });
 
   it("should subscribe an application to a plan", async () => {
-    const data = { period: "monthly", periodCount: 3, planId: plan._id };
+    const data = { periodCount: 3, planId: plan._id };
     const url = `/v1/applications/${application._id}/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request
@@ -48,16 +50,14 @@ describe("POST /applications/:applicationId/subscribe/:planId", () => {
     expect(res.status).toEqual(201);
     expect(res.body.status).toEqual("success");
     expect(res.body.data.applicationId).toEqual(String(application._id));
-    expect(res.body.data.period).toEqual(data.period);
-    expect(res.body.data.periodCount).toEqual(data.periodCount);
   });
   it("should return 404 if application is not found", async () => {
-    const url = `/v1/applications/${global.organization._id}/subscriptions`;
+    const url = `/v1/applications/5f1a97de79287f38f4eab0be/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request
       .post(url)
       .set("Authorization", bearerToken)
-      .send({ period: "monthly", periodCount: 3, planId: plan._id });
+      .send({ periodCount: 3, planId: plan._id });
     expect(res.status).toEqual(404);
     expect(res.body.status).toEqual("error");
     expect(res.body.data).toEqual([]);

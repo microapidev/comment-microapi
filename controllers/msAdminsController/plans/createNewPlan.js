@@ -18,7 +18,14 @@ const PlansModel = require("../../../models/plans");
 
 const createNewPlan = async (req, res, next) => {
   const { msAdminId } = req.token;
-  const planData = req.body;
+  const {
+    name,
+    logging,
+    maxLogRetentionPeriod,
+    maxRequestPerMin,
+    maxRequestPerDay,
+    period,
+  } = req.body;
 
   try {
     //check if msAdmin exists
@@ -30,6 +37,16 @@ const createNewPlan = async (req, res, next) => {
       return;
     }
 
+    //collate plan data
+    const planData = {
+      name,
+      logging,
+      maxLogRetentionPeriod,
+      maxRequestPerMin,
+      maxRequestPerDay,
+      period,
+    };
+    //create plan
     const newPlan = new PlansModel(planData);
     await newPlan.save();
 
@@ -39,10 +56,10 @@ const createNewPlan = async (req, res, next) => {
     const createdPlan = {
       planId: newPlan._id,
       planName: newPlan.name,
-      loggingEnabled: Boolean(newPlan.loggingEnabled),
-      logRetentionPeriod: newPlan.maxLogRetentionPeriod,
-      requestPerMinute: newPlan.requestPerMin,
-      requestPerDay: newPlan.requestPerDay,
+      logging: Boolean(newPlan.logging),
+      maxLogRetentionPeriod: newPlan.maxLogRetentionPeriod,
+      maxRequestPerMin: newPlan.maxRequestPerMin,
+      maxRequestPerDay: newPlan.maxRequestPerDay,
     };
 
     responseHandler(res, 201, createdPlan);

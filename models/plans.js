@@ -9,8 +9,9 @@ const PlanSchema = new Schema({
     type: String,
     required: true,
   },
-  loggingEnabled: {
+  logging: {
     type: Boolean,
+    default: false,
   },
   maxLogRetentionPeriod: {
     type: Number,
@@ -22,8 +23,7 @@ const PlanSchema = new Schema({
     type: Number,
   },
   period: {
-    type: Number,
-    enum: PeriodEnum,
+    type: String,
     default: PeriodEnum.monthly,
   },
 });

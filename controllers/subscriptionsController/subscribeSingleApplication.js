@@ -37,7 +37,6 @@ const subscribeSingleApplication = async (req, res, next) => {
     //check if application exists
     const application = await ApplicationModel.find({
       applicationId: applicationId,
-      organizationId: organizationId,
     });
     if (!application) {
       next(new CustomError("404", "Application not found"));
@@ -52,6 +51,7 @@ const subscribeSingleApplication = async (req, res, next) => {
       return;
     }
 
+    console.log(plan);
     //calculate subscription expiry date
     const totalPeriod = parseInt(plan.period * periodCount, 10);
     const subscriptionDate = new Date();
@@ -63,7 +63,7 @@ const subscribeSingleApplication = async (req, res, next) => {
     const subscriptionHistoryData = {
       applicationId: applicationId,
       planId: planId,
-      periodCount: `${totalPeriod} months`,
+      period: `${totalPeriod} months`,
       expiresOn: expiryDate,
       subscribedOn: subscriptionDate,
     };
@@ -75,25 +75,25 @@ const subscribeSingleApplication = async (req, res, next) => {
     //create subscription data & properties objects
     //logging object
     const logging = {
-      value: plan.logging.value,
+      value: plan.logging,
       expiryDate,
     };
 
     //log retention object
     const logRetentionPeriod = {
-      value: plan.maxLogRetentionPeriod.value,
+      value: plan.maxLogRetentionPeriod,
       expiryDate,
     };
 
     //request per min object
     const requestPerMin = {
-      value: plan.maxRequestPerMin.value,
+      value: plan.maxRequestPerMin,
       expiryDate,
     };
 
     //request per day object
     const requestPerDay = {
-      value: plan.maxRequestPerDay.value,
+      value: plan.maxRequestPerDay,
       expiryDate,
     };
     const subDetails = {
@@ -126,7 +126,7 @@ const subscribeSingleApplication = async (req, res, next) => {
       subscribtionId: appSubscription._id,
       subscriptionHistoryId: appSubscription.subscriptionHistoryId,
       applicationId: appSubscription.applicationId,
-      plan: appSubscription.planId,
+      planId: appSubscription.planId,
       planName: appSubscription.planName,
       subscriptionStartDate: appSubscription.subscriptionStartDate,
       logging: appSubscription.logging,
@@ -138,6 +138,7 @@ const subscribeSingleApplication = async (req, res, next) => {
     console.log(appSubscriptionData);
     responseHandler(res, 201, appSubscriptionData);
   } catch (error) {
+    next(error);
     next(new CustomError(500, "Something went wrong, please try again..."));
     return;
   }

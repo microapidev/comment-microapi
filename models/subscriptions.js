@@ -10,12 +10,16 @@ const SubscriptionsSchema = new Schema(
       ref: "Applications",
       required: true,
     },
-    subscriptionId: {
+    subscriptionHistoryId: {
       type: Schema.Types.ObjectId,
-      ref: "Subscriptions",
+      ref: "SubscriptionsHistory",
       required: true,
     },
     planName: {
+      type: String,
+      required: true,
+    },
+    planId: {
       type: String,
       required: true,
     },
@@ -34,10 +38,6 @@ const SubscriptionsSchema = new Schema(
     requestPerDay: {
       value: { type: Number },
       expiryDate: { type: Date },
-    },
-    subscriptionExpiryDate: {
-      type: Date,
-      required: true,
     },
 
     subscriptionStartDate: {
