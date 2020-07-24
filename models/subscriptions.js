@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
 const Schema = mongoose.Schema;
 
-const SubscriptionSchema = new Schema(
+const SubscriptionsSchema = new Schema(
   {
     applicationId: {
       //the id of the application that this subscription belongs to
@@ -10,26 +10,48 @@ const SubscriptionSchema = new Schema(
       ref: "Applications",
       required: true,
     },
-
-    planId: {
-      //the id of the plan that this subscription belongs to
+    subscriptionHistoryId: {
       type: Schema.Types.ObjectId,
-      ref: "Plans",
+      ref: "SubscriptionsHistory",
       required: true,
     },
-
-    expiresOn: {
+    planName: {
       type: String,
       required: true,
     },
-
-    subscribedOn: {
+    planId: {
       type: String,
+      required: true,
+    },
+    dailyLimits: [
+      {
+        maxRequestsPerDay: { type: Number },
+        expiryDate: { type: Date },
+        isActive: { type: Boolean, default: true },
+      },
+    ],
+    perMinuteLimits: [
+      {
+        maxRequestsPerMin: { type: Number },
+        expiryDate: { type: Date },
+        isActive: { type: Boolean, default: true },
+      },
+    ],
+    logging: [
+      {
+        value: { type: Boolean, default: false },
+        expiryDate: { type: Date },
+        maxLogRetentionDays: { type: Number },
+        isActive: { type: Boolean, default: true },
+      },
+    ],
+    subscriptionStartDate: {
+      type: Date,
       required: true,
     },
   },
   { timestamps: true }
 );
-SubscriptionSchema.plugin(mongoosePaginate);
-const Subscriptions = mongoose.model("Subscriptions", SubscriptionSchema);
+SubscriptionsSchema.plugin(mongoosePaginate);
+const Subscriptions = mongoose.model("Subscriptions", SubscriptionsSchema);
 module.exports = Subscriptions;

@@ -1,13 +1,13 @@
 const app = require("../../../server");
-const mongoose = require("mongoose");
 const supertest = require("supertest");
 const ApplicationModel = require("../../../models/applications");
+const PlanModel = require("../../../models/plans");
 const request = supertest(app);
 
 // Cached application.
-let application;
+let application, plan;
 
-describe("POST /applications/:applicationId/subscribe", () => {
+describe("POST /applications/:applicationId/subscriptions", () => {
   beforeEach(async () => {
     // Mock an application document.
     const mockedApplicationDoc = new ApplicationModel({
@@ -16,47 +16,54 @@ describe("POST /applications/:applicationId/subscribe", () => {
       createdBy: global.admin._id,
     });
 
+    const mockPlan = new PlanModel({
+      name: "Basic",
+      logging: true,
+      maxLogRetentionPeriod: 10,
+      maxRequestPerMin: 100,
+      maxRequestPerDay: 100,
+    });
+
     // Save mocked application document to the database and cache it.
     application = await mockedApplicationDoc.save();
+    plan = await mockPlan.save();
   });
 
   afterEach(async () => {
     // Delete mock from the database.
     await ApplicationModel.findByIdAndDelete(application._id);
+    await PlanModel.findByIdAndDelete(plan._id);
 
     // Delete cache.
     application = null;
+    plan = null;
   });
 
   it("should subscribe an application to a plan", async () => {
-    const url = `/v1/applications/${
-      global.application._id
-    }/subscribe/${mongoose.Types.ObjectId()}`;
+    const data = { periodCount: 3, planId: plan._id };
+    const url = `/v1/applications/${application._id}/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request
       .post(url)
       .set("Authorization", bearerToken)
-      .send({ period: "monthly" });
+      .send(data);
     expect(res.status).toEqual(201);
     expect(res.body.status).toEqual("success");
+    expect(res.body.data.applicationId).toEqual(String(application._id));
   });
   it("should return 404 if application is not found", async () => {
-    const url = `/v1/applications/${
-      global.organization._id
-    }/subscribe/${mongoose.Types.ObjectId()}`;
+    const url = `/v1/applications/5f1a97de79287f38f4eab0be/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request
       .post(url)
       .set("Authorization", bearerToken)
-      .send({ period: "monthly" });
+      .send({ periodCount: 3, planId: plan._id });
     expect(res.status).toEqual(404);
     expect(res.body.status).toEqual("error");
     expect(res.body.data).toEqual([]);
   });
   it("Should return a 401 error when authorization token is unauthorized", async () => {
-    const url = `/v1/applications/${
-      global.application._id
-    }/subscribe/${mongoose.Types.ObjectId()}`;
+    const url = `/v1/applications/${application._id}/subscriptions`;
     const bearerToken = `bearer `;
     const res = await request.post(url).set("Authorization", bearerToken);
 
@@ -65,19 +72,7 @@ describe("POST /applications/:applicationId/subscribe", () => {
     expect(res.body.data).toEqual([]);
   });
   it("Should return a 422 error when validation fails", async () => {
-    const url = `/v1/applications/${
-      global.application._id
-    }/subscribe/${mongoose.Types.ObjectId()}`;
-    const bearerToken = `bearer ${global.orgToken}`;
-    const res = await request.post(url).set("Authorization", bearerToken);
-
-    expect(res.status).toEqual(422);
-    expect(res.body.status).toEqual("error");
-    expect(res.body.data).toBeTruthy();
-  });
-
-  it("Should return a 422 error for invalid mongoId", async () => {
-    const url = `/v1/applications/${global.application._id}/subscribe/5ea2134fac`;
+    const url = `/v1/applications/${application._id}/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request.post(url).set("Authorization", bearerToken);
 

@@ -4,7 +4,7 @@ const mongoIdSchema = require("../mongoIdSchema");
 /**
  * Schema validation for subscribing application'
  */
-const subscribeSingleApplicationSchema = {
+const getSingleAppSubscriptionSchema = {
   headers: Joi.object({
     authorization: Joi.string().required(),
   }),
@@ -12,10 +12,6 @@ const subscribeSingleApplicationSchema = {
   params: Joi.object().keys({
     applicationId: Joi.custom(mongoIdSchema, "ObjectID").required(),
   }),
-  body: Joi.object().keys({
-    planId: Joi.custom(mongoIdSchema, "ObjectID").required(),
-    periodCount: Joi.number().required(),
-  }),
 };
 
-module.exports = subscribeSingleApplicationSchema;
+module.exports = getSingleAppSubscriptionSchema;
