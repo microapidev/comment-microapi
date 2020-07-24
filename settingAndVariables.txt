@@ -1,0 +1,29 @@
+Subscription plan fields
+  - maxlogRetentionDays
+  - maxRequestsPerDay
+  - maxRequestsPerMin  
+
+
+
+ENV VARS (startup)
+  - SUPER_ADMIN_EMAIL - default superadmin email (first time run)
+  - SUPER_ADMIN_PASSWORD - default superadmin password (first time run)
+  - PORT - Running port
+  - DISABLE_AUTH - Disables authentication on routes (for testing only)
+  - APP_SECRET - application signing keys for guarded applcation-level routes
+  - ORG_SECRET - organization signing keys for guarded organization-level routes
+  - SYSTEM_SECRET- system signing keys for guarded system-level routes
+
+
+
+SYSTEM SETTINGS [appear as ENV VARS at runtime]
+  - maxRequestsPerMin - global max request rate to prevent DDoS and abuse, even plans cant exceed
+  - defaultMaxRequestsPerDay - for making requests without plan (might be shelved in favor of application default plan)
+  - disableRequestLimits - Disable all limiting, majorly for testing purposes only or open systems
+  - LOGGING_ENABLED - globally disable logging (make camel-case)
+  - maxItemsPerpage - max items per request page
+  - defaultItemsPerPage - default items per page when not set
+
+APPLICATION SETTINGS [attached to application token]
+  - ItemsPerPage
+  - SkipRanges???

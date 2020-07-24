@@ -5,20 +5,20 @@ const responseHandler = require("../../utils/responseHandler");
 /**
  * @author David Okanlawon
  *
- * Gets single microservice system admin account.
+ * Gets currently logged in microservice system admin account.
  *
  * @param {*} req - The request object
  * @param {*} res - The response object
  * @param {*} next - The function executed to call the next middleware
  */
-const getSingleMsAdmin = async (req, res, next) => {
-  const { msAdminId } = req.params;
+const getSelfMsAdmin = async (req, res, next) => {
+  const { msAdminId } = req.token;
 
-  //get msAdmin account
+  //get the msAdmin account
   try {
     const msAdmin = await MsAdmin.findById(msAdminId);
     if (!msAdmin) {
-      next(new CustomError(404, "MsAdmin account not found"));
+      next(new CustomError(401, "Invalid account"));
       return;
     }
     const data = {
@@ -34,9 +34,9 @@ const getSingleMsAdmin = async (req, res, next) => {
       "MsAdmin account retrieved successfully"
     );
   } catch (error) {
-    next(new CustomError(400, "An error occured retrieving msAdmin account"));
+    next(error);
     return;
   }
 };
 
-module.exports = getSingleMsAdmin;
+module.exports = getSelfMsAdmin;

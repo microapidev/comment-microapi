@@ -6,6 +6,8 @@ exports.getSingleMsAdminSchema = require("./getSingleMsAdminSchema");
 exports.updateSingleMsAdminSchema = require("./updateSingleMsAdminSchema");
 exports.enableDisableMsAdminSchema = require("./enableDisableMsAdminSchema");
 exports.deleteSingleMsAdminSchema = require("./deleteSingleMsAdminSchema");
+exports.getSelfMsAdminSchema = require("./getSelfMsAdminSchema");
+
 //Application Schema
 exports.getAllApplicationsSchema = require("./applicationsSchema/getAllApplicationsSchema");
 exports.getSingleApplicationSchema = require("./applicationsSchema/getSingleApplicationSchema");
