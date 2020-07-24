@@ -23,30 +23,31 @@ const SubscriptionsSchema = new Schema(
       type: String,
       required: true,
     },
-    logging: {
-      value: { type: Boolean, default: false },
-      expiryDate: { type: Date },
-    },
-    requestPerMin: {
-      value: { type: Number },
-      expiryDate: { type: Date },
-    },
-    logRetentionPeriod: {
-      value: { type: Number },
-      expiryDate: { type: Date },
-    },
-    requestPerDay: {
-      value: { type: Number },
-      expiryDate: { type: Date },
-    },
-
+    dailyLimits: [
+      {
+        maxRequestsPerDay: { type: Number },
+        expiryDate: { type: Date },
+        isActive: { type: Boolean },
+      },
+    ],
+    perMinuteLimits: [
+      {
+        maxRequestsPerMin: { type: Number },
+        expiryDate: { type: Date },
+        isActive: { Boolean },
+      },
+    ],
+    logging: [
+      {
+        value: { type: Boolean, default: false },
+        expiryDate: { type: Date },
+        maxLogRetentionDays: { type: Number },
+        isActive: { type: Boolean },
+      },
+    ],
     subscriptionStartDate: {
       type: Date,
       required: true,
-    },
-    isActive: {
-      type: Boolean,
-      default: true,
     },
   },
   { timestamps: true }

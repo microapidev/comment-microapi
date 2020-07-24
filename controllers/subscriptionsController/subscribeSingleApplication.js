@@ -35,9 +35,7 @@ const subscribeSingleApplication = async (req, res, next) => {
     }
 
     //check if application exists
-    const application = await ApplicationModel.find({
-      applicationId: applicationId,
-    });
+    const application = await ApplicationModel.findById(applicationId);
     if (!application) {
       next(new CustomError("404", "Application not found"));
       return;
