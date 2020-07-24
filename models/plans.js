@@ -8,19 +8,16 @@ const PlanSchema = new Schema({
     required: true,
   },
   loggingEnabled: {
-    type: String,
-    required: true,
+    type: Boolean,
   },
   maxLogRetentionPeriod: {
     type: Number,
   },
-
-  requestPerMin: {
+  maxRequestPerMin: {
     type: Number,
   },
   maxRequestPerDay: {
     type: Number,
-    required: true,
   },
 });
 PlanSchema.plugin(mongoosePaginate);

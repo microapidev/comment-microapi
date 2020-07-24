@@ -10,7 +10,7 @@ const SubscriptionModel = require("../../models/subscriptions");
 /**
  * @author Ekeyekwu Oscar
  *
- * Subscribes an application to a plan.
+ * gets an application subscribed to a plan.
  *
  * @param {*} req - The request object
  * @param {*} res - The response object
@@ -30,7 +30,10 @@ const getSingleAppSubscription = async (req, res, next) => {
     }
 
     //check if application exists
-    const application = await ApplicationModel.findById(applicationId);
+    const application = await ApplicationModel.findById({
+      applicationId: applicationId,
+      organizationId: organizationId,
+    });
     if (!application) {
       next(new CustomError("404", "Application not found"));
       return;
@@ -44,8 +47,6 @@ const getSingleAppSubscription = async (req, res, next) => {
       next(new CustomError(404, "No Subscription for this application Yet."));
       return;
     }
-    //populate plan details
-    appSubscription.populate("planId");
     //populate subscriptionData
     const appSubscriptionData = {
       subscriptionId: appSubscription._id,

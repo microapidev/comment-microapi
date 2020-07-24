@@ -28,12 +28,17 @@ const subscribeSingleApplication = async (req, res, next) => {
     //check if organization exists
     const organization = await OrganizationModel.findById(organizationId);
     if (!organization) {
-      next(new CustomError("404", "Organization not found"));
+      next(
+        new CustomError("401", "You are not authorized to access this resource")
+      );
       return;
     }
 
     //check if application exists
-    const application = await ApplicationModel.findById(applicationId);
+    const application = await ApplicationModel.find({
+      applicationId: applicationId,
+      organizationId: organizationId,
+    });
     if (!application) {
       next(new CustomError("404", "Application not found"));
       return;
