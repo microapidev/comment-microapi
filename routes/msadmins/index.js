@@ -22,6 +22,15 @@ router.post(
 router.use(sysAuthMW);
 
 /**
+ * GET routes
+ */
+router.get(
+  "/me",
+  validMW(validationRules.getSelfMsAdminSchema),
+  msAdminsCtrl.getSelfMsAdmin
+);
+
+/**
  * POST routes
  */
 

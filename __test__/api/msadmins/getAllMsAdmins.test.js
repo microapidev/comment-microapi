@@ -66,17 +66,15 @@ describe("GET /msAdmins", () => {
 
     const getAllMsadminsRequest = request
       .get(url)
-      .query({ limit: 1 })
+      .query({ limit: 3 })
       .set("Authorization", bearerToken);
 
-    const expectedValue = allMsAdminsResponse.slice(0, 1);
+    // const expectedValue = allMsAdminsResponse.slice(0, 1);
 
     return getAllMsadminsRequest.then((res) => {
       expect(res.status).toEqual(200);
       expect(res.body.status).toEqual("success");
-      expect(res.body.data.records).toEqual(
-        expect.arrayContaining(expectedValue)
-      );
+      expect(res.body.data.records.length).toEqual(3);
     });
   });
 
