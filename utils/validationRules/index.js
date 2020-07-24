@@ -25,6 +25,7 @@ const getApplicationTokenSchema = require("./applications/getApplicationTokenSch
 const deleteApplicationSchema = require("./applications/deleteApplicationSchema");
 const getSingleApplicationSchema = require("./applications/getSingleApplicationSchema");
 const updateApplicationSchema = require("./applications/updateApplicationSchema");
+const getAllPlansSchema = require("./applications/getAllPlansSchema");
 
 const createSingleAdminSchema = require("./admins/createSingleAdminSchema");
 const deleteSingleAdminSchema = require("./admins/deleteSingleAdminSchema");
@@ -74,6 +75,7 @@ module.exports = {
   deleteApplicationSchema,
   getSingleApplicationSchema,
   updateApplicationSchema,
+  getAllPlansSchema,
 
   // Admins Endpoints validation schemas
   changeAdminPasswordSchema,
