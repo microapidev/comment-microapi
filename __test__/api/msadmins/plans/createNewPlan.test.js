@@ -10,7 +10,7 @@ describe("POST /msadmins/plans", () => {
       maxLogRetentionPeriod: 10,
       maxRequestPerMin: 100,
       maxRequestPerDay: 100,
-      period: "monthly".toLowerCase(),
+      periodWeight: 3,
     };
     const url = `/v1/msadmins/plans`;
     const bearerToken = `bearer ${global.sysToken}`;
@@ -26,8 +26,8 @@ describe("POST /msadmins/plans", () => {
     expect(res.body.data.maxLogRetentionPeriod).toEqual(
       mockPlan.maxLogRetentionPeriod
     );
-    expect(res.body.data.requestPerMin).toEqual(mockPlan.requestPerDay);
-    expect(res.body.data.requestPerDay).toEqual(mockPlan.requestPerDay);
+    expect(res.body.data.maxRequestPerMin).toEqual(mockPlan.maxRequestPerMin);
+    expect(res.body.data.maxRequestPerDay).toEqual(mockPlan.maxRequestPerDay);
   });
 
   it("Should return a 401 error when authorization token is unauthorized", async () => {

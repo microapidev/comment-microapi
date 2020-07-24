@@ -24,7 +24,7 @@ const createNewPlan = async (req, res, next) => {
     maxLogRetentionPeriod,
     maxRequestPerMin,
     maxRequestPerDay,
-    period,
+    periodWeight,
   } = req.body;
 
   try {
@@ -44,7 +44,7 @@ const createNewPlan = async (req, res, next) => {
       maxLogRetentionPeriod,
       maxRequestPerMin,
       maxRequestPerDay,
-      period,
+      periodWeight,
     };
     //create plan
     const newPlan = new PlansModel(planData);
@@ -60,10 +60,12 @@ const createNewPlan = async (req, res, next) => {
       maxLogRetentionPeriod: newPlan.maxLogRetentionPeriod,
       maxRequestPerMin: newPlan.maxRequestPerMin,
       maxRequestPerDay: newPlan.maxRequestPerDay,
+      periodWeight: newPlan.periodWeight,
     };
 
     responseHandler(res, 201, createdPlan);
   } catch (error) {
+    next(error);
     next(new CustomError(500, "Something went wrong, please try again..."));
     return;
   }

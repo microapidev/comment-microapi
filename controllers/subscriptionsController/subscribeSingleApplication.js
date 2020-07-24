@@ -51,7 +51,7 @@ const subscribeSingleApplication = async (req, res, next) => {
 
     console.log(plan);
     //calculate subscription expiry date
-    const totalPeriod = parseInt(plan.period * periodCount, 10);
+    const totalPeriod = parseInt(parseInt(plan.periodWeight) * periodCount, 10);
     const subscriptionDate = new Date();
     const expiryDate = new Date().setMonth(
       subscriptionDate.getMonth() + totalPeriod
@@ -74,24 +74,19 @@ const subscribeSingleApplication = async (req, res, next) => {
     //logging object
     const logging = {
       value: plan.logging,
-      expiryDate,
-    };
-
-    //log retention object
-    const logRetentionPeriod = {
-      value: plan.maxLogRetentionPeriod,
+      maxLogRetentionDays: plan.maxLogRetentionPeriod,
       expiryDate,
     };
 
     //request per min object
-    const requestPerMin = {
-      value: plan.maxRequestPerMin,
+    const perMinuteLimits = {
+      maxRequestsPerMin: plan.maxRequestPerMin,
       expiryDate,
     };
 
     //request per day object
-    const requestPerDay = {
-      value: plan.maxRequestPerDay,
+    const dailyLimits = {
+      maxRequestsPerDay: plan.maxRequestPerDay,
       expiryDate,
     };
     const subDetails = {
@@ -101,9 +96,8 @@ const subscribeSingleApplication = async (req, res, next) => {
       subscriptionStartDate: subscriptionDate,
       applicationId: applicationId,
       logging: logging,
-      requestPerMin: requestPerMin,
-      logRetentionPeriod: logRetentionPeriod,
-      requestPerDay: requestPerDay,
+      dailyLimits: dailyLimits,
+      perMinuteLimits: perMinuteLimits,
     };
 
     //add subscription to history
@@ -128,9 +122,8 @@ const subscribeSingleApplication = async (req, res, next) => {
       planName: appSubscription.planName,
       subscriptionStartDate: appSubscription.subscriptionStartDate,
       logging: appSubscription.logging,
-      requestPerMin: appSubscription.requestPerMin,
-      logRetentionPeriod: appSubscription.logRetentionPeriod,
-      requestPerDay: appSubscription.requestPerDay,
+      perMinuteLimits: appSubscription.perMinuteLimits,
+      dailyLimits: appSubscription.dailyLimits,
     };
 
     console.log(appSubscriptionData);

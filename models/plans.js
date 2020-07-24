@@ -22,10 +22,14 @@ const PlanSchema = new Schema({
   maxRequestPerDay: {
     type: Number,
   },
-  period: {
+  periodWeight: {
     type: String,
-    default: PeriodEnum.monthly,
+    enum: Object.values(PeriodEnum),
+    default: 1,
   },
+});
+Object.assign(PlanSchema.statics, {
+  PeriodEnum,
 });
 PlanSchema.plugin(mongoosePaginate);
 const Plans = mongoose.model("Plans", PlanSchema);

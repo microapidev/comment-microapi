@@ -27,14 +27,14 @@ const SubscriptionsSchema = new Schema(
       {
         maxRequestsPerDay: { type: Number },
         expiryDate: { type: Date },
-        isActive: { type: Boolean },
+        isActive: { type: Boolean, default: true },
       },
     ],
     perMinuteLimits: [
       {
         maxRequestsPerMin: { type: Number },
         expiryDate: { type: Date },
-        isActive: { Boolean },
+        isActive: { type: Boolean, default: true },
       },
     ],
     logging: [
@@ -42,7 +42,7 @@ const SubscriptionsSchema = new Schema(
         value: { type: Boolean, default: false },
         expiryDate: { type: Date },
         maxLogRetentionDays: { type: Number },
-        isActive: { type: Boolean },
+        isActive: { type: Boolean, default: true },
       },
     ],
     subscriptionStartDate: {
