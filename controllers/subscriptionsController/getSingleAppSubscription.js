@@ -5,7 +5,7 @@ const responseHandler = require("../../utils/responseHandler");
 //models
 const OrganizationModel = require("../../models/organizations");
 const ApplicationModel = require("../../models/applications");
-const SubscriptionModel = require("../../models/subscriptions");
+const SubscriptionModel = require("../../models/subscriptionsHistory");
 
 /**
  * @author Ekeyekwu Oscar

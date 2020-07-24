@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
 const Schema = mongoose.Schema;
 
-const SubscriptionSchema = new Schema(
+const SubUpgradeHistorySchema = new Schema(
   {
     applicationId: {
       //the id of the application that this subscription belongs to
@@ -10,33 +10,55 @@ const SubscriptionSchema = new Schema(
       ref: "Applications",
       required: true,
     },
-
-    planId: {
-      //the id of the plan that this subscription belongs to
+    subscriptionId: {
       type: Schema.Types.ObjectId,
-      ref: "Plans",
+      ref: "Subscriptions",
       required: true,
     },
-    period: {
+    planName: {
       type: String,
       required: true,
     },
-    periodCount: {
+    loggingEnabled: {
+      type: Boolean,
+      default: false,
+    },
+    loggingExpiryDate: {
+      type: Date,
+    },
+    requestPerMin: {
       type: Number,
-      required: true,
     },
-    expiresOn: {
-      type: String,
+    requestPerMinExpiryDate: {
+      type: Date,
+    },
+    logRetentionPeriod: {
+      type: Number,
+    },
+    logRetentionPeriodExpiryDate: {
+      type: Date,
+    },
+    requestPerDay: {
+      type: Number,
+    },
+    requestPerDayExpiryDate: {
+      type: Date,
+    },
+    subscriptionExpiryDate: {
+      type: Date,
       required: true,
     },
 
-    subscribedOn: {
-      type: String,
+    subscriptionStartDate: {
+      type: Date,
       required: true,
     },
   },
   { timestamps: true }
 );
-SubscriptionSchema.plugin(mongoosePaginate);
-const Subscriptions = mongoose.model("Subscriptions", SubscriptionSchema);
-module.exports = Subscriptions;
+SubUpgradeHistorySchema.plugin(mongoosePaginate);
+const SubUpgradeHistory = mongoose.model(
+  "SubUpgradeHistory",
+  SubUpgradeHistorySchema
+);
+module.exports = SubUpgradeHistory;

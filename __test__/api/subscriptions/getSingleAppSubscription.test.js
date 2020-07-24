@@ -2,7 +2,7 @@ const app = require("../../../server");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 const ApplicationModel = require("../../../models/applications");
-const SubscriptionModel = require("../../../models/subscriptions");
+const SubscriptionModel = require("../../../models/subscriptionsHistory");
 const request = supertest(app);
 
 // Cached application and subscription

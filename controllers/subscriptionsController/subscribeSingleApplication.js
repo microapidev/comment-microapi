@@ -5,8 +5,8 @@ const responseHandler = require("../../utils/responseHandler");
 //models
 const OrganizationModel = require("../../models/organizations");
 const ApplicationModel = require("../../models/applications");
-const SubscriptionModel = require("../../models/subscriptions");
-const SubUpgradeHistoryModel = require("../../models/subscriptionUpgradeHistory");
+const SubscriptionModel = require("../../models/subscriptionsHistory");
+const SubUpgradeHistoryModel = require("../../models/subscriptions");
 const PlanModel = require("../../models/plans");
 
 /**
