@@ -24,7 +24,9 @@ const createNewPlan = async (req, res, next) => {
     //check if msAdmin exists
     const msAdmin = await MsAdminModel.findById(msAdminId);
     if (!msAdmin) {
-      next(new CustomError("404", "MS Admin not found"));
+      next(
+        new CustomError("401", "You are not authorized to access this resource")
+      );
       return;
     }
 
@@ -43,9 +45,8 @@ const createNewPlan = async (req, res, next) => {
       requestPerDay: newPlan.requestPerDay,
     };
 
-    responseHandler(res, 200, createdPlan);
+    responseHandler(res, 201, createdPlan);
   } catch (error) {
-    console.log(error.message);
     next(new CustomError(500, "Something went wrong, please try again..."));
     return;
   }
