@@ -29,11 +29,11 @@ describe("GET /msadmins/plans", () => {
     });
     //make request call to endpoint
     let res = await request
-      .get(`/v1/msadmin/plans`)
+      .get(`/v1/msadmins/plans`)
       .set("Authorization", `bearer ${global.sysToken}`);
 
     expect(res.status).toEqual(200);
-    expect(res.body.data).toEqual(expected);
+    expect(res.body.data).toEqual(expect.arrayContaining(expected));
     //remove plan from db and cache
     await PlanModel.findById(plan._id);
     plan = null;

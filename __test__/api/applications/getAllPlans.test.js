@@ -33,7 +33,7 @@ describe("GET /applications/plans", () => {
       .set("Authorization", `bearer ${global.orgToken}`);
 
     expect(res.status).toEqual(200);
-    expect(res.body.data).toEqual(expected);
+    expect(res.body.data).toEqual(expect.arrayContaining(expected));
     //remove plan from db and cache
     await PlanModel.findById(plan._id);
     plan = null;
