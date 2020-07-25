@@ -25,3 +25,4 @@ exports.updateSystemSettingsSchema = require("./settings/updateSystemSettingsSch
 
 //plans Schema
 exports.createNewPlanSchema = require("./planSchema/createNewPlanSchema");
+exports.plansSchema = require("./planSchema/plansSchema");

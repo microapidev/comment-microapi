@@ -123,7 +123,12 @@ const subscribeSingleApplication = async (req, res, next) => {
       dailyLimits: appSubscription.dailyLimits,
     };
 
-    responseHandler(res, 201, appSubscriptionData);
+    responseHandler(
+      res,
+      201,
+      appSubscriptionData,
+      "Application subscription successful"
+    );
   } catch (error) {
     next(new CustomError(500, "Something went wrong, please try again..."));
     return;
