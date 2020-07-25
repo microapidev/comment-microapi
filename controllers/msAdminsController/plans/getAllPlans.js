@@ -18,7 +18,7 @@ const PlansModel = require("../../../models/plans");
 const getAllPlans = async (req, res, next) => {
   try {
     //get all plans
-    const plans = PlansModel.find();
+    const plans = await PlansModel.find({});
 
     if (!plans) {
       next(new CustomError(404, "No Plan Found ..."));
@@ -35,9 +35,8 @@ const getAllPlans = async (req, res, next) => {
       };
     });
 
-    responseHandler(res, 201, allPlans);
+    responseHandler(res, 200, allPlans);
   } catch (error) {
-    next(error);
     next(new CustomError(500, "Something went wrong, please try again..."));
     return;
   }
