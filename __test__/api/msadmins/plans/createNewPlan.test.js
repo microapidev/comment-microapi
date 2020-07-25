@@ -19,7 +19,6 @@ describe("POST /msadmins/plans", () => {
       .set("Authorization", bearerToken)
       .send(mockPlan);
     expect(res.status).toEqual(201);
-    console.log(res.body);
     expect(res.body.status).toEqual("success");
     expect(res.body.data.planName).toEqual(mockPlan.name);
     expect(res.body.data.logging).toEqual(mockPlan.logging);

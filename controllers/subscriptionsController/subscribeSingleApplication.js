@@ -43,7 +43,6 @@ const subscribeSingleApplication = async (req, res, next) => {
 
     //check if plan exists
     const plan = await PlanModel.findById(planId);
-    console.log(plan);
     if (!plan) {
       next(new CustomError(404, "Plan not found!"));
       return;
