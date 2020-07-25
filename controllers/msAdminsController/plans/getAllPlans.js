@@ -35,7 +35,7 @@ const getAllPlans = async (req, res, next) => {
       };
     });
 
-    responseHandler(res, 200, allPlans);
+    responseHandler(res, 200, allPlans, "All plans retrieved successfully");
   } catch (error) {
     next(new CustomError(500, "Something went wrong, please try again..."));
     return;
