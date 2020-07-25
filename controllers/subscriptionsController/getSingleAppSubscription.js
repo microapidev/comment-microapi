@@ -59,7 +59,12 @@ const getSingleAppSubscription = async (req, res, next) => {
       subscriptionStartDate: appSubscription.subscriptionStartDate,
     };
 
-    responseHandler(res, 200, appSubscriptionData);
+    responseHandler(
+      res,
+      200,
+      appSubscriptionData,
+      "Application subscription retrieved successfully"
+    );
   } catch (error) {
     next(new CustomError(500, "Something went wrong, please try again..."));
     return;
