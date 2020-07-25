@@ -10,10 +10,11 @@ const createNewPlanSchema = {
 
   body: Joi.object().keys({
     name: Joi.string().required(),
-    logging: Joi.boolean().required(),
-    maxLogRetentionPeriod: Joi.number().required(),
-    maxRequestPerMin: Joi.number().required(),
-    maxRequestPerDay: Joi.number().required(),
+    logging: Joi.boolean(),
+    maxLogRetentionPeriod: Joi.number(),
+    maxRequestPerMin: Joi.number(),
+    maxRequestPerDay: Joi.number(),
+    periodWeight: Joi.number().required(),
   }),
 };
 
