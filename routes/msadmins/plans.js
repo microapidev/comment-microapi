@@ -18,4 +18,12 @@ router.post(
  */
 router.get("/", validMW(planValidationRule), msAdminsPlanCtrl.getAllPlans);
 
+/**
+ * Delete route
+ */
+router.delete(
+  "/:planId",
+  validMW(validationRules.plansSchema),
+  msAdminsPlanCtrl.deleteSinglePlan
+);
 module.exports = router;
