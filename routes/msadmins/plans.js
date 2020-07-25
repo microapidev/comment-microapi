@@ -17,6 +17,11 @@ router.post(
  * Get Routes
  */
 router.get("/", validMW(planValidationRule), msAdminsPlanCtrl.getAllPlans);
+router.get(
+  "/:planId",
+  validMW(validationRules.plansSchema),
+  msAdminsPlanCtrl.getSinglePlan
+);
 
 /**
  * Delete route
