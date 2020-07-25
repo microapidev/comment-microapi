@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const mongoosePaginate = require("mongoose-paginate-v2");
 const mongooseDelete = require("mongoose-delete");
 const comments = require("./comments");
 
@@ -38,6 +39,9 @@ ApplicationSchema.post("findOneAndDelete", async (application) => {
     await comments.deleteMany({ applicationId: application._id });
   }
 });
+
+//plug in the pagination package
+ApplicationSchema.plugin(mongoosePaginate);
 
 ApplicationSchema.plugin(mongooseDelete, {
   overrideMethods: true,

@@ -19,13 +19,23 @@ const SystemSettingsSchema = new Schema(
       required: true,
       default: 20,
     },
+    defaultMaxRequestsPerDay: {
+      type: Number,
+      required: true,
+      default: 10000,
+    },
+    disableRequestLimits: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-SystemSettingsSchema.post("save", function (setting) {
+SystemSettingsSchema.post("findOneAndUpdate", function (setting) {
   if (setting) {
     updateEnvSystemSettings(setting);
   }

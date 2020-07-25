@@ -60,7 +60,7 @@ const updateSingleCommentUpVotes = async (req, res, next) => {
     }
 
     //save the comment vote
-    comment.save();
+    await comment.save();
 
     //get total number of elements in array
     const totalUpVotes = comment.upVotes.length;

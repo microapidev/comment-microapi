@@ -1,6 +1,7 @@
 const express = require("express");
 const applicationsRoute = require("./applications");
 const organizationsRoute = require("./organizations");
+const plansRoute = require("./plans");
 const msAdminsCtrl = require("../../controllers/msAdminsController");
 const validMW = require("../../middleware/validation");
 const validationRules = require("../../utils/validationRules").msAdmins;
@@ -20,6 +21,15 @@ router.post(
 // --------- DONT TOUCH!!! -------------
 //apply middleware at top of chain
 router.use(sysAuthMW);
+
+/**
+ * GET routes
+ */
+router.get(
+  "/me",
+  validMW(validationRules.getSelfMsAdminSchema),
+  msAdminsCtrl.getSelfMsAdmin
+);
 
 /**
  * POST routes
@@ -45,6 +55,8 @@ router.patch(
   validMW(validationRules.updateSingleMsAdminSchema),
   msAdminsCtrl.updateSingleMsAdmin
 );
+
+router.use("/plans", plansRoute);
 router.use("/organizations", organizationsRoute);
 router.use("/applications", applicationsRoute);
 

@@ -11,7 +11,7 @@ const responseHandler = require("../../utils/responseHandler");
  * @param {*} res - The response object
  * @param {*} next - The function executed to call the next middleware
  */
-const getSingleMsMsAdmin = async (req, res, next) => {
+const getSingleMsAdmin = async (req, res, next) => {
   const { msAdminId } = req.params;
 
   //get msAdmin account
@@ -39,4 +39,4 @@ const getSingleMsMsAdmin = async (req, res, next) => {
   }
 };
 
-module.exports = getSingleMsMsAdmin;
+module.exports = getSingleMsAdmin;

@@ -19,7 +19,7 @@ const responseHandler = require("../../utils/responseHandler");
  */
 const getAllReplies = async (req, res, next) => {
   const { commentId } = req.params;
-  const { isFlagged, ownerId, limit, page, sort } = req.query;
+  const { isFlagged, ownerId } = req.query;
   const { applicationId } = req.token;
 
   if (!ObjectId.isValid(commentId)) {
@@ -35,32 +35,9 @@ const getAllReplies = async (req, res, next) => {
 
     // Create query for replies.
     let query = {};
-    // Create paginiation options
-    let paginateOptions = {};
 
     query.commentId = commentId;
     if (ownerId) query.ownerId = ownerId;
-    /**
-     * Pagingation starts here
-     */
-
-    //set record limit if available
-    limit
-      ? (paginateOptions.limit = parseInt(limit, 10))
-      : (paginateOptions.limit = 20);
-
-    //set skip to next page if available
-    paginateOptions.skip = (page - 1) * limit;
-
-    //set page option if available
-    page
-      ? (paginateOptions.page = parseInt(page, 10))
-      : (paginateOptions.page = 1);
-
-    //set sort if available
-    sort
-      ? (paginateOptions.sort = { createdAt: sort })
-      : (paginateOptions.sort = { createdAt: "asc" });
 
     //flag check
     if (typeof isFlagged === "string") {
@@ -71,7 +48,7 @@ const getAllReplies = async (req, res, next) => {
       }
     }
 
-    const replies = await Replies.paginate(query, paginateOptions);
+    const replies = await Replies.paginate(query, req.paginateOptions);
 
     const allReplies = replies.docs.map((reply) => {
       return {

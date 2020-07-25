@@ -4,7 +4,8 @@ const validationMiddleware = require("../middleware/validation");
 const validationRules = require("../utils/validationRules");
 const commentsController = require("../controllers/commentsController");
 const { appAuthMW } = require("../middleware/auth");
-const { queryLimitMW } = require("../middleware/pagination");
+const { queryLimitMW, paginateOptionsMW } = require("../middleware/pagination");
+const planRatesLimiter = require("../middleware/planRatesLimiter");
 // const mongoose = require("mongoose");
 // const { generateToken } = require("../utils/auth/tokenGenerator");
 
@@ -28,6 +29,9 @@ const { queryLimitMW } = require("../middleware/pagination");
 // authentication middleware must be at the top
 router.use(appAuthMW);
 
+//add plan rates limiting middleware
+router.use(planRatesLimiter);
+
 router.use("/:commentId/replies", repliesRoutes);
 
 /**
@@ -45,6 +49,7 @@ router.post(
 router.get(
   "/",
   validationMiddleware(validationRules.getAllCommentsSchema),
+  paginateOptionsMW,
   queryLimitMW,
   commentsController.getAllComments
 );

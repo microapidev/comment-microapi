@@ -6,6 +6,8 @@ exports.getSingleMsAdminSchema = require("./getSingleMsAdminSchema");
 exports.updateSingleMsAdminSchema = require("./updateSingleMsAdminSchema");
 exports.enableDisableMsAdminSchema = require("./enableDisableMsAdminSchema");
 exports.deleteSingleMsAdminSchema = require("./deleteSingleMsAdminSchema");
+exports.getSelfMsAdminSchema = require("./getSelfMsAdminSchema");
+
 //Application Schema
 exports.getAllApplicationsSchema = require("./applicationsSchema/getAllApplicationsSchema");
 exports.getSingleApplicationSchema = require("./applicationsSchema/getSingleApplicationSchema");
@@ -20,3 +22,7 @@ exports.getAllOrganizationsSchema = require("./organzationsSchema/getAllOrganiza
 exports.updateSystemSettingsSchema = require("./settings/updateSystemSettingsSchema");
 exports.getSystemSettingsSchema = require("./settings/getSystemSettingsSchema");
 exports.updateSystemSettingsSchema = require("./settings/updateSystemSettingsSchema");
+
+//plans Schema
+exports.createNewPlanSchema = require("./planSchema/createNewPlanSchema");
+exports.plansSchema = require("./planSchema/plansSchema");

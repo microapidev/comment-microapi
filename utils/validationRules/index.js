@@ -25,6 +25,7 @@ const getApplicationTokenSchema = require("./applications/getApplicationTokenSch
 const deleteApplicationSchema = require("./applications/deleteApplicationSchema");
 const getSingleApplicationSchema = require("./applications/getSingleApplicationSchema");
 const updateApplicationSchema = require("./applications/updateApplicationSchema");
+const getAllPlansSchema = require("./applications/getAllPlansSchema");
 
 const createSingleAdminSchema = require("./admins/createSingleAdminSchema");
 const deleteSingleAdminSchema = require("./admins/deleteSingleAdminSchema");
@@ -35,6 +36,9 @@ const changeAdminPasswordSchema = require("./admins/changeAdminPasswordSchema");
 const adminDeleteCommentSchema = require("./admins/adminDeleteCommentSchema");
 
 const msAdmins = require("./msadmins");
+
+const subscribeSingleApplicationSchema = require("./subscriptions/subscribeSingleApplication");
+const getSingleAppSubscriptionSchema = require("./subscriptions/getSingleAppSubscriptionSchema");
 
 /**
  * Object containing schema validations for the endpoints.
@@ -71,6 +75,7 @@ module.exports = {
   deleteApplicationSchema,
   getSingleApplicationSchema,
   updateApplicationSchema,
+  getAllPlansSchema,
 
   // Admins Endpoints validation schemas
   changeAdminPasswordSchema,
@@ -83,4 +88,8 @@ module.exports = {
 
   // MsAdmins Endpoints validation schemas
   msAdmins,
+
+  //application subscriptions endpoints validation schemas
+  subscribeSingleApplicationSchema,
+  getSingleAppSubscriptionSchema,
 };

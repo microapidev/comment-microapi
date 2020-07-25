@@ -33,7 +33,6 @@ describe("unblock an Application ", () => {
 
     //unblock Application using softDelete
     const url = `/v1/msadmins/applications/${blockedApp._id}/unblock`;
-    console.log(url);
     const bearerToken = `bearer ${global.sysToken}`;
     const res = await request.patch(url).set("Authorization", bearerToken);
     expect(res.status).toEqual(200);
