@@ -22,7 +22,7 @@ const getSelfMsAdmin = async (req, res, next) => {
       return;
     }
     const data = {
-      msAdminId: msAdmin.id,
+      msAdminId: msAdmin._id,
       fullname: msAdmin.fullname,
       email: msAdmin.email,
       role: msAdmin.role,
