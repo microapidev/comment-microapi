@@ -34,6 +34,11 @@ const SystemSettingsSchema = new Schema(
       required: true,
       default: true,
     },
+    logPageSize: {
+      type: Number,
+      required: true,
+      default: 100,
+    },
   },
   {
     timestamps: true,
