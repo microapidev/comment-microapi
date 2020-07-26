@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 const Schema = mongoose.Schema;
 
 const REQUEST_METHODS = ["GET", "POST", "PATCH", "PUT", "DELETE"];
@@ -34,6 +35,9 @@ const RequestLogSchema = new Schema(
   },
   { timestamps: true }
 );
+
+//plug in the pagination package
+RequestLogSchema.plugin(mongoosePaginate);
 
 const RequestLog = mongoose.model("RequestLogs", RequestLogSchema);
 module.exports = RequestLog;

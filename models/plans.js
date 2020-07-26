@@ -15,12 +15,15 @@ const PlanSchema = new Schema({
   },
   maxLogRetentionPeriod: {
     type: Number,
+    default: 0,
   },
   maxRequestPerMin: {
     type: Number,
+    default: 0,
   },
   maxRequestPerDay: {
     type: Number,
+    default: 0,
   },
   periodWeight: {
     type: String,
