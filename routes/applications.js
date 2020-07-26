@@ -47,7 +47,7 @@ router.get(
 );
 
 router.get(
-  "/:applicationId",
+  "/:applicationId/log",
   validMW(validationRules.getSingleApplicationLogSchema),
   applicationsController.getSingleApplicationLog
 );
