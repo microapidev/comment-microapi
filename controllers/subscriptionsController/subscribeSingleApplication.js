@@ -87,7 +87,6 @@ const subscribeSingleApplication = async (req, res, next) => {
       next(new CustomError(404, "Plan not found!"));
       return;
     }
-    console.log(application + "found");
 
     //calculate subscription expiry date
     const totalPeriod = parseInt(
