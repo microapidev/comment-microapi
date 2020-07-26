@@ -716,6 +716,8 @@ paths:
                               type: string
                             organizationName:
                               type: string
+                            organizationEmail:
+                              type: string
 
         "400":
           description: Bad request error
@@ -776,6 +778,8 @@ paths:
                       organizationId:
                         type: string
                       organizationName:
+                        type: string
+                      organizationEmail:
                         type: string
 
         "400":
