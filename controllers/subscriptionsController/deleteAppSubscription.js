@@ -6,6 +6,7 @@ const responseHandler = require("../../utils/responseHandler");
 const OrganizationModel = require("../../models/organizations");
 const ApplicationModel = require("../../models/applications");
 const SubscriptionModel = require("../../models/subscriptions");
+const SubscriptionHistoryModel = require("../../models/subscriptionsHistory");
 
 /**
  * @author Ekeyekwu Oscar
@@ -49,6 +50,9 @@ const deleteAppSubscription = async (req, res, next) => {
       );
       return;
     }
+    await SubscriptionHistoryModel.deleteMany({
+      subscriptionId: deletedSubscription._id,
+    });
     //populate subscriptionData
     const deletedSubscriptionData = {
       subscriptionId: deletedSubscription._id,
