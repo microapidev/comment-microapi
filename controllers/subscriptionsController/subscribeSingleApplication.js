@@ -88,7 +88,10 @@ const subscribeSingleApplication = async (req, res, next) => {
     }
 
     //calculate subscription expiry date
-    const totalPeriod = parseInt(parseInt(plan.periodWeight) * periodCount, 10);
+    const totalPeriod = parseInt(
+      parseInt(plan.periodWeight, 10) * parseInt(periodCount, 10),
+      10
+    );
     const subscriptionDate = new Date();
     const expiryDate = new Date().setMonth(
       subscriptionDate.getMonth() + totalPeriod
