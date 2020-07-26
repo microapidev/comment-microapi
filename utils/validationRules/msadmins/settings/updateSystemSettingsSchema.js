@@ -9,6 +9,8 @@ const updateSystemSettingsSchema = {
     maxRequestsPerMin: Joi.number(),
     defaultItemsPerPage: Joi.number(),
     maxItemsPerPage: Joi.number(),
+    defaultMaxRequestsPerDay: Joi.number(),
+    disableRequestLimits: Joi.boolean(),
   }),
 };
 
