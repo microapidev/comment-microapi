@@ -158,7 +158,7 @@ const subscribeSingleApplication = async (req, res, next) => {
       //logging object
       const logging = {
         value: plan.logging,
-        maxLogRetentionDays: plan.maxLogRetentionPeriod,
+        maxLogRetentionPeriod: plan.maxLogRetentionPeriod,
         expiryDate,
       };
 
