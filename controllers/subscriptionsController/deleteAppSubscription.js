@@ -31,7 +31,7 @@ const deleteAppSubscription = async (req, res, next) => {
     }
 
     //check if application exists
-    const application = await ApplicationModel.findById({
+    const application = await ApplicationModel.find({
       _id: applicationId,
       organizationId: organizationId,
     });

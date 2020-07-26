@@ -99,9 +99,8 @@ const subscribeSingleApplication = async (req, res, next) => {
 
     isSubscribed = await SubscriptionsModel.findOne({
       applicationId: applicationId,
-    }).sort({ createdAt: "desc" });
+    });
 
-    console.log(isSubscribed);
     //check for existing app subsription
     if (isSubscribed) {
       const plans = [
@@ -114,7 +113,7 @@ const subscribeSingleApplication = async (req, res, next) => {
         const planProperty = item.plan;
         const planName = item.planName;
 
-        isSubscribed[planProperty].find((currPlan) => {
+        const checkAndUpdate = isSubscribed[planProperty].find((currPlan) => {
           if (parseInt(currPlan[planName]) === parseInt(plan[planName])) {
             let oldDate = new Date(currPlan.expiryDate.toLocaleString());
             let curDate = new Date();
@@ -130,13 +129,17 @@ const subscribeSingleApplication = async (req, res, next) => {
             currPlan["expiryDate"] = new Date(newDate);
             currPlan["isActive"] = true;
             return true;
-          } else {
+          }
+        });
+
+        if (!checkAndUpdate) {
+          isSubscribed[planProperty].forEach((currPlan) => {
             currPlan[planName] = plan[planName];
             currPlan["expiryDate"] = expiryDate;
             currPlan["isActive"] = true;
             isSubscribed[planProperty].push(currPlan);
-          }
-        });
+          });
+        }
       });
       await isSubscribed.save();
       await addSubToHistory(
