@@ -40,8 +40,8 @@ describe("POST /applications/:applicationId/subscriptions", () => {
   });
 
   it("should subscribe an application to a plan", async () => {
-    const data = { periodCount: 3, planId: "5f1c26d54958a7001e71e423" };
-    const url = `/v1/applications/5efe228b2ea1950f68792769/subscriptions`;
+    const data = { periodCount: 3, planId: plan._id };
+    const url = `/v1/applications/${application._id}/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request
       .post(url)

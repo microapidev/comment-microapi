@@ -10,11 +10,6 @@ const SubscriptionsSchema = new Schema(
       ref: "Applications",
       required: true,
     },
-    subscriptionHistoryId: {
-      type: Schema.Types.ObjectId,
-      ref: "SubscriptionsHistory",
-      required: true,
-    },
     planName: {
       type: String,
       required: true,
@@ -25,14 +20,14 @@ const SubscriptionsSchema = new Schema(
     },
     dailyLimits: [
       {
-        maxRequestsPerDay: { type: Number },
+        maxRequestPerDay: { type: Number },
         expiryDate: { type: Date },
         isActive: { type: Boolean, default: true },
       },
     ],
     perMinuteLimits: [
       {
-        maxRequestsPerMin: { type: Number },
+        maxRequestPerMin: { type: Number },
         expiryDate: { type: Date },
         isActive: { type: Boolean, default: true },
       },
@@ -41,7 +36,7 @@ const SubscriptionsSchema = new Schema(
       {
         value: { type: Boolean, default: false },
         expiryDate: { type: Date },
-        maxLogRetentionDays: { type: Number },
+        maxLogRetentionPeriod: { type: Number },
         isActive: { type: Boolean, default: true },
       },
     ],

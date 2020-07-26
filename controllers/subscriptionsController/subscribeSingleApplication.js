@@ -23,6 +23,7 @@ const subscribeSingleApplication = async (req, res, next) => {
   const { applicationId } = req.params;
   const { organizationId } = req.token;
   const { periodCount, planId } = req.body;
+  let isSubscribed, appSubscription;
   //util function to return new date incrementally
   const newDateUtil = (oldDate, totalPeriod) => {
     let newDate = new Date(oldDate.toLocaleString()).setMonth(
@@ -30,6 +31,34 @@ const subscribeSingleApplication = async (req, res, next) => {
     );
     return newDate;
   };
+  function deactivateAll(planProperty) {
+    isSubscribed[planProperty].forEach((item) => {
+      item.isActive = false;
+    });
+  }
+
+  //add subscription to History
+  async function addSubToHistory(
+    appId,
+    planId,
+    totalPeriod,
+    expiryDate,
+    subDate,
+    subId
+  ) {
+    const subHistoryData = {
+      applicationId: appId,
+      planId: planId,
+      period: `${totalPeriod} months`,
+      expiresOn: expiryDate,
+      subscribedOn: subDate,
+      subscriptionId: subId,
+    };
+
+    //save to subscription history
+    const subHistory = new SubscriptionHistoryModel(subHistoryData);
+    await subHistory.save();
+  }
 
   try {
     //check if organization exists
@@ -62,153 +91,133 @@ const subscribeSingleApplication = async (req, res, next) => {
       subscriptionDate.getMonth() + totalPeriod
     );
 
-    const isSubscribed = await SubscriptionsModel.findOne({
+    isSubscribed = await SubscriptionsModel.findOne({
       applicationId: applicationId,
-    });
+    }).sort({ createdAt: "desc" });
+
     console.log(isSubscribed);
-    console.log(plan);
+    //check for existing app subsription
     if (isSubscribed) {
-      //check if subscription contains logging
-      let logRetention = plan.maxLogRetentionDays;
-      const logging = async function updateLogging(logRetention) {
-        if (logRetention) {
-          return isSubscribed.logging.forEach((log) => {
-            //parse max log period into a number
-            let fromPlan = parseInt(logRetention);
-            if (parseInt(log.maxLogRetentionDays) === fromPlan) {
-              log.maxLogRetentionDays += fromPlan;
-              //check if expired already
-              if (new Date(log.expiryDate).getMonth() < new Date().getMonth()) {
-                log.expiryDate = expiryDate;
-              } else {
-                log.expiryDate = newDateUtil(log.expiryDate, totalPeriod);
-              }
-              //set new date incrementally
+      const plans = [
+        { plan: "logging", planName: "maxLogRetentionPeriod" },
+        { plan: "dailyLimits", planName: "maxRequestPerDay" },
+        { plan: "perMinuteLimits", planName: "maxRequestPerMin" },
+      ];
+
+      plans.forEach((item) => {
+        const planProperty = item.plan;
+        const planName = item.planName;
+
+        isSubscribed[planProperty].find((currPlan) => {
+          if (parseInt(currPlan[planName]) === parseInt(plan[planName])) {
+            let oldDate = new Date(currPlan.expiryDate.toLocaleString());
+            let curDate = new Date();
+            let newDate;
+            if (oldDate.getDate() < curDate.getDate()) {
+              newDate = new Date(expiryDate.toLocaleString());
             } else {
-              log.maxLogRetentionDays = fromPlan;
-              log.expiryDate = expiryDate;
-              log.isActive = true;
-              isSubscribed.save();
+              newDate = newDateUtil(currPlan["expiryDate"], totalPeriod);
             }
-          });
-        }
-      };
-      //check if perDays request is in plan
-      if (plan.maxRequestPerDay) {
-        isSubscribed.dailyLimits.forEach((dailyReqLim) => {
-          if (dailyReqLim.maxRequestsPerDay === plan.maxRequestPerDay) {
-            dailyReqLim.maxRequestsPerDay += plan.maxRequestPerDay;
-            dailyReqLim.expiryDate = newDateUtil(
-              dailyReqLim.expiryDate,
-              totalPeriod
-            );
-            dailyReqLim.isActive = true;
+            //deactive all existing plans and set only new one to true
+            deactivateAll(planProperty);
+            currPlan[planName] = plan[planName];
+            currPlan["expiryDate"] = new Date(newDate);
+            currPlan["isActive"] = true;
+            return true;
           } else {
-            dailyReqLim.maxRequestsPerDay = plan.maxRequestPerDay;
-            dailyReqLim.expiryDate = expiryDate;
-            dailyReqLim.isActive = true;
+            currPlan[planName] = plan[planName];
+            currPlan["expiryDate"] = expiryDate;
+            currPlan["isActive"] = true;
+            isSubscribed[planProperty].push(currPlan);
           }
         });
+      });
+      await isSubscribed.save();
+      await addSubToHistory(
+        applicationId,
+        planId,
+        totalPeriod,
+        expiryDate,
+        subscriptionDate,
+        isSubscribed._id
+      );
+      return responseHandler(
+        res,
+        201,
+        isSubscribed,
+        "Application subscription upgrade successful"
+      );
+    } else {
+      //create subscription data & properties objects
+      //logging object
+      const logging = {
+        value: plan.logging,
+        maxLogRetentionDays: plan.maxLogRetentionPeriod,
+        expiryDate,
+      };
+
+      //request per min object
+      const perMinuteLimits = {
+        maxRequestsPerMin: plan.maxRequestPerMin,
+        expiryDate,
+      };
+
+      //request per day object
+      const dailyLimits = {
+        maxRequestsPerDay: plan.maxRequestPerDay,
+        expiryDate,
+      };
+
+      const subDetails = {
+        planName: plan.name,
+        planId: plan._id,
+        subscriptionStartDate: subscriptionDate,
+        applicationId: applicationId,
+        logging: logging,
+        dailyLimits: dailyLimits,
+        perMinuteLimits: perMinuteLimits,
+      };
+
+      // create  subscription
+      appSubscription = new SubscriptionsModel(subDetails);
+      appSubscription.save();
+
+      if (!appSubscription) {
+        next(
+          new CustomError(
+            400,
+            "An error occured subscribing application to this service"
+          )
+        );
+        return;
       }
 
-      // //check if perMin request in plan
-      // if (plan.maxRequestPerMin) {
-      //   isSubscribed.perMinuteLimits.forEach((minReqLim) => {
-      //     if (minReqLim.maxRequestsPerMin === plan.maxRequestPerMin) {
-      //       minReqLim.maxRequestsPerMin += plan.maxRequestPerMin;
-      //       minReqLim.expiryDate = newDateUtil(
-      //         minReqLim.expiryDate,
-      //         totalPeriod
-      //       );
-      //       minReqLim.isActive = true;
-      //
-      //     } else {
-      //       minReqLim.maxRequestsPerMin = plan.maxRequestPerMin;
-      //       minReqLim.expiryDate = expiryDate;
-      //       minReqLim.isActive = true;
-      //
-      //     }
-      //   });
-      // }
+      //collate subscribedApp Data
+      const appSubscriptionData = {
+        subscribtionId: appSubscription._id,
+        applicationId: appSubscription.applicationId,
+        planId: appSubscription.planId,
+        planName: appSubscription.planName,
+        subscriptionStartDate: appSubscription.subscriptionStartDate,
+        logging: appSubscription.logging,
+        perMinuteLimits: appSubscription.perMinuteLimits,
+        dailyLimits: appSubscription.dailyLimits,
+      };
+      await addSubToHistory(
+        applicationId,
+        planId,
+        totalPeriod,
+        expiryDate,
+        subscriptionDate,
+        appSubscription._id
+      );
+      return responseHandler(
+        res,
+        201,
+        appSubscriptionData,
+        "Application subscription successful"
+      );
     }
-
-    console.log(isSubscribed);
-    // //populate subscription History Data
-    // const subscriptionHistoryData = {
-    //   applicationId: applicationId,
-    //   planId: planId,
-    //   period: `${totalPeriod} months`,
-    //   expiresOn: expiryDate,
-    //   subscribedOn: subscriptionDate,
-    // };
-
-    // //save to subscription history
-    // const subHistory = new SubscriptionHistoryModel(subscriptionHistoryData);
-    //  subHistory.save();
-
-    // //create subscription data & properties objects
-    // //logging object
-    // const logging = {
-    //   value: plan.logging,
-    //   maxLogRetentionDays: plan.maxLogRetentionPeriod,
-    //   expiryDate,
-    // };
-
-    // //request per min object
-    // const perMinuteLimits = {
-    //   maxRequestsPerMin: plan.maxRequestPerMin,
-    //   expiryDate,
-    // };
-
-    // //request per day object
-    // const dailyLimits = {
-    //   maxRequestsPerDay: plan.maxRequestPerDay,
-    //   expiryDate,
-    // };
-    // const subDetails = {
-    //   planName: plan.name,
-    //   planId: plan._id,
-    //   subscriptionHistoryId: subHistory._id,
-    //   subscriptionStartDate: subscriptionDate,
-    //   applicationId: applicationId,
-    //   logging: logging,
-    //   dailyLimits: dailyLimits,
-    //   perMinuteLimits: perMinuteLimits,
-    // };
-
-    // //add subscription to history
-    // const appSubscription = new SubscriptionsModel(subDetails);
-    //  appSubscription.save();
-
-    // if (!appSubscription) {
-    //   next(
-    //     new CustomError(
-    //       400,
-    //       "An error occured subscribing application to this service"
-    //     )
-    //   );
-    //   return;
-    // }
-    // //collate subscribedApp Data
-    // const appSubscriptionData = {
-    //   subscribtionId: appSubscription._id,
-    //   subscriptionHistoryId: appSubscription.subscriptionHistoryId,
-    //   applicationId: appSubscription.applicationId,
-    //   planId: appSubscription.planId,
-    //   planName: appSubscription.planName,
-    //   subscriptionStartDate: appSubscription.subscriptionStartDate,
-    //   logging: appSubscription.logging,
-    //   perMinuteLimits: appSubscription.perMinuteLimits,
-    //   dailyLimits: appSubscription.dailyLimits,
-    // };
-
-    // console.log(appSubscriptionData);
-    responseHandler(
-      res,
-      201,
-      isSubscribed,
-      "Application subscription successful"
-    );
   } catch (error) {
     next(error);
     next(new CustomError(500, "Something went wrong, please try again..."));
