@@ -52,7 +52,7 @@ describe("POST /applications/:applicationId/subscriptions", () => {
     expect(res.body.data.applicationId).toEqual(String(application._id));
   });
   it("should return 404 if application is not found", async () => {
-    const url = `/v1/applications/5f1a97de79287f38f4eab0be/subscriptions`;
+    const url = `/v1/applications/${global.msAdmin._id}/subscriptions`;
     const bearerToken = `bearer ${global.orgToken}`;
     const res = await request
       .post(url)

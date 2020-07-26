@@ -46,6 +46,7 @@ const subscribeSingleApplication = async (req, res, next) => {
     subDate,
     subId
   ) {
+    //create history data
     const subHistoryData = {
       applicationId: appId,
       planId: planId,
@@ -71,8 +72,11 @@ const subscribeSingleApplication = async (req, res, next) => {
     }
 
     //check if application exists
-    const application = await ApplicationModel.findById(applicationId);
-    if (!application) {
+    const application = await ApplicationModel.find({
+      _id: applicationId,
+      organizationId: organizationId,
+    });
+    if (application.length === 0) {
       next(new CustomError("404", "Application not found"));
       return;
     }
@@ -85,7 +89,10 @@ const subscribeSingleApplication = async (req, res, next) => {
     }
 
     //calculate subscription expiry date
-    const totalPeriod = parseInt(parseInt(plan.periodWeight) * periodCount, 10);
+    const totalPeriod = parseInt(
+      parseInt(plan.periodWeight, 10) * parseInt(periodCount, 10),
+      10
+    );
     const subscriptionDate = new Date();
     const expiryDate = new Date().setMonth(
       subscriptionDate.getMonth() + totalPeriod
@@ -93,9 +100,8 @@ const subscribeSingleApplication = async (req, res, next) => {
 
     isSubscribed = await SubscriptionsModel.findOne({
       applicationId: applicationId,
-    }).sort({ createdAt: "desc" });
+    });
 
-    console.log(isSubscribed);
     //check for existing app subsription
     if (isSubscribed) {
       const plans = [
@@ -108,7 +114,7 @@ const subscribeSingleApplication = async (req, res, next) => {
         const planProperty = item.plan;
         const planName = item.planName;
 
-        isSubscribed[planProperty].find((currPlan) => {
+        const checkAndUpdate = isSubscribed[planProperty].find((currPlan) => {
           if (parseInt(currPlan[planName]) === parseInt(plan[planName])) {
             let oldDate = new Date(currPlan.expiryDate.toLocaleString());
             let curDate = new Date();
@@ -124,13 +130,17 @@ const subscribeSingleApplication = async (req, res, next) => {
             currPlan["expiryDate"] = new Date(newDate);
             currPlan["isActive"] = true;
             return true;
-          } else {
+          }
+        });
+
+        if (!checkAndUpdate) {
+          isSubscribed[planProperty].forEach((currPlan) => {
             currPlan[planName] = plan[planName];
             currPlan["expiryDate"] = expiryDate;
             currPlan["isActive"] = true;
             isSubscribed[planProperty].push(currPlan);
-          }
-        });
+          });
+        }
       });
       await isSubscribed.save();
       await addSubToHistory(
@@ -152,7 +162,7 @@ const subscribeSingleApplication = async (req, res, next) => {
       //logging object
       const logging = {
         value: plan.logging,
-        maxLogRetentionDays: plan.maxLogRetentionPeriod,
+        maxLogRetentionPeriod: plan.maxLogRetentionPeriod,
         expiryDate,
       };
 
