@@ -23,6 +23,7 @@ SYSTEM SETTINGS [appear as ENV VARS at runtime]
   - LOGGING_ENABLED - globally disable logging (make camel-case)
   - maxItemsPerpage - max items per request page
   - defaultItemsPerPage - default items per page when not set
+  - logPageSize - The size of records from log
 
 APPLICATION SETTINGS [attached to application token]
   - ItemsPerPage
