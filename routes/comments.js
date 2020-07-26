@@ -6,6 +6,7 @@ const commentsController = require("../controllers/commentsController");
 const { appAuthMW } = require("../middleware/auth");
 const { queryLimitMW, paginateOptionsMW } = require("../middleware/pagination");
 const planRatesLimiter = require("../middleware/planRatesLimiter");
+const { requestLogger } = require("../middleware/requestLogger");
 // const mongoose = require("mongoose");
 // const { generateToken } = require("../utils/auth/tokenGenerator");
 
@@ -32,6 +33,10 @@ router.use(appAuthMW);
 //add plan rates limiting middleware
 router.use(planRatesLimiter);
 
+// apply logger middleware to log requests of subscribed applications
+router.use(requestLogger);
+
+// go to replies routes
 router.use("/:commentId/replies", repliesRoutes);
 
 /**

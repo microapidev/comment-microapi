@@ -46,6 +46,12 @@ router.get(
   applicationsController.getSingleApplication
 );
 
+router.get(
+  "/:applicationId/log",
+  validMW(validationRules.getSingleApplicationLogSchema),
+  applicationsController.getSingleApplicationLog
+);
+
 /**
  * PATCH routes
  */
@@ -64,7 +70,6 @@ router.delete(
   applicationsController.deleteSingleApplication
 );
 
-
 /**
  * Subscription routes
  */
@@ -82,7 +87,8 @@ router.post(
 
 router.delete(
   "/:applicationId/subscriptions",
-  validMW(validationRules.getSingleAppSubscriptionSchema),subscriptionController.deleteAppSubscription
+  validMW(validationRules.getSingleAppSubscriptionSchema),
+  subscriptionController.deleteAppSubscription
 );
 
 module.exports = router;

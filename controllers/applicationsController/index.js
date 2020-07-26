@@ -7,6 +7,7 @@ const deleteSingleApplication = require("./deleteSingleApplication");
 // GET
 const getAllApplications = require("./getAllApplications");
 const getSingleApplication = require("./getSingleApplication");
+const getSingleApplicationLog = require("./getSingleApplicationLog");
 
 // PATCH
 const updateSingleApplication = require("./updateSingleApplication");
@@ -18,4 +19,5 @@ module.exports = {
   deleteSingleApplication,
   getSingleApplication,
   updateSingleApplication,
+  getSingleApplicationLog,
 };

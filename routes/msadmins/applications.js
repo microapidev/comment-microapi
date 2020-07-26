@@ -24,6 +24,12 @@ router.get(
   validMW(subValidationRule),
   appSubController.getSingleAppSubscription
 );
+// reusing controller from applicationsController
+router.get(
+  "/:applicationId/log",
+  validMW(validationRules.getSingleApplicationSchema),
+  msAdminsAppCtrl.getSingleApplicationLog
+);
 
 //Block & Unblock Application
 router.patch(
