@@ -1,3 +1,5 @@
+const { paginateDeleted } = require("./paginateDeleted");
+
 exports.deleteById = async (Model, targetDocId, deletedById) => {
   const targetDoc = await Model.findById(targetDocId);
   if (!targetDoc) {
@@ -26,4 +28,14 @@ exports.restoreById = async (Model, targetDocId) => {
       resolve(doc);
     });
   });
+};
+
+exports.getDeletedRecords = async (Model, findFilter, page = 1, limit = 20) => {
+  //get disabled records
+  return paginateDeleted(Model, "deleted", {}, limit, page);
+};
+
+exports.getAllRecords = async (Model, findFilter, page = 1, limit = 20) => {
+  //get disabled records
+  return paginateDeleted(Model, "all", {}, limit, page);
 };
