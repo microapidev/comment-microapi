@@ -41,6 +41,7 @@ const getSingleOrganization = async (req, res, next) => {
     organization = {
       organizationId: singleOrganization._id,
       organizationName: singleOrganization.name,
+      organizationEmail: singleOrganization.email,
     };
   } catch (error) {
     next(new CustomError(400, "An error occured retrieving organization"));

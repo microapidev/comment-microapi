@@ -28,6 +28,7 @@ const getAllOrganizations = async (req, res, next) => {
       return {
         organizationId: organization._id,
         organizationName: organization.name,
+        organizationEmail: organization.email,
       };
     });
 
