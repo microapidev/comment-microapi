@@ -64,6 +64,7 @@ router.delete(
   applicationsController.deleteSingleApplication
 );
 
+
 /**
  * Subscription routes
  */
@@ -77,6 +78,11 @@ router.post(
   "/:applicationId/subscriptions",
   validMW(validationRules.subscribeSingleApplicationSchema),
   subscriptionController.subscribeSingleApplication
+);
+
+router.delete(
+  "/:applicationId/subscriptions",
+  validMW(validationRules.getSingleAppSubscriptionSchema),subscriptionController.deleteAppSubscription
 );
 
 module.exports = router;
