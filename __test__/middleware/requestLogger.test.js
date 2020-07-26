@@ -43,7 +43,7 @@ describe("Logger middleware", () => {
   let app, request;
 
   it("logging is system-enabled and app-enabled for all requests", async () => {
-    process.env.LOGGING_ENABLED = true;
+    process.env.loggingEnabled = true;
     app = express();
     app.use((req, res, next) => {
       const logging = {
@@ -79,7 +79,7 @@ describe("Logger middleware", () => {
   });
 
   it("logging is system-disabled", async () => {
-    process.env.LOGGING_ENABLED = false;
+    process.env.loggingEnabled = false;
     app = express();
     app.use((req, res, next) => {
       const logging = {
@@ -115,7 +115,7 @@ describe("Logger middleware", () => {
   });
 
   it("logging is not available for application", async () => {
-    process.env.LOGGING_ENABLED = true;
+    process.env.loggingEnabled = true;
     app = express();
     app.use((req, res, next) => {
       const logging = {};
@@ -151,7 +151,7 @@ describe("Logger middleware", () => {
   });
 
   it("logging is system-enabled and app-enabled for all requests but skipped status 400", async () => {
-    process.env.LOGGING_ENABLED = true;
+    process.env.loggingEnabled = true;
     app = express();
     app.use((req, res, next) => {
       const logging = {
@@ -207,7 +207,7 @@ describe("Logger middleware", () => {
   });
 
   it("logging is system-disabled when env variable is undefined", async () => {
-    process.env.LOGGING_ENABLED = "";
+    process.env.loggingEnabled = "";
     app = express();
     app.use((req, res, next) => {
       const logging = {

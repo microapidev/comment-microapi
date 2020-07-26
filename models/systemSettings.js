@@ -29,6 +29,11 @@ const SystemSettingsSchema = new Schema(
       required: true,
       default: false,
     },
+    loggingEnabled: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
   },
   {
     timestamps: true,

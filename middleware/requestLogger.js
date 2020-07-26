@@ -36,8 +36,8 @@ exports.requestLogger = (req, res, next) => {
 
   res.on("finish", () => {
     // check if logging is enabled globally
-    const loggingEnabled = process.env.LOGGING_ENABLED
-      ? process.env.LOGGING_ENABLED.toLowerCase() === "true"
+    const loggingEnabled = process.env.loggingEnabled
+      ? process.env.loggingEnabled.toLowerCase() === "true"
       : false;
 
     try {

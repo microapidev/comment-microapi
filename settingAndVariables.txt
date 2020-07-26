@@ -20,7 +20,7 @@ SYSTEM SETTINGS [appear as ENV VARS at runtime]
   - maxRequestsPerMin - global max request rate to prevent DDoS and abuse, even plans cant exceed
   - defaultMaxRequestsPerDay - for making requests without plan (might be shelved in favor of application default plan)
   - disableRequestLimits - Disable all limiting, majorly for testing purposes only or open systems
-  - LOGGING_ENABLED - globally disable logging (make camel-case)
+  - LOGGING_ENABLED - now loggingEnabled - globally disable logging (make camel-case)
   - maxItemsPerpage - max items per request page
   - defaultItemsPerPage - default items per page when not set
   - logPageSize - The size of records from log
