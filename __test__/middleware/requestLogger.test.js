@@ -1,6 +1,7 @@
 const express = require("express");
 const supertest = require("supertest");
 const errorHandler = require("../../utils/errorhandler");
+const { mongoDaysFromToday } = require("../../utils/dateTImeUtils");
 const RequestLog = require("../../models/requestLogs");
 const mongoose = require("mongoose");
 const { logWriter, requestLogger } = require("../../middleware/requestLogger");
@@ -113,15 +114,11 @@ describe("Logger middleware", () => {
     expect(requestLog.length).toEqual(0);
   });
 
-  it("logging is application-disabled", async () => {
+  it("logging is not available for application", async () => {
     process.env.LOGGING_ENABLED = true;
     app = express();
     app.use((req, res, next) => {
-      const logging = {
-        loggingEnabled: false,
-        maxLogRetentionDays: 20,
-        skipRanges: [400],
-      };
+      const logging = {};
       req.token = {};
       req.token.applicationId = mongoose.Types.ObjectId();
       req.token.logging = logging;
@@ -148,7 +145,9 @@ describe("Logger middleware", () => {
     const requestLog = await RequestLog.find({
       endpoint: "/logging/appDisabled",
     });
-    expect(requestLog.length).toEqual(0);
+    expect(requestLog.length).toEqual(1);
+    const daysBetween = mongoDaysFromToday(requestLog[0].maxLogRetention);
+    expect(daysBetween).toEqual(1);
   });
 
   it("logging is system-enabled and app-enabled for all requests but skipped status 400", async () => {
