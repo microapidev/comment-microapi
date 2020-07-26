@@ -3364,6 +3364,25 @@ components:
           type: string
         msAdminId:
           type: string
+    
+    Plan:
+      type: object
+      required:
+        - name
+        - periodWeight
+      properties:
+        name:
+          type: string
+        periodWeight:
+          type: enum
+        loggging:
+          type: boolean
+        maxLogRetentionPeriod:
+          type: number
+        maxRequestPerMin:
+          type: number
+        maxRequestPerDay :
+          type: number
 
     CreateMSAdmin:
       type: object
@@ -3792,6 +3811,13 @@ components:
       in: path
       name: msAdminId
       description: String ID of the Microservice Admin
+      required: true
+      schema:
+        type: string
+    planIdParam: # Can be referenced via '#/components/parameters/planIdParam'
+      in: path
+      name: planId
+      description: String ID of the Plan
       required: true
       schema:
         type: string
