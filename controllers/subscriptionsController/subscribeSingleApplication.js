@@ -46,6 +46,7 @@ const subscribeSingleApplication = async (req, res, next) => {
     subDate,
     subId
   ) {
+    //create history data
     const subHistoryData = {
       applicationId: appId,
       planId: planId,
@@ -71,7 +72,7 @@ const subscribeSingleApplication = async (req, res, next) => {
     }
 
     //check if application exists
-    const application = await ApplicationModel.find({
+    const application = await ApplicationModel.findOne({
       _id: applicationId,
       organizationId: organizationId,
     });
@@ -86,6 +87,7 @@ const subscribeSingleApplication = async (req, res, next) => {
       next(new CustomError(404, "Plan not found!"));
       return;
     }
+    console.log(application + "found");
 
     //calculate subscription expiry date
     const totalPeriod = parseInt(
