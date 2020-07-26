@@ -31,7 +31,7 @@ const getAllAppSubscriptions = async (req, res, next) => {
     }
 
     //get all subscriptions from model
-    const subscriptions = SubscriptionModel.find();
+    const subscriptions = await SubscriptionModel.find();
     if (!subscriptions) {
       next(new CustomError(404, "No Subscription record found"));
       return;
@@ -42,25 +42,9 @@ const getAllAppSubscriptions = async (req, res, next) => {
         subscriptionId: subs._id,
         applicationId: subs.applicationId,
         planName: subs.planName,
-        dailyLimits: subs.dailyLimits.forEach((item) => {
-          return {
-            maxRequestPerDay: item.maxRequestPerDay,
-            expiryDate: item.expiryDate,
-          };
-        }),
-        perMinuteLimits: subs.perMinuteLimits.forEach((item) => {
-          return {
-            maxRequestPerMin: item.maxRequestPerMin,
-            expiryDate: item.expiryDate,
-          };
-        }),
-        logging: subs.logging.forEach((item) => {
-          return {
-            value: item.value,
-            maxLogRetentionPeriod: item.maxLogRetentionPeriod,
-            expiryDate: item.expiryDate,
-          };
-        }),
+        dailyLimits: subs.dailyLimits,
+        perMinuteLimits: subs.perMinuteLimits,
+        logging: subs.logging,
         subscriptionStartDate: subs.subscriptionStartDate,
       };
     });
@@ -72,6 +56,7 @@ const getAllAppSubscriptions = async (req, res, next) => {
       "Application subscriptions retrieved successfully"
     );
   } catch (error) {
+    next(error);
     next(new CustomError(500, "Something went wrong, please try again..."));
     return;
   }

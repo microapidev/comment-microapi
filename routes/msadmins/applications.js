@@ -16,8 +16,8 @@ router.get(
 
 router.get(
   "/subscriptions",
-  validMW(subValidationRule),
-  appSubController.getAllAppSubcriptions
+  validMW(validationRules.getAllApplicationsSchema),
+  appSubController.getAllAppSubscriptions
 );
 router.get(
   "/:applicationId",
