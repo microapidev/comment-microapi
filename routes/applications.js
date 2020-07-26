@@ -85,10 +85,4 @@ router.post(
   subscriptionController.subscribeSingleApplication
 );
 
-router.delete(
-  "/:applicationId/subscriptions",
-  validMW(validationRules.getSingleAppSubscriptionSchema),
-  subscriptionController.deleteAppSubscription
-);
-
 module.exports = router;
