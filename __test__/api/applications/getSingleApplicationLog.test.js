@@ -9,7 +9,7 @@ describe("Get single application logs", () => {
   let app, request;
 
   it("should return all logs for a given application", async () => {
-    process.env.LOGGING_ENABLED = true;
+    process.env.loggingEnabled = true;
 
     //create express app
     app = express();
