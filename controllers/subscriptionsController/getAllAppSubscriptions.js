@@ -18,7 +18,7 @@ const SubscriptionModel = require("../../models/subscriptions");
 
 const getAllAppSubscriptions = async (req, res, next) => {
   const { msAdminId } = req.token;
-
+  let query = {};
   try {
     //check if msadmin exists
     const msAdmin = await MsAdmin.findById(msAdminId);
@@ -31,13 +31,15 @@ const getAllAppSubscriptions = async (req, res, next) => {
     }
 
     //get all subscriptions from model
-    const subscriptions = await SubscriptionModel.find();
+    const subscriptions = await SubscriptionModel.paginate(query, {
+      ...req.pagination,
+    });
     if (!subscriptions) {
       next(new CustomError(404, "No Subscription record found"));
       return;
     }
 
-    const allSubscriptions = subscriptions.map((subs) => {
+    const allSubscriptions = subscriptions.docs.map((subs) => {
       return {
         subscriptionId: subs._id,
         applicationId: subs.applicationId,
@@ -48,13 +50,40 @@ const getAllAppSubscriptions = async (req, res, next) => {
         subscriptionStartDate: subs.subscriptionStartDate,
       };
     });
+    console.log(allSubscriptions[0].dailyLimits[0]);
+    // Set page info.
+    let pageInfo = {
+      currentPage: subscriptions.page,
+      totalPages: subscriptions.totalPages,
+      hasNext: subscriptions.hasNextPage,
+      hasPrev: subscriptions.hasPrevPage,
+      nextPage: subscriptions.nextPage,
+      prevPage: subscriptions.prevPage,
+      pageRecordCount: subscriptions.docs.length,
+      totalRecord: subscriptions.totalDocs,
+    };
 
-    responseHandler(
-      res,
-      200,
-      allSubscriptions,
-      "Application subscriptions retrieved successfully"
-    );
+    let data = {
+      records: allSubscriptions,
+      pageInfo: pageInfo,
+    };
+
+    if (data.pageInfo.currentPage > data.pageInfo.totalPages) {
+      return next(
+        new CustomError(
+          "404",
+          "Page limit exceeded, No records found!",
+          data.pageInfo
+        )
+      );
+    } else {
+      responseHandler(
+        res,
+        200,
+        data,
+        `Application subscriptions retrieved successfully`
+      );
+    }
   } catch (error) {
     next(error);
     next(new CustomError(500, "Something went wrong, please try again..."));

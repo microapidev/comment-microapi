@@ -17,6 +17,7 @@ router.get(
 router.get(
   "/subscriptions",
   validMW(validationRules.getAllApplicationsSchema),
+  paginateOptionsMW,
   appSubController.getAllAppSubscriptions
 );
 router.get(
