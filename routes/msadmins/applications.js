@@ -1,8 +1,10 @@
 const router = require("express").Router();
 const msAdminsAppCtrl = require("../../controllers/msAdminsController/applications");
+const appSubController = require("../../controllers/subscriptionsController");
 const validMW = require("../../middleware/validation");
 const { paginateOptionsMW } = require("../../middleware/pagination");
 const validationRules = require("../../utils/validationRules").msAdmins;
+const subValidationRule = require("../../utils/validationRules/subscriptions/getSingleAppSubscriptionSchema");
 
 // GET Applications
 router.get(
@@ -15,6 +17,12 @@ router.get(
   "/:applicationId",
   validMW(validationRules.getSingleApplicationSchema),
   msAdminsAppCtrl.getSingleApplication
+);
+
+router.get(
+  "/:applicationId/subscriptions",
+  validMW(subValidationRule),
+  appSubController.getSingleAppSubscription
 );
 
 //Block & Unblock Application
