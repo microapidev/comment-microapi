@@ -17,6 +17,11 @@ const SubscriptionsHistorySchema = new Schema(
       ref: "Plans",
       required: true,
     },
+    subscriptionId: {
+      type: Schema.Types.ObjectId,
+      ref: "Subscriptions",
+      required: true,
+    },
     period: {
       type: String,
       required: true,

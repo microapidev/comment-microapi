@@ -45,18 +45,6 @@ describe("get /applications/:applicationId/subscriptions", () => {
       subscriptionDate.getMonth() + totalPeriod
     );
 
-    //populate subscription History Data
-    const subscriptionHistoryData = {
-      applicationId: application._id,
-      planId: plan._id,
-      period: `${totalPeriod} months`,
-      expiresOn: expiryDate,
-      subscribedOn: subscriptionDate,
-    };
-
-    //save to subscription history
-    subHistory = new SubscriptionHistoryModel(subscriptionHistoryData);
-    await subHistory.save();
     //create subscription data & properties objects
     //logging object
     const logging = {
@@ -79,7 +67,6 @@ describe("get /applications/:applicationId/subscriptions", () => {
     const subDetails = {
       planName: plan.name,
       planId: plan._id,
-      subscriptionHistoryId: subHistory._id,
       subscriptionStartDate: subscriptionDate,
       applicationId: application._id,
       logging: logging,
@@ -89,6 +76,20 @@ describe("get /applications/:applicationId/subscriptions", () => {
 
     subscription = new SubscriptionModel(subDetails);
     await subscription.save();
+
+    //populate subscription History Data
+    const subscriptionHistoryData = {
+      applicationId: application._id,
+      planId: plan._id,
+      subscriptionId: subscription._id,
+      period: `${totalPeriod} months`,
+      expiresOn: expiryDate,
+      subscribedOn: subscriptionDate,
+    };
+
+    //save to subscription history
+    subHistory = new SubscriptionHistoryModel(subscriptionHistoryData);
+    await subHistory.save();
   });
 
   afterAll(async () => {
