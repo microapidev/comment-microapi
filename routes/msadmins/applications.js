@@ -14,7 +14,11 @@ router.get(
   msAdminsAppCtrl.getAllApplications
 );
 
-router.get("/subscriptions",validMW(subValidationRule),appSubController.getAllAppSubcriptions)
+router.get(
+  "/subscriptions",
+  validMW(subValidationRule),
+  appSubController.getAllAppSubcriptions
+);
 router.get(
   "/:applicationId",
   validMW(validationRules.getSingleApplicationSchema),
