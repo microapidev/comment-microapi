@@ -46,6 +46,12 @@ router.get(
   applicationsController.getSingleApplication
 );
 
+router.get(
+  "/:applicationId/log",
+  validMW(validationRules.getSingleApplicationLogSchema),
+  applicationsController.getSingleApplicationLog
+);
+
 /**
  * PATCH routes
  */

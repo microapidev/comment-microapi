@@ -17,6 +17,13 @@ router.get(
   msAdminsAppCtrl.getSingleApplication
 );
 
+// reusing controller from applicationsController
+router.get(
+  "/:applicationId/log",
+  validMW(validationRules.getSingleApplicationSchema),
+  msAdminsAppCtrl.getSingleApplicationLog
+);
+
 //Block & Unblock Application
 router.patch(
   "/:applicationId/block",
