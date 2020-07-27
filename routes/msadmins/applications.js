@@ -13,6 +13,13 @@ router.get(
   paginateOptionsMW,
   msAdminsAppCtrl.getAllApplications
 );
+
+router.get(
+  "/subscriptions",
+  validMW(validationRules.getAllApplicationsSchema),
+  paginateOptionsMW,
+  appSubController.getAllAppSubscriptions
+);
 router.get(
   "/:applicationId",
   validMW(validationRules.getSingleApplicationSchema),

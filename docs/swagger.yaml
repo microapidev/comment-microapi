@@ -21,7 +21,7 @@ tags:
 
 paths:
   #Endpoints to Microservice admin Operations
-  /msadmins:
+  /msadmins/login:
     #Post Operation
     post:
       tags:
@@ -76,7 +76,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ErrorResponse"
-
+  /msadmins:
     #GET Operation
     get:
       tags:
@@ -997,6 +997,224 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+  # Endpoints to manage subscription plans
+  /msadmins/plans:
+    # GET Opeartion
+    get:
+      tags:
+        - Microservice Admins
+
+      summary: Get all subscription plans
+
+      security:
+        - Bearer: []
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Plans"
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # POST Opeartion
+    post:
+      tags:
+        - Microservice Admins
+
+      summary: Create a new Plan
+
+      security:
+        - Bearer: []
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/Plans"
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to manage single plans
+  /msadmins/plans/{planId}:
+    # GET Operation
+    get:
+      tags:
+        - Microservice Admins
+
+      summary: Get Single plan
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/planIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/Plans"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # delete Operation
+    delete:
+      tags:
+        - Microservice Admins
+
+      summary: Get Single plan
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/planIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      planId:
+                        type: string
+                      planName:
+                        type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
   # Endpoints to manage organizations using the microservice
   /msadmins/applications:
     #Get operation
@@ -1053,6 +1271,60 @@ paths:
                               type: string
                             organizationName:
                               type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to get all subscriptions
+  /msadmins/applications/subscriptions:
+    #GET operation
+    get:
+      tags:
+        - Microservice Admins
+
+      summary: Get All Application Subscription
+
+      security:
+        - Bearer: []
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Subscriptions"
 
         "400":
           description: Bad request error
@@ -1197,6 +1469,62 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to view application log
+  /msadmins/applications/{applicationId}/log:
+    # Get Operation
+    get:
+      tags:
+        - Microservice Admins
+
+      summary: Get application logs
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      records:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Log"
+                      pageInfo:
+                        $ref: "#/components/schemas/pageInfo"
+
+        "401":
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   # Endpoint to  unblock organization
   /msadmins/applications/{applicationId}/block:
     #Patch operation
@@ -1306,6 +1634,62 @@ paths:
                         type: boolean
                       unblockedAt:
                         type: string
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to get application subscription
+  /msadmins/applications/{applicationId}/subscriptions:
+    #GET operation
+    get:
+      tags:
+        - Microservice Admins
+
+      summary: Get Application Subscription
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/Subscriptions"
 
         "400":
           description: Bad request error
@@ -2107,6 +2491,135 @@ paths:
 
         "400":
           description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to get application subscription
+  /applications/{applicationId}/subscriptions:
+    # POST Operation
+    post:
+      tags:
+        - Applications
+
+      summary: Subscribes an application to a plan
+
+      security:
+        - Bearer: []
+
+      requestBody:
+        description: A JSON object containing an subscription Plan ID and Period Count
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Subscribe"
+    #GET operation
+    get:
+      tags:
+        - Applications
+
+      summary: Get Application Subscription
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/Subscriptions"
+
+        "400":
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "401":
+          description: Authorization Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Endpoint to get request logs
+  /applications/{applicationId}/log:
+    # Get Operation
+    get:
+      tags:
+        - Applications
+
+      summary: Get application logs
+
+      security:
+        - Bearer: []
+
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/applicationIdParam"
+
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - status
+                  - data
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      records:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Log"
+                      pageInfo:
+                        $ref: "#/components/schemas/pageInfo"
+
+        "401":
+          description: Authentication error
           content:
             application/json:
               schema:
@@ -3365,6 +3878,25 @@ components:
         msAdminId:
           type: string
 
+    Plans:
+      type: object
+      required:
+        - name
+        - periodWeight
+      properties:
+        name:
+          type: string
+        periodWeight:
+          type: enum
+        loggging:
+          type: boolean
+        maxLogRetentionPeriod:
+          type: number
+        maxRequestPerMin:
+          type: number
+        maxRequestPerDay:
+          type: number
+
     CreateMSAdmin:
       type: object
       required:
@@ -3514,6 +4046,90 @@ components:
         email:
           type: string
           format: email
+
+    logging: # Can be referenced as '#/components/schemas/logging'
+      type: object
+      properties:
+        maxLogRetentionPeriod:
+          type: number
+        expiryDate:
+          type: string
+        isActive:
+          type: boolean
+
+    dailyLimits: # Can be referenced as '#/components/schemas/dailyLimits'
+      type: object
+      properties:
+        maxRequestPerDay:
+          type: number
+        expiryDate:
+          type: string
+        isActive:
+          type: boolean
+
+    perMinuteLimits: # Can be referenced as '#/components/schemas/perMinLimits'
+      type: object
+      properties:
+        maxRequestPerMin:
+          type: number
+        expiryDate:
+          type: string
+        isActive:
+          type: boolean
+
+    Subscribe:
+      type: object
+      properties:
+        planId:
+          type: string
+        periodCount:
+          type: number
+
+    Subscriptions: # Can be referenced as '#/components/schemas/Subscriptions'
+      type: object
+      properties:
+        subscriptionId:
+          type: string
+        applicationId:
+          type: string
+        planId:
+          type: string
+        planName:
+          type: string
+        logging:
+          type: array
+          items:
+            $ref: "#components/schemas/logging"
+        dailyLimits:
+          type: array
+          items:
+            $ref: "#/components/schemas/dailyLimits"
+        perMinuteLimits:
+          type: array
+          items:
+            $ref: "#/components/schemas/perMinuteLimits"
+        isActive:
+          type: boolean
+
+    Log: # can be referenced as '#/components/schemas/Log'
+      type: object
+      properties:
+        applicationId:
+          type: string
+        requestMethod:
+          type: string
+        endpoint:
+          type: string
+        responseCode:
+          type: number
+        statusMessage:
+          type: string
+        maxLogRetention:
+          type: number
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
 
     Application: # Can be referenced as '#/components/schemas/Application'
       type: object
@@ -3792,6 +4408,14 @@ components:
       in: path
       name: msAdminId
       description: String ID of the Microservice Admin
+      required: true
+      schema:
+        type: string
+
+    planIdParam: # Can be referenced via '#/components/parameters/planIdParam'
+      in: path
+      name: planId
+      description: String ID of the Plan
       required: true
       schema:
         type: string
