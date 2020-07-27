@@ -9,7 +9,7 @@ describe("Paginete soft-deleted records", () => {
     //create dummy records and softDelete them
     for (let index = 0; index < 20; index++) {
       msAdmin = new MsAdmin({
-        fullname: "admin1",
+        fullname: "paginateDeleteTest",
         email: `admin${Date.now()}@domain.com`,
         password: "some password",
       });
@@ -33,19 +33,36 @@ describe("Paginete soft-deleted records", () => {
   });
 
   it("should get all deleted records", async () => {
-    const deletedAdmins = await paginateDeleted(MsAdmin, "deleted", {}, 5, 1);
+    const deletedAdmins = await paginateDeleted(
+      MsAdmin,
+      "disabled",
+      { fullname: "paginateDeleteTest" },
+      5,
+      1
+    );
     expect(deletedAdmins.totalRecords).toEqual(10);
   });
 
   it("should get all undeleted records", async () => {
-    const unDeleted = await paginateDeleted(MsAdmin, "unDeleted", {}, 5, 1);
-    console.log(unDeleted);
-    expect(unDeleted.totalRecords).toEqual(12);
+    const unDeleted = await paginateDeleted(
+      MsAdmin,
+      "enabled",
+      { fullname: "paginateDeleteTest" },
+      5,
+      1
+    );
+    expect(unDeleted.totalRecords).toEqual(10);
   });
 
   it("should get all records", async () => {
-    const allAdmins = await paginateDeleted(MsAdmin, "all", {}, 5, 1);
-    expect(allAdmins.totalRecords).toEqual(22);
+    const allAdmins = await paginateDeleted(
+      MsAdmin,
+      "all",
+      { fullname: "paginateDeleteTest" },
+      5,
+      1
+    );
+    expect(allAdmins.totalRecords).toEqual(20);
   });
 
   //retrieve the deleted records by page

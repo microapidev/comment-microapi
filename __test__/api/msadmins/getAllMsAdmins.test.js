@@ -2,6 +2,7 @@ const app = require("../../../server");
 const supertest = require("supertest");
 const MsAdmin = require("../../../models/msadmins");
 const request = supertest(app);
+const { deleteById, restoreById } = require("../../../utils/softDelete");
 
 // Cached admin and allMsAdminsResponse.
 let msAdmin, msAdmin2, msAdmin3, allMsAdminsResponse;
@@ -178,5 +179,47 @@ describe("GET /msAdmins", () => {
     expect(res.status).toEqual(401);
     expect(res.body.status).toEqual("error");
     expect(res.body.data).toEqual([]);
+  });
+
+  it("Should get all disabled microservice admins with all pagination params set", async () => {
+    const url = `/v1/msAdmins`;
+    const bearerToken = `bearer ${global.superSysToken}`;
+
+    //disable one admin
+    await deleteById(MsAdmin, msAdmin2.id, global.msSuperAdmin.id);
+
+    const res = await request
+      .get(url)
+      .query({ limit: 3, page: 1, sort: "asc", filter: "disabled" })
+      .set("Authorization", bearerToken);
+
+    // const expectedValue = allMsAdminsResponse.slice(0, 1);
+
+    expect(res.status).toEqual(200);
+    expect(res.body.status).toEqual("success");
+    expect(res.body.data.records.length).toEqual(1);
+
+    await restoreById(MsAdmin, msAdmin2.Id);
+  });
+
+  it("Should get both disabled/enabled microservice admins with all pagination params set", async () => {
+    const url = `/v1/msAdmins`;
+    const bearerToken = `bearer ${global.superSysToken}`;
+
+    //disable one admin
+    await deleteById(MsAdmin, msAdmin2.id, global.msSuperAdmin.id);
+
+    const res = await request
+      .get(url)
+      .query({ limit: 3, page: 1, sort: "asc", filter: "all" })
+      .set("Authorization", bearerToken);
+
+    // const expectedValue = allMsAdminsResponse.slice(0, 1);
+
+    expect(res.status).toEqual(200);
+    expect(res.body.status).toEqual("success");
+    expect(res.body.data.records.length).toEqual(3);
+
+    await restoreById(MsAdmin, msAdmin2.Id);
   });
 });

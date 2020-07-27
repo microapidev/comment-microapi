@@ -1,6 +1,7 @@
 const MsAdmin = require("../../models/msadmins");
 const CustomError = require("../../utils/customError");
 const responseHandler = require("../../utils/responseHandler");
+const { getAllRecords, getDeletedRecords } = require("../../utils/softDelete");
 
 /**
  * @author David Okanlawon
@@ -14,11 +15,20 @@ const responseHandler = require("../../utils/responseHandler");
 const getAllMsAdmins = async (req, res, next) => {
   //get all admins mapping the field names appropriately
   let admins, allMsAdmins;
+  const { filter } = req.query;
 
   let query = {};
+  const { page, limit } = req.paginateOptions;
 
   try {
-    admins = await MsAdmin.paginate(query, req.paginateOptions);
+    if (filter === "disabled") {
+      admins = await getDeletedRecords(MsAdmin, page, limit);
+    } else if (filter === "all") {
+      admins = await getAllRecords(MsAdmin, page, limit);
+    } else {
+      admins = await MsAdmin.paginate(query, req.paginateOptions);
+    }
+
     allMsAdmins = admins.docs.map((admin) => {
       return {
         msAdminId: admin._id,
@@ -28,6 +38,7 @@ const getAllMsAdmins = async (req, res, next) => {
       };
     });
   } catch (error) {
+    console.log(error.message);
     next(new CustomError(400, "An error occured retrieving admin accounts"));
     return;
   }
