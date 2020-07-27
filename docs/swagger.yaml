@@ -3748,7 +3748,7 @@ components:
         msAdminId:
           type: string
 
-    Plan:
+    Plans:
       type: object
       required:
         - name
