@@ -30,12 +30,12 @@ exports.restoreById = async (Model, targetDocId) => {
   });
 };
 
-exports.getDeletedRecords = async (Model, findFilter, page = 1, limit = 20) => {
+exports.getDeletedRecords = async (Model, page = 1, limit = 20) => {
   //get disabled records
-  return paginateDeleted(Model, "deleted", {}, limit, page);
+  return paginateDeleted(Model, "disabled", {}, limit, page);
 };
 
-exports.getAllRecords = async (Model, findFilter, page = 1, limit = 20) => {
+exports.getAllRecords = async (Model, page = 1, limit = 20) => {
   //get disabled records
   return paginateDeleted(Model, "all", {}, limit, page);
 };

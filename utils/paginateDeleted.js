@@ -7,12 +7,12 @@ exports.paginateDeleted = async (Model, findFilter, query, limit, page) => {
     prevPage,
     pageRecordCount,
     totalRecords,
-    documents;
+    docs;
 
   //get total documents in collection
-  if (findFilter === "unDeleted") {
+  if (findFilter === "enabled") {
     totalRecords = await Model.countDocuments(query);
-  } else if (findFilter === "deleted") {
+  } else if (findFilter === "disabled") {
     totalRecords = await Model.countDocumentsDeleted(query);
   } else if (findFilter === "all") {
     totalRecords = await Model.countDocumentsWithDeleted(query);
@@ -48,16 +48,16 @@ exports.paginateDeleted = async (Model, findFilter, query, limit, page) => {
 
   //skip (limit * page - 1) records and get limit records
   let result;
-  if (findFilter === "unDeleted") {
+  if (findFilter === "enabled") {
     result = await Model.find(query).skip(skipCount).limit(limit);
-  } else if (findFilter === "deleted") {
+  } else if (findFilter === "disabled") {
     result = await Model.findDeleted(query).skip(skipCount).limit(limit);
   } else if (findFilter === "all") {
     result = await Model.findWithDeleted(query).skip(skipCount).limit(limit);
   }
 
   pageRecordCount = result.length;
-  documents = result;
+  docs = result;
 
   return {
     currentPage,
@@ -68,6 +68,6 @@ exports.paginateDeleted = async (Model, findFilter, query, limit, page) => {
     prevPage,
     pageRecordCount,
     totalRecords,
-    documents,
+    docs,
   };
 };
