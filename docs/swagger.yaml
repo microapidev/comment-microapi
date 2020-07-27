@@ -4253,6 +4253,7 @@ components:
       required: true
       schema:
         type: string
+        
     planIdParam: # Can be referenced via '#/components/parameters/planIdParam'
       in: path
       name: planId
