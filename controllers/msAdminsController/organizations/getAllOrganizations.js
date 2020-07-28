@@ -1,6 +1,11 @@
 const OrganizationsModel = require("../../../models/organizations");
+const MsAdmin = require("../../../models/msadmins");
 const CustomError = require("../../../utils/customError");
 const responseHandler = require("../../../utils/responseHandler");
+const {
+  getAllRecords,
+  getDeletedRecords,
+} = require("../../../utils/softDelete");
 
 /**
  * @author Ekeyekwu Oscar
@@ -15,19 +20,39 @@ const getAllOrganizations = async (req, res, next) => {
   //get all organizations and map field names appropriately
   let allOrganizations;
 
+  //get msAdminId from token
+  const { msAdminId } = req.token;
+
+  //check if msAdmin exists
+  const msAdmin = await MsAdmin.findById(msAdminId);
+  if (!msAdmin) {
+    next(new CustomError(404, "MsAdmin account not found"));
+    return;
+  }
+
   let query = {};
+
+  const { page, limit } = req.paginateOptions;
+  const { filter } = req.query;
 
   try {
     //get all organizations
-    const organizations = await OrganizationsModel.paginate(
-      query,
-      req.paginateOptions
-    );
+    let organizations;
+    if (filter === "disabled") {
+      organizations = await getDeletedRecords(OrganizationsModel, page, limit);
+    } else if (filter === "all") {
+      organizations = await getAllRecords(OrganizationsModel, page, limit);
+    } else {
+      organizations = await OrganizationsModel.paginate(query, {
+        ...req.paginateOptions,
+      });
+    }
 
     allOrganizations = organizations.docs.map((organization) => {
       return {
         organizationId: organization._id,
         organizationName: organization.name,
+        isBlocked: organization.deleted || false,
       };
     });
 

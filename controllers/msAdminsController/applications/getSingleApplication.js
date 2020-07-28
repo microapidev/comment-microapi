@@ -29,35 +29,21 @@ const getSingleApplication = async (req, res, next) => {
     }
 
     //get  applications
-    const singleApplication = await Applications.findById(
-      applicationId
-    ).populate("organizationId");
+    const singleApplication = await Applications.findOneWithDeleted({
+      _id: applicationId,
+    }).populate("organizationId");
 
     if (!singleApplication) {
       next(new CustomError(404, "Application not Found"));
       return;
     }
 
-    // let commentsCount, repliesCount;
-    // const comments = await CommentModel.find({applicationId:applicationId});
-    // console.log(comments)
-    // if (!comments || comments === []) {
-    //   commentsCount = 0;
-    //   repliesCount = 0;
-    // } else {
-    //   commentsCount = comments.records.length;
-    //   repliesCount = comments.records.reduce((acc, curr) => {
-    //     return acc + curr.numOfReplies;
-    //   }, 0);
-    // }
-    // console.log(commentsCount, repliesCount);
     application = {
       applicationId: singleApplication._id,
       applicationName: singleApplication.name,
       organizationId: singleApplication.organizationId,
       organizationName: singleApplication.organizationId.name,
-      //   totalNumOfComments: commentsCount,
-      //   totalNumOfReplies: repliesCount,
+      isBlocked: singleApplication.deleted || false,
     };
   } catch (error) {
     next(new CustomError(400, "An error occured retrieving Application"));

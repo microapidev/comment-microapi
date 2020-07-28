@@ -35,6 +35,7 @@ const getAllMsAdmins = async (req, res, next) => {
         fullname: admin.fullname,
         email: admin.email,
         role: admin.role,
+        isDisabled: admin.deleted || false,
       };
     });
   } catch (error) {

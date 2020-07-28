@@ -45,18 +45,21 @@ describe("GET /msAdmins", () => {
         fullname: msAdmin.fullname,
         email: msAdmin.email,
         role: msAdmin.role,
+        isDisabled: false,
       },
       {
         msAdminId: msAdmin2.id,
         fullname: msAdmin2.fullname,
         email: msAdmin2.email,
         role: msAdmin2.role,
+        isDisabled: false,
       },
       {
         msAdminId: msAdmin3.id,
         fullname: msAdmin3.fullname,
         email: msAdmin3.email,
         role: msAdmin3.role,
+        isDisabled: false,
       },
     ];
   });
