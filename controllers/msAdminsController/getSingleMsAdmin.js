@@ -16,7 +16,7 @@ const getSingleMsAdmin = async (req, res, next) => {
 
   //get msAdmin account
   try {
-    const msAdmin = await MsAdmin.findById(msAdminId);
+    const msAdmin = await MsAdmin.findOneWithDeleted({ _id: msAdminId });
     if (!msAdmin) {
       next(new CustomError(404, "MsAdmin account not found"));
       return;
@@ -25,6 +25,7 @@ const getSingleMsAdmin = async (req, res, next) => {
       fullname: msAdmin.fullname,
       email: msAdmin.email,
       role: msAdmin.role,
+      isDisabled: msAdmin.deleted || false,
     };
 
     return responseHandler(
