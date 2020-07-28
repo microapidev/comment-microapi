@@ -21,6 +21,8 @@ describe("PATCH /msAdmins/settings", () => {
       maxItemsPerPage: 50,
       defaultMaxRequestsPerDay: 10000,
       disableRequestLimits: false,
+      loggingEnabled: true,
+      logPageSize: 100,
     };
 
     let res = await request
@@ -46,6 +48,8 @@ describe("PATCH /msAdmins/settings", () => {
       maxItemsPerPage: 20,
       defaultMaxRequestsPerDay: 10000,
       disableRequestLimits: false,
+      loggingEnabled: true,
+      logPageSize: 100,
     };
 
     //check for update also in same process because this is a single document collection

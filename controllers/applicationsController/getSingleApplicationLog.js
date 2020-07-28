@@ -11,13 +11,13 @@ const getSingleApplicationLog = async (req, res, next) => {
 
   //reuse this controller for msAdmins, they can find any application
   if (req.token.msAdminId) {
-    const application = Application.findById(applicationId);
+    const application = await Application.findById(applicationId);
     if (!application) {
       return next(new CustomError(404, "Application not found"));
     }
   } else {
     //check if requested application belongs to organization of admin user
-    const application = Application.find({
+    const application = await Application.find({
       _id: applicationId,
       organizationId,
     });

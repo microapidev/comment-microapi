@@ -29,9 +29,9 @@ const getSingleOrganization = async (req, res, next) => {
     }
 
     //get  organizations
-    const singleOrganization = await OrganizationsModel.findById(
-      organizationId
-    );
+    const singleOrganization = await OrganizationsModel.findOneWithDeleted({
+      _id: organizationId,
+    });
 
     if (!singleOrganization) {
       next(new CustomError(404, "Organization not Found"));
@@ -42,6 +42,7 @@ const getSingleOrganization = async (req, res, next) => {
       organizationId: singleOrganization._id,
       organizationName: singleOrganization.name,
       organizationEmail: singleOrganization.email,
+      isBlocked: singleOrganization.deleted || false,
     };
   } catch (error) {
     next(new CustomError(400, "An error occured retrieving organization"));

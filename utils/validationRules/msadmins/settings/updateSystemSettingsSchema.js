@@ -11,6 +11,8 @@ const updateSystemSettingsSchema = {
     maxItemsPerPage: Joi.number(),
     defaultMaxRequestsPerDay: Joi.number(),
     disableRequestLimits: Joi.boolean(),
+    loggingEnabled: Joi.boolean(),
+    logPageSize: Joi.number(),
   }),
 };
 

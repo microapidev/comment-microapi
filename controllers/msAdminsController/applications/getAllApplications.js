@@ -2,6 +2,10 @@ const Applications = require("../../../models/applications");
 const MsAdmin = require("../../../models/msadmins");
 const CustomError = require("../../../utils/customError");
 const responseHandler = require("../../../utils/responseHandler");
+const {
+  getAllRecords,
+  getDeletedRecords,
+} = require("../../../utils/softDelete");
 
 /**
  * @author Ekeyekwu Oscar
@@ -20,6 +24,7 @@ const getAllApplications = async (req, res, next) => {
   let allApplications;
 
   let query = {};
+  const { page, limit } = req.paginateOptions;
 
   try {
     //check if msAdmin exists
@@ -29,11 +34,21 @@ const getAllApplications = async (req, res, next) => {
       return;
     }
 
+    const { filter } = req.query;
+
     //get all applications
-    const applications = await Applications.paginate(query, {
-      ...req.paginateOptions,
-      populate: "organizationId",
-    });
+    let applications;
+
+    if (filter === "disabled") {
+      applications = await getDeletedRecords(Applications, page, limit);
+    } else if (filter === "all") {
+      applications = await getAllRecords(Applications, page, limit);
+    } else {
+      applications = await Applications.paginate(query, {
+        ...req.paginateOptions,
+        populate: "organizationId",
+      });
+    }
 
     allApplications = applications.docs.map((application) => {
       return {
@@ -41,6 +56,7 @@ const getAllApplications = async (req, res, next) => {
         applicationName: application.name,
         organizationId: application.organizationId,
         organizationName: application.organizationId.name,
+        isBlocked: application.deleted || false,
       };
     });
 
